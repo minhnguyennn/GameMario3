@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Animation.h"
+#include "QuestionBrick.h"
 #include "Animations.h"
 
 #define ID_ANI_BRICK 10000
