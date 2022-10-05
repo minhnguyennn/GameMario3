@@ -1,4 +1,4 @@
-#include "Brick.h"
+ #include "Brick.h"
 
 void CBrick::Render()
 {
@@ -13,4 +13,4 @@ void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 	t = y - BRICK_BBOX_HEIGHT/2;
 	r = l + BRICK_BBOX_WIDTH;
 	b = t + BRICK_BBOX_HEIGHT;
-}
+}                                                                                                                                                                                                                                                                                                                                                                                  
