@@ -10,7 +10,6 @@
 #define GOOMBA_BBOX_HEIGHT_DIE 7
 
 #define GOOMBA_DIE_TIMEOUT 500
-
 #define GOOMBA_STATE_WALKING 100
 #define GOOMBA_STATE_DIE 200
 
@@ -22,19 +21,14 @@ class CGoomba : public CGameObject
 protected:
 	float ax;				
 	float ay; 
-
 	ULONGLONG die_start;
-
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
-
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
-
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-
 public: 	
 	CGoomba(float x, float y);
 	virtual void SetState(int state);

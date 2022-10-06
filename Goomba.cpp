@@ -62,7 +62,6 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
-
 void CGoomba::Render()
 {
 	int aniId = ID_ANI_GOOMBA_WALKING;

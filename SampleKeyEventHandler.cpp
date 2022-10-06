@@ -1,8 +1,6 @@
 #include "SampleKeyEventHandler.h"
-
 #include "debug.h"
 #include "Game.h"
-
 #include "Mario.h"
 #include "PlayScene.h"
 
