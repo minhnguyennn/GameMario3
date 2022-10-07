@@ -7,6 +7,7 @@
 #include "Goomba.h"
 #include "Coin.h"
 #include "Portal.h"
+#include "MushRoom.h"
 
 #include "Collision.h"
 
@@ -54,6 +55,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
+	else if (dynamic_cast<CMushRoom*>(e->obj))
+		OnCollisionWithMushRoom(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -100,8 +103,29 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+	
 }
 
+void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
+{
+
+	CMushRoom* p = (CMushRoom*)e->obj;
+
+	if (level == MARIO_LEVEL_SMALL) {
+		SetLevel(MARIO_LEVEL_BIG);
+		p->Delete();
+	}
+	else {
+		coin++;
+	}
+}
+
+//if (nario cham musgrioom) {
+//	if (GetLevel() == MARIO_LEVEL_SMALL) {
+//		SetLevel(MARIO_LEVEL_BIG);
+//	}
+//	else score++
+//}
 //
 // Get animation ID for small Mario
 //
