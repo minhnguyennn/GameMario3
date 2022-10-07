@@ -2,28 +2,27 @@
 
 CMushRoom::CMushRoom(float x, float y) :CGameObject(x, y)
 {
+	start_y = y;
 	this->ax = 0;
 	this->ay = MUSHROOM_GRAVITY;
 	die_start = -1;
-	SetState(MUSHROOM_STATE_WALKING);
+	SetState(MUSHROOM_STATE_UP);
 }
 
 void CMushRoom::SetState(int state)
 {
-	CGameObject::SetState(state);
+	
 	switch (state)
 	{
-	case MUSHROOM_STATE_DIE:
-		die_start = GetTickCount64();
-		y += (MUSHROOM_BBOX_HEIGHT - MUSHROOM_BBOX_HEIGHT_DIE) / 2;
-		vx = 0;
-		vy = 0;
-		ay = 0;
+	case MUSHROOM_STATE_UP:
+		vy = -MUSHROOM_UP_SPEED;
 		break;
 	case MUSHROOM_STATE_WALKING:
-		vx = -MUSHROOM_WALKING_SPEED;
+		ay = MUSHROOM_GRAVITY;
+		vx = MUSHROOM_WALKING_SPEED;
 		break;
 	}
+	CGameObject::SetState(state);
 }
 
 void CMushRoom::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -36,26 +35,18 @@ void CMushRoom::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
-	vx += ax * dt;
+	if(state != MUSHROOM_STATE_UP) vy += ay * dt;
 
-	if ((state == MUSHROOM_STATE_DIE) && (GetTickCount64() - die_start > MUSHROOM_DIE_TIMEOUT))
-	{
-		isDeleted = true;
-		return;
+	if ((abs(y-start_y) > DISTANCE_MAX)) {
+		SetState(MUSHROOM_STATE_WALKING);
 	}
-
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CMushRoom::Render()
 {
-	int aniId = ID_ANI_MUSHROOM_WALKING;
-	if (state == MUSHROOM_STATE_DIE)
-	{
-		aniId = ID_ANI_MUSHROOM_DIE;
-	}
+	int aniId = ID_ANI_MUSHROOM_RED;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }

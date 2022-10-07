@@ -32,6 +32,7 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+	virtual void CreateObject(LPGAMEOBJECT gameobject) {objects.insert(objects.begin() + 1, gameobject); }
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 

@@ -145,7 +145,7 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 	CQuestionBrick* p = dynamic_cast<CQuestionBrick*>(e->obj);
 	if ((p->GetState() == QUESTION_STATE_IDLE) && (e->ny>0)){
-		p->SetState(QUESTION_STATE_UNBOX);
+		p->SetState(QUESTION_STATE_MOVE_UP);
 	}
 
 }

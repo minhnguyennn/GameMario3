@@ -9,22 +9,22 @@
 #define MUSHROOM_BBOX_WIDTH 16
 #define MUSHROOM_BBOX_HEIGHT_DIE 7
 
-#define MUSHROOM_GRAVITY 0.002f
+#define MUSHROOM_GRAVITY 0.0006f
+#define MUSHROOM_UP_SPEED 0.04f
 #define MUSHROOM_WALKING_SPEED 0.05f
+#define DISTANCE_MAX 17
 
 #define MUSHROOM_DIE_TIMEOUT 500
 
-#define MUSHROOM_STATE_WALKING 100
-#define MUSHROOM_STATE_DIE 200
-
-#define ID_ANI_MUSHROOM_WALKING 10300
-#define ID_ANI_MUSHROOM_DIE 10301
+#define MUSHROOM_STATE_UP 1
+#define MUSHROOM_STATE_WALKING 2
 
 class CMushRoom : public CGameObject
 {
 protected:
 	float ax;
 	float ay;
+	float start_y;
 	ULONGLONG die_start;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
