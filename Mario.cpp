@@ -8,6 +8,9 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "MushRoom.h"
+#include "Leaf.h"
+#include "QuestionBrick.h"
+
 
 #include "Collision.h"
 
@@ -57,6 +60,10 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CMushRoom*>(e->obj))
 		OnCollisionWithMushRoom(e);
+	else if (dynamic_cast<CLeaf*>(e->obj))
+		OnCollisionWithLeaf(e);
+	else if (dynamic_cast<CQuestionBrick*>(e->obj))
+		OnCollisionWithQuestionBrick(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -102,7 +109,7 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
-	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+	//CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 	
 }
 
@@ -110,14 +117,37 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
 
 	CMushRoom* p = (CMushRoom*)e->obj;
+	p->Delete();
 
 	if (level == MARIO_LEVEL_SMALL) {
 		SetLevel(MARIO_LEVEL_BIG);
-		p->Delete();
 	}
 	else {
 		coin++;
 	}
+}
+
+void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
+{
+
+	CLeaf* p = (CLeaf*)e->obj;
+	p->Delete();
+	if ((level == MARIO_LEVEL_SMALL) || (level == MARIO_LEVEL_BIG)) {
+		SetLevel(MARIO_LEVEL_FIRE);
+	}
+	else {
+		coin++;
+	}
+}
+
+void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+
+	CQuestionBrick* p = dynamic_cast<CQuestionBrick*>(e->obj);
+	if ((p->GetState() == QUESTION_STATE_IDLE) && (e->ny>0)){
+		p->SetState(QUESTION_STATE_UNBOX);
+	}
+
 }
 
 //if (nario cham musgrioom) {

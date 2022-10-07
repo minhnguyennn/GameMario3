@@ -68,7 +68,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	DebugOut(L"[VX vy cua la cay] %f %f\n", vx,vy);
+	//DebugOut(L"[VX vy cua la cay] %f %f\n", vx,vy);
 
 
 	CGameObject::Update(dt, coObjects);
