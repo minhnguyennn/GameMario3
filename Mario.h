@@ -125,16 +125,22 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 
+
+#define TIME_ONE_SECOND 1000
+
 class CMario : public CGameObject
 {
 	BOOLEAN isSitting;
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
+	int time;
+
 
 	int level; 
 	int untouchable; 
 	ULONGLONG untouchable_start;
+	ULONGLONG count_1_second = 0;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -163,6 +169,7 @@ public:
 		untouchable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
+		time = 300;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -182,4 +189,5 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void CountDown1Second();
 };

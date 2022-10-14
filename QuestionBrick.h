@@ -12,22 +12,31 @@
 #define QUESTION_STATE_MOVE_DOWN 3
 #define QUESTION_STATE_UNBOX 4
 
-#define DISTANCE_MAX 5
+
+#define QUESTION_TYPE_COIN 1
+#define QUESTION_TYPE_ITEM 2
+#define QUESTION_TYPE_MUSHROOM_GREEN 3
+#define QUESTION_TYPE_BUTTON 4
+
+#define DISTANCE_MAX 10
 
 #include "GameObject.h"
 class CQuestionBrick : public CGameObject
 {
-
+	int type;
 	float start_y;
 	BOOL unbox;
 public:
-	CQuestionBrick(float x, float y) : CGameObject(x, y) {
+	CQuestionBrick(float x, float y,int type) : CGameObject(x, y) {
 		SetState(QUESTION_STATE_IDLE);
 		start_y = y;
+		this->type = type;
+
 	}
 	void SetState(int state);
 	void OnNoCollision(DWORD dt);
 	void Render();
+	void SummonItemsFromBrickQuestion();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	int IsCollidable() { return 0; }
 	int IsBlocking() { return 1; }

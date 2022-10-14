@@ -55,6 +55,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else {
 		vy = ay * dt;
 	}
+
 	if (vy > 0) {
 		
 		if((distance_x<=DISTANCE_MAX) && (vx>0)) {

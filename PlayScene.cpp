@@ -8,6 +8,7 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "Coin.h"
+#include"debug.h"
 #include "QuestionBrick.h"
 #include "Platform.h"
 #include "MushRoom.h"
@@ -123,7 +124,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-	case OBJECT_TYPE_QUESTIONBRICK: obj = new CQuestionBrick(x, y); break;
+	case OBJECT_TYPE_QUESTIONBRICK:
+	{
+		int type = (int)atof(tokens[3].c_str());
+		//DebugOutTitle(L"type %d",type);
+		obj = new CQuestionBrick(x, y, type); 
+		break;
+	}
 	case OBJECT_TYPE_MUSHROOM: obj = new CMushRoom(x, y); break;
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 
@@ -265,9 +272,12 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
+	DebugOutTitle(L"cy %f", cy);
 	if (cx < 0) cx = 0;
+	//if (cy < 0) cy = 0;
+	if (cy > 0) cy = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
 }

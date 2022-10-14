@@ -1,25 +1,34 @@
 #include "MushRoom.h"
-
+#include"debug.h"
 CMushRoom::CMushRoom(float x, float y) :CGameObject(x, y)
 {
 	start_y = y;
-	this->ax = 0;
+	//this->ax = 0;
 	this->ay = MUSHROOM_GRAVITY;
 	die_start = -1;
-	SetState(MUSHROOM_STATE_UP);
+	check = false;
+	countDebug = 0;
+	//SetState(MUSHROOM_STATE_UP);
 }
 
 void CMushRoom::SetState(int state)
 {
-	
 	switch (state)
 	{
+	case MUSHROOM_STATE_IDLE:
+		ay = 0;
+		vx = 0;
+		vy = 0;
+		count_time_change = GetTickCount64();
+		break;
 	case MUSHROOM_STATE_UP:
 		vy = -MUSHROOM_UP_SPEED;
 		break;
 	case MUSHROOM_STATE_WALKING:
 		ay = MUSHROOM_GRAVITY;
 		vx = MUSHROOM_WALKING_SPEED;
+		break;
+	default:
 		break;
 	}
 	CGameObject::SetState(state);
@@ -35,11 +44,29 @@ void CMushRoom::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	DebugOutTitle(L"countDebug %d", countDebug);
+	//DebugOutTitle(L"check %d", check);
+
+
+	//DebugOutTitle(L"state %d", state);
 	if(state != MUSHROOM_STATE_UP) vy += ay * dt;
 
-	if ((abs(y-start_y) > DISTANCE_MAX)) {
-		SetState(MUSHROOM_STATE_WALKING);
+	if ((start_y - y) > DISTANCE_MAX) {
+		
+		//SetState(MUSHROOM_STATE_WALKING);
+		
+		if (!check) {
+			SetState(MUSHROOM_STATE_IDLE);
+			check = true;
+		}
+		else
+		{
+			ChangeStateWalking();
+		}
+
+		
 	}
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -71,3 +98,9 @@ void CMushRoom::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMushRoom::ChangeStateWalking() {
+	if ((GetTickCount64() - count_time_change > TIME_HALF_SECOND)) {
+		SetState(MUSHROOM_STATE_WALKING);
+	}
+
+}

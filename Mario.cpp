@@ -16,9 +16,11 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	//DebugOutTitle(L"time %d", time);		
+	CountDown1Second();
+	
 	vy += ay * dt;
 	vx += ax * dt;
-
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	// reset untouchable timer if untouchable time has passed
@@ -355,8 +357,6 @@ void CMario::Render()
 	animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
-	
-	DebugOutTitle(L"Coins: %d", coin);
 }
 
 void CMario::SetState(int state)
@@ -477,3 +477,18 @@ void CMario::SetLevel(int l)
 	level = l;
 }
 
+void CMario::CountDown1Second() {
+	//GetTickCount64() - x > y => x da chay y giay
+	//x=GetTickCount64() => x bat dau chây 0 giay (khoi tao)
+	if (time > 0) {
+		if (GetTickCount64() - count_1_second > TIME_ONE_SECOND) {
+			time--;
+			//THUC HIEN SAU 1 GIAY
+			count_1_second = GetTickCount64();
+		}
+	}
+	else {
+		time = 0;
+		SetState(MARIO_STATE_DIE);
+	}
+}
