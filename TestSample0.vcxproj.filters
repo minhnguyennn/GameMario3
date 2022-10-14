@@ -102,6 +102,9 @@
     <ClCompile Include="Leaf.cpp">
       <Filter>Header Files\Object\Items</Filter>
     </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="Leaf.h">
       <Filter>Header Files\Object\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

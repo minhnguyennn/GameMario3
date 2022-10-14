@@ -16,6 +16,7 @@ using namespace std;
 #define MAX_FRAME_RATE 100
 #define KEYBOARD_BUFFER_SIZE 1024
 #define KEYBOARD_STATE_SIZE 256
+#define FULL_WEIGHT_1_1 2816
 
 
 
@@ -58,6 +59,11 @@ class CGame
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
+
+	int screen_width;
+
+	//Chieu dai va rong man hinh
+
 
 public:
 	// Init DirectX, Sprite Handler
@@ -105,6 +111,8 @@ public:
 
 	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
 	void GetCamPos(float& x, float& y) { x = cam_x; y = cam_y; }
+
+	int GetScreenWidth() { return screen_width; }
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void Load(LPCWSTR gameFile);
