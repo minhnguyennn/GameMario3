@@ -3,6 +3,7 @@
 #include "PlayScene.h"
 #include "Game.h"
 #include "MushRoom.h"
+#include "Coin.h"
 
 void CQuestionBrick::Render()
 {
@@ -57,7 +58,9 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	{
 		SetState(QUESTION_STATE_MOVE_DOWN);
 	}
-	else if ((vy > 0) && (y > start_y)) {
+
+	if ((vy > 0) && (y > start_y)) 
+	{
 		SetState(QUESTION_STATE_UNBOX);
 		SummonItemsFromBrickQuestion();
 	}
@@ -68,16 +71,20 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 void CQuestionBrick::SummonItemsFromBrickQuestion() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-
 	switch (type)
 	{
 		case QUESTION_TYPE_ITEM:
+		{
 			CMushRoom* mush_room = new CMushRoom(x, y);
 			scene->CreateObject(mush_room);
 			mush_room->SetState(MUSHROOM_STATE_UP);
 			break;
-		
-
+		}
+		case QUESTION_TYPE_COIN:
+			CCoin* coin = new CCoin(x, y-20, COIN_STATE_IDLE);
+			scene->CreateObject(coin);
+			coin->SetState(COIN_STATE_MOVE_UP);
+			break;
 	}
 }
 

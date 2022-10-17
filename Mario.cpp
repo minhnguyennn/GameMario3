@@ -10,6 +10,7 @@
 #include "MushRoom.h"
 #include "Leaf.h"
 #include "QuestionBrick.h"
+#include "Point.h"
 
 
 #include "Collision.h"

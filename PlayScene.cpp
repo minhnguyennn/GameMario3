@@ -13,6 +13,8 @@
 #include "Platform.h"
 #include "MushRoom.h"
 #include "Leaf.h"
+#include "Point.h"
+
 
 
 #include "SampleKeyEventHandler.h"
@@ -123,7 +125,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case OBJECT_TYPE_COIN: 
+	{
+		int type_coin = (int)atof(tokens[3].c_str());
+		obj = new CCoin(x, y, type_coin); 
+		break; 
+	}
+	case OBJECT_TYPE_POINT:
+	{
+		int type_point = (int)atof(tokens[3].c_str());
+		obj = new CPoint(x, y, type_point);
+		break;
+	}
 	case OBJECT_TYPE_QUESTIONBRICK:
 	{
 		int type = (int)atof(tokens[3].c_str());
@@ -272,7 +285,7 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
-	DebugOutTitle(L"cy %f", cy);
+	//DebugOutTitle(L"cy %f", cy);
 	if (cx < 0) cx = 0;
 	//if (cy < 0) cy = 0;
 	if (cy > 0) cy = 0;

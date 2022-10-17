@@ -31,7 +31,6 @@ public:
 		SetState(QUESTION_STATE_IDLE);
 		start_y = y;
 		this->type = type;
-
 	}
 	void SetState(int state);
 	void OnNoCollision(DWORD dt);
