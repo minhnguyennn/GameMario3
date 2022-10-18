@@ -1,6 +1,6 @@
 #include "Koopa.h"
 
-CKoopa::CKoopa(float x, float y/*, int type_koopa*/) :CGameObject(x, y)
+CKoopa::CKoopa(float x, float y) :CGameObject(x, y)
 {
 	/*this->type_koopa = type_koopa;*/
 	this->ax = 0;
@@ -76,10 +76,13 @@ void CKoopa::Render()
 	{
 		aniId = ID_ANI_KOOPA_WALKING_RIGHT;
 	}
-	//Type of koopa
+	if (state == KOOPA_STATE_CLOSE)
+	{
+		aniId = ID_ANI_KOOPA_CLOSE;
+	}
 	/*if (type_koopa == KOOPA_TYPE)
 	{
-		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+		aniId = 
 	}*/
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
@@ -96,6 +99,14 @@ void CKoopa::SetState(int state)
 		vx = 0;
 		vy = 0;
 		ay = 0;
+		break;
+	case KOOPA_STATE_CLOSE:
+		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_CLOSE) / 2;
+		vx = 0;
+		vy = 0;
+		ay = 0;
+		break;
+	case KOOPA_STATE_OPEN:
 		break;
 	case KOOPA_STATE_WALKING_LEFT:
 		vx = -KOOPA_WALKING_SPEED;
