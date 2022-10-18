@@ -1,11 +1,12 @@
 #include "Koopa.h"
 
-CKoopa::CKoopa(float x, float y) :CGameObject(x, y)
+CKoopa::CKoopa(float x, float y/*, int type_koopa*/) :CGameObject(x, y)
 {
+	/*this->type_koopa = type_koopa;*/
 	this->ax = 0;
 	this->ay = KOOPA_GRAVITY;
 	die_start = -1;
-	SetState(KOOPA_STATE_WALKING);
+	SetState(KOOPA_STATE_WALKING_LEFT);
 }
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -43,7 +44,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (e->nx != 0)
 	{
-		vx = -vx;
+		//vx = -vx;
+		SetState(KOOPA_STATE_WALKING_RIGHT);
 	}
 }
 
@@ -64,14 +66,23 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CKoopa::Render()
 {
-	int aniId = ID_ANI_KOOPA_WALKING;
+	//Type of animation
+	int aniId = ID_ANI_KOOPA_WALKING_LEFT;
 	if (state == KOOPA_STATE_DIE)
 	{
 		aniId = ID_ANI_KOOPA_DIE;
 	}
-
+	if (state == KOOPA_STATE_WALKING_RIGHT)
+	{
+		aniId = ID_ANI_KOOPA_WALKING_RIGHT;
+	}
+	//Type of koopa
+	/*if (type_koopa == KOOPA_TYPE)
+	{
+		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	}*/
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CKoopa::SetState(int state)
@@ -86,8 +97,11 @@ void CKoopa::SetState(int state)
 		vy = 0;
 		ay = 0;
 		break;
-	case KOOPA_STATE_WALKING:
+	case KOOPA_STATE_WALKING_LEFT:
 		vx = -KOOPA_WALKING_SPEED;
+		break;
+	case KOOPA_STATE_WALKING_RIGHT:
+		vx = KOOPA_WALKING_SPEED;
 		break;
 	}
 }

@@ -14,6 +14,7 @@
 #include "MushRoom.h"
 #include "Leaf.h"
 #include "Point.h"
+#include "Koopa.h"
 
 
 
@@ -131,6 +132,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CCoin(x, y, type_coin); 
 		break; 
 	}
+	/*case OBJECT_TYPE_KOOPA:
+	{
+		int type_koopa = (int)atof(tokens[3].c_str());
+		obj = new CKoopa(x, y, type_koopa);
+		break;
+	}*/
+	case OBJECT_TYPE_KOOPA: obj = new CKoopa(x, y); break;
 	case OBJECT_TYPE_POINT:
 	{
 		int type_point = (int)atof(tokens[3].c_str());
