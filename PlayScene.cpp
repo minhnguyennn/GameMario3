@@ -330,7 +330,8 @@ void CPlayScene::Update(DWORD dt)
 
 	//DebugOutTitle(L"cy %f", cy);
 	if (cx < 0) cx = 0;
-	//if (cy < 0) cy = 0;
+	if (cx > 2502) cx = 2502;
+	if (cy > 256) cy = 256;
 
 	CGame::GetInstance()->SetCamPos(cx, cy);
 

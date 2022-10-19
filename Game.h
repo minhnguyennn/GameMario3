@@ -13,6 +13,9 @@ using namespace std;
 #include "KeyEventHandler.h"
 #include "Scene.h"
 
+
+#define SCREEN_WIDTH 272
+#define SCREEN_HEIGHT 256
 #define MAX_FRAME_RATE 100
 #define KEYBOARD_BUFFER_SIZE 1024
 #define KEYBOARD_STATE_SIZE 256
@@ -68,6 +71,8 @@ class CGame
 public:
 	// Init DirectX, Sprite Handler
 	void Init(HWND hWnd, HINSTANCE hInstance);
+	float GetCamX() { return cam_x; }
+	float GetCamY() { return cam_y; }
 
 	//
 	// Draw a portion or ALL the texture at position (x,y) on the screen. (x,y) is at the CENTER of the image

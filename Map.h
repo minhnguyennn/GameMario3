@@ -28,6 +28,7 @@ public:
 	void SetTileMapData(int** TileMapData);
 	void ExtractTileFromTileSet();
 	void SetCamPos(float x, float y) { CamX = x; CamY = y; }
+	bool checkMapInCamera(float x, float y);
 	//void GetCamPos() { DebugOut(L"CamX = %f,	CamY = %f\n", CamX, CamY); }
 	int GetMapWidth();
 	int GetMapHeight();
