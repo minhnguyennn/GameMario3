@@ -6,7 +6,8 @@ brick.txt
 questionbrick.txt
 items.txt
 koopa.txt
-#
+[TILEMAP]
+Resource/Tilemaps/world1-1.txt
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
@@ -23,8 +24,8 @@ koopa.txt
 6	216	120	1
 
 #Platform
-5	100	176	16	15	32	51000	52000	53000
-5	140	160	16	15	2	51000	52000	53000
+5	0	414	16	15	32	51000	52000	53000
+5	300	308	16	15	2	51000	52000	53000
 
 #Leaf
 8	250	10

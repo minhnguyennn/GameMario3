@@ -89,8 +89,7 @@ void CKoopa::Render()
 
 void CKoopa::SetState(int state)
 {
-	DebugOutTitle(L"State: %d", state);
-	DebugOut(L"State: %d", state);
+
 	switch (state)
 	{
 	case KOOPA_STATE_DIE:

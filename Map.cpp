@@ -23,8 +23,8 @@ CMap::~CMap()
 
 void CMap::Render()
 {
-	int FirstColumn = int(floor(CamX / TILE_WIDTH));
-	int LastColumn = int(ceil((CamX * TILE_WIDTH + CGame::GetInstance()->GetScreenWidth()) / TILE_WIDTH));
+	float FirstColumn = int(floor(CamX / TILE_WIDTH));
+	float LastColumn = int(ceil((CamX * TILE_WIDTH + CGame::GetInstance()->GetScreenWidth()) / TILE_WIDTH));
 	if (LastColumn >= TotalColumnsOfMap)
 		LastColumn = TotalColumnsOfMap - 1;
 	int d = 0;
