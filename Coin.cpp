@@ -54,7 +54,7 @@ void CCoin::SetState(int state)
 	switch (state)
 	{
 	case COIN_STATE_MOVE_DOWN:
-		vy = +0.07;
+		vy = MAX_VY;
 		break;
 	case COIN_STATE_DELETE:
 	{
@@ -63,7 +63,7 @@ void CCoin::SetState(int state)
 		break;
 	}
 	case COIN_STATE_MOVE_UP:
-		vy = -0.07f;
+		vy = -MAX_VY;
 		break;
 	case COIN_STATE_IDLE:
 		vy = 0;

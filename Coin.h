@@ -15,6 +15,8 @@
 #define COIN_STATE_DELETE 2
 #define COIN_STATE_MOVE_DOWN 3
 
+#define MAX_VY 0.07f
+
 class CCoin : public CGameObject {
 	float start_y;
 	int type_coin;

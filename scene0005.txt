@@ -20,7 +20,6 @@ koopa.txt
 
 #Quesionbrick
 6	200	120	2
-
 6	216	120	1
 
 #Platform

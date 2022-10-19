@@ -40,6 +40,10 @@ public:
 	float GetVX() { return this->vx; }
 	float GetVY() { return this->vy; }
 	
+	void SetY(float y) { this->y = y; }
+	void SetX(float x) { this->x = x; }
+
+	
 	int GetState() { return this->state; }
 	virtual void Delete() { isDeleted = true;  }
 	bool IsDeleted() { return isDeleted; }

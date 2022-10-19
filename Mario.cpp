@@ -117,13 +117,17 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			koopa->SetState(KOOPA_STATE_CLOSE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			//koopa->SetY(koopa->GetY() - 2);
+
 		}
 	}
 	else // hit by Goomba
 	{
+		koopa->SetY(koopa->GetY() - 4);
+
 		if (untouchable == 0)
 		{
-			if (koopa->GetState() != KOOPA_STATE_DIE)
+			if (koopa->GetState() != KOOPA_STATE_CLOSE)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
@@ -135,6 +139,10 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 					DebugOut(L">>> Mario DIE >>> \n");
 					SetState(MARIO_STATE_DIE);
 				}
+			}
+			else if(koopa->GetState() != KOOPA_STATE_WALKING)
+			{
+				koopa->SetState(KOOPA_STATE_WALKING);
 			}
 		}
 	}
@@ -253,7 +261,6 @@ int CMario::GetAniIdSmall()
 			}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
-
 	return aniId;
 }
 
