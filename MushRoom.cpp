@@ -73,7 +73,7 @@ void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CMushRoom::Render()
 {
-	int aniId = ID_ANI_MUSHROOM_RED;
+	int aniId = ID_ANI_MUSHROOM_GREEN;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }
