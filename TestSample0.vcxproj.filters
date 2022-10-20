@@ -111,6 +111,9 @@
     <ClCompile Include="Koopa.cpp">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="PiranhaPlant.cpp">
+      <Filter>Header Files\Object\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -198,6 +201,9 @@
       <Filter>Header Files\Object\Items</Filter>
     </ClInclude>
     <ClInclude Include="Koopa.h">
+      <Filter>Header Files\Object\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="PiranhaPlant.h">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClInclude>
   </ItemGroup>

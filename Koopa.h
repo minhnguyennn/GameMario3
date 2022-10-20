@@ -4,7 +4,6 @@
 #define KOOPA_GRAVITY 0.002f
 #define KOOPA_WALKING_SPEED 0.05f
 
-
 #define KOOPA_BBOX_WIDTH 17
 #define KOOPA_BBOX_HEIGHT 26
 #define KOOPA_BBOX_HEIGHT_DIE 7
@@ -25,7 +24,6 @@
 
 #define KOOPA_TYPE 0
 #define KOOPA_TYPE_PARATROOPA 1
-
 
 class CKoopa : public CGameObject
 {

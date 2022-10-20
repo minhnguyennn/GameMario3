@@ -1,0 +1,15 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#MOVE UP
+31020	15	545	30	578	40
+
+#MOVE DOWN
+31021	215	199	230	224	40
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+#MOVE UP
+5020	31020	100
+
+#MOVE DOWN
+5021	31021	100	31014	100

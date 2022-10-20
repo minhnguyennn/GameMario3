@@ -7,6 +7,7 @@ questionbrick.txt
 items.txt
 koopa.txt
 goomba.txt
+PiranhaPlant.txt
 [TILEMAP]
 Resource/Tilemaps/world1-1.txt
 [OBJECTS]
@@ -15,7 +16,10 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	176	300
+0	350	300
+
+######### PiranhaPlant ###########
+11	360	100
 
 ######### Goopa ###########
 2	224	401
@@ -82,8 +86,6 @@ Resource/Tilemaps/world1-1.txt
 5	2176	272	16	15.9	3	54000	54000	54000
 5	1312	144	16	15.9	4	54000	54000	54000
 
-
-
 #block box
 5	0	416	16	16	39	54000	54000	54000
 5	1152	416	16	16	22	54000	54000	54000
@@ -102,6 +104,7 @@ Resource/Tilemaps/world1-1.txt
 5	1408	192	16	16	4	54000	54000	54000
 5	1488	176	16	16	13	54000	54000	54000
 5	624	400	16	16	29	54000	54000	54000
+5	0	0	16	16	176	54000	54000	54000
 
 ####### Leaf ##########
 8	250	10

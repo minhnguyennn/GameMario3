@@ -15,6 +15,7 @@
 #include "Leaf.h"
 #include "Point.h"
 #include "Koopa.h"
+#include "PiranhaPlant.h"
 
 
 
@@ -129,13 +130,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break; 
-	/*case OBJECT_TYPE_KOOPA:
-	{
-		int type_koopa = (int)atof(tokens[3].c_str());
-		obj = new CKoopa(x, y, type_koopa);
-		break;
-	}*/
 	case OBJECT_TYPE_KOOPA: obj = new CKoopa(x, y); break;
+	case OBJECT_TYPE_PPLANT: obj = new CPiranhaPlant(x, y); break;
 	case OBJECT_TYPE_POINT:
 	{
 		int type_point = (int)atof(tokens[3].c_str());
