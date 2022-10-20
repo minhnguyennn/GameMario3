@@ -6,6 +6,7 @@ brick.txt
 questionbrick.txt
 items.txt
 koopa.txt
+goomba.txt
 [TILEMAP]
 Resource/Tilemaps/world1-1.txt
 [OBJECTS]
@@ -14,8 +15,12 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	576	300
+0	224	300
+
 ######### Goopa ###########
+2	224	401
+2	528	401
+2	832	385
 
 ######### Koopa ###########
 10	576	359
