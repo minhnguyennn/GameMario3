@@ -1,12 +1,14 @@
 #include "PiranhaPlant.h"
 #include"debug.h"
+#include "Time.h"
 
 CPiranhaPlant::CPiranhaPlant(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = PPLANT_GRAVITY;
 	this->start_y = y;
-	SetState(PPLANT_STATE_IDLE);
+	this->check_state = false;
+	SetState(PPLANT_STATE_UP);
 }
 
 void CPiranhaPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -25,12 +27,12 @@ void CPiranhaPlant::OnNoCollision(DWORD dt)
 void CPiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	if (state == PPLANT_STATE_IDLE) {
-		SetState(PPLANT_STATE_UP);
-	}
-	if ((start_y - y) > 32) {
-		DebugOut(L"[OKE]\n");
-		SetState(PPLANT_STATE_IDLE);
+	if ((start_y - y) > PPLANT_DISTANCE_MAX) {
+		if (check_state == false) {
+			SetState(PPLANT_STATE_IDLE);
+			check_state = true;
+		}
+		ChangeStateMotion();
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -40,7 +42,7 @@ void CPiranhaPlant::Render()
 {
 	int aniId = ID_ANI_PPLANT_MOVING_UP_LEFT;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CPiranhaPlant::SetState(int state)
@@ -49,7 +51,8 @@ void CPiranhaPlant::SetState(int state)
 	{
 	case PPLANT_STATE_IDLE:
 		vy = 0;
-		
+		ay = 0;
+		time_line = GetTickCount64();
 		break;
 	case PPLANT_STATE_UP:
 		vy = -PPLANT_MOVING_SPEED;
@@ -57,10 +60,19 @@ void CPiranhaPlant::SetState(int state)
 		break;
 	case PPLANT_STATE_DOWN:
 		vy = PPLANT_MOVING_SPEED;
+		ay = PPLANT_GRAVITY;
+		time_line = GetTickCount64();
 		break;
 	default:
 		break;
 	}
 	CGameObject::SetState(state);
+}
+
+void CPiranhaPlant::ChangeStateMotion() {
+	DebugOut(L"[OKE] %d\n", time);
+	if ((GetTickCount64() - time_line) > PPLANT_WAITING_MAX) {
+		SetState(PPLANT_STATE_DOWN);
+	}
 }
 
