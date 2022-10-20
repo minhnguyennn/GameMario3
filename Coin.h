@@ -19,17 +19,16 @@
 
 class CCoin : public CGameObject {
 	float start_y;
-	int type_coin;
+
 
 	int c;
 	float coppy_x;
 	float coppy_y;
 	bool check_delete_coin = 0;
 public:
-	CCoin(float x, float y, int type_coin) : CGameObject(x, y) {
+	CCoin(float x, float y) : CGameObject(x, y) {
 		SetState(COIN_STATE_IDLE);
 		start_y = y;
-		this->type_coin = type_coin;
 	}
 	void OnNoCollision(DWORD dt);
 	void SetState(int state);
