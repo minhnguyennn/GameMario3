@@ -14,9 +14,15 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	1073	300
+0	576	300
+######### Goopa ###########
 
-#Coin
+######### Koopa ###########
+10	576	359
+10	2096	359
+10	224	401
+
+######### Coin ###########
 4	1073	320
 4	1105	288
 4	1137	256
