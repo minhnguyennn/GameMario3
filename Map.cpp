@@ -44,7 +44,7 @@ void CMap::Render()
 	}
 }
 bool CMap::checkMapInCamera(float x,float y) {
-	float w = 40.0f;
+	float w = 36.0f;
 	float h = 16.0f;
 	if (x + w <= (CGame::GetInstance()->GetCamX()) || (CGame::GetInstance()->GetCamX()) + SCREEN_WIDTH <= x - w)
 		return false;

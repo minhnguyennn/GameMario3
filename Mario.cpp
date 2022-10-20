@@ -12,7 +12,7 @@
 #include "QuestionBrick.h"
 #include "Point.h"
 #include "Koopa.h"
-
+#include "Platform.h"
 
 #include "Collision.h"
 
@@ -70,6 +70,32 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBrick(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CPlatform*>(e->obj))
+		OnCollisionWithPlatform(e);
+}
+
+void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
+{
+	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+	if (!platform->IsBlocking()) {
+		if (e->ny < 0) {
+			vy = 0;
+			if (level != MARIO_LEVEL_SMALL) {
+				if (!isSitting) {
+					y = platform->GetY() - MARIO_BIG_BBOX_HEIGHT + 4;
+				}
+				else
+				{
+					y = platform->GetY() - MARIO_BIG_SITTING_BBOX_HEIGHT;
+				}
+			}
+			else
+			{
+				y = platform->GetY() - MARIO_SMALL_BBOX_HEIGHT - 2;
+			}
+
+			isOnPlatform = true;		}
+	}
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)

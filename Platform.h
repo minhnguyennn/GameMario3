@@ -29,6 +29,11 @@ public:
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	int IsBlocking() {
+		if (cellHeight == 16) return 1;
+		return 0;
+	}
+
 	void RenderBoundingBox();
 };
 
