@@ -15,7 +15,7 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	224	300
+0	1440	10
 
 ######### Goopa ###########
 2	224	401
@@ -62,6 +62,8 @@ Resource/Tilemaps/world1-1.txt
 6	192	352	1
 6	176	352	1
 6	192	352	1
+#q_mushroom
+6	1440	128	2
 
 
 ############# Platform ##########
