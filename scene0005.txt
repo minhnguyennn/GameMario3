@@ -14,14 +14,22 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	100	10
+0	100	300
 
 #Coin
 
 
 ######### Quesionbrick ###########
-6	176	352	2
-6	216	120	1
+#q_coin
+6	176	352	1
+6	192	352	1
+6	224	304	1
+6	416	320	1
+6	704	352	1
+6	192	352	1
+6	176	352	1
+6	192	352	1
+
 
 ############# Platform ##########
 #ghost box
