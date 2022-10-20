@@ -58,7 +58,6 @@ void CCoin::SetState(int state)
 		break;
 	case COIN_STATE_DELETE:
 	{
-		
 		Delete();
 		break;
 	}

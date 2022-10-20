@@ -5,7 +5,7 @@ CPiranhaPlant::CPiranhaPlant(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = PPLANT_GRAVITY;
-	die_start = -1;
+	this->start_y = y;
 	SetState(PPLANT_STATE_IDLE);
 }
 
@@ -19,20 +19,26 @@ void CPiranhaPlant::GetBoundingBox(float& left, float& top, float& right, float&
 
 void CPiranhaPlant::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
 	y += vy * dt;
 };
 
 void CPiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
+	if (state == PPLANT_STATE_IDLE) {
+		SetState(PPLANT_STATE_UP);
+	}
+	if ((start_y - y) > 32) {
+		DebugOut(L"[OKE]\n");
+		SetState(PPLANT_STATE_IDLE);
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CPiranhaPlant::Render()
 {
-	int aniId = ID_ANI_PPLANT_MOVING_UP;
+	int aniId = ID_ANI_PPLANT_MOVING_UP_LEFT;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }
@@ -43,9 +49,11 @@ void CPiranhaPlant::SetState(int state)
 	{
 	case PPLANT_STATE_IDLE:
 		vy = 0;
+		
 		break;
 	case PPLANT_STATE_UP:
 		vy = -PPLANT_MOVING_SPEED;
+		ay = -PPLANT_GRAVITY;
 		break;
 	case PPLANT_STATE_DOWN:
 		vy = PPLANT_MOVING_SPEED;
