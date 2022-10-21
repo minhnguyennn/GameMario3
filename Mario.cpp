@@ -18,7 +18,7 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	DebugOut(L"[test] vx ax state %f %f %d\n", vx , ax, state);
+	DebugOut(L"[test] vx ax state nx %f %f %d %d\n", vx , ax, state, nx);
 	CountDown1Second();
 	vy += ay * dt;
 	vx += ax * dt;
@@ -28,11 +28,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-	if (isSitting) {
+	if ((isSitting) || (state== MARIO_STATE_DECELERATION)){
 		ax = 0.0f;
-		if (vx > 0) maxVx -= MARIO_DECELERATION;
-		else if (vx < 0) maxVx += MARIO_DECELERATION;
+		if (abs(maxVx) > MARIO_DECELERATION) {
+			if (vx > 0) { maxVx -= MARIO_DECELERATION; nx = 1; }
+			else if (vx < 0) { maxVx += MARIO_DECELERATION; nx = -1; }
+		}
+		else maxVx = 0;
 	}
+	
 	isOnPlatform = false;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -393,7 +397,7 @@ int CMario::GetAniIdBig()
 					aniId = ID_ANI_MARIO_BRACE_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
+				else if ((ax == MARIO_ACCEL_WALK_X) || (state==MARIO_STATE_DECELERATION))
 					aniId = ID_ANI_MARIO_WALKING_RIGHT;
 			}
 			else // vx < 0
@@ -402,7 +406,7 @@ int CMario::GetAniIdBig()
 					aniId = ID_ANI_MARIO_BRACE_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
+				else if ((ax == -MARIO_ACCEL_WALK_X) || (state == MARIO_STATE_DECELERATION))
 					aniId = ID_ANI_MARIO_WALKING_LEFT;
 			}
 
@@ -437,11 +441,8 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
-	case MARIO_STATE_DECELERATION_LEFT:
-		maxVx += MARIO_DECELERATION;
-		break;
-	case MARIO_STATE_DECELERATION_RIGHT:
-		maxVx -= MARIO_DECELERATION;
+	case MARIO_STATE_DECELERATION:
+
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (isSitting) break;

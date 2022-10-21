@@ -72,13 +72,22 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 void CQuestionBrick::SummonItemsFromBrickQuestion() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+
 	switch (type)
 	{
 		case QUESTION_TYPE_ITEM:
 		{
-			CMushRoom* mush_room = new CMushRoom(x, y);
-			scene->CreateObject(mush_room);
-			mush_room->SetState(MUSHROOM_STATE_UP);
+			if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
+				CMushRoom* mush_room = new CMushRoom(x, y);
+				scene->CreateObject(mush_room);
+				mush_room->SetState(MUSHROOM_STATE_UP);
+			}
+			else {
+				CLeaf* leaf = new CLeaf(x, y);
+				leaf->SetVY(-0.06f);
+				scene->CreateObject(leaf);
+			}
 			break;
 		}
 		case QUESTION_TYPE_COIN: 
@@ -91,7 +100,7 @@ void CQuestionBrick::SummonItemsFromBrickQuestion() {
 		case QUESTION_TYPE_LEAF:
 		{
 			CLeaf* leaf = new CLeaf(x, y);
-			leaf->SetVY(-0.05f);
+			leaf->SetVY(-0.06f);
 			scene->CreateObject(leaf);
 			break;
 		}

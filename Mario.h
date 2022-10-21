@@ -8,7 +8,7 @@
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
-#define MARIO_DECELERATION		0.003f
+#define MARIO_DECELERATION		0.0055f
 
 
 #define MARIO_ACCEL_WALK_X	0.0002f
@@ -35,8 +35,7 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 
-#define MARIO_STATE_DECELERATION_RIGHT	700
-#define MARIO_STATE_DECELERATION_LEFT	701
+#define MARIO_STATE_DECELERATION	700
 
 
 #pragma region ANIMATION_ID
@@ -185,6 +184,9 @@ public:
 	}
 
 	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable==0); }
+
+	int GetLevel() { return level; }
+
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
