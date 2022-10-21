@@ -277,7 +277,7 @@ int CMario::GetAniIdSmall()
 					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
+				else if (ax == MARIO_ACCEL_WALK_X || (state == MARIO_STATE_DECELERATION))
 					aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
 			}
 			else // vx < 0
@@ -286,7 +286,7 @@ int CMario::GetAniIdSmall()
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
+				else if (ax == -MARIO_ACCEL_WALK_X || (state == MARIO_STATE_DECELERATION))
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 			}
 
@@ -334,7 +334,7 @@ int CMario::GetAniIdFire()
 					aniId = ID_ANI_MARIO_FIRE_BRACE_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_FIRE_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
+				else if (ax == MARIO_ACCEL_WALK_X || (state == MARIO_STATE_DECELERATION))
 					aniId = ID_ANI_MARIO_FIRE_WALKING_RIGHT;
 			}
 			else // vx < 0
@@ -343,7 +343,7 @@ int CMario::GetAniIdFire()
 					aniId = ID_ANI_MARIO_FIRE_BRACE_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_FIRE_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
+				else if (ax == -MARIO_ACCEL_WALK_X || (state == MARIO_STATE_DECELERATION))
 					aniId = ID_ANI_MARIO_FIRE_WALKING_LEFT;
 			}
 
