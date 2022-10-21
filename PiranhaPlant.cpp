@@ -70,7 +70,7 @@ void CPiranhaPlant::SetState(int state)
 }
 
 void CPiranhaPlant::ChangeStateMotion() {
-	DebugOut(L"[OKE] %d\n", time);
+
 	if ((GetTickCount64() - time_line) > PPLANT_WAITING_MAX) {
 		SetState(PPLANT_STATE_DOWN);
 	}

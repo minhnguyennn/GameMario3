@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "MushRoom.h"
 #include "Coin.h"
+#include "Leaf.h"
 
 void CQuestionBrick::Render()
 {
@@ -80,10 +81,21 @@ void CQuestionBrick::SummonItemsFromBrickQuestion() {
 			mush_room->SetState(MUSHROOM_STATE_UP);
 			break;
 		}
-		case QUESTION_TYPE_COIN:
-			CCoin* coin = new CCoin(x, y-20);
+		case QUESTION_TYPE_COIN: 
+		{
+			CCoin* coin = new CCoin(x, y - 20);
 			scene->CreateObject(coin);
 			coin->SetState(COIN_STATE_MOVE_UP);
+			break;
+		}
+		case QUESTION_TYPE_LEAF:
+		{
+			CLeaf* leaf = new CLeaf(x, y);
+			leaf->SetVY(-0.05f);
+			scene->CreateObject(leaf);
+			break;
+		}
+		default:
 			break;
 	}
 }

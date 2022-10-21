@@ -8,19 +8,6 @@ CLeaf::CLeaf(float x, float y) :CGameObject(x, y)
 	SetState(LEAF_STATE_WALKING);
 }
 
-void CLeaf::SetState(int state)
-{
-	CGameObject::SetState(state);
-	switch (state)
-	{
-	case  LEAF_STATE_WALKING:
-		vx = -LEAF_WALKING_SPEED;
-		break;
-	default:
-		break;
-	}
-}
-
 void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x - LEAF_BBOX_WIDTH / 2;
@@ -34,25 +21,23 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float distance_x = x - start_position;
 	vy += ay * dt;
 	vx += ax * dt;
-	if (vy < MAX_VY) {
-		vy += ay * dt;
-	}
-	else {
-		vy = ay * dt;
-	}
-	if (vy > 0) {
-		
-		if((distance_x<=DISTANCE_MAX) && (vx>0)) {
-			vx = LEAF_WALKING_SPEED;
 
-		}
-		else {
-			//DebugOutTitle(L"OK")
-			vx = -LEAF_WALKING_SPEED;
-			if ((distance_x < -DISTANCE_MAX) && (vx < 0)) { vx = LEAF_WALKING_SPEED; }
+	if (vy > 0) {
+		if (abs(vy) > MAX_VY) {
+			vy = MAX_VY;
+			if ((distance_x <= DISTANCE_LEAF_MAX) && (vx > 0)) {
+				vx = LEAF_WALKING_SPEED;
+			}
+			else {
+				//DebugOutTitle(L"OK")
+				vx = -LEAF_WALKING_SPEED;
+				if ((distance_x < -DISTANCE_LEAF_MAX) && (vx < 0)) { vx = LEAF_WALKING_SPEED; }
+			}
 		}
 	}
 	//DebugOut(L"[VX vy cua la cay] %f %f\n", vx,vy);
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -62,6 +47,25 @@ void CLeaf::Render()
 	int aniId = ID_ANI_LEAF_WALKING;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
+}
+
+void CLeaf::SetState(int state)
+{
+	CGameObject::SetState(state);
+	switch (state)
+	{
+		CGameObject::SetState(state);
+		switch (state)
+		{
+		case  LEAF_STATE_WALKING:
+			vx = -LEAF_WALKING_SPEED;
+			break;
+		default:
+			break;
+		}
+	default:
+		break;
+	}
 }
 
 void CLeaf::OnNoCollision(DWORD dt)

@@ -17,23 +17,23 @@
 #include "Collision.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
-{
-	//DebugOutTitle(L"time %d", time);		
+{	
+	DebugOut(L"[test] vx ax state %f %f %d\n", vx , ax, state);
 	CountDown1Second();
-	
 	vy += ay * dt;
 	vx += ax * dt;
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
-
-	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-
+	if (isSitting) {
+		ax = 0.0f;
+		if (vx > 0) maxVx -= MARIO_DECELERATION;
+		else if (vx < 0) maxVx += MARIO_DECELERATION;
+	}
 	isOnPlatform = false;
-
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -437,6 +437,12 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	case MARIO_STATE_DECELERATION_LEFT:
+		maxVx += MARIO_DECELERATION;
+		break;
+	case MARIO_STATE_DECELERATION_RIGHT:
+		maxVx -= MARIO_DECELERATION;
+		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (isSitting) break;
 		maxVx = MARIO_RUNNING_SPEED;
@@ -479,10 +485,9 @@ void CMario::SetState(int state)
 	case MARIO_STATE_SIT:
 		if (isOnPlatform && level != MARIO_LEVEL_SMALL)
 		{
-			state = MARIO_STATE_IDLE;
 			isSitting = true;
-			vx = 0; vy = 0.0f;
-			y +=MARIO_SIT_HEIGHT_ADJUST;
+			vy = 0.0f;
+			y +=MARIO_SIT_HEIGHT_ADJUST - 4;
 		}
 		break;
 
@@ -506,6 +511,7 @@ void CMario::SetState(int state)
 		ax = 0;
 		break;
 	}
+	
 
 	CGameObject::SetState(state);
 }
