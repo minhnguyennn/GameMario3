@@ -25,7 +25,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (vy > 0) {
 		if (abs(vy) > MAX_VY) {
 			vy = MAX_VY;
-			if ((distance_x <= DISTANCE_LEAF_MAX) && (vx > 0)) {
+			if ((distance_x < DISTANCE_LEAF_MAX) && (vx > 0)) {
 				vx = LEAF_WALKING_SPEED;
 			}
 			else {

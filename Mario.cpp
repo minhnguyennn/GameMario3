@@ -18,7 +18,7 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	DebugOut(L"[test] vx ax state nx %f %f %d %d\n", vx , ax, state, nx);
+	//DebugOut(L"[test] vx ax state nx %f %f %d %d\n", vx , ax, state, nx);
 	CountDown1Second();
 	vy += ay * dt;
 	vx += ax * dt;

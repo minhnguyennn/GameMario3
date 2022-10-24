@@ -4,10 +4,8 @@
 
 CPiranhaPlant::CPiranhaPlant(float x, float y) :CGameObject(x, y)
 {
-	this->ax = 0;
 	this->ay = PPLANT_GRAVITY;
 	this->start_y = y;
-	this->check_state = false;
 	SetState(PPLANT_STATE_UP);
 }
 
@@ -24,15 +22,43 @@ void CPiranhaPlant::OnNoCollision(DWORD dt)
 	y += vy * dt;
 };
 
+void CPiranhaPlant::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if (!e->obj->IsBlocking()) return;
+	if (dynamic_cast<CPiranhaPlant*>(e->obj)) return;
+	if (e->ny != 0)
+	{
+		vy = 0;
+	}
+	else if (e->nx != 0)
+	{
+		vx = -vx;
+	}
+}
+
 void CPiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	if ((start_y - y) > PPLANT_DISTANCE_MAX) {
-		if (check_state == false) {
+	//DebugOut(L"[STATE] STATE: %d\n",state);
+	//
+	if ((start_y - y) > PPLANT_DISTANCE_MAX_UP) {
+		//DebugOut(L"[OK1] \n");
+		if (state == PPLANT_STATE_UP) {
 			SetState(PPLANT_STATE_IDLE);
-			check_state = true;
 		}
-		ChangeStateMotion();
+		else if (state == PPLANT_STATE_IDLE) {
+			ChangeStateMotionDown();
+		}
+	}
+
+	if ((y - start_y) > PPLANT_DISTANCE_MAX_DOWN) {
+		//DebugOut(L"[OKE2]\n");
+		if (state == PPLANT_STATE_DOWN) {
+			SetState(PPLANT_STATE_IDLE);
+		}
+		else if (state == PPLANT_STATE_IDLE) {
+			ChangeStateMotionUp();
+		}
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -49,11 +75,6 @@ void CPiranhaPlant::SetState(int state)
 {
 	switch (state)
 	{
-	case PPLANT_STATE_IDLE:
-		vy = 0;
-		ay = 0;
-		time_line = GetTickCount64();
-		break;
 	case PPLANT_STATE_UP:
 		vy = -PPLANT_MOVING_SPEED;
 		ay = -PPLANT_GRAVITY;
@@ -61,6 +82,10 @@ void CPiranhaPlant::SetState(int state)
 	case PPLANT_STATE_DOWN:
 		vy = PPLANT_MOVING_SPEED;
 		ay = PPLANT_GRAVITY;
+		break;
+	case PPLANT_STATE_IDLE:
+		vy = 0;
+		ay = 0;
 		time_line = GetTickCount64();
 		break;
 	default:
@@ -69,10 +94,15 @@ void CPiranhaPlant::SetState(int state)
 	CGameObject::SetState(state);
 }
 
-void CPiranhaPlant::ChangeStateMotion() {
-
+void CPiranhaPlant::ChangeStateMotionDown() {
 	if ((GetTickCount64() - time_line) > PPLANT_WAITING_MAX) {
 		SetState(PPLANT_STATE_DOWN);
+	}
+}
+
+void CPiranhaPlant::ChangeStateMotionUp() {
+	if ((GetTickCount64() - time_line) > PPLANT_WAITING_MAX) {
+		SetState(PPLANT_STATE_UP);
 	}
 }
 

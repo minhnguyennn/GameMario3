@@ -16,12 +16,17 @@
 
 #define PPLANT_GRAVITY 0.00001f
 #define PPLANT_MOVING_SPEED 0.02f
-#define PPLANT_DISTANCE_MAX 32
+#define PPLANT_DISTANCE_MAX_UP 32
+#define PPLANT_DISTANCE_MAX_DOWN 13
 #define	PPLANT_WAITING_MAX	1000
 
 #define PPLANT_STATE_IDLE 0
 #define PPLANT_STATE_UP 1
-#define PPLANT_STATE_DOWN 2
+#define PPLANT_STATE_CHECK_UP 3
+#define PPLANT_STATE_CHECK_DOWN 4
+#define PPLANT_STATE_DOWN 5
+
+
 
 class CPiranhaPlant : public CGameObject
 {
@@ -31,6 +36,9 @@ protected:
 	float start_y;
 	int type_pplant;
 	bool check_state;
+	bool check_up;
+	bool check_down;
+
 	ULONGLONG time_line;
 public:
 	CPiranhaPlant(float x, float y);
@@ -39,7 +47,9 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void OnNoCollision(DWORD dt);
-	void ChangeStateMotion();
+	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void ChangeStateMotionDown();
+	void ChangeStateMotionUp();
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
 };
