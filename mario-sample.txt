@@ -34,6 +34,7 @@ height	240
 170	textures\reward_x3.png
 180	textures\gameover.png
 190	textures\dialogs.png
+191	textures\misc2.png
 
 200	Resource\Tilemaps\world1-1_bank.png
 205	Resource\Tilemaps\world1_bank.png

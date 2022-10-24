@@ -73,7 +73,6 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 void CQuestionBrick::SummonItemsFromBrickQuestion() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-
 	switch (type)
 	{
 		case QUESTION_TYPE_ITEM:

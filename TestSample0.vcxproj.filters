@@ -114,6 +114,12 @@
     <ClCompile Include="PiranhaPlant.cpp">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Pipeline.cpp">
+      <Filter>Header Files\Object\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Header Files\Object\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -205,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="PiranhaPlant.h">
       <Filter>Header Files\Object\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipeline.h">
+      <Filter>Header Files\Object\Platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Header Files\Object\Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
