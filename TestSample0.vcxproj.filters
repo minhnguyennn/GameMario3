@@ -31,6 +31,9 @@
     <Filter Include="Header Files\Object\Platforms">
       <UniqueIdentifier>{5003917d-63ea-4d4e-ac96-212a8ff156ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\Effects">
+      <UniqueIdentifier>{acbe1783-b632-4f9f-98d8-cf4c79d6c5d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -111,14 +114,14 @@
     <ClCompile Include="Koopa.cpp">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="PiranhaPlant.cpp">
+    <ClCompile Include="VenusFireTrap.cpp">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Pipeline.cpp">
       <Filter>Header Files\Object\Platforms</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Header Files\Object\Items</Filter>
+    <ClCompile Include="FireBalls.cpp">
+      <Filter>Header Files\Object\Effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,14 +212,14 @@
     <ClInclude Include="Koopa.h">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="PiranhaPlant.h">
+    <ClInclude Include="VenusFireTrap.h">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Pipeline.h">
       <Filter>Header Files\Object\Platforms</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Header Files\Object\Items</Filter>
+    <ClInclude Include="FireBalls.h">
+      <Filter>Header Files\Object\Effects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

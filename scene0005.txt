@@ -7,7 +7,7 @@ questionbrick.txt
 items.txt
 koopa.txt
 goomba.txt
-piranhaPlant.txt
+venusFireTrap.txt
 pipeline.txt
 
 [TILEMAP]
@@ -19,6 +19,9 @@ Resource/Tilemaps/world1-1.txt
 
 ########## Mario #########
 0	340	300
+
+######### FireBalls ###########
+13	350	384
 
 ######### Pipeline ###########
 12	360	384

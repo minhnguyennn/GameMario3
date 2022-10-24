@@ -1,7 +1,7 @@
 #include "Pipeline.h"
 #include "debug.h"
 #include "PlayScene.h"
-#include "PiranhaPlant.h"
+#include "VenusFireTrap.h"
 
 void CPipeline::Render()
 {
