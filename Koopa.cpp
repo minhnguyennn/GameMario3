@@ -1,13 +1,7 @@
 #include "Koopa.h"
 #include"debug.h"
-CKoopa::CKoopa(float x, float y) :CGameObject(x, y)
-{
-	/*this->type_koopa = type_koopa;*/
-	this->ax = 0;
-	this->ay = KOOPA_GRAVITY;
-	die_start = -1;
-	SetState(KOOPA_STATE_WALKING);
-}
+#include"Platform.h"
+
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -35,28 +29,58 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CKoopa*>(e->obj)) return;
+	if (dynamic_cast<CPlatform*>(e->obj))
+		OnCollisionWithPlatForm(e);
+}
 
-	if (e->ny != 0)
-	{
-		vy = 0;
-	}
-	else if (e->nx != 0)
-	{
-		vx = -vx;
+void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
+{
+	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+	float plant_form_y = platform->GetY();
+	if (!platform->IsBlocking()) {
+		if (e->ny < 0) {
+			vy = 0;
+			y = plant_form_y - KOOPA_DISTANCE_WITH_PLANTFORM;
+		}
 	}
 }
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	vx += ax * dt;
+	
+	//DebugOut(L"[OKE] x: %f\n", start_x);
 
 	if ((state == KOOPA_STATE_DIE) && (GetTickCount64() - die_start > KOOPA_DIE_TIMEOUT))
 	{
 		isDeleted = true;
 		return;
+	}
+
+	/*if (abs(start_x - x) > KOOPA_DISTANCE_MAX) {
+		vx = -vx;
+	}*/
+
+	//if ((vx < 0) && ((start_x - x) > KOOPA_DISTANCE_MAX)) {
+	//	SetState(KOOPA_STATE_IDLE);
+	//	vx = -vx;
+	//}
+
+	//if ((vx > 0) && ((x - start_x) > (KOOPA_DISTANCE_MAX + 24))) {
+	//	DebugOut(L"[OKE]\n");
+	//	SetState(KOOPA_STATE_IDLE);
+	//	vx = -vx;
+	//	//vx = vx;
+	//}
+	
+	if ((state == KOOPA_STATE_WALKING) && (start_x - x) > KOOPA_DISTANCE_MAX) {
+		SetState(KOOPA_STATE_TURNING_AROUND);
+	}
+
+	if (state == KOOPA_STATE_TURNING_AROUND) {
+		if (abs(start_x - x) > (KOOPA_DISTANCE_MAX + 24)) {
+			SetState(KOOPA_STATE_TURNING_AROUND);
+		}
 	}
 
 	CGameObject::Update(dt, coObjects);
@@ -89,9 +113,12 @@ void CKoopa::Render()
 
 void CKoopa::SetState(int state)
 {
-
 	switch (state)
 	{
+	case KOOPA_STATE_TURNING_AROUND:
+		start_x = x;
+		vx = -vx;
+		break;
 	case KOOPA_STATE_DIE:
 		die_start = GetTickCount64();
 		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DIE) / 2;
@@ -109,7 +136,7 @@ void CKoopa::SetState(int state)
 		vx = -KOOPA_WALKING_SPEED;
 		break;
 	default:
-		SetState(KOOPA_STATE_OPEN);
+		//SetState(KOOPA_STATE_OPEN);
 		break; 
 	}
 	CGameObject::SetState(state);

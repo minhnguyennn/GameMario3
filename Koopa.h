@@ -8,6 +8,8 @@
 #define KOOPA_BBOX_HEIGHT 26
 #define KOOPA_BBOX_HEIGHT_DIE 7
 #define KOOPA_BBOX_HEIGHT_CLOSE 16
+#define KOOPA_DISTANCE_WITH_PLANTFORM 21
+#define KOOPA_DISTANCE_MAX 64
 
 #define KOOPA_DIE_TIMEOUT 500
 #define KOOPA_STATE_WALKING 100
@@ -15,6 +17,7 @@
 #define KOOPA_STATE_DIE 200
 #define KOOPA_STATE_CLOSE 400
 #define KOOPA_STATE_OPEN 600
+#define KOOPA_STATE_TURNING_AROUND 500
 
 #define ID_ANI_KOOPA_WALKING_LEFT 5010
 #define ID_ANI_KOOPA_WALKING_RIGHT 5012
@@ -31,15 +34,24 @@ protected:
 	float ax;
 	float ay;
 	int type_koopa;
+	float start_x;
 	ULONGLONG die_start;
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual void Render();
-	virtual int IsCollidable() { return 1; };
-	virtual int IsBlocking() { return 0; }
-	virtual void OnNoCollision(DWORD dt);
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+
+	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 public:
-	CKoopa(float x, float y);
-	virtual void SetState(int state);
+	CKoopa(float x, float y) : CGameObject(x , y)
+	{
+		this->ay = KOOPA_GRAVITY;
+		this->start_x = x;
+		die_start = -1;
+		SetState(KOOPA_STATE_WALKING);
+	};
+	void SetState(int state);
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void Render();
+	int IsCollidable() { return 1; };
+	int IsBlocking() { return 0; }
+	void OnNoCollision(DWORD dt);
+	void OnCollisionWith(LPCOLLISIONEVENT e);
 };

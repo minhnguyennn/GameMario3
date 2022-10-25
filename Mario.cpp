@@ -82,6 +82,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 {
+
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	float plant_form_y = platform->GetY();
 	if (!platform->IsBlocking()) {
