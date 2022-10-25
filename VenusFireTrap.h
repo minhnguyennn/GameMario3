@@ -45,6 +45,7 @@ public:
 	void ChangeStateMotionUp();
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
+	void SummonFireBalls();
 };
 
 
