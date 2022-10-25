@@ -13,7 +13,7 @@ CFireBalls::CFireBalls(float x, float y) :CGameObject(x, y)
 void CFireBalls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	vy += ay * dt;
 	vx += ax * dt;
-	DebugOut(L"[TEST] start_x: %d\n", x);
+	//DebugOut(L"[TEST] start_x: %d\n", x);
 	if (vy < 0) {
 		if ((x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
 			//DebugOut(L"[OK1] \n");

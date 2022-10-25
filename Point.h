@@ -16,6 +16,7 @@
 #define POINT_STATE_ADD_100 3
 
 #define POINT_TYPE_100 100
+#define POINT_MOVE_SPEED 0.07f
 
 
 class CPoint : public CGameObject {

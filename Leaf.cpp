@@ -54,15 +54,9 @@ void CLeaf::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-		CGameObject::SetState(state);
-		switch (state)
-		{
-		case  LEAF_STATE_WALKING:
-			vx = -LEAF_WALKING_SPEED;
-			break;
-		default:
-			break;
-		}
+	case  LEAF_STATE_WALKING:
+		vx = -LEAF_WALKING_SPEED;
+		break;
 	default:
 		break;
 	}

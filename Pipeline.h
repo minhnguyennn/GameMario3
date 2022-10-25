@@ -1,9 +1,9 @@
 #pragma once
+
 #define PIPELINE_BBOX_WIDTH 29
 #define PIPELINE_BBOX_HEIGHT 47
 
 #define ID_ANI_PIPELINE 6000
-
 
 #include "GameObject.h"
 class CPipeline : public CGameObject
@@ -17,5 +17,6 @@ public:
 	int IsCollidable() { return 0; }
 	int IsBlocking() { return 1; }
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	void SummonVenusFireTrap();
 };
 

@@ -43,10 +43,10 @@ void CPoint::SetState(int state)
 	switch (state)
 	{
 	case POINT_STATE_MOVE_DOWN:
-		vy = +0.07;
+		vy = POINT_MOVE_SPEED;
 		break;
 	case POINT_STATE_MOVE_UP:
-		vy = -0.07f;
+		vy = -POINT_MOVE_SPEED;
 		break;
 	case POINT_STATE_IDLE:
 		vy = 0;

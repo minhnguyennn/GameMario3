@@ -83,24 +83,23 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 {
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+	float plant_form_y = platform->GetY();
 	if (!platform->IsBlocking()) {
 		if (e->ny < 0) {
 			vy = 0;
 			if (level != MARIO_LEVEL_SMALL) {
 				if (!isSitting) {
-					y = platform->GetY() - MARIO_BIG_BBOX_HEIGHT + 4;
+					y = (plant_form_y - MARIO_DISTANCE_WITH_GHOST_BOX);
 				}
-				else
-				{
-					y = platform->GetY() - MARIO_BIG_SITTING_BBOX_HEIGHT;
+				else {
+					y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - 4));
 				}
 			}
-			else
-			{
-				y = platform->GetY() - MARIO_SMALL_BBOX_HEIGHT - 2;
+			else {
+				y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - 6));
 			}
-
-			isOnPlatform = true;		}
+			isOnPlatform = true;
+		}
 	}
 }
 
