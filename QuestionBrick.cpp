@@ -96,13 +96,6 @@ void CQuestionBrick::SummonItemsFromBrickQuestion() {
 			coin->SetState(COIN_STATE_MOVE_UP);
 			break;
 		}
-		case QUESTION_TYPE_LEAF:
-		{
-			CLeaf* leaf = new CLeaf(x, y);
-			leaf->SetVY(-0.06f);
-			scene->CreateObject(leaf);
-			break;
-		}
 		default:
 			break;
 	}
