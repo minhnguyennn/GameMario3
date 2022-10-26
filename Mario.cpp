@@ -18,8 +18,8 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	//DebugOut(L"[test] vx ax state nx %f %f %d %d\n", vx , ax, state, nx);
-	CountDown1Second();
+	DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
+	//CountDown1Second();
 	vy += ay * dt;
 	vx += ax * dt;
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
@@ -31,10 +31,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if ((isSitting) || (state== MARIO_STATE_DECELERATION)){
 		ax = 0.0f;
 		if (abs(maxVx) > MARIO_DECELERATION) {
-			if (vx > 0) { maxVx -= MARIO_DECELERATION; nx = 1; }
-			else if (vx < 0) { maxVx += MARIO_DECELERATION; nx = -1; }
+			if (nx>0) { maxVx -= MARIO_DECELERATION; }
+			else if (nx < 0) { maxVx += MARIO_DECELERATION;  }
+		} 
+		else
+		{
+			maxVx = 0;
 		}
-		else maxVx = 0;
 	}
 	
 	isOnPlatform = false;
@@ -478,26 +481,26 @@ void CMario::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
 
-	if (state == MARIO_STATE_DIE)
-		aniId = ID_ANI_MARIO_DIE;
-	else if (level == MARIO_LEVEL_BIG)
-		aniId = GetAniIdBig();
-	else if (level == MARIO_LEVEL_SMALL)
-		aniId = GetAniIdSmall();
-	else if (level == MARIO_LEVEL_FIRE)
-		aniId = GetAniIdFire();
-	else if (level == MARIO_LEVEL_RACCOON)
-		aniId = GetAniIdRaccoon();
+if (state == MARIO_STATE_DIE)
+aniId = ID_ANI_MARIO_DIE;
+else if (level == MARIO_LEVEL_BIG)
+aniId = GetAniIdBig();
+else if (level == MARIO_LEVEL_SMALL)
+aniId = GetAniIdSmall();
+else if (level == MARIO_LEVEL_FIRE)
+aniId = GetAniIdFire();
+else if (level == MARIO_LEVEL_RACCOON)
+aniId = GetAniIdRaccoon();
 
-	animations->Get(aniId)->Render(x, y);
+animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+//RenderBoundingBox();
 }
 
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
-	if (this->state == MARIO_STATE_DIE) return; 
+	if (this->state == MARIO_STATE_DIE) return;
 
 	switch (state)
 	{
@@ -548,7 +551,7 @@ void CMario::SetState(int state)
 		{
 			isSitting = true;
 			vy = 0.0f;
-			y +=MARIO_SIT_HEIGHT_ADJUST - 4;
+			y += MARIO_SIT_HEIGHT_ADJUST - 4;
 		}
 		break;
 
@@ -575,9 +578,25 @@ void CMario::SetState(int state)
 	CGameObject::SetState(state);
 }
 
-void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
+void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if ((level==MARIO_LEVEL_BIG) || (level == MARIO_LEVEL_FIRE) || (level == MARIO_LEVEL_RACCOON))
+	if (level == MARIO_LEVEL_RACCOON){
+		if (isSitting)
+		{
+			left = x - (MARIO_BIG_SITTING_BBOX_WIDTH+8) / 2;
+			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
+			right = left + MARIO_BIG_SITTING_BBOX_WIDTH+8;
+			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
+		}
+		else
+		{
+			left = x - (MARIO_BIG_BBOX_WIDTH + 8) / 2;
+			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
+			right = left + (MARIO_BIG_BBOX_WIDTH + 8);
+			bottom = top + MARIO_BIG_BBOX_HEIGHT;
+		}
+	}
+	else if ((level==MARIO_LEVEL_BIG) || (level == MARIO_LEVEL_FIRE))
 	{
 		if (isSitting)
 		{
