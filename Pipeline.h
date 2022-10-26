@@ -9,7 +9,9 @@
 class CPipeline : public CGameObject
 {
 public:
-	CPipeline(float x, float y) : CGameObject(x, y) {}
+	CPipeline(float x, float y) : CGameObject(x, y) {
+		SummonVenusFireTrap();
+	}
 	void SetState(int state);
 	void OnNoCollision(DWORD dt);
 	void Render();

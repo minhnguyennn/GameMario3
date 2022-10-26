@@ -48,7 +48,7 @@ void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	
+
 	//DebugOut(L"[OKE] x: %f\n", start_x);
 
 	if ((state == KOOPA_STATE_DIE) && (GetTickCount64() - die_start > KOOPA_DIE_TIMEOUT))
@@ -56,7 +56,22 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isDeleted = true;
 		return;
 	}
+	/*
+	TAO 2 STATE: HOLDING (isHolding==true isUpside==false) && HOLDING UPSIDE (isHolding==true isUpside==true)
+	animation: 3 cai: holding , holding upside, upside
+	if ((isHolding) || (isHoldingUPSIDE))
+	{
+		//if(sau 3s){turning âround}
+	}
+	if (isDefense)
+	{
+		//if(sau 3s) {Setstateholding}
+	}
+	IF(isUpside) {
+		//if(sau 3s) {SetstateholdinguPSIDE}
 
+	}
+	*/
 	/*if (abs(start_x - x) > KOOPA_DISTANCE_MAX) {
 		vx = -vx;
 	}*/
@@ -91,18 +106,25 @@ void CKoopa::Render()
 {
 	//Type of animation
 	int aniId = ID_ANI_KOOPA_WALKING_LEFT;
-	if (state == KOOPA_STATE_DIE)
+	if (isUpside)
 	{
 		aniId = ID_ANI_KOOPA_DIE;
 	}
-	if (vx>0)
-	{
-		aniId = ID_ANI_KOOPA_WALKING_RIGHT;
-	}
-	if (state == KOOPA_STATE_CLOSE)
+	else if (isDefense)
 	{
 		aniId = ID_ANI_KOOPA_CLOSE;
 	}
+	else {
+		if (vx > 0)
+		{
+			aniId = ID_ANI_KOOPA_WALKING_RIGHT;
+		}
+		else
+		{
+			aniId = ID_ANI_KOOPA_WALKING_LEFT;
+		}
+	}
+	
 	/*if (type_koopa == KOOPA_TYPE)
 	{
 		aniId = 
@@ -118,22 +140,41 @@ void CKoopa::SetState(int state)
 	case KOOPA_STATE_TURNING_AROUND:
 		start_x = x;
 		vx = -vx;
+		isDefense = false;
+		isUpside = false;
+		isHolding = false;
 		break;
 	case KOOPA_STATE_DIE:
 		die_start = GetTickCount64();
 		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DIE) / 2;
+		isDefense = false;
+		isUpside = true;
+		isHolding = false;
+
 		vx = 0;
 		vy = 0;
 		break;
 	case KOOPA_STATE_CLOSE:
 		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_CLOSE) / 2;
+		isDefense = true;
+		isUpside = false;
+		isHolding = false;
+
 		vx = 0;
 		vy = 0;
 		break;
 	case KOOPA_STATE_OPEN:
+		isDefense = false;
+		isUpside = false;
+		isHolding = false;
+
 		break;
 	case KOOPA_STATE_WALKING:
 		vx = -KOOPA_WALKING_SPEED;
+		isDefense = false;
+		isUpside = false;
+		isHolding = false;
+
 		break;
 	default:
 		//SetState(KOOPA_STATE_OPEN);

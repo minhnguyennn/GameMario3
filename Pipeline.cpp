@@ -33,17 +33,13 @@ void CPipeline::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	float mario_x = mario->GetX();
-	if ((mario_x - x) < 0) {
-		//DebugOut(L"[OKE]\n");
-		//SummonVenusFireTrap();
-	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CPipeline::SummonVenusFireTrap() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CVenusFireTrap* vftrap = new CVenusFireTrap(x, y);
+	CVenusFireTrap* vftrap = new CVenusFireTrap(x, y-6);
 	scene->CreateObject(vftrap);
 }
 

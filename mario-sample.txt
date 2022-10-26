@@ -35,6 +35,7 @@ height	240
 180	textures\gameover.png
 190	textures\dialogs.png
 191	textures\misc2.png
+192	textures\marioWorldMap.png
 
 200	Resource\Tilemaps\world1-1_bank.png
 205	Resource\Tilemaps\world1_bank.png

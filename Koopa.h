@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-#define KOOPA_GRAVITY 0.002f
+#define KOOPA_GRAVITY 0.0002f
 #define KOOPA_WALKING_SPEED 0.05f
 
 #define KOOPA_BBOX_WIDTH 17
@@ -34,6 +34,9 @@ protected:
 	float ax;
 	float ay;
 	int type_koopa;
+	bool isDefense;
+	bool isUpside;
+	bool isHolding;
 	float start_x;
 	ULONGLONG die_start;
 
@@ -43,6 +46,8 @@ public:
 	{
 		this->ay = KOOPA_GRAVITY;
 		this->start_x = x;
+		isDefense = false;
+		isUpside = false;
 		die_start = -1;
 		SetState(KOOPA_STATE_WALKING);
 	};
