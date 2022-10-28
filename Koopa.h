@@ -3,6 +3,7 @@
 
 #define KOOPA_GRAVITY 0.0002f
 #define KOOPA_WALKING_SPEED 0.05f
+#define KOOPA_WALKING_ATTACKING_SPEED (KOOPA_WALKING_SPEED * 3)
 #define KOOPA_CLOSE_SHELL_TIMEOUT 3000
 
 #define KOOPA_BBOX_WIDTH 17
@@ -11,17 +12,20 @@
 
 #define KOOPA_DISTANCE_WITH_PLANTFORM 21
 #define KOOPA_DISTANCE_MAX 64
+#define KOOPA_JUMP_DEFLECT_SPEED 0.02f
 
 #define KOOPA_STATE_WALKING 100
 #define KOOPA_STATE_WAITING 200
 #define KOOPA_STATE_TURNING_AROUND 500
 #define KOOPA_STATE_CLOSE_SHELL 700
 #define KOOPA_STATE_RETURN_WALKING 800
+#define KOOPA_STATE_ATTACKING 900
 
 #define ID_ANI_KOOPA_WALKING_LEFT 5010
 #define ID_ANI_KOOPA_WALKING_RIGHT 5011
 #define ID_ANI_KOOPA_WAITING 5012
 #define ID_ANI_KOOPA_CLOSE_SHELL 5013
+#define ID_ANI_KOOPA_ATTACKING 5014
 
 
 #define KOOPA_TYPE 0
@@ -36,6 +40,7 @@ protected:
 	bool isDefense;
 	bool isTurnOver;
 	bool isWaiting;
+	bool isAttacking;
 	float start_x;
 
 	ULONGLONG close_start;
@@ -49,16 +54,22 @@ public:
 		isDefense = false;
 		isTurnOver = false;
 		isWaiting = false;
+		isAttacking = false;
 		close_start = -1;
 		waiting_start = -1;
 		SetState(KOOPA_STATE_WALKING);
 	};
 	void SetState(int state);
+	bool GetIsDefense() { return isDefense; };
+	bool GetIsTurnOver () { return isTurnOver; };
+	bool GetIsWaiting() { return isWaiting; };
+	bool GetIsAttacking (){ return isAttacking; };
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
+	int isLeftWithMario();
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 };

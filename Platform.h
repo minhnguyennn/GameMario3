@@ -37,5 +37,4 @@ public:
 
 	void RenderBoundingBox();
 };
-
 typedef CPlatform* LPPLATFORM;

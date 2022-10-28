@@ -120,22 +120,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	}
 	else // hit by Goomba
 	{
-		if (untouchable == 0)
-		{
-			if (goomba->GetState() != GOOMBA_STATE_DIE)
-			{
-				if (level > MARIO_LEVEL_SMALL)
-				{
-					level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
-				}
-			}
-		}
+		LowerLevel();
 	}
 }
 
@@ -146,39 +131,22 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (koopa->GetState() != KOOPA_STATE_CLOSE_SHELL)
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+		koopa->SetVY(-KOOPA_JUMP_DEFLECT_SPEED);
+		if (!koopa->GetIsDefense() && !koopa->GetIsWaiting())
 		{
-			koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-			//koopa->SetY(koopa->GetY() - 2);
-
+			if (koopa->GetIsAttacking()) koopa->SetY(koopa->GetY() - 5);
+			koopa->SetState(KOOPA_STATE_CLOSE_SHELL);		
 		}
+		else koopa->SetState(KOOPA_STATE_ATTACKING);
 	}
-	//else // hit by Goomba
-	//{
-	//	koopa->SetVY(koopa->GetY() - 4);
-
-	//	if (untouchable == 0)
-	//	{
-	//		if (koopa->GetState() != KOOPA_STATE_CLOSE_SHELL)
-	//		{
-	//			if (level > MARIO_LEVEL_SMALL)
-	//			{
-	//				level = MARIO_LEVEL_SMALL;
-	//				StartUntouchable();
-	//			}
-	//			else
-	//			{
-	//				DebugOut(L">>> Mario DIE >>> \n");
-	//				SetState(MARIO_STATE_DIE);
-	//			}
-	//		}
-	//		/*else if(koopa->GetState() != KOOPA_STATE_WALKING)
-	//		{
-	//			koopa->SetState(KOOPA_STATE_WALKING);
-	//		}*/
-	//	}
-	//}
+	else if (e->nx != 0) {
+		if ((koopa->GetState() == KOOPA_STATE_WALKING) || (koopa->GetIsAttacking())) {
+			LowerLevel();
+		}
+		else koopa->SetState(KOOPA_STATE_ATTACKING);
+	}
+	
 }
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
@@ -231,15 +199,7 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 }
 
-//if (nario cham musgrioom) {
-//	if (GetLevel() == MARIO_LEVEL_SMALL) {
-//		SetLevel(MARIO_LEVEL_BIG);
-//	}
-//	else score++
-//}
-//
-// Get animation ID for small Mario
-//
+
 int CMario::GetAniIdSmall()
 {
 	int aniId = -1;
@@ -645,5 +605,21 @@ void CMario::CountDown1Second() {
 	else {
 		time = 0;
 		SetState(MARIO_STATE_DIE);
+	}
+}
+
+void CMario::LowerLevel() {
+	if (untouchable == 0)
+	{
+		if (level > MARIO_LEVEL_SMALL)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
 	}
 }

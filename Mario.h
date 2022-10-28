@@ -214,6 +214,8 @@ public:
 	int GetLevel() { return level; }
 
 
+
+
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
@@ -222,4 +224,5 @@ public:
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void CountDown1Second();
+	void LowerLevel();
 };

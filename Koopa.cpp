@@ -1,11 +1,12 @@
 #include "Koopa.h"
 #include"debug.h"
 #include"Platform.h"
+#include"PlayScene.h"
 
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if ((isDefense)  || (isWaiting ))
+	if ((isDefense)  || (isWaiting ) ||(isAttacking))
 	{
 		left = x - KOOPA_BBOX_WAITING / 2;
 		top = y - KOOPA_BBOX_WAITING / 2;
@@ -29,6 +30,14 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (e->ny != 0 && e->obj->IsBlocking())
+	{
+		vy = 0;
+	}
+	else if (e->nx != 0 && e->obj->IsBlocking())
+	{
+		vx = -vx;
+	}
 	if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatForm(e);
 }
@@ -43,14 +52,25 @@ void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 		if (e->ny < 0) {
 			vy = 0;
 			if (!isDefense) {
-				y = plant_form_y - KOOPA_DISTANCE_WITH_PLANTFORM;
-				if (x < plat_form_x_start) {
-					vx = -vx;
+				if ((isWaiting) || isAttacking){
+					DebugOut(L"[OKE]\n");
+
+					y = plant_form_y - 16;
 				}
-				if (x > plat_form_x_end) {
-					vx = -vx;
+				else {
+					y = plant_form_y - KOOPA_DISTANCE_WITH_PLANTFORM;
+					if (x < plat_form_x_start) {
+						vx = -vx;
+						x = plat_form_x_start;
+					}
+					if (x > plat_form_x_end) {
+						vx = -vx;
+						x = plat_form_x_end;
+					}
 				}
-			
+			}
+			else {
+				y = plant_form_y - 16;
 			}
 		}
 	}
@@ -59,7 +79,7 @@ void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	DebugOut(L"AY VY %f %f \n", ay, vy);
+	//DebugOut(L"AY VY %f %f \n", ay, vy);
 	//DebugOut(L"[OKE] x: %f\n", start_x);
 	//DebugOut(L"[OKE] isDefense  %d  \n", isDefense);
 
@@ -67,17 +87,13 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		SetState(KOOPA_STATE_WAITING);
 		//DebugOut(L"[OKE] isDefense isWaiting waiting_start %d %d %f \n", isDefense, isWaiting, waiting_start);
-		
 	}
 
 	if (isWaiting == true && (GetTickCount64() - waiting_start > KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
-		DebugOut(L"[OKE]\n");
-		SetState(KOOPA_STATE_RETURN_WALKING);
+		//DebugOut(L"[OKE]\n");
+		SetState(KOOPA_STATE_WALKING);
 	}
-	
-	
-	
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -87,15 +103,16 @@ void CKoopa::Render()
 {
 	//Type of animation
 	int aniId = ID_ANI_KOOPA_WALKING_LEFT;
-	if (isWaiting == true)
+	if (isWaiting)
 	{
-		//DebugOut(L"[OKE]\n");
 		aniId = ID_ANI_KOOPA_WAITING;
 	}
-	else if (isDefense == true)
+	else if (isDefense)
 	{
-		//DebugOut(L"[OKE]\n");
 		aniId = ID_ANI_KOOPA_CLOSE_SHELL;
+	}
+	else if (isAttacking) {
+		aniId = ID_ANI_KOOPA_ATTACKING;
 	}
 	else if (vx > 0)
 	{
@@ -108,40 +125,44 @@ void CKoopa::Render()
 
 void CKoopa::SetState(int state)
 {
+
 	switch (state)
 	{
-	case KOOPA_STATE_WAITING:
-	
-		vx = 0;
-		ay = 0;
-		//DebugOut(L"[OKE]\n");
-		isWaiting = true;
+	case KOOPA_STATE_ATTACKING:
+		ay = KOOPA_GRAVITY;
+		vx = KOOPA_WALKING_ATTACKING_SPEED * isLeftWithMario();
+		isWaiting = false;
+		isAttacking = true;
 		isDefense = false;
 		isTurnOver = false;
-		//DebugOut(L"[KOOPA_STATE_WAITING] isDefense: %d\n", isDefense);
+		break;
+	case KOOPA_STATE_WAITING:
+		vx = 0;
+		vy = 0; 
+		isWaiting = true;
+		isDefense = false;
+		isAttacking = false;
+
+		isTurnOver = false;
 		waiting_start = GetTickCount64();
-		//DebugOut(L"[OKE] waiting_start: %d\n", waiting_start);
 		break;
 	case KOOPA_STATE_CLOSE_SHELL:
-		//DebugOut(L"[OKE]\n");
 		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 		vx = 0;
-		ay = 0;
 		close_start = GetTickCount64();
-		//DebugOut(L"[OKE] close_start: %d\n", close_start);
 		isDefense = true;
 		isTurnOver = false;
+		isAttacking = false;
+
 		isWaiting = false;
 		break;
 	case KOOPA_STATE_WALKING:
 		ay = KOOPA_GRAVITY;
 		vx = -KOOPA_WALKING_SPEED;
-		if (isWaiting) {
-			y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
-
-		}
+		if (isWaiting) y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 		isWaiting = false;
 		isDefense = false;
+		isAttacking = false;
 		isTurnOver = false;
 		break;
 	default:
@@ -150,3 +171,12 @@ void CKoopa::SetState(int state)
 	CGameObject::SetState(state);
 
 }
+
+int CKoopa::isLeftWithMario()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (x < mario->GetX()) return -1;
+	else return 1;
+}
+

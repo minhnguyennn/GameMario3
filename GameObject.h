@@ -39,6 +39,7 @@ public:
 	float GetY() { return this->y; }
 	float GetVX() { return this->vx; }
 	float GetVY() { return this->vy; }
+	int GetNx() { return nx; };
 	void SetVX(float vx) {  this->vx = vx; }
 	void SetVY(float vy) {  this->vy = vy; }
 	

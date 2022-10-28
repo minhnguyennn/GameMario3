@@ -71,9 +71,11 @@ Resource/Tilemaps/world1-1.txt
 6	416	320	1
 6	704	352	1
 
+
 #items
 6	240	304	2
 6	1472	368	2
+6	656	384	2
 
 #mushroom
 6	1440	128	3
