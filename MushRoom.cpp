@@ -1,5 +1,8 @@
 #include "MushRoom.h"
 #include"debug.h"
+
+#define DISTANCE_MAX 17
+
 CMushRoom::CMushRoom(float x, float y) :CGameObject(x, y)
 {
 	start_y = y;

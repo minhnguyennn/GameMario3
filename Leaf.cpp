@@ -1,5 +1,7 @@
 #include "Leaf.h"
 
+#define MAX_VY 0.02f
+
 CLeaf::CLeaf(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
@@ -22,7 +24,13 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	if (vy < 0) {
+		ax = 0;
+		vx = 0;
+	}
+
 	if (vy > 0) {
+
 		if (abs(vy) > MAX_VY) {
 			vy = MAX_VY;
 			if ((distance_x < DISTANCE_LEAF_MAX) && (vx > 0)) {
@@ -58,6 +66,8 @@ void CLeaf::SetState(int state)
 		vx = -LEAF_WALKING_SPEED;
 		break;
 	default:
+
+
 		break;
 	}
 }

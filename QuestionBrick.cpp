@@ -6,6 +6,8 @@
 #include "Coin.h"
 #include "Leaf.h"
 
+#define DISTANCE_MAX 6
+
 void CQuestionBrick::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -84,7 +86,7 @@ void CQuestionBrick::SummonItemsFromBrickQuestion() {
 			}
 			else {
 				CLeaf* leaf = new CLeaf(x, y);
-				leaf->SetVY(-0.06f);
+				leaf->SetVY(LEAF_VY_UP);
 				scene->CreateObject(leaf);
 			}
 			break;

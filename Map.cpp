@@ -46,9 +46,9 @@ void CMap::Render()
 bool CMap::checkMapInCamera(float x,float y) {
 	float w = 36.0f;
 	float h = 16.0f;
-	if (x + w <= (CGame::GetInstance()->GetCamX()) || (CGame::GetInstance()->GetCamX()) + SCREEN_WIDTH <= x - w)
+	if (x + w <= (CGame::GetInstance()->GetCamX()) || (CGame::GetInstance()->GetCamX()) + SCREEN_WIDTH_CAMERA_DRAW <= x - w)
 		return false;
-	if (y + h <= (CGame::GetInstance()->GetCamY()) || (CGame::GetInstance()->GetCamY()) + SCREEN_HEIGHT  <= y - h)
+	if (y + h <= (CGame::GetInstance()->GetCamY()) || (CGame::GetInstance()->GetCamY()) + SCREEN_HEIGHT_CAMERA_DRAW <= y - h)
 		return false;
 	return true;
 }

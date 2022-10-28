@@ -14,8 +14,8 @@ using namespace std;
 #include "Scene.h"
 
 
-#define SCREEN_WIDTH 272
-#define SCREEN_HEIGHT 256
+#define SCREEN_WIDTH_CAMERA_DRAW 272
+#define SCREEN_HEIGHT_CAMERA_DRAW 256
 #define MAX_FRAME_RATE 100
 #define KEYBOARD_BUFFER_SIZE 1024
 #define KEYBOARD_STATE_SIZE 256

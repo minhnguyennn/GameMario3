@@ -10,10 +10,11 @@
 
 #define LEAF_GRAVITY 0.00004f
 #define LEAF_WALKING_SPEED 0.02f
-#define MAX_VY 0.02f
+
 
 #define	ADJUST_MAX_VX 0.025f
 #define ADJUST_AX_WHEN_FALL 0.00001f
+#define LEAF_VY_UP -0.048f
 
 #define LEAF_DIE_TIMEOUT 500
 

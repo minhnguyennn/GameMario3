@@ -18,7 +18,7 @@
 #define QUESTION_TYPE_BUTTON 4
 
 
-#define DISTANCE_MAX 6
+
 
 #include "GameObject.h"
 class CQuestionBrick : public CGameObject

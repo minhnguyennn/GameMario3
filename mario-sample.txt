@@ -36,6 +36,7 @@ height	240
 190	textures\dialogs.png
 191	textures\misc2.png
 192	textures\marioWorldMap.png
+193	textures\NES - Super Mario Bros 3 - Enemies.png
 
 200	Resource\Tilemaps\world1-1_bank.png
 205	Resource\Tilemaps\world1_bank.png

@@ -18,7 +18,7 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
+	//DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
 	//CountDown1Second();
 	vy += ay * dt;
 	vx += ax * dt;
@@ -146,39 +146,39 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (koopa->GetState() != KOOPA_STATE_CLOSE)
+		if (koopa->GetState() != KOOPA_STATE_CLOSE_SHELL)
 		{
-			koopa->SetState(KOOPA_STATE_CLOSE);
+			koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 			//koopa->SetY(koopa->GetY() - 2);
 
 		}
 	}
-	else // hit by Goomba
-	{
-		koopa->SetY(koopa->GetY() - 4);
+	//else // hit by Goomba
+	//{
+	//	koopa->SetVY(koopa->GetY() - 4);
 
-		if (untouchable == 0)
-		{
-			if (koopa->GetState() != KOOPA_STATE_CLOSE)
-			{
-				if (level > MARIO_LEVEL_SMALL)
-				{
-					level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
-				}
-			}
-			else if(koopa->GetState() != KOOPA_STATE_WALKING)
-			{
-				koopa->SetState(KOOPA_STATE_WALKING);
-			}
-		}
-	}
+	//	if (untouchable == 0)
+	//	{
+	//		if (koopa->GetState() != KOOPA_STATE_CLOSE_SHELL)
+	//		{
+	//			if (level > MARIO_LEVEL_SMALL)
+	//			{
+	//				level = MARIO_LEVEL_SMALL;
+	//				StartUntouchable();
+	//			}
+	//			else
+	//			{
+	//				DebugOut(L">>> Mario DIE >>> \n");
+	//				SetState(MARIO_STATE_DIE);
+	//			}
+	//		}
+	//		/*else if(koopa->GetState() != KOOPA_STATE_WALKING)
+	//		{
+	//			koopa->SetState(KOOPA_STATE_WALKING);
+	//		}*/
+	//	}
+	//}
 }
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)

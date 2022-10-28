@@ -18,7 +18,7 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	100	300
+0	500	300
 
 ######### FireBalls ###########
 13	350	384
@@ -65,14 +65,18 @@ Resource/Tilemaps/world1-1.txt
 
 ######### Quesionbrick ###########
 #coin
-6	176	352	5
+6	176	352	1
 6	192	352	1
 6	224	304	1
 6	416	320	1
 6	704	352	1
 
+#items
+6	240	304	2
+6	1472	368	2
+
 #mushroom
-6	1440	128	2
+6	1440	128	3
 
 
 ############# Platform ##########
