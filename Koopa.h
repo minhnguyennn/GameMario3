@@ -7,8 +7,7 @@
 
 #define KOOPA_BBOX_WIDTH 17
 #define KOOPA_BBOX_HEIGHT 26
-#define KOOPA_BBOX_CLOSE_SHELL 16
-#define KOOPA_BBOX_WAITING 17
+#define KOOPA_BBOX_WAITING 16
 
 #define KOOPA_DISTANCE_WITH_PLANTFORM 21
 #define KOOPA_DISTANCE_MAX 64
@@ -17,6 +16,7 @@
 #define KOOPA_STATE_WAITING 200
 #define KOOPA_STATE_TURNING_AROUND 500
 #define KOOPA_STATE_CLOSE_SHELL 700
+#define KOOPA_STATE_RETURN_WALKING 800
 
 #define ID_ANI_KOOPA_WALKING_LEFT 5010
 #define ID_ANI_KOOPA_WALKING_RIGHT 5011
@@ -37,9 +37,9 @@ protected:
 	bool isTurnOver;
 	bool isWaiting;
 	float start_x;
+
 	ULONGLONG close_start;
 	ULONGLONG waiting_start;
-
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 public:
 	CKoopa(float x, float y) : CGameObject(x , y)

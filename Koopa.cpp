@@ -5,14 +5,8 @@
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (isDefense == true )
+	if ((isDefense)  || (isWaiting ))
 	{
-		left = x - KOOPA_BBOX_CLOSE_SHELL / 2;
-		top = y - KOOPA_BBOX_CLOSE_SHELL / 2;
-		right = left + KOOPA_BBOX_CLOSE_SHELL;
-		bottom = top + KOOPA_BBOX_CLOSE_SHELL;
-	}
-	else if (isWaiting == true) {
 		left = x - KOOPA_BBOX_WAITING / 2;
 		top = y - KOOPA_BBOX_WAITING / 2;
 		right = left + KOOPA_BBOX_WAITING;
@@ -43,16 +37,21 @@ void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 {
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	float plant_form_y = platform->GetY();
+	float plat_form_x_start = platform->GetX() - 8;
+	float plat_form_x_end = platform->GetX() + (platform->GetLength() * 15);
 	if (!platform->IsBlocking()) {
 		if (e->ny < 0) {
 			vy = 0;
-			ay = 0;
-			/*if (!isDefense) {
+			if (!isDefense) {
 				y = plant_form_y - KOOPA_DISTANCE_WITH_PLANTFORM;
+				if (x < plat_form_x_start) {
+					vx = -vx;
+				}
+				if (x > plat_form_x_end) {
+					vx = -vx;
+				}
+			
 			}
-			else {
-				y = plant_form_y - KOOPA_DISTANCE_WITH_PLANTFORM;
-			}*/
 		}
 	}
 }
@@ -60,7 +59,7 @@ void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-
+	DebugOut(L"AY VY %f %f \n", ay, vy);
 	//DebugOut(L"[OKE] x: %f\n", start_x);
 	//DebugOut(L"[OKE] isDefense  %d  \n", isDefense);
 
@@ -74,50 +73,11 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isWaiting == true && (GetTickCount64() - waiting_start > KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		DebugOut(L"[OKE]\n");
-		//SetState(KOOPA_STATE_WALKING);
+		SetState(KOOPA_STATE_RETURN_WALKING);
 	}
 	
-	/*
-	TAO 2 STATE: HOLDING (isHolding==true isUpside==false) && HOLDING UPSIDE (isHolding==true isUpside==true)
-	animation: 3 cai: holding , holding upside, upside
-	if ((isHolding) || (isHoldingUPSIDE))
-	{
-		//if(sau 3s){turning âround}
-	}
-	if (isDefense)
-	{
-		//if(sau 3s) {Setstateholding}
-	}
-	IF(isUpside) {
-		//if(sau 3s) {SetstateholdinguPSIDE}
-
-	}
-	*/
-	/*if (abs(start_x - x) > KOOPA_DISTANCE_MAX) {
-		vx = -vx;
-	}*/
-
-	//if ((vx < 0) && ((start_x - x) > KOOPA_DISTANCE_MAX)) {
-	//	SetState(KOOPA_STATE_IDLE);
-	//	vx = -vx;
-	//}
-
-	//if ((vx > 0) && ((x - start_x) > (KOOPA_DISTANCE_MAX + 24))) {
-	//	DebugOut(L"[OKE]\n");
-	//	SetState(KOOPA_STATE_IDLE);
-	//	vx = -vx;
-	//	//vx = vx;
-	//}
 	
-	if ((state == KOOPA_STATE_WALKING) && (start_x - x) > KOOPA_DISTANCE_MAX) {
-		SetState(KOOPA_STATE_TURNING_AROUND);
-	}
-
-	if (state == KOOPA_STATE_TURNING_AROUND) {
-		if (abs(start_x - x) > (KOOPA_DISTANCE_MAX + 24)) {
-			SetState(KOOPA_STATE_TURNING_AROUND);
-		}
-	}
+	
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -129,7 +89,6 @@ void CKoopa::Render()
 	int aniId = ID_ANI_KOOPA_WALKING_LEFT;
 	if (isWaiting == true)
 	{
-
 		//DebugOut(L"[OKE]\n");
 		aniId = ID_ANI_KOOPA_WAITING;
 	}
@@ -152,7 +111,7 @@ void CKoopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_STATE_WAITING:
-		y += (KOOPA_BBOX_CLOSE_SHELL - KOOPA_BBOX_WAITING) / 2;
+	
 		vx = 0;
 		ay = 0;
 		//DebugOut(L"[OKE]\n");
@@ -165,7 +124,7 @@ void CKoopa::SetState(int state)
 		break;
 	case KOOPA_STATE_CLOSE_SHELL:
 		//DebugOut(L"[OKE]\n");
-		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_CLOSE_SHELL) / 2;
+		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 		vx = 0;
 		ay = 0;
 		close_start = GetTickCount64();
@@ -174,14 +133,16 @@ void CKoopa::SetState(int state)
 		isTurnOver = false;
 		isWaiting = false;
 		break;
-	case KOOPA_STATE_TURNING_AROUND:
-		start_x = x;
-		vx = -vx;
-	
-		break;
 	case KOOPA_STATE_WALKING:
+		ay = KOOPA_GRAVITY;
 		vx = -KOOPA_WALKING_SPEED;
+		if (isWaiting) {
+			y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 
+		}
+		isWaiting = false;
+		isDefense = false;
+		isTurnOver = false;
 		break;
 	default:
 		break; 

@@ -33,6 +33,7 @@ public:
 		if (cellHeight == 16) return 1;
 		return 0;
 	}
+	int GetLength() { return this->length; };
 
 	void RenderBoundingBox();
 };
