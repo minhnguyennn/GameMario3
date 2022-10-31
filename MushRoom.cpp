@@ -1,13 +1,14 @@
 #include "MushRoom.h"
 #include"debug.h"
 
-#define DISTANCE_MAX 17
+#define DISTANCE_MAX 15
 
-CMushRoom::CMushRoom(float x, float y) :CGameObject(x, y)
+CMushRoom::CMushRoom(float x, float y, int type_mushroom) :CGameObject(x, y)
 {
 	start_y = y;
 	//this->ax = 0;
 	this->ay = MUSHROOM_GRAVITY;
+	this->type_mushroom = type_mushroom;
 	die_start = -1;
 	check = false;
 	countDebug = 0;
@@ -64,7 +65,7 @@ void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else
 		{
-			ChangeStateWalking();
+			SetState(MUSHROOM_STATE_WALKING);
 		}
 	}
 	CGameObject::Update(dt, coObjects);
@@ -74,6 +75,9 @@ void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CMushRoom::Render()
 {
 	int aniId = ID_ANI_MUSHROOM_GREEN;
+	if (type_mushroom == MUSHROOM_TYPE_RED) {
+		aniId = ID_ANI_MUSHROOM_RED;
+	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }

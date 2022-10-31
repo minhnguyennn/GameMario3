@@ -56,7 +56,6 @@ void CQuestionBrick::SetState(int state) {
 }
 
 void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	
 	if ((start_y - y) > DISTANCE_MAX)
 	{
 		SetState(QUESTION_STATE_MOVE_DOWN);
@@ -64,7 +63,6 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	if ((vy > 0) && (y > start_y)) 
 	{
-		SetState(QUESTION_STATE_UNBOX);
 		SummonItemsFromBrickQuestion();
 	}
 
@@ -75,12 +73,13 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 void CQuestionBrick::SummonItemsFromBrickQuestion() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
+	SetState(QUESTION_STATE_UNBOX);
 	switch (type)
 	{
 		case QUESTION_TYPE_ITEM:
 		{
 			if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
-				CMushRoom* mush_room = new CMushRoom(x, y);
+				CMushRoom* mush_room = new CMushRoom(x, y, MUSHROOM_TYPE_RED);
 				scene->CreateObject(mush_room);
 				mush_room->SetState(MUSHROOM_STATE_UP);
 			}

@@ -18,7 +18,7 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	500	300
+0	550	200
 
 ######### FireBalls ###########
 13	350	384
@@ -28,6 +28,7 @@ Resource/Tilemaps/world1-1.txt
 
 ######### PiranhaPlant ###########
 11	330	378
+11	390	378
 
 ######### Goomba ###########
 #2	224	401
@@ -36,6 +37,7 @@ Resource/Tilemaps/world1-1.txt
 
 ######### Koopa ###########
 10	574	359
+10	450	300
 
 
 ######### Coin ###########
@@ -70,7 +72,6 @@ Resource/Tilemaps/world1-1.txt
 6	224	304	1
 6	416	320	1
 6	704	352	1
-
 
 #items
 6	240	304	2

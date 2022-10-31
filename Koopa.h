@@ -10,9 +10,12 @@
 #define KOOPA_BBOX_HEIGHT 26
 #define KOOPA_BBOX_WAITING 16
 
-#define KOOPA_DISTANCE_WITH_PLANTFORM 21
+#define KOOPA_UP_DISTANCE_MOVE 21
 #define KOOPA_DISTANCE_MAX 64
 #define KOOPA_JUMP_DEFLECT_SPEED 0.02f
+#define KOOPA_WIDTH_OF_BOX  16
+#define KOOPA_UP_DISTANCE  16
+#define KOOPA_REMAINDER_OF_DISTANCE 8
 
 #define KOOPA_STATE_WALKING 100
 #define KOOPA_STATE_WAITING 200
@@ -26,7 +29,6 @@
 #define ID_ANI_KOOPA_WAITING 5012
 #define ID_ANI_KOOPA_CLOSE_SHELL 5013
 #define ID_ANI_KOOPA_ATTACKING 5014
-
 
 #define KOOPA_TYPE 0
 #define KOOPA_TYPE_PARATROOPA 1
@@ -46,6 +48,8 @@ protected:
 	ULONGLONG close_start;
 	ULONGLONG waiting_start;
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
+	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
 public:
 	CKoopa(float x, float y) : CGameObject(x , y)
 	{

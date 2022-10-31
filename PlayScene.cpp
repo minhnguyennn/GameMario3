@@ -148,7 +148,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CQuestionBrick(x, y, type); 
 		break;
 	}
-	case OBJECT_TYPE_MUSHROOM: obj = new CMushRoom(x, y); break;
+	case OBJECT_TYPE_MUSHROOM: {
+		int type_mushroom = (int)atof(tokens[3].c_str()); 
+		obj = new CMushRoom(x, y, type_mushroom);
+		break; 
+	}
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:

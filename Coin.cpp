@@ -16,8 +16,6 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	{
 		SetState(COIN_STATE_DELETE);
 		check_delete_coin = 1;
-
-
 	}
 	if (check_delete_coin = 1) {
 
@@ -77,6 +75,5 @@ void CCoin::SummonAndMovePoint() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CPoint* point = new CPoint(coppy_x, coppy_y, POINT_TYPE_100);
 	scene->CreateObject(point);
-	point->SetState(POINT_STATE_MOVE_UP);
 	point->SetState(POINT_STATE_ADD_100);
 }

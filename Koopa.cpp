@@ -2,11 +2,13 @@
 #include"debug.h"
 #include"Platform.h"
 #include"PlayScene.h"
+#include"QuestionBrick.h"
+#include"VenusFireTrap.h"
 
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if ((isDefense)  || (isWaiting ) ||(isAttacking))
+	if (isDefense || isWaiting || isAttacking)
 	{
 		left = x - KOOPA_BBOX_WAITING / 2;
 		top = y - KOOPA_BBOX_WAITING / 2;
@@ -40,25 +42,29 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatForm(e);
+	else if (dynamic_cast<CQuestionBrick*>(e->obj))
+		OnCollisionWithQuestionBrick(e);
+	else if (dynamic_cast<CVenusFireTrap*>(e->obj))
+		OnCollisionWithVenusFireTrap(e);
 }
 
 void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 {
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	float plant_form_y = platform->GetY();
-	float plat_form_x_start = platform->GetX() - 8;
-	float plat_form_x_end = platform->GetX() + (platform->GetLength() * 15);
+	float plat_form_x_start = platform->GetX() - KOOPA_REMAINDER_OF_DISTANCE;
+	float plat_form_x_end = platform->GetX() + (platform->GetLength() * KOOPA_WIDTH_OF_BOX) - KOOPA_REMAINDER_OF_DISTANCE;
 	if (!platform->IsBlocking()) {
 		if (e->ny < 0) {
 			vy = 0;
 			if (!isDefense) {
-				if ((isWaiting) || isAttacking){
-					DebugOut(L"[OKE]\n");
-
-					y = plant_form_y - 16;
+				//CASE WHEN KOOPA WAIT AND ATTACK
+				if (isWaiting || isAttacking){
+					y = plant_form_y - KOOPA_UP_DISTANCE;
 				}
+				//CASE WHEN KOOPA MOVE
 				else {
-					y = plant_form_y - KOOPA_DISTANCE_WITH_PLANTFORM;
+					y = plant_form_y - KOOPA_UP_DISTANCE_MOVE;
 					if (x < plat_form_x_start) {
 						vx = -vx;
 						x = plat_form_x_start;
@@ -69,9 +75,31 @@ void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 					}
 				}
 			}
+			//CASE WHEN KOOPA DEFENSE
 			else {
-				y = plant_form_y - 16;
+				y = plant_form_y - KOOPA_UP_DISTANCE;
 			}
+		}
+	}
+}
+
+void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+	CQuestionBrick* question_brick = dynamic_cast<CQuestionBrick*>(e->obj);
+	if (e->nx != 0) {
+		if (isAttacking) {
+			question_brick->SummonItemsFromBrickQuestion();
+		}
+	}
+}
+
+void CKoopa::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
+{
+	CVenusFireTrap* vf_trap = dynamic_cast<CVenusFireTrap*>(e->obj);
+	if ((e->nx != 0) || (e->nx < 0)) {
+		if (isAttacking) {
+			vf_trap->SetSummonItems(VFTRAP_TYPE_POINT);
+			vf_trap->Delete();
 		}
 	}
 }

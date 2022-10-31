@@ -25,6 +25,8 @@
 #define VFTRAP_STATE_DOWN 2
 
 
+#define VFTRAP_TYPE_FIRE_BALL 1
+#define VFTRAP_TYPE_POINT 2
 
 class CVenusFireTrap : public CGameObject
 {
@@ -45,7 +47,7 @@ public:
 	void ChangeStateMotionUp();
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
-	void SummonFireBalls();
+	void SetSummonItems(int type);
 };
 
 

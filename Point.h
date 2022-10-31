@@ -25,7 +25,7 @@ class CPoint : public CGameObject {
 	int number_point = 0;
 public:
 	CPoint(float x, float y, int type_point) : CGameObject(x, y) {
-		SetState(POINT_STATE_IDLE);
+		SetState(POINT_STATE_MOVE_UP);
 		start_y = y;
 		this->type_point = type_point;
 	}

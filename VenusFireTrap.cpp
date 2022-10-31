@@ -3,6 +3,7 @@
 #include "Time.h"
 #include "PlayScene.h"
 #include "FireBalls.h"
+#include "Point.h"
 
 CVenusFireTrap::CVenusFireTrap(float x, float y) :CGameObject(x, y)
 {
@@ -42,12 +43,11 @@ void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	//DebugOut(L"[STATE] STATE: %d\n",state);
-	//
 	if ((start_y - y) > VFTRAP_DISTANCE_MAX_UP) {
 		//DebugOut(L"[OK1] \n");
 		if (state == VFTRAP_STATE_UP) {
 			SetState(VFTRAP_STATE_IDLE);
-			SummonFireBalls();
+			SetSummonItems(VFTRAP_TYPE_FIRE_BALL);
 		}
 		else if (state == VFTRAP_STATE_IDLE) {
 			ChangeStateMotionDown();
@@ -109,8 +109,24 @@ void CVenusFireTrap::ChangeStateMotionUp() {
 	}
 }
 
-void CVenusFireTrap::SummonFireBalls() {
+void CVenusFireTrap::SetSummonItems(int type) {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CFireBalls* fire_balls= new CFireBalls(x, y);
-	scene->CreateObject(fire_balls);
+	switch (type)
+	{
+	case VFTRAP_TYPE_FIRE_BALL:
+	{
+		CFireBalls* fire_balls = new CFireBalls(x, y);
+		scene->CreateObject(fire_balls);
+		break;
+	}
+	case VFTRAP_TYPE_POINT:
+	{
+		CPoint* point_100 = new CPoint(x, y, POINT_TYPE_100);
+		scene->CreateObject(point_100);
+		break;
+	}
+	default:
+		break;
+	}
+	
 }
