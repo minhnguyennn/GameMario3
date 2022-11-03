@@ -13,8 +13,8 @@
 #include "Point.h"
 #include "Koopa.h"
 #include "Platform.h"
-
 #include "Collision.h"
+#include "PlayScene.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
@@ -29,7 +29,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable = 0;
 	}
 	if (isSitting || isDeceleration){
-		DebugOut(L"[oke]");
+		//DebugOut(L"[oke]");
 		ax = 0.0f;
 		if (abs(maxVx) > MARIO_DECELERATION) {
 			if (nx > 0) { maxVx -= MARIO_DECELERATION; }
@@ -441,15 +441,20 @@ void CMario::Render()
 	int aniId = -1;
 
 	if (state == MARIO_STATE_DIE)
-	aniId = ID_ANI_MARIO_DIE;
+		aniId = ID_ANI_MARIO_DIE;
 	else if (level == MARIO_LEVEL_BIG)
-	aniId = GetAniIdBig();
+		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
-	aniId = GetAniIdSmall();
+		aniId = GetAniIdSmall();
 	else if (level == MARIO_LEVEL_FIRE)
-	aniId = GetAniIdFire();
+		aniId = GetAniIdFire();
 	else if (level == MARIO_LEVEL_RACCOON)
-	aniId = GetAniIdRaccoon();
+		aniId = GetAniIdRaccoon();
+	else if (isHoldKoopa == true) {
+		//DebugOut(L"[oke] HOLDKKOPA: %d\n", isHoldKoopa);
+		DebugOut(L"[oke] \n");
+		aniId = ID_ANI_MARIO_RACCOON_HOLD_RIGHT;
+	}
 	animations->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -461,6 +466,11 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	case MARIO_STATE_SUMMON_KOOPA:
+		isHoldKoopa = true;
+		
+		Summon(KOOPA_STATE_TURN_OVER);
+		break;
 	case MARIO_STATE_DECELERATION:
 		isDeceleration = true;
 		break;
@@ -631,4 +641,12 @@ void CMario::LowerLevel() {
 			SetState(MARIO_STATE_DIE);
 		}
 	}
+}
+
+void CMario::Summon(int type) {
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CKoopa* koopa = new CKoopa(x, y);
+	scene->CreateObject(koopa);
+	koopa->SetIsSummon(true);
+	koopa->SetState(type);
 }

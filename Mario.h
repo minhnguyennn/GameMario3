@@ -35,6 +35,9 @@
 #define MARIO_STATE_SIT_RELEASE		601
 
 #define MARIO_STATE_DECELERATION	700
+#define MARIO_STATE_SUMMON_KOOPA	710
+
+#define MARIO_TYPE_SUMMON_KOOPA	100
 
 
 #pragma region ANIMATION_ID
@@ -126,6 +129,9 @@
 #define ID_ANI_MARIO_RACCOON_BRACE_RIGHT 3001
 #define ID_ANI_MARIO_RACCOON_BRACE_LEFT 3000
 
+#define ID_ANI_MARIO_RACCOON_HOLD_RIGHT 3101
+#define ID_ANI_MARIO_RACCOON_HOLD_LEFT 3100
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -176,6 +182,8 @@ class CMario : public CGameObject
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
 	BOOLEAN isDeceleration;
+	BOOLEAN isHoldKoopa;
+
 	
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
@@ -196,6 +204,7 @@ class CMario : public CGameObject
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
+		isHoldKoopa = false;
 		isSitting = false;
 		isDeceleration = false;
 		maxVx = 0.0f;
@@ -233,4 +242,5 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void CountDown1Second();
 	void LowerLevel();
+	void Summon(int type);
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "debug.h"
 
 #define KOOPA_GRAVITY 0.0002f
 #define KOOPA_WALKING_SPEED 0.05f
@@ -40,13 +41,16 @@ class CKoopa : public CGameObject
 protected:
 	float ax;
 	float ay;
+	float start_x;
 	int type_koopa;
+
 	bool isDefense;
 	bool isTurnOver;
 	bool isWaiting;
 	bool isAttacking;
 	bool isDie;
-	float start_x;
+	bool isSummon;
+	
 
 	ULONGLONG close_start;
 	ULONGLONG waiting_start;
@@ -65,12 +69,18 @@ public:
 		isTurnOver = false;
 		isWaiting = false;
 		isAttacking = false;
+		isSummon = false;
 		close_start = -1;
 		waiting_start = -1;
 		SetState(KOOPA_STATE_WALKING);
 	};
 	void SetState(int state);
+	
+
+	void SetIsSummon(bool isSummon) { this->isSummon = isSummon; };
+
 	bool GetIsDefense() { return isDefense; };
+
 	bool GetIsTurnOver () { return isTurnOver; };
 	bool GetIsWaiting() { return isWaiting; };
 	bool GetIsAttacking (){ return isAttacking; };

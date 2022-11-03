@@ -130,13 +130,28 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOut(L"[OKE] x: %f\n", start_x);
 	//DebugOut(L"[OKE] isDefense  %d  \n", isDefense);
 
-	if ( isDefense == true && (GetTickCount64() - close_start > KOOPA_CLOSE_SHELL_TIMEOUT))
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+
+
+	if (isSummon) {
+		y = mario->GetY();
+		//DebugOut(L"[oke] right: %d\n", mario->GetState());
+		if ((mario->GetState() == MARIO_STATE_WALKING_RIGHT) || (mario->GetState() == MARIO_STATE_IDLE) || (mario->GetState() == MARIO_STATE_SUMMON_KOOPA)) {
+			x = mario->GetX() + 14;
+		}
+		else {
+			x = mario->GetX() - 14;
+		}
+	}
+
+	if ( isDefense && (GetTickCount64() - close_start > KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		SetState(KOOPA_STATE_WAITING);
 		//DebugOut(L"[OKE] isDefense isWaiting waiting_start %d %d %f \n", isDefense, isWaiting, waiting_start);
 	}
 
-	if (isWaiting == true && (GetTickCount64() - waiting_start > KOOPA_CLOSE_SHELL_TIMEOUT))
+	if (isWaiting && (GetTickCount64() - waiting_start > KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		//DebugOut(L"[OKE]\n");
 		SetState(KOOPA_STATE_WALKING);
@@ -180,6 +195,9 @@ void CKoopa::SetState(int state)
 	{
 	case KOOPA_STATE_TURN_OVER:
 	{
+		if (isSummon == true) {
+			ay = 0;
+		}
 		isTurnOver = true;
 		isDie = false;
 		isWaiting = false;
