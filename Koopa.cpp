@@ -8,7 +8,7 @@
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (isDefense || isWaiting || isAttacking)
+	if (isDefense || isWaiting || isAttacking || isDie || isTurnOver)
 	{
 		left = x - KOOPA_BBOX_WAITING / 2;
 		top = y - KOOPA_BBOX_WAITING / 2;
@@ -32,6 +32,7 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	//if (dynamic_cast<CKoopa*>(e->obj)) return;
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
@@ -46,6 +47,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBrick(e);
 	else if (dynamic_cast<CVenusFireTrap*>(e->obj))
 		OnCollisionWithVenusFireTrap(e);
+	else if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithDifferentKoopa(e);
 }
 
 void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
@@ -58,8 +61,8 @@ void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 		if (e->ny < 0) {
 			vy = 0;
 			if (!isDefense) {
-				//CASE WHEN KOOPA WAIT AND ATTACK
-				if (isWaiting || isAttacking){
+				//CASE WHEN KOOPA WAIT AND ATTACK AND TURN OVER
+				if (isWaiting || isAttacking || isTurnOver){
 					y = plant_form_y - KOOPA_UP_DISTANCE;
 				}
 				//CASE WHEN KOOPA MOVE
@@ -85,6 +88,7 @@ void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
+	//Question brick will summon leaf or green mushroom follow level mario
 	CQuestionBrick* question_brick = dynamic_cast<CQuestionBrick*>(e->obj);
 	if (e->nx != 0) {
 		if (isAttacking) {
@@ -95,11 +99,26 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 {
+	//Venus fire trap will deleted
 	CVenusFireTrap* vf_trap = dynamic_cast<CVenusFireTrap*>(e->obj);
 	if ((e->nx != 0) || (e->nx < 0)) {
 		if (isAttacking) {
 			vf_trap->SetSummonItems(VFTRAP_TYPE_POINT);
 			vf_trap->Delete();
+		}
+	}
+}
+
+void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
+{
+	//Different Koopa will turned over and died.
+	CKoopa* df_koopa = dynamic_cast<CKoopa*>(e->obj);
+	if ((e->nx != 0) || (e->nx < 0)) {
+		DebugOut(L"[OKE]");
+		if (isAttacking) {
+			
+			df_koopa->SetState(KOOPA_STATE_TURN_OVER);
+			//df_koopa->SetState(KOOPA_STATE_DIE);
 		}
 	}
 }
@@ -142,6 +161,9 @@ void CKoopa::Render()
 	else if (isAttacking) {
 		aniId = ID_ANI_KOOPA_ATTACKING;
 	}
+	else if (isTurnOver) {
+		aniId = ID_ANI_KOOPA_TURN_OVER;
+	}
 	else if (vx > 0)
 	{
 		aniId = ID_ANI_KOOPA_WALKING_RIGHT;
@@ -156,7 +178,30 @@ void CKoopa::SetState(int state)
 
 	switch (state)
 	{
+	case KOOPA_STATE_TURN_OVER:
+	{
+		isTurnOver = true;
+		isDie = false;
+		isWaiting = false;
+		isAttacking = false;
+		isDefense = false;
+		vx = 0;
+		break;
+	}
+	case KOOPA_STATE_DIE:
+	{
+		die_start = GetTickCount64();
+		isDie = true;
+		isWaiting = false;
+		isAttacking = false;
+		isDefense = false;
+		isTurnOver = false;
+		vx = 0;
+	
+		break;
+	}
 	case KOOPA_STATE_ATTACKING:
+	{
 		ay = KOOPA_GRAVITY;
 		vx = KOOPA_WALKING_ATTACKING_SPEED * isLeftWithMario();
 		isWaiting = false;
@@ -164,27 +209,31 @@ void CKoopa::SetState(int state)
 		isDefense = false;
 		isTurnOver = false;
 		break;
+	}
 	case KOOPA_STATE_WAITING:
+	{
 		vx = 0;
-		vy = 0; 
+		vy = 0;
 		isWaiting = true;
 		isDefense = false;
 		isAttacking = false;
-
 		isTurnOver = false;
 		waiting_start = GetTickCount64();
 		break;
+	}
 	case KOOPA_STATE_CLOSE_SHELL:
+	{
 		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 		vx = 0;
 		close_start = GetTickCount64();
 		isDefense = true;
 		isTurnOver = false;
 		isAttacking = false;
-
 		isWaiting = false;
 		break;
+	}
 	case KOOPA_STATE_WALKING:
+	{
 		ay = KOOPA_GRAVITY;
 		vx = -KOOPA_WALKING_SPEED;
 		if (isWaiting) y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
@@ -193,11 +242,11 @@ void CKoopa::SetState(int state)
 		isAttacking = false;
 		isTurnOver = false;
 		break;
+	}
 	default:
 		break; 
 	}
 	CGameObject::SetState(state);
-
 }
 
 int CKoopa::isLeftWithMario()

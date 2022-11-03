@@ -11,10 +11,9 @@
 #define KOOPA_BBOX_WAITING 16
 
 #define KOOPA_UP_DISTANCE_MOVE 21
-#define KOOPA_DISTANCE_MAX 64
+#define KOOPA_UP_DISTANCE  16
 #define KOOPA_JUMP_DEFLECT_SPEED 0.02f
 #define KOOPA_WIDTH_OF_BOX  16
-#define KOOPA_UP_DISTANCE  16
 #define KOOPA_REMAINDER_OF_DISTANCE 8
 
 #define KOOPA_STATE_WALKING 100
@@ -23,12 +22,15 @@
 #define KOOPA_STATE_CLOSE_SHELL 700
 #define KOOPA_STATE_RETURN_WALKING 800
 #define KOOPA_STATE_ATTACKING 900
+#define KOOPA_STATE_TURN_OVER 300
+#define KOOPA_STATE_DIE 400
 
 #define ID_ANI_KOOPA_WALKING_LEFT 5010
 #define ID_ANI_KOOPA_WALKING_RIGHT 5011
 #define ID_ANI_KOOPA_WAITING 5012
 #define ID_ANI_KOOPA_CLOSE_SHELL 5013
 #define ID_ANI_KOOPA_ATTACKING 5014
+#define ID_ANI_KOOPA_TURN_OVER 5015
 
 #define KOOPA_TYPE 0
 #define KOOPA_TYPE_PARATROOPA 1
@@ -43,18 +45,22 @@ protected:
 	bool isTurnOver;
 	bool isWaiting;
 	bool isAttacking;
+	bool isDie;
 	float start_x;
 
 	ULONGLONG close_start;
 	ULONGLONG waiting_start;
+	ULONGLONG die_start;
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
+	void OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e);
 public:
 	CKoopa(float x, float y) : CGameObject(x , y)
 	{
 		this->ay = KOOPA_GRAVITY;
 		this->start_x = x;
+		isDie = false;
 		isDefense = false;
 		isTurnOver = false;
 		isWaiting = false;

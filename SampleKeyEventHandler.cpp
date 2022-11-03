@@ -79,6 +79,6 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	}
 	else {
 		if (!mario->GetVX()) mario->SetState(MARIO_STATE_IDLE);
-		else mario->SetState(MARIO_STATE_DECELERATION);
+		//else mario->SetState(MARIO_STATE_DECELERATION);
 	}
 }

@@ -37,6 +37,7 @@ Resource/Tilemaps/world1-1.txt
 
 ######### Koopa ###########
 10	574	359
+
 10	450	300
 
 
