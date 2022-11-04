@@ -29,9 +29,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_4:
 		mario->SetLevel(MARIO_LEVEL_RACCOON);
 		break;
-	case DIK_A:
-		mario->SetState(MARIO_STATE_SUMMON_KOOPA);
-		break;
+
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
 		break;
@@ -47,6 +45,9 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
+	case DIK_A:
+		mario->SetIsHolding(false);		
+		break;
 	case DIK_S:
 		mario->SetState(MARIO_STATE_RELEASE_JUMP);
 		break;

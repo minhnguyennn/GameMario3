@@ -18,6 +18,7 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
+	//DebugOut(L"Level %d", level);
 	//DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
 	//CountDown1Second();
 	vy += ay * dt;
@@ -145,7 +146,13 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		if ((koopa->GetState() == KOOPA_STATE_WALKING) || (koopa->GetIsAttacking())) {
 			LowerLevel();
 		}
-		else koopa->SetState(KOOPA_STATE_ATTACKING);
+		else if ((isHolding) && ((koopa->GetIsDefense()) || koopa->GetIsWaiting() || koopa->GetIsTurnOver()))
+		{
+			koopa->SetIsHeld(true);
+		}
+		else {
+			koopa->SetState(KOOPA_STATE_ATTACKING);
+		}
 	}
 	
 }
@@ -391,10 +398,19 @@ int CMario::GetAniIdRaccoon()
 		}
 		else
 		{
-			if (nx >= 0)
-				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
-			else
-				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
+			if (!isHolding) {
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
+			}
+			else {
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
+			}
+			
 		}
 	}
 	else
@@ -408,8 +424,14 @@ int CMario::GetAniIdRaccoon()
 		else
 			if (vx == 0)
 			{
-				if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
-				else aniId = ID_ANI_MARIO_RACCOON_IDLE_LEFT;
+				if (!isHolding) {
+					if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
+					else aniId = ID_ANI_MARIO_RACCOON_IDLE_LEFT;
+				}
+				else {
+					if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
+					else aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
+				}
 			}
 			else if (vx > 0)
 			{
@@ -417,8 +439,10 @@ int CMario::GetAniIdRaccoon()
 					aniId = ID_ANI_MARIO_RACCOON_BRACE_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_RACCOON_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X || (isDeceleration))
-					aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X || (isDeceleration)) {
+					if (!isHolding) { aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT; }
+					else { aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT; }
+				}
 			}
 			else // vx < 0
 			{
@@ -427,7 +451,8 @@ int CMario::GetAniIdRaccoon()
 				else if (ax == -MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
 				else if (ax == -MARIO_ACCEL_WALK_X || isDeceleration)
-					aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT;
+					if (!isHolding) { aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT; }
+					else { aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT; }
 			}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
@@ -450,11 +475,6 @@ void CMario::Render()
 		aniId = GetAniIdFire();
 	else if (level == MARIO_LEVEL_RACCOON)
 		aniId = GetAniIdRaccoon();
-	else if (isHoldKoopa == true) {
-		//DebugOut(L"[oke] HOLDKKOPA: %d\n", isHoldKoopa);
-		DebugOut(L"[oke] \n");
-		aniId = ID_ANI_MARIO_RACCOON_HOLD_RIGHT;
-	}
 	animations->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -467,9 +487,7 @@ void CMario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE_SUMMON_KOOPA:
-		isHoldKoopa = true;
-		
-		Summon(KOOPA_STATE_TURN_OVER);
+		isHolding = true;
 		break;
 	case MARIO_STATE_DECELERATION:
 		isDeceleration = true;
@@ -477,6 +495,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (isSitting) break;
 		isDeceleration = false;
+		isHolding = true;
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
@@ -484,6 +503,8 @@ void CMario::SetState(int state)
 	case MARIO_STATE_RUNNING_LEFT:
 		if (isSitting) break;
 		isDeceleration = false;
+		isHolding = true;
+
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
@@ -560,16 +581,17 @@ void CMario::SetState(int state)
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (level == MARIO_LEVEL_RACCOON){
+		
 		if (isSitting)
 		{
-			left = x - MARIO_RACCOON_SITTING_BBOX_WIDTH / 2;
+			left = x - MARIO_RACCOON_SITTING_BBOX_WIDTH / 2 ;
 			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
 			right = left + MARIO_RACCOON_SITTING_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
 		}
 		else
 		{
-			left = x - MARIO_RACCOON_BBOX_WIDTH / 2;
+			left = x - MARIO_RACCOON_BBOX_WIDTH / 2 ;
 			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
 			right = left + MARIO_RACCOON_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
@@ -643,10 +665,9 @@ void CMario::LowerLevel() {
 	}
 }
 
-void CMario::Summon(int type) {
+void CMario::Summon(CGameObject *game_object) {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CKoopa* koopa = new CKoopa(x, y);
 	scene->CreateObject(koopa);
 	koopa->SetIsSummon(true);
-	koopa->SetState(type);
 }

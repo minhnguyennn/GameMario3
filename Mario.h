@@ -129,8 +129,10 @@
 #define ID_ANI_MARIO_RACCOON_BRACE_RIGHT 3001
 #define ID_ANI_MARIO_RACCOON_BRACE_LEFT 3000
 
-#define ID_ANI_MARIO_RACCOON_HOLD_RIGHT 3101
-#define ID_ANI_MARIO_RACCOON_HOLD_LEFT 3100
+#define ID_ANI_MARIO_RACCOON_IDLE_HOLD_RIGHT 3201
+#define ID_ANI_MARIO_RACCOON_IDLE_HOLD_LEFT 3200
+#define ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT 3101
+#define ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT 3100
 
 #pragma endregion
 
@@ -148,7 +150,6 @@
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
 
 #define MARIO_RACCOON_BBOX_WIDTH  22
-#define MARIO_RACCOON_BBOX_HEIGHT 24
 #define MARIO_RACCOON_SITTING_BBOX_WIDTH  22
 #define MARIO_RACCOON_SITTING_BBOX_HEIGHT 16
 
@@ -182,7 +183,7 @@ class CMario : public CGameObject
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
 	BOOLEAN isDeceleration;
-	BOOLEAN isHoldKoopa;
+	BOOLEAN isHolding;
 
 	
 
@@ -204,7 +205,7 @@ class CMario : public CGameObject
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
-		isHoldKoopa = false;
+		isHolding = false;
 		isSitting = false;
 		isDeceleration = false;
 		maxVx = 0.0f;
@@ -220,6 +221,10 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
+
+
+	void SetIsHolding(bool isHolding) { this->isHolding = isHolding; };
+	bool GetIsHolding() { return isHolding; };
 
 	int IsCollidable()
 	{ 
@@ -242,5 +247,5 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void CountDown1Second();
 	void LowerLevel();
-	void Summon(int type);
+	void Summon(CGameObject* game_object);
 };

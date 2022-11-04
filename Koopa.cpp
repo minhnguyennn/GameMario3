@@ -8,7 +8,8 @@
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (isDefense || isWaiting || isAttacking || isDie || isTurnOver)
+	if ((isTurnOver) && (isDie)) return;
+	if (isDefense || isWaiting || isAttacking || isTurnOver)
 	{
 		left = x - KOOPA_BBOX_WAITING / 2;
 		top = y - KOOPA_BBOX_WAITING / 2;
@@ -117,7 +118,7 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 		DebugOut(L"[OKE]");
 		if (isAttacking) {
 			
-			df_koopa->SetState(KOOPA_STATE_TURN_OVER);
+			df_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
 			//df_koopa->SetState(KOOPA_STATE_DIE);
 		}
 	}
@@ -132,8 +133,11 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-
-
+	if (isHeld)
+	{
+		ChangePositionFollowMario();
+	}
+	
 	if (isSummon) {
 		y = mario->GetY();
 		//DebugOut(L"[oke] right: %d\n", mario->GetState());
@@ -193,17 +197,34 @@ void CKoopa::SetState(int state)
 
 	switch (state)
 	{
+	case KOOPA_STATE_DIE_TURN_OVER:
+	{
+		if (isSummon == true) {
+			ay = 0;
+		}
+
+		isTurnOver = true;
+		isDie = true;
+		isWaiting = false;
+		isAttacking = false;
+		isDefense = false;
+		vx = -0.05f;
+		vy = -0.05f;
+		break;
+	}
 	case KOOPA_STATE_TURN_OVER:
 	{
 		if (isSummon == true) {
 			ay = 0;
 		}
+		
 		isTurnOver = true;
 		isDie = false;
 		isWaiting = false;
 		isAttacking = false;
 		isDefense = false;
-		vx = 0;
+		vx = -0.05f;
+		vy = -0.05f;
 		break;
 	}
 	case KOOPA_STATE_DIE:
@@ -226,6 +247,7 @@ void CKoopa::SetState(int state)
 		isAttacking = true;
 		isDefense = false;
 		isTurnOver = false;
+		isHeld = false;
 		break;
 	}
 	case KOOPA_STATE_WAITING:
@@ -235,6 +257,8 @@ void CKoopa::SetState(int state)
 		isWaiting = true;
 		isDefense = false;
 		isAttacking = false;
+		isHeld = false;
+
 		isTurnOver = false;
 		waiting_start = GetTickCount64();
 		break;
@@ -246,6 +270,8 @@ void CKoopa::SetState(int state)
 		close_start = GetTickCount64();
 		isDefense = true;
 		isTurnOver = false;
+		isHeld = false;
+
 		isAttacking = false;
 		isWaiting = false;
 		break;
@@ -253,11 +279,12 @@ void CKoopa::SetState(int state)
 	case KOOPA_STATE_WALKING:
 	{
 		ay = KOOPA_GRAVITY;
-		vx = -KOOPA_WALKING_SPEED;
+		vx = -KOOPA_WALKING_SPEED *-isLeftWithMario();
 		if (isWaiting) y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 		isWaiting = false;
 		isDefense = false;
 		isAttacking = false;
+		isHeld = false;
 		isTurnOver = false;
 		break;
 	}
@@ -273,5 +300,21 @@ int CKoopa::isLeftWithMario()
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (x < mario->GetX()) return -1;
 	else return 1;
+}
+
+void CKoopa::ChangePositionFollowMario()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (mario->GetNx() <0) {
+		x = mario->GetX() - MARIO_BIG_BBOX_WIDTH - 1;
+	}
+	else {
+		x = mario->GetX() + MARIO_BIG_BBOX_WIDTH + 1;
+
+	}
+	y = mario->GetY() - 2;
+	//vx = mario->GetVX();
+	vy = mario->GetVY();
 }
 

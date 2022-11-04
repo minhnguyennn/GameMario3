@@ -24,6 +24,7 @@
 #define KOOPA_STATE_RETURN_WALKING 800
 #define KOOPA_STATE_ATTACKING 900
 #define KOOPA_STATE_TURN_OVER 300
+#define KOOPA_STATE_DIE_TURN_OVER 320
 #define KOOPA_STATE_DIE 400
 
 #define ID_ANI_KOOPA_WALKING_LEFT 5010
@@ -50,6 +51,7 @@ protected:
 	bool isAttacking;
 	bool isDie;
 	bool isSummon;
+	bool isHeld;
 	
 
 	ULONGLONG close_start;
@@ -70,6 +72,7 @@ public:
 		isWaiting = false;
 		isAttacking = false;
 		isSummon = false;
+		isHeld = false;
 		close_start = -1;
 		waiting_start = -1;
 		SetState(KOOPA_STATE_WALKING);
@@ -78,8 +81,11 @@ public:
 	
 
 	void SetIsSummon(bool isSummon) { this->isSummon = isSummon; };
-
 	bool GetIsDefense() { return isDefense; };
+
+	void SetIsHeld(bool isHeld) { this->isHeld = isHeld; };
+	bool GetIsHeld() { return isHeld; };
+
 
 	bool GetIsTurnOver () { return isTurnOver; };
 	bool GetIsWaiting() { return isWaiting; };
@@ -92,4 +98,5 @@ public:
 	int isLeftWithMario();
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void ChangePositionFollowMario();
 };
