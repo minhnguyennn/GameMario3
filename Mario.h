@@ -65,6 +65,11 @@
 
 #define ID_ANI_MARIO_DIE 999
 
+#define ID_ANI_MARIO_IDLE_HOLD_RIGHT 3301
+#define ID_ANI_MARIO_IDLE_HOLD_LEFT 3300
+#define ID_ANI_MARIO_HOLD_WALK_RIGHT 3401
+#define ID_ANI_MARIO_HOLD_WALK_LEFT 3400
+
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1101
 #define ID_ANI_MARIO_SMALL_IDLE_LEFT 1100
@@ -83,6 +88,11 @@
 
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1601
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1600
+
+#define ID_ANI_MARIO_SMALL_IDLE_HOLD_RIGHT 3501
+#define ID_ANI_MARIO_SMALL_IDLE_HOLD_LEFT 3500
+#define ID_ANI_MARIO_SMALL_HOLD_WALK_RIGHT 3601
+#define ID_ANI_MARIO_SMALL_HOLD_WALK_LEFT 3600
 
 
 //FIRE MARIO
@@ -106,6 +116,11 @@
 
 #define ID_ANI_MARIO_FIRE_BRACE_RIGHT 2301
 #define ID_ANI_MARIO_FIRE_BRACE_LEFT 2300
+
+#define ID_ANI_MARIO_FIRE_IDLE_HOLD_RIGHT 3701
+#define ID_ANI_MARIO_FIRE_IDLE_HOLD_LEFT 3700
+#define ID_ANI_MARIO_FIRE_HOLD_WALK_RIGHT 3801
+#define ID_ANI_MARIO_FIRE_HOLD_WALK_LEFT 3800
 
 //RACCOON MARIO
 #define ID_ANI_MARIO_RACCOON_IDLE_RIGHT 2401
@@ -184,6 +199,7 @@ class CMario : public CGameObject
 	BOOLEAN isSitting;
 	BOOLEAN isDeceleration;
 	BOOLEAN isHolding;
+	BOOLEAN isRunning;
 
 	
 
@@ -205,6 +221,7 @@ class CMario : public CGameObject
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
+		isRunning = false;
 		isHolding = false;
 		isSitting = false;
 		isDeceleration = false;
@@ -223,8 +240,9 @@ public:
 	void SetState(int state);
 
 
-	void SetIsHolding(bool isHolding) { this->isHolding = isHolding; };
+	void SetIsHolding(bool isHolding) { this->isHolding = isHolding; }
 	bool GetIsHolding() { return isHolding; };
+	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }
 
 	int IsCollidable()
 	{ 

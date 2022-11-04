@@ -75,7 +75,7 @@ public:
 		isHeld = false;
 		close_start = -1;
 		waiting_start = -1;
-		SetState(KOOPA_STATE_WALKING);
+		SetState(KOOPA_STATE_CLOSE_SHELL);
 	};
 	void SetState(int state);
 	

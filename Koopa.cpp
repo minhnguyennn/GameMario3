@@ -8,7 +8,7 @@
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if ((isTurnOver) && (isDie)) return;
+	if ((isDie)) return;
 	if (isDefense || isWaiting || isAttacking || isTurnOver)
 	{
 		left = x - KOOPA_BBOX_WAITING / 2;
@@ -114,22 +114,25 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 {
 	//Different Koopa will turned over and died.
 	CKoopa* df_koopa = dynamic_cast<CKoopa*>(e->obj);
-	if ((e->nx != 0) || (e->nx < 0)) {
-		DebugOut(L"[OKE]");
-		if (isAttacking) {
-			
+	//DebugOut(L"e->nx %f", e->nx);
+		if ((isAttacking) || (isHeld)) {
+
 			df_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
 			//df_koopa->SetState(KOOPA_STATE_DIE);
 		}
-	}
+	
 }
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
+	DebugOut(L"x y %f %f \n", x,y);
+
+	//DebugOut(L"isHeld %d \n", isHeld);
 	//DebugOut(L"AY VY %f %f \n", ay, vy);
 	//DebugOut(L"[OKE] x: %f\n", start_x);
 	//DebugOut(L"[OKE] isDefense  %d  \n", isDefense);
+	//DebugOut(L"isDie %d", isDie);
 
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
@@ -307,14 +310,14 @@ void CKoopa::ChangePositionFollowMario()
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetNx() <0) {
-		x = mario->GetX() - MARIO_BIG_BBOX_WIDTH - 1;
+		x = mario->GetX() - MARIO_BIG_BBOX_WIDTH +1;
 	}
 	else {
-		x = mario->GetX() + MARIO_BIG_BBOX_WIDTH + 1;
+		x = mario->GetX() + MARIO_BIG_BBOX_WIDTH - 1;
 
 	}
 	y = mario->GetY() - 2;
-	//vx = mario->GetVX();
+	vx = mario->GetVX()-0.05f;
 	vy = mario->GetVY();
 }
 
