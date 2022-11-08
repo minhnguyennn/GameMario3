@@ -265,5 +265,5 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void CountDown1Second();
 	void LowerLevel();
-	void Summon(CGameObject* game_object);
+	void SummonFireBalls();
 };

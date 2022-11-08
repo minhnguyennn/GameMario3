@@ -31,6 +31,7 @@ class CFireBalls : public CGameObject {
 	float start_x;
 	ULONGLONG time_line;
 	bool check_delete_bullet = 0;
+	bool isMario;
 public:
 	CFireBalls(float x, float y);
 	void OnNoCollision(DWORD dt);

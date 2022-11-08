@@ -308,14 +308,14 @@ void CKoopa::ChangePositionFollowMario()
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetNx() <0) {
-		x = mario->GetX() - MARIO_BIG_BBOX_WIDTH +1;
+		x = mario->GetX() - 19 +1;
 	}
 	else {
-		x = mario->GetX() + MARIO_BIG_BBOX_WIDTH - 1;
+		x = mario->GetX() + 19 - 1;
 
 	}
 	y = mario->GetY() - 2;
-	vx = mario->GetVX()-0.05f;
+	//vx = mario->GetVX()-0.05f;
 	vy = mario->GetVY();
 }
 

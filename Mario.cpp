@@ -12,6 +12,7 @@
 #include "QuestionBrick.h"
 #include "Point.h"
 #include "Koopa.h"
+#include "FireBalls.h"
 #include "Platform.h"
 #include "Collision.h"
 #include "PlayScene.h"
@@ -21,6 +22,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//DebugOut(L"isHold %d \n", isHolding);
 	//DebugOut(L"Level %d", level);
 	// DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
+	
 	//CountDown1Second();
 	vy += ay * dt;
 	vx += ax * dt;
@@ -724,9 +726,16 @@ void CMario::LowerLevel() {
 	}
 }
 
-void CMario::Summon(CGameObject *game_object) {
+void CMario::SummonFireBalls() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CKoopa* koopa = new CKoopa(x, y);
-	scene->CreateObject(koopa);
-	koopa->SetIsSummon(true);
+	CFireBalls* frBalls = new CFireBalls(x, y);
+	scene->CreateObject(frBalls);
+	
+	if (this->nx < 0) {
+		DebugOut(L">>> NX >>> %d\n", nx);
+		frBalls->SetState(FIREBALLS_STATE_MOVE_LEFT);
+	}
+	else {
+		frBalls->SetState(FIREBALLS_STATE_MOVE_RIGHT);
+	}
 }
