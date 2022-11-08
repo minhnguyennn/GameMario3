@@ -1,35 +1,38 @@
 #include "FireBalls.h"
 #include "debug.h"
 #include "PlayScene.h"
+#include "Mario.h"
+#include "Pipeline.h"
 
 CFireBalls::CFireBalls(float x, float y) :CGameObject(x, y)
 {
-	this->ay = FIREBALLS_GRAVITY;
-	vx = 0.05f;
-	this->start_x = x;
-	SetState(FIREBALLS_STATE_DOWN);
+	//this->ay = FIREBALLS_GRAVITY;
+	//this->start_x = x;
+	//SetState(FIREBALLS_STATE_MOVE_RIGHT);
 }
 
 void CFireBalls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	vy += ay * dt;
-	//DebugOut(L"[TEST] start_x: %d\n", x);
-	if (vy < 0) {
-		if ((x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
-			//DebugOut(L"[OK1] \n");
-			start_x = 0;
-			SetState(FIREBALLS_STATE_DOWN);
-		}
-	}
 
-	if (vy > 0) {
-		if ((x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
-			//DebugOut(L"[OK1] \n");
-			start_x = 0;
-			SetState(FIREBALLS_STATE_UP);
-		}
-	}
 	
 
+
+	//vy += ay * dt;
+	//DebugOut(L"[TEST] start_x: %d\n", x);
+	//if (vy < 0) {
+	//	if ((x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
+	//		//DebugOut(L"[OK1] \n");
+	//		start_x = 0;
+	//		SetState(FIREBALLS_STATE_DOWN);
+	//	}
+	//}
+
+	//if (vy > 0) {
+	//	if ((x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
+	//		//DebugOut(L"[OK1] \n");
+	//		start_x = 0;
+	//		SetState(FIREBALLS_STATE_UP);
+	//	}
+	//}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -56,10 +59,11 @@ void CFireBalls::OnNoCollision(DWORD dt) {
 
 void CFireBalls::SetState(int state)
 {
+	
 	switch (state)
 	{
 	case FIREBALLS_STATE_DOWN:
-		vy = FIREBALLS_MOVING_SPEED;
+		vy = FIREBALLS_SPEED_Y;
 		ay = FIREBALLS_GRAVITY;
 		start_x = x;
 		break;
@@ -69,13 +73,26 @@ void CFireBalls::SetState(int state)
 		break;
 	}
 	case FIREBALLS_STATE_UP:
-		vy = -FIREBALLS_MOVING_SPEED;
+		vy = -FIREBALLS_SPEED_Y;
 		ay = -FIREBALLS_GRAVITY;
 		start_x = x;
 		break;
-	case FIREBALLS_STATE_IDLE:
-		vy = 0;
-		ay = 0;
+	case FIREBALLS_STATE_MOVE_RIGHT:
+		vx = FIREBALLS_SPEED_X;
+
+		break;
+	case FIREBALLS_STATE_MOVE_LEFT:
+		vx = -FIREBALLS_SPEED_X;
+
+		break;
+	case FIREBALLS_STATE_MOVE_RIGHT_TOP:
+		vx = FIREBALLS_SPEED_X;
+		vy = -FIREBALLS_SPEED_Y;
+		
+		break;
+	case FIREBALLS_STATE_MOVE_LEFT_TOP:
+		vx = -FIREBALLS_SPEED_X;
+		vy = -FIREBALLS_SPEED_Y;
 		break;
 	default:
 		break;

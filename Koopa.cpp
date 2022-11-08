@@ -116,7 +116,6 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 	CKoopa* df_koopa = dynamic_cast<CKoopa*>(e->obj);
 	//DebugOut(L"e->nx %f", e->nx);
 		if ((isAttacking) || (isHeld)) {
-
 			df_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
 			//df_koopa->SetState(KOOPA_STATE_DIE);
 		}
@@ -126,7 +125,7 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	DebugOut(L"x y %f %f \n", x,y);
+	//DebugOut(L"x y %f %f \n", x,y);
 
 	//DebugOut(L"isHeld %d \n", isHeld);
 	//DebugOut(L"AY VY %f %f \n", ay, vy);
@@ -261,7 +260,6 @@ void CKoopa::SetState(int state)
 		isDefense = false;
 		isAttacking = false;
 		isHeld = false;
-
 		isTurnOver = false;
 		waiting_start = GetTickCount64();
 		break;

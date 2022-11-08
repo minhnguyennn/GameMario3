@@ -47,7 +47,6 @@ void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//DebugOut(L"[OK1] \n");
 		if (state == VFTRAP_STATE_UP) {
 			SetState(VFTRAP_STATE_IDLE);
-			SetSummonItems(VFTRAP_TYPE_FIRE_BALL);
 		}
 		else if (state == VFTRAP_STATE_IDLE) {
 			ChangeStateMotionDown();
@@ -99,6 +98,7 @@ void CVenusFireTrap::SetState(int state)
 
 void CVenusFireTrap::ChangeStateMotionDown() {
 	if ((GetTickCount64() - time_line) > VFTRAP_WAITING_MAX) {
+		SetSummonItems(VFTRAP_TYPE_FIRE_BALL);
 		SetState(VFTRAP_STATE_DOWN);
 	}
 }
@@ -115,8 +115,25 @@ void CVenusFireTrap::SetSummonItems(int type) {
 	{
 	case VFTRAP_TYPE_FIRE_BALL:
 	{
+		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+		CMario* mario = (CMario*)scene->GetPlayer();
 		CFireBalls* fire_balls = new CFireBalls(x, y);
 		scene->CreateObject(fire_balls);
+		if (mario->GetX() > x) {
+			if (mario->GetY() < y) {
+				fire_balls->SetState(FIREBALLS_STATE_MOVE_RIGHT_TOP);
+			}
+			fire_balls->SetState(FIREBALLS_STATE_MOVE_RIGHT);
+		}
+		else if (mario->GetX() < x){
+			if (mario->GetY() < y) {
+				fire_balls->SetState(FIREBALLS_STATE_MOVE_LEFT_TOP);
+			}
+			fire_balls->SetState(FIREBALLS_STATE_MOVE_LEFT);
+		}
+		else {
+			return;
+		}
 		break;
 	}
 	case VFTRAP_TYPE_POINT:

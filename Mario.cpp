@@ -144,21 +144,22 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		else koopa->SetState(KOOPA_STATE_ATTACKING);
 	}
 	else if (e->nx != 0) {
+		
 		if ((koopa->GetState() == KOOPA_STATE_WALKING) || (koopa->GetIsAttacking())) {
 			LowerLevel();
 		}
-		else if (((isRunning) && !(isHolding)) || (isHolding))
+		else if (isRunning)
 		{
+			//DebugOut(L"[OKE2] \n");
 			isHolding = true;
-
 			koopa->SetIsHeld(true);
 		}
 		else {
+			//DebugOut(L"[OKE1] \n");
 			//isHolding = false;
 			koopa->SetState(KOOPA_STATE_ATTACKING);
 		}
 	}
-	
 }
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
