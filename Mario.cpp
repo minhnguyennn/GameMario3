@@ -16,6 +16,7 @@
 #include "Platform.h"
 #include "Collision.h"
 #include "PlayScene.h"
+#include "FireBallOfMario.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
@@ -728,14 +729,11 @@ void CMario::LowerLevel() {
 
 void CMario::SummonFireBalls() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CFireBalls* frBalls = new CFireBalls(x, y);
+	CFireBallOfMario* frBalls = new CFireBallOfMario(x, y);
 	scene->CreateObject(frBalls);
-	
-	if (this->nx < 0) {
-		DebugOut(L">>> NX >>> %d\n", nx);
-		frBalls->SetState(FIREBALLS_STATE_MOVE_LEFT);
-	}
-	else {
-		frBalls->SetState(FIREBALLS_STATE_MOVE_RIGHT);
+	if (this->nx > 0) {
+		frBalls->SetState(FIREBALLS_STATE_RIGHT);
+	} else {
+		frBalls->SetState(FIREBALLS_STATE_LEFT);
 	}
 }

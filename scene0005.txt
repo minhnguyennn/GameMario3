@@ -9,6 +9,7 @@ koopa.txt
 goomba.txt
 venusFireTrap.txt
 pipeline.txt
+effects.txt
 
 [TILEMAP]
 Resource/Tilemaps/world1-1.txt
@@ -22,6 +23,9 @@ Resource/Tilemaps/world1-1.txt
 
 ######### FireBalls ###########
 13	350	384
+
+######### FireBalls ###########
+14	550	200
 
 ######### Pipeline ###########
 12	360	384
