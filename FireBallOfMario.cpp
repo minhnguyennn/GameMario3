@@ -123,6 +123,3 @@ void CFireBallOfMario::SetState(int state)
 	}
 	CGameObject::SetState(state);
 }
-
-
-

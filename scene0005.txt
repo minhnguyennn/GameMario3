@@ -11,6 +11,7 @@ venusFireTrap.txt
 pipeline.txt
 effects.txt
 koopaParatroopas.txt
+paraGoomba.txt
 
 [TILEMAP]
 Resource/Tilemaps/world1-1.txt
@@ -21,6 +22,9 @@ Resource/Tilemaps/world1-1.txt
 
 ########## Mario #########
 0	550	300
+
+######### Para goomba ###########
+16	550	300
 
 ######### Koopa Paratropas ###########
 15	550	300
@@ -39,7 +43,7 @@ Resource/Tilemaps/world1-1.txt
 11	390	378
 
 ######### Goomba ###########
-2	550	300
+#2	550	300
 #2	224	401
 #2	528	401
 #2	832	385

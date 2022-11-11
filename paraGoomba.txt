@@ -1,0 +1,16 @@
+# id	left	top	right	bottom	texture_id
+#enimes_3
+[SPRITES]
+#WALK
+31041	263	3	282	20	40
+31042	213	3	232	20	40
+31043	163	0	182	23	40
+31044	113	0	132	23	40
+
+#DIE
+32041	315	7	330	16	40
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+5040	31041	100	31042	100	31043	100	31044	100
+5041	32041	100
