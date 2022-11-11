@@ -124,7 +124,7 @@
       <Filter>Header Files\Object\Effects</Filter>
     </ClCompile>
     <ClCompile Include="FireBallOfMario.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files\Object\Effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +225,7 @@
       <Filter>Header Files\Object\Effects</Filter>
     </ClInclude>
     <ClInclude Include="FireBallOfMario.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Object\Effects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

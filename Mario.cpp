@@ -92,7 +92,7 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	float plant_form_y = platform->GetY();
-	if (!platform->IsBlocking()) {
+	/*if (!platform->IsBlocking()) {*/
 		if (e->ny < 0) {
 			vy = 0;
 			if (level != MARIO_LEVEL_SMALL) {
@@ -108,7 +108,7 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 			}
 			isOnPlatform = true;
 		}
-	}
+	/*}*/
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)

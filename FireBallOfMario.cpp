@@ -3,6 +3,7 @@
 #include "PlayScene.h"
 #include "Mario.h"
 #include "Pipeline.h"
+#include"Platform.h"
 
 CFireBallOfMario::CFireBallOfMario(float x, float y) :CGameObject(x, y)
 {
@@ -10,15 +11,17 @@ CFireBallOfMario::CFireBallOfMario(float x, float y) :CGameObject(x, y)
 }
 
 void CFireBallOfMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	if (vy < 0 && abs(x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
-		//DebugOut(L"[OK1] \n");
-		SetState(FIREBALLS_STATE_DOWN);
-	}
+	vy += ay * dt;
 
-	if (vy > 0 && abs(x - start_x) > FIREBALLS_DISTANCE_MAX_DOWN) {
-		//DebugOut(L"[OK2] \n");
-		SetState(FIREBALLS_STATE_UP);
-	}
+	//if (vy < 0 && abs(x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
+	//	//DebugOut(L"[OK1] \n");
+	//	SetState(FIREBALLS_STATE_DOWN);
+	//}
+
+	//if (vy > 0 && abs(x - start_x) > FIREBALLS_DISTANCE_MAX_DOWN) {
+	//	//DebugOut(L"[OK2] \n");
+	//	SetState(FIREBALLS_STATE_UP);
+	//}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -41,7 +44,17 @@ void CFireBallOfMario::GetBoundingBox(float& l, float& t, float& r, float& b)
 void CFireBallOfMario::OnNoCollision(DWORD dt) {
 	x += vx * dt;
 	y += vy * dt;
+
 }
+
+void CFireBallOfMario::OnCollisionWith(LPCOLLISIONEVENT e){
+	if (e->ny != 0 && e->obj->IsBlocking())
+	{
+		vy = -FIREBALLS_SPEED_Y;
+	}
+}
+
+
 
 void CFireBallOfMario::SetState(int state)
 {
@@ -63,8 +76,9 @@ void CFireBallOfMario::SetState(int state)
 		break;
 	}
 	case FIREBALLS_STATE_UP:
-		vy = -FIREBALLS_SPEED_Y;
-		start_x = x;
+		//vy = -FIREBALLS_SPEED_Y;
+		ay = FIREBALLS_GRAVITY;
+		//start_x = x;
 		break;
 	default:
 		break;

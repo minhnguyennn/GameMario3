@@ -30,13 +30,21 @@ class CFireBallOfMario : public CGameObject {
 	float start_x;
 	ULONGLONG time_line;
 	bool check_delete_bullet = 0;
+
+	
+	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
+
 public:
 	CFireBallOfMario(float x, float y);
-	void OnNoCollision(DWORD dt);
 	void SetState(int state);
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
+	int IsCollidable() { return 1; };
+
+	void OnNoCollision(DWORD dt);
+	void OnCollisionWith(LPCOLLISIONEVENT e);
+	
 };
 
