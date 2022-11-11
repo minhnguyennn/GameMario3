@@ -1,9 +1,10 @@
 #include "FireBallOfMario.h"
 #include "debug.h"
 #include "PlayScene.h"
-#include "Mario.h"
-#include "Pipeline.h"
-#include"Platform.h"
+#include"Koopa.h"
+#include"KoopaParatroopas.h"
+#include"VenusFireTrap.h"
+#include"Goomba.h"
 
 #define FIREBALLS_SPEED_Y 0.09f
 #define FIREBALLS_SPEED_X 0.06f
@@ -50,10 +51,49 @@ void CFireBallOfMario::OnNoCollision(DWORD dt) {
 }
 
 void CFireBallOfMario::OnCollisionWith(LPCOLLISIONEVENT e){
-	if (e->obj->IsBlocking())
-	{
+	if (e->ny != 0 && e->obj->IsBlocking()) {
 		vy = -FIREBALLS_SPEED_Y;
 	}
+	else if (e->nx != 0 && e->obj->IsBlocking()) {
+		vx = -vx;
+	} 
+
+	if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CKoopaParatroopas*>(e->obj))
+		OnCollisionWithKoopaParatroopas(e);
+	else if (dynamic_cast<CVenusFireTrap*>(e->obj))
+		OnCollisionWithVenusFireTrap(e);
+	else if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
+}
+
+void CFireBallOfMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+	//Koopa will turned over and died.
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+	goomba->SetState(GOOMBA_STATE_DIE);
+}
+
+void CFireBallOfMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
+{
+	//Koopa will turned over and died.
+	CVenusFireTrap* venus_fire_trap = dynamic_cast<CVenusFireTrap*>(e->obj);
+	venus_fire_trap->SetState(VFTRAP_STATE_DIE);
+}
+
+void CFireBallOfMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
+{
+	//Koopa will turned over and died.
+	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+	koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
+}
+
+void CFireBallOfMario::OnCollisionWithKoopaParatroopas(LPCOLLISIONEVENT e)
+{
+	//Koopa paratroopa will turned over and died.
+	CKoopaParatroopas* koopa_paratroopa = dynamic_cast<CKoopaParatroopas*>(e->obj);
+	koopa_paratroopa->SetState(KOOPA_PARATROOPAS_STATE_DIE_TURN_OVER);
 }
 
 void CFireBallOfMario::SetState(int state)

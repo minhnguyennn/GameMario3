@@ -22,23 +22,24 @@ Resource/Tilemaps/world1-1.txt
 ########## Mario #########
 0	550	300
 
-######### KoopaParatropas ###########
+######### Koopa Paratropas ###########
 15	550	300
 
-######### FireBalls ###########
+######### Fire Balls ###########
 13	350	384
 
-######### FireBalls of Mario ###########
+######### Fire Balls of Mario ###########
 14	550	200
 
 ######### Pipeline ###########
 12	360	384
 
-######### PiranhaPlant ###########
+######### Venus fire trap ###########
 11	330	378
 11	390	378
 
 ######### Goomba ###########
+2	550	300
 #2	224	401
 #2	528	401
 #2	832	385
@@ -74,7 +75,7 @@ Resource/Tilemaps/world1-1.txt
 4	1809	96
 4	1841	128
 
-######### Quesionbrick ###########
+######### Quesion Brick ###########
 #coin
 6	176	352	1
 6	192	352	1
@@ -87,7 +88,7 @@ Resource/Tilemaps/world1-1.txt
 6	1472	368	2
 6	656	384	2
 
-#mushroom
+#Mushroom
 6	1440	128	3
 
 
