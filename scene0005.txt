@@ -10,6 +10,7 @@ goomba.txt
 venusFireTrap.txt
 pipeline.txt
 effects.txt
+koopaParatroopas.txt
 
 [TILEMAP]
 Resource/Tilemaps/world1-1.txt
@@ -19,12 +20,15 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	550	200
+0	550	300
+
+######### KoopaParatropas ###########
+15	550	300
 
 ######### FireBalls ###########
 13	350	384
 
-######### FireBalls ###########
+######### FireBalls of Mario ###########
 14	550	200
 
 ######### Pipeline ###########

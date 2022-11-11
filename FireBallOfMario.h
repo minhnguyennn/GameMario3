@@ -30,10 +30,6 @@ class CFireBallOfMario : public CGameObject {
 	float start_x;
 	ULONGLONG time_line;
 	bool check_delete_bullet = 0;
-
-	
-	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
-
 public:
 	CFireBallOfMario(float x, float y);
 	void SetState(int state);

@@ -19,6 +19,7 @@
 #include "Pipeline.h"
 #include "FireBalls.h"
 #include "FireBallOfMario.h"
+#include "KoopaParatroopas.h"
 
 
 
@@ -137,7 +138,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_VFTRAP: obj = new CVenusFireTrap(x, y); break;
 	case OBJECT_TYPE_PIPELINE: obj = new CPipeline(x, y); break;
 	case OBJECT_TYPE_FIREBALLS: obj = new CFireBalls(x, y); break;
-	case OBJECT_TYPE_FIREBALLOFMARIO: obj = new CFireBallOfMario(x, y); break; 
+	case OBJECT_TYPE_FIREBALL_OF_MARIO: obj = new CFireBallOfMario(x, y); break;
+	case OBJECT_TYPE_KOOPA_PARATROOPAS: obj = new CKoopaParatroopas(x, y); break;
 	case OBJECT_TYPE_POINT:
 	{
 		int type_point = (int)atof(tokens[3].c_str());

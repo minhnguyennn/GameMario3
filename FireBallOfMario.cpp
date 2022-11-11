@@ -48,7 +48,7 @@ void CFireBallOfMario::OnNoCollision(DWORD dt) {
 }
 
 void CFireBallOfMario::OnCollisionWith(LPCOLLISIONEVENT e){
-	if (e->ny != 0 && e->obj->IsBlocking())
+	if (e->obj->IsBlocking())
 	{
 		vy = -FIREBALLS_SPEED_Y;
 	}

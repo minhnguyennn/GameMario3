@@ -126,6 +126,9 @@
     <ClCompile Include="FireBallOfMario.cpp">
       <Filter>Header Files\Object\Effects</Filter>
     </ClCompile>
+    <ClCompile Include="KoopaParatroopas.cpp">
+      <Filter>Header Files\Object\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="FireBallOfMario.h">
       <Filter>Header Files\Object\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="KoopaParatroopas.h">
+      <Filter>Header Files\Object\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
