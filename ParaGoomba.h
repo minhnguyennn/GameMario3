@@ -2,8 +2,9 @@
 #include "GameObject.h"
 
 //PROPERTY
-#define GOOMBA_GRAVITY 0.002f
+#define GOOMBA_GRAVITY 0.0001f
 #define GOOMBA_WALKING_SPEED 0.05f
+#define GOOMBA_FLY_SPEED 0.09f
 #define GOOMBA_DIE_TIMEOUT 500
 
 //BBOX

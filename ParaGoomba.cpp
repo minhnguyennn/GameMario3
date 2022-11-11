@@ -2,7 +2,6 @@
 
 CParaGoomba::CParaGoomba(float x, float y) :CGameObject(x, y)
 {
-	this->ax = 0;
 	this->ay = GOOMBA_GRAVITY;
 	die_start = -1;
 	SetState(GOOMBA_STATE_WALKING);
@@ -39,7 +38,7 @@ void CParaGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (e->ny != 0)
 	{
-		vy = 0;
+		vy = -GOOMBA_FLY_SPEED;
 	}
 	else if (e->nx != 0)
 	{
@@ -50,7 +49,6 @@ void CParaGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 void CParaGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	vx += ax * dt;
 
 	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
 	{
