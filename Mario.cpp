@@ -17,6 +17,7 @@
 #include "Collision.h"
 #include "PlayScene.h"
 #include "FireBallOfMario.h"
+#include "KoopaParatroopas.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
@@ -85,6 +86,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatform(e);
+	else if (dynamic_cast<CKoopaParatroopas*>(e->obj))
+		OnCollisionWithKoopaParatroopas(e);
 }
 
 void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
@@ -141,7 +144,9 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		koopa->SetVY(-KOOPA_JUMP_DEFLECT_SPEED);
 		if (!koopa->GetIsDefense() && !koopa->GetIsWaiting())
 		{
-			if (koopa->GetIsAttacking()) koopa->SetY(koopa->GetY() - 5);
+			if (koopa->GetIsAttacking()) {
+				koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
+			}
 			koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 		}
 		else koopa->SetState(KOOPA_STATE_ATTACKING);
@@ -161,6 +166,44 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			//DebugOut(L"[OKE1] \n");
 			//isHolding = false;
 			koopa->SetState(KOOPA_STATE_ATTACKING);
+		}
+	}
+}
+
+void CMario::OnCollisionWithKoopaParatroopas(LPCOLLISIONEVENT e)
+{
+	CKoopaParatroopas* koopa_paratroopas = dynamic_cast<CKoopaParatroopas*>(e->obj);
+
+	// jump on top >> kill Goomba and deflect a bit 
+	if (e->ny < 0)
+	{
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+		koopa_paratroopas->SetVY(-KOOPA_PARATROOPAS_JUMP_DEFLECT_SPEED);
+		if (!koopa_paratroopas->GetIsDefense() && !koopa_paratroopas->GetIsWaiting()) {
+			if (koopa_paratroopas->GetIsAttacking()) {
+				koopa_paratroopas->SetY(koopa_paratroopas->GetY() - KOOPA_PARATROOPAS_DISTANCE_WHEN_ATTACKING);
+			}
+			koopa_paratroopas->SetState(KOOPA_PARATROOPAS_STATE_CLOSE_SHELL);
+		}
+		else { 
+			koopa_paratroopas->SetState(KOOPA_PARATROOPAS_STATE_ATTACKING); 
+		}
+	}
+	else if (e->nx != 0) {
+
+		if ((koopa_paratroopas->GetState() == KOOPA_PARATROOPAS_STATE_WALKING) || (koopa_paratroopas->GetIsAttacking())) {
+			LowerLevel();
+		}
+		else if (isRunning)
+		{
+			//DebugOut(L"[OKE2] \n");
+			isHolding = true;
+			koopa_paratroopas->SetIsHeld(true);
+		}
+		else {
+			//DebugOut(L"[OKE1] \n");
+			//isHolding = false;
+			koopa_paratroopas->SetState(KOOPA_PARATROOPAS_STATE_ATTACKING);
 		}
 	}
 }

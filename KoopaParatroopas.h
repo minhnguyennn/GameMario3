@@ -8,6 +8,7 @@
 #define KOOPA_PARATROOPAS_ATTACKING_SPEED (KOOPA_PARATROOPAS_WALKING_SPEED * 3)
 #define KOOPA_PARATROOPAS_CLOSE_SHELL_TIMEOUT 3000
 #define KOOPA_PARATROOPAS_FLY_SPEED 0.09f
+#define KOOPA_PARATROOPAS_DISTANCE_WHEN_ATTACKING 5
 
 //BBOX OF Green Koopa Paratroopa
 #define KOOPA_PARATROOPAS_BBOX_WIDTH 17
@@ -66,7 +67,9 @@ protected:
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
-	void OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithDifferentKoopaParatroopas(LPCOLLISIONEVENT e);
+	void OnCollisionWithMario(LPCOLLISIONEVENT e);
 public:
 	CKoopaParatroopas(float x, float y) : CGameObject(x, y)
 	{

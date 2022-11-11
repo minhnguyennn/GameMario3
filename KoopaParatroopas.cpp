@@ -5,6 +5,7 @@
 #include"QuestionBrick.h"
 #include"VenusFireTrap.h"
 #include"Koopa.h"
+#include"Mario.h"
 
 
 void CKoopaParatroopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -50,7 +51,27 @@ void CKoopaParatroopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CVenusFireTrap*>(e->obj))
 		OnCollisionWithVenusFireTrap(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
-		OnCollisionWithDifferentKoopa(e);
+		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CKoopaParatroopas*>(e->obj))
+		OnCollisionWithDifferentKoopaParatroopas(e);
+	else if (dynamic_cast<CMario*>(e->obj))
+		OnCollisionWithMario(e);
+}
+
+void CKoopaParatroopas::OnCollisionWithMario(LPCOLLISIONEVENT e)
+{
+	//koopa will go back.
+	DebugOut(L"[OKE]");
+	vx = -vx;
+}
+
+void CKoopaParatroopas::OnCollisionWithDifferentKoopaParatroopas(LPCOLLISIONEVENT e)
+{
+	//Different Koopa paratroopa will turned over and died.
+	CKoopaParatroopas* koopa_paratroopa = dynamic_cast<CKoopaParatroopas*>(e->obj);
+	if ((isAttacking) || (isHeld)) {
+		koopa_paratroopa->SetState(KOOPA_PARATROOPAS_STATE_DIE_TURN_OVER);
+	}
 
 }
 
@@ -112,16 +133,13 @@ void CKoopaParatroopas::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 	}
 }
 
-void CKoopaParatroopas::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
+void CKoopaParatroopas::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
-	//Different Koopa will turned over and died.
+	//Koopa will turned over and died.
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-	//DebugOut(L"e->nx %f", e->nx);
 	if ((isAttacking) || (isHeld)) {
 		koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
-		//df_koopa->SetState(KOOPA_STATE_DIE);
 	}
-
 }
 
 void CKoopaParatroopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
