@@ -2,15 +2,19 @@
 #include "GameObject.h"
 #include "debug.h"
 
+//PROPERTY OF Green Koopa Paratroopa
 #define KOOPA_PARATROOPAS_GRAVITY 0.0002f
 #define KOOPA_PARATROOPAS_WALKING_SPEED 0.05f
-#define KOOPA_PARATROOPAS_WALKING_ATTACKING_SPEED (KOOPA_WALKING_SPEED * 3)
+#define KOOPA_PARATROOPAS_ATTACKING_SPEED (KOOPA_PARATROOPAS_WALKING_SPEED * 3)
 #define KOOPA_PARATROOPAS_CLOSE_SHELL_TIMEOUT 3000
+#define KOOPA_PARATROOPAS_FLY_SPEED 0.09f
 
+//BBOX OF Green Koopa Paratroopa
 #define KOOPA_PARATROOPAS_BBOX_WIDTH 17
 #define KOOPA_PARATROOPAS_BBOX_HEIGHT 26
 #define KOOPA_PARATROOPAS_BBOX_WAITING 16
 
+//DISTANCE OF Green Koopa Paratroopa
 #define KOOPA_PARATROOPAS_UP_DISTANCE_MOVE 21
 #define KOOPA_PARATROOPAS_UP_DISTANCE  16
 #define KOOPA_PARATROOPAS_JUMP_DEFLECT_SPEED 0.02f
@@ -66,8 +70,8 @@ protected:
 public:
 	CKoopaParatroopas(float x, float y) : CGameObject(x, y)
 	{
-		this->ay = KOOPA_PARATROOPAS_GRAVITY;
-		this->start_x = x;
+		ay = KOOPA_PARATROOPAS_GRAVITY;
+		start_x = x;
 		isDie = false;
 		isDefense = false;
 		isTurnOver = false;
@@ -77,17 +81,15 @@ public:
 		isHeld = false;
 		close_start = -1;
 		waiting_start = -1;
-		SetState(KOOPA_PARATROOPAS_STATE_WAITING);
+		SetState(KOOPA_PARATROOPAS_STATE_WALKING);
 	};
 	void SetState(int state);
-
 
 	void SetIsSummon(bool isSummon) { this->isSummon = isSummon; };
 	bool GetIsDefense() { return isDefense; };
 
 	void SetIsHeld(bool isHeld) { this->isHeld = isHeld; };
 	bool GetIsHeld() { return isHeld; };
-
 
 	bool GetIsTurnOver() { return isTurnOver; };
 	bool GetIsWaiting() { return isWaiting; };

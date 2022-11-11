@@ -1,28 +1,26 @@
 #pragma once
-
 #include "GameObject.h"
 
+//ANIMATION
 #define ID_ANI_FIREBALL_OF_MARIO 13000
 
+//BBOX
 #define FIREBALLS_BBOX_WIDTH 8
 #define FIREBALLS_BBOX_HEIGHT 8
 
-#define FIREBALLS_STATE_UP 1
+//STATE
+#define FIREBALLS_STATE_SHOOT 1
 #define FIREBALLS_STATE_DELETE 2
-#define FIREBALLS_STATE_DOWN 3
+//#define FIREBALLS_STATE_DOWN 3
 #define FIREBALLS_STATE_RIGHT 0
 #define FIREBALLS_STATE_LEFT 4
 
-
-#define FIREBALLS_DISTANCE_UP 40
-#define FIREBALLS_DISTANCE_DOWN 20
-
-#define FIREBALLS_DISTANCE_MAX_UP 15
-#define FIREBALLS_DISTANCE_MAX_DOWN 15
-#define FIREBALLS_SPEED_Y 0.09f
-#define FIREBALLS_SPEED_X 0.06f
+//PROPERTY
+//#define FIREBALLS_DISTANCE_UP 40
+//#define FIREBALLS_DISTANCE_DOWN 20
+//#define FIREBALLS_DISTANCE_MAX_UP 15
+//#define FIREBALLS_DISTANCE_MAX_DOWN 15
 #define FIREBALLS_GRAVITY 0.0001f
-
 
 class CFireBallOfMario : public CGameObject {
 	float ax;
@@ -38,9 +36,7 @@ public:
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
 	int IsCollidable() { return 1; };
-
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
-	
 };
 

@@ -253,9 +253,6 @@ public:
 
 	int GetLevel() { return level; }
 
-
-
-
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 

@@ -1,10 +1,10 @@
 #include "KoopaParatroopas.h"
-#include "Koopa.h"
 #include"debug.h"
 #include"Platform.h"
 #include"PlayScene.h"
 #include"QuestionBrick.h"
 #include"VenusFireTrap.h"
+#include"Koopa.h"
 
 
 void CKoopaParatroopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -12,17 +12,17 @@ void CKoopaParatroopas::GetBoundingBox(float& left, float& top, float& right, fl
 	if ((isDie)) return;
 	if (isDefense || isWaiting || isAttacking || isTurnOver)
 	{
-		left = x - KOOPA_BBOX_WAITING / 2;
-		top = y - KOOPA_BBOX_WAITING / 2;
-		right = left + KOOPA_BBOX_WAITING;
-		bottom = top + KOOPA_BBOX_WAITING;
+		left = x - KOOPA_PARATROOPAS_BBOX_WAITING / 2;
+		top = y - KOOPA_PARATROOPAS_BBOX_WAITING / 2;
+		right = left + KOOPA_PARATROOPAS_BBOX_WAITING;
+		bottom = top + KOOPA_PARATROOPAS_BBOX_WAITING;
 	}
 	else
 	{
-		left = x - KOOPA_BBOX_WIDTH / 2;
-		top = y - KOOPA_BBOX_HEIGHT / 2;
-		right = left + KOOPA_BBOX_WIDTH;
-		bottom = top + KOOPA_BBOX_HEIGHT;
+		left = x - KOOPA_PARATROOPAS_BBOX_WIDTH / 2;
+		top = y - KOOPA_PARATROOPAS_BBOX_HEIGHT / 2;
+		right = left + KOOPA_PARATROOPAS_BBOX_WIDTH;
+		bottom = top + KOOPA_PARATROOPAS_BBOX_HEIGHT;
 	}
 }
 
@@ -37,7 +37,7 @@ void CKoopaParatroopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	//if (dynamic_cast<CKoopa*>(e->obj)) return;
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
-		vy = 0;
+		vy = -KOOPA_PARATROOPAS_FLY_SPEED;
 	}
 	else if (e->nx != 0 && e->obj->IsBlocking())
 	{
@@ -51,25 +51,26 @@ void CKoopaParatroopas::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithVenusFireTrap(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithDifferentKoopa(e);
+
 }
 
 void CKoopaParatroopas::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 {
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	float plant_form_y = platform->GetY();
-	float plat_form_x_start = platform->GetX() - KOOPA_REMAINDER_OF_DISTANCE;
-	float plat_form_x_end = platform->GetX() + (platform->GetLength() * KOOPA_WIDTH_OF_BOX) - KOOPA_REMAINDER_OF_DISTANCE;
+	float plat_form_x_start = platform->GetX() - KOOPA_PARATROOPAS_REMAINDER_OF_DISTANCE;
+	float plat_form_x_end = platform->GetX() + (platform->GetLength() * KOOPA_PARATROOPAS_BBOX_WIDTH) - KOOPA_PARATROOPAS_REMAINDER_OF_DISTANCE;
 	if (!platform->IsBlocking()) {
 		if (e->ny < 0) {
-			vy = 0;
+			vy = -KOOPA_PARATROOPAS_FLY_SPEED;
 			if (!isDefense) {
-				//CASE WHEN KOOPA WAIT AND ATTACK AND TURN OVER
+				//CASE WHEN KOOPA PARATROOPAS WAIT, ATTACK AND TURN OVER
 				if (isWaiting || isAttacking || isTurnOver) {
-					y = plant_form_y - KOOPA_UP_DISTANCE;
+					y = plant_form_y - KOOPA_PARATROOPAS_UP_DISTANCE;
 				}
-				//CASE WHEN KOOPA MOVE
+				//CASE WHEN KOOPA PARATROOPAS MOVE
 				else {
-					y = plant_form_y - KOOPA_UP_DISTANCE_MOVE;
+					y = plant_form_y - KOOPA_PARATROOPAS_UP_DISTANCE_MOVE;
 					if (x < plat_form_x_start) {
 						vx = -vx;
 						x = plat_form_x_start;
@@ -80,9 +81,9 @@ void CKoopaParatroopas::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 					}
 				}
 			}
-			//CASE WHEN KOOPA DEFENSE
+			//CASE WHEN KOOPA PARATROOPAS DEFENSE
 			else {
-				y = plant_form_y - KOOPA_UP_DISTANCE;
+				y = plant_form_y - KOOPA_PARATROOPAS_UP_DISTANCE;
 			}
 		}
 	}
@@ -114,10 +115,10 @@ void CKoopaParatroopas::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 void CKoopaParatroopas::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 {
 	//Different Koopa will turned over and died.
-	CKoopa* df_koopa = dynamic_cast<CKoopa*>(e->obj);
+	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 	//DebugOut(L"e->nx %f", e->nx);
 	if ((isAttacking) || (isHeld)) {
-		df_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
+		koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
 		//df_koopa->SetState(KOOPA_STATE_DIE);
 	}
 
@@ -152,13 +153,13 @@ void CKoopaParatroopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	if (isDefense && (GetTickCount64() - close_start > KOOPA_CLOSE_SHELL_TIMEOUT))
+	if (isDefense && (GetTickCount64() - close_start > KOOPA_PARATROOPAS_CLOSE_SHELL_TIMEOUT))
 	{
 		SetState(KOOPA_PARATROOPAS_STATE_WAITING);
 		//DebugOut(L"[OKE] isDefense isWaiting waiting_start %d %d %f \n", isDefense, isWaiting, waiting_start);
 	}
 
-	if (isWaiting && (GetTickCount64() - waiting_start > KOOPA_CLOSE_SHELL_TIMEOUT))
+	if (isWaiting && (GetTickCount64() - waiting_start > KOOPA_PARATROOPAS_CLOSE_SHELL_TIMEOUT))
 	{
 		//DebugOut(L"[OKE]\n");
 		SetState(KOOPA_PARATROOPAS_STATE_WALKING);
@@ -205,7 +206,6 @@ void CKoopaParatroopas::SetState(int state)
 		if (isSummon == true) {
 			ay = 0;
 		}
-
 		isTurnOver = true;
 		isDie = true;
 		isWaiting = false;
@@ -220,7 +220,6 @@ void CKoopaParatroopas::SetState(int state)
 		if (isSummon == true) {
 			ay = 0;
 		}
-
 		isTurnOver = true;
 		isDie = false;
 		isWaiting = false;
@@ -239,13 +238,12 @@ void CKoopaParatroopas::SetState(int state)
 		isDefense = false;
 		isTurnOver = false;
 		vx = 0;
-
 		break;
 	}
 	case KOOPA_PARATROOPAS_STATE_ATTACKING:
 	{
-		ay = KOOPA_GRAVITY;
-		vx = KOOPA_WALKING_ATTACKING_SPEED * isLeftWithMario();
+		ay = KOOPA_PARATROOPAS_GRAVITY;
+		vx = KOOPA_PARATROOPAS_ATTACKING_SPEED * isLeftWithMario();
 		isWaiting = false;
 		isAttacking = true;
 		isDefense = false;
@@ -267,7 +265,7 @@ void CKoopaParatroopas::SetState(int state)
 	}
 	case KOOPA_PARATROOPAS_STATE_CLOSE_SHELL:
 	{
-		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
+		y += (KOOPA_PARATROOPAS_BBOX_HEIGHT - KOOPA_PARATROOPAS_BBOX_WAITING) / 2;
 		vx = 0;
 		close_start = GetTickCount64();
 		isDefense = true;
@@ -279,9 +277,9 @@ void CKoopaParatroopas::SetState(int state)
 	}
 	case KOOPA_PARATROOPAS_STATE_WALKING:
 	{
-		ay = KOOPA_GRAVITY;
-		vx = -KOOPA_WALKING_SPEED * -isLeftWithMario();
-		if (isWaiting) y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
+		ay = KOOPA_PARATROOPAS_GRAVITY;
+		vx = -KOOPA_PARATROOPAS_WALKING_SPEED * (-isLeftWithMario());
+		if (isWaiting) y -= (KOOPA_PARATROOPAS_BBOX_HEIGHT - KOOPA_PARATROOPAS_BBOX_WAITING) / 2;
 		isWaiting = false;
 		isDefense = false;
 		isAttacking = false;

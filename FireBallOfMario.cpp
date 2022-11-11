@@ -5,14 +5,16 @@
 #include "Pipeline.h"
 #include"Platform.h"
 
+#define FIREBALLS_SPEED_Y 0.09f
+#define FIREBALLS_SPEED_X 0.06f
+
 CFireBallOfMario::CFireBallOfMario(float x, float y) :CGameObject(x, y)
 {
-	SetState(FIREBALLS_STATE_UP);
+	SetState(FIREBALLS_STATE_SHOOT);
 }
 
 void CFireBallOfMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	vy += ay * dt;
-
 	//if (vy < 0 && abs(x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
 	//	//DebugOut(L"[OK1] \n");
 	//	SetState(FIREBALLS_STATE_DOWN);
@@ -54,8 +56,6 @@ void CFireBallOfMario::OnCollisionWith(LPCOLLISIONEVENT e){
 	}
 }
 
-
-
 void CFireBallOfMario::SetState(int state)
 {
 	switch (state)
@@ -66,24 +66,23 @@ void CFireBallOfMario::SetState(int state)
 	case FIREBALLS_STATE_LEFT:
 		vx = -FIREBALLS_SPEED_X;
 		break;
-	case FIREBALLS_STATE_DOWN:
+	/*case FIREBALLS_STATE_DOWN:
 		vy = FIREBALLS_SPEED_Y;
 		start_x = x;
-		break;
+		break;*/
 	case FIREBALLS_STATE_DELETE:
 	{
 		Delete();
 		break;
 	}
-	case FIREBALLS_STATE_UP:
-		//vy = -FIREBALLS_SPEED_Y;
+	case FIREBALLS_STATE_SHOOT:
 		ay = FIREBALLS_GRAVITY;
-		//start_x = x;
 		break;
 	default:
 		break;
 	}
 	CGameObject::SetState(state);
 }
+
 
 
