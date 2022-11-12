@@ -42,7 +42,6 @@ public:
 	int GetNx() { return nx; };
 	void SetVX(float vx) {  this->vx = vx; }
 	void SetVY(float vy) {  this->vy = vy; }
-	
 	void SetY(float y) { this->y = y; }
 	void SetX(float x) { this->x = x; }
 
@@ -50,6 +49,8 @@ public:
 	int GetState() { return this->state; }
 	virtual void Delete() { isDeleted = true;  }
 	bool IsDeleted() { return isDeleted; }
+
+	bool checkObjectInCamera();
 
 	void RenderBoundingBox();
 

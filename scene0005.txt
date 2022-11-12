@@ -29,12 +29,6 @@ Resource/Tilemaps/world1-1.txt
 ######### Koopa Paratropas ###########
 15	550	300
 
-######### Fire Balls ###########
-13	350	384
-
-######### Fire Balls of Mario ###########
-14	550	200
-
 ######### Pipeline ###########
 12	360	384
 

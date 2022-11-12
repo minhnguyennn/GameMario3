@@ -7,12 +7,11 @@
 using namespace std;
 
 #define DIRECTINPUT_VERSION 0x0800
-#include <dinput.h>
 
+#include <dinput.h>
 #include "Texture.h"
 #include "KeyEventHandler.h"
 #include "Scene.h"
-
 
 #define SCREEN_WIDTH_CAMERA_DRAW 272
 #define SCREEN_HEIGHT_CAMERA_DRAW 256
@@ -20,8 +19,6 @@ using namespace std;
 #define KEYBOARD_BUFFER_SIZE 1024
 #define KEYBOARD_STATE_SIZE 256
 #define FULL_WEIGHT_1_1 2816
-
-
 
 /*
 	Our simple game framework

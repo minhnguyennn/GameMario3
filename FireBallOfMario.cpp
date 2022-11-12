@@ -5,6 +5,7 @@
 #include"KoopaParatroopas.h"
 #include"VenusFireTrap.h"
 #include"Goomba.h"
+#include"ParaGoomba.h"
 
 #define FIREBALLS_SPEED_Y 0.09f
 #define FIREBALLS_SPEED_X 0.06f
@@ -66,7 +67,17 @@ void CFireBallOfMario::OnCollisionWith(LPCOLLISIONEVENT e){
 		OnCollisionWithVenusFireTrap(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CParaGoomba*>(e->obj))
+		OnCollisionWithParaGoomba(e);
 }
+
+void CFireBallOfMario::OnCollisionWithParaGoomba(LPCOLLISIONEVENT e)
+{
+	//Koopa will turned over and died.
+	CParaGoomba* para_goomba = dynamic_cast<CParaGoomba*>(e->obj);
+	para_goomba->SetState(GOOMBA_STATE_DIE);
+}
+
 
 void CFireBallOfMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {

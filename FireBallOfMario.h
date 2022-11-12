@@ -42,5 +42,6 @@ public:
 	void OnCollisionWithKoopaParatroopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithParaGoomba(LPCOLLISIONEVENT e);
 };
 
