@@ -18,6 +18,7 @@
 #include "PlayScene.h"
 #include "FireBallOfMario.h"
 #include "KoopaParatroopas.h"
+#include "ParaGoomba.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
@@ -59,14 +60,11 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->ny != 0 && e->obj->IsBlocking())
-	{
+	if (e->ny != 0 && e->obj->IsBlocking()) {
 		vy = 0;
 		if (e->ny < 0) isOnPlatform = true;
 	}
-	else 
-	if (e->nx != 0 && e->obj->IsBlocking())
-	{
+	else if (e->nx != 0 && e->obj->IsBlocking()) {
 		vx = 0;
 	}
 
@@ -88,14 +86,27 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlatform(e);
 	else if (dynamic_cast<CKoopaParatroopas*>(e->obj))
 		OnCollisionWithKoopaParatroopas(e);
+	else if (dynamic_cast<CParaGoomba*>(e->obj))
+		OnCollisionWithParaGoomba(e);
+}
+
+void CMario::OnCollisionWithParaGoomba(LPCOLLISIONEVENT e)
+{
+	CParaGoomba* para_goomba = dynamic_cast<CParaGoomba*>(e->obj);
+	if (e->ny < 0) {
+		para_goomba->SetState(GOOMBA_STATE_DIE);
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+	}
+	else {
+		LowerLevel();
+	}
 }
 
 void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 {
-
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	float plant_form_y = platform->GetY();
-	/*if (!platform->IsBlocking()) {*/
+	if (!platform->IsBlocking()) {
 		if (e->ny < 0) {
 			vy = 0;
 			if (level != MARIO_LEVEL_SMALL) {
@@ -111,7 +122,7 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 			}
 			isOnPlatform = true;
 		}
-	/*}*/
+	}
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)

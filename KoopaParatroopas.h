@@ -57,9 +57,7 @@ protected:
 	bool isWaiting;
 	bool isAttacking;
 	bool isDie;
-	bool isSummon;
 	bool isHeld;
-
 
 	ULONGLONG close_start;
 	ULONGLONG waiting_start;
@@ -80,7 +78,6 @@ public:
 		isTurnOver = false;
 		isWaiting = false;
 		isAttacking = false;
-		isSummon = false;
 		isHeld = false;
 		close_start = -1;
 		waiting_start = -1;
@@ -88,7 +85,7 @@ public:
 	};
 	void SetState(int state);
 
-	void SetIsSummon(bool isSummon) { this->isSummon = isSummon; };
+	
 	bool GetIsDefense() { return isDefense; };
 
 	void SetIsHeld(bool isHeld) { this->isHeld = isHeld; };

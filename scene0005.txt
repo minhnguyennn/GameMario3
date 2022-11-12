@@ -21,10 +21,10 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	550	300
+0	2160	300
 
 ######### Para goomba ###########
-16	550	300
+16	550	350
 
 ######### Koopa Paratropas ###########
 15	550	300

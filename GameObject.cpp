@@ -49,6 +49,7 @@ bool CGameObject::checkObjectInCamera() {
 	return true;
 }
 
+
 CGameObject::~CGameObject()
 {
 

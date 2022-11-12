@@ -35,6 +35,7 @@ protected:
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 public:
 	CParaGoomba(float x, float y);
 	virtual void SetState(int state);

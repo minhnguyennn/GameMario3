@@ -1,5 +1,9 @@
-#include "ParaGoomba.h"
+#include "Platform.h"
 #include "debug.h"
+#include "ParaGoomba.h"
+#include "Goomba.h"
+#include "Koopa.h"
+#include "KoopaParatroopas.h"
 
 CParaGoomba::CParaGoomba(float x, float y) :CGameObject(x, y)
 {
@@ -35,17 +39,35 @@ void CParaGoomba::OnNoCollision(DWORD dt)
 
 void CParaGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CParaGoomba*>(e->obj)) return;
+	if (dynamic_cast<CKoopa*>(e->obj)) return;
+	if (dynamic_cast<CGoomba*>(e->obj)) return;
+	if (dynamic_cast<CKoopaParatroopas*>(e->obj)) return;
 
-	if (e->ny != 0)
-	{
+	if (e->ny < 0) {
 		count_number_jumps++;
 		vy = -PARA_GOOMBA_FLY_SPEED;
 	}
-	else if (e->nx != 0)
-	{
-		vx = -vx;
+	else if (e->nx != 0 && e->obj->IsBlocking()) { 
+		vx = -vx; 
+	}
+
+	/*if (dynamic_cast<CPlatform*>(e->obj))
+		OnCollisionWithPlatForm(e);*/
+}
+
+void CParaGoomba::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
+{
+	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+	if (!platform->IsBlocking() && e->ny < 0) {
+		DebugOut(L"[OKE] \n");
+		count_number_jumps++;
+		vy = -PARA_GOOMBA_FLY_SPEED;
+	}
+	else {
+		
+		count_number_jumps++;
+		vy = -PARA_GOOMBA_FLY_SPEED;
 	}
 }
 

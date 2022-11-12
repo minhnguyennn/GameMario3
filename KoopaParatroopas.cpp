@@ -1,4 +1,5 @@
 #include "KoopaParatroopas.h"
+#include "ParaGoomba.h"
 #include"debug.h"
 #include"Platform.h"
 #include"PlayScene.h"
@@ -35,15 +36,20 @@ void CKoopaParatroopas::OnNoCollision(DWORD dt)
 
 void CKoopaParatroopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	//if (dynamic_cast<CKoopa*>(e->obj)) return;
-	if (e->ny != 0 && e->obj->IsBlocking())
-	{
-		vy = -KOOPA_PARATROOPAS_FLY_SPEED;
+	if (state == KOOPA_PARATROOPAS_STATE_WALKING) {
+		if (dynamic_cast<CParaGoomba*>(e->obj)) return;
+		if (dynamic_cast<CKoopa*>(e->obj)) return;
+		if (dynamic_cast<CGoomba*>(e->obj)) return;
+		if (dynamic_cast<CKoopaParatroopas*>(e->obj)) return;
+
+		if (e->ny < 0) {
+			vy = -KOOPA_PARATROOPAS_FLY_SPEED;
+		}
+		else if (e->nx != 0 && e->obj->IsBlocking()) {
+			vx = -vx;
+		}
 	}
-	else if (e->nx != 0 && e->obj->IsBlocking())
-	{
-		vx = -vx;
-	}
+
 	if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatForm(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
@@ -72,41 +78,14 @@ void CKoopaParatroopas::OnCollisionWithDifferentKoopaParatroopas(LPCOLLISIONEVEN
 	if ((isAttacking) || (isHeld)) {
 		koopa_paratroopa->SetState(KOOPA_PARATROOPAS_STATE_DIE_TURN_OVER);
 	}
-
 }
 
 void CKoopaParatroopas::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 {
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	float plant_form_y = platform->GetY();
-	float plat_form_x_start = platform->GetX() - KOOPA_PARATROOPAS_REMAINDER_OF_DISTANCE;
-	float plat_form_x_end = platform->GetX() + (platform->GetLength() * KOOPA_PARATROOPAS_BBOX_WIDTH) - KOOPA_PARATROOPAS_REMAINDER_OF_DISTANCE;
-	if (!platform->IsBlocking()) {
-		if (e->ny < 0) {
-			vy = -KOOPA_PARATROOPAS_FLY_SPEED;
-			if (!isDefense) {
-				//CASE WHEN KOOPA PARATROOPAS WAIT, ATTACK AND TURN OVER
-				if (isWaiting || isAttacking || isTurnOver) {
-					y = plant_form_y - KOOPA_PARATROOPAS_UP_DISTANCE;
-				}
-				//CASE WHEN KOOPA PARATROOPAS MOVE
-				else {
-					y = plant_form_y - KOOPA_PARATROOPAS_UP_DISTANCE_MOVE;
-					if (x < plat_form_x_start) {
-						vx = -vx;
-						x = plat_form_x_start;
-					}
-					if (x > plat_form_x_end) {
-						vx = -vx;
-						x = plat_form_x_end;
-					}
-				}
-			}
-			//CASE WHEN KOOPA PARATROOPAS DEFENSE
-			else {
-				y = plant_form_y - KOOPA_PARATROOPAS_UP_DISTANCE;
-			}
-		}
+	if (state != KOOPA_PARATROOPAS_STATE_WALKING) {
+		y = plant_form_y - KOOPA_PARATROOPAS_UP_DISTANCE;
 	}
 }
 
@@ -160,16 +139,7 @@ void CKoopaParatroopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		ChangePositionFollowMario();
 	}
 
-	if (isSummon) {
-		y = mario->GetY();
-		//DebugOut(L"[oke] right: %d\n", mario->GetState());
-		if ((mario->GetState() == MARIO_STATE_WALKING_RIGHT) || (mario->GetState() == MARIO_STATE_IDLE) || (mario->GetState() == MARIO_STATE_SUMMON_KOOPA)) {
-			x = mario->GetX() + 14;
-		}
-		else {
-			x = mario->GetX() - 14;
-		}
-	}
+
 
 	if (isDefense && (GetTickCount64() - close_start > KOOPA_PARATROOPAS_CLOSE_SHELL_TIMEOUT))
 	{
@@ -221,9 +191,7 @@ void CKoopaParatroopas::SetState(int state)
 	{
 	case KOOPA_PARATROOPAS_STATE_DIE_TURN_OVER:
 	{
-		if (isSummon == true) {
-			ay = 0;
-		}
+		
 		isTurnOver = true;
 		isDie = true;
 		isWaiting = false;
@@ -235,9 +203,7 @@ void CKoopaParatroopas::SetState(int state)
 	}
 	case KOOPA_PARATROOPAS_STATE_TURN_OVER:
 	{
-		if (isSummon == true) {
-			ay = 0;
-		}
+		
 		isTurnOver = true;
 		isDie = false;
 		isWaiting = false;
