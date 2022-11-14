@@ -182,26 +182,53 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CKoopa::Render()
 {
 	//Type of animation
-	int aniId = ID_ANI_KOOPA_WALKING_LEFT;
-	if (isWaiting)
-	{
-		aniId = ID_ANI_KOOPA_WAITING;
+	int aniId;
+	if (type_koopa == KOOPA_TYPE_RED) {
+		if (isWaiting)
+		{
+			aniId = ID_ANI_KOOPA_WAITING;
+		}
+		else if (isDefense)
+		{
+			aniId = ID_ANI_KOOPA_CLOSE_SHELL;
+		}
+		else if (isAttacking) {
+			aniId = ID_ANI_KOOPA_ATTACKING;
+		}
+		else if (isTurnOver) {
+			aniId = ID_ANI_KOOPA_TURN_OVER;
+		}
+		else if (vx > 0)
+		{
+			aniId = ID_ANI_KOOPA_WALKING_RIGHT;
+		}
+		else {
+			aniId = ID_ANI_KOOPA_WALKING_LEFT;
+		}
 	}
-	else if (isDefense)
-	{
-		aniId = ID_ANI_KOOPA_CLOSE_SHELL;
+	else {
+		if (isWaiting)
+		{
+			aniId = ID_ANI_KOOPA_GREEN_WAITING;
+		}
+		else if (isDefense)
+		{
+			aniId = ID_ANI_KOOPA_GREEN_CLOSE_SHELL;
+		}
+		else if (isAttacking) {
+			aniId = ID_ANI_KOOPA_GREEN_ATTACKING;
+		}
+		else if (isTurnOver) {
+			aniId = ID_ANI_KOOPA_GREEN_TURN_OVER;
+		}
+		else if (vx > 0)
+		{
+			aniId = ID_ANI_KOOPA_GREEN_WALKING_RIGHT;
+		}
+		else {
+			aniId = ID_ANI_KOOPA_GREEN_WALKING_LEFT;
+		}
 	}
-	else if (isAttacking) {
-		aniId = ID_ANI_KOOPA_ATTACKING;
-	}
-	else if (isTurnOver) {
-		aniId = ID_ANI_KOOPA_TURN_OVER;
-	}
-	else if (vx > 0)
-	{
-		aniId = ID_ANI_KOOPA_WALKING_RIGHT;
-	}
-	//DebugOut(L"[OKE] aniId: %d\n", aniId);
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -292,7 +319,12 @@ void CKoopa::SetState(int state)
 	case KOOPA_STATE_WALKING:
 	{
 		ay = KOOPA_GRAVITY;
-		vx = -KOOPA_WALKING_SPEED *-isLeftWithMario();
+		if (type_koopa == KOOPA_TYPE_RED) {
+			vx = KOOPA_WALKING_SPEED * isLeftWithMario();
+		}
+		else {
+			vx = -KOOPA_WALKING_SPEED * isLeftWithMario();
+		}
 		if (isWaiting) y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 		isWaiting = false;
 		isDefense = false;

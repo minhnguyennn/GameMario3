@@ -39,10 +39,16 @@
 #define ID_ANI_KOOPA_CLOSE_SHELL 5013
 #define ID_ANI_KOOPA_ATTACKING 5014
 #define ID_ANI_KOOPA_TURN_OVER 5015
+#define ID_ANI_KOOPA_GREEN_WALKING_LEFT 5050
+#define ID_ANI_KOOPA_GREEN_WALKING_RIGHT 5051
+#define ID_ANI_KOOPA_GREEN_WAITING 5052
+#define ID_ANI_KOOPA_GREEN_CLOSE_SHELL 5053
+#define ID_ANI_KOOPA_GREEN_ATTACKING 5054
+#define ID_ANI_KOOPA_GREEN_TURN_OVER 5055
 
 //TYPE
-#define KOOPA_TYPE 0
-#define KOOPA_TYPE_PARATROOPA 1
+#define KOOPA_TYPE_RED 0
+#define KOOPA_TYPE_GREEN 1
 
 class CKoopa : public CGameObject
 {
@@ -70,8 +76,9 @@ protected:
 	void OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 public:
-	CKoopa(float x, float y) : CGameObject(x , y)
+	CKoopa(float x, float y, int type_koopa) : CGameObject(x , y)
 	{
+		this->type_koopa = type_koopa;
 		this->ay = KOOPA_GRAVITY;
 		this->start_x = x;
 		isDie = false;
@@ -83,6 +90,7 @@ public:
 		isHeld = false;
 		close_start = -1;
 		waiting_start = -1;
+		
 		SetState(KOOPA_STATE_WALKING);
 	};
 	void SetState(int state);
