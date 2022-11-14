@@ -4,6 +4,7 @@
 #include"PlayScene.h"
 #include"QuestionBrick.h"
 #include"VenusFireTrap.h"
+#include"Brick.h"
 
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -50,6 +51,17 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithVenusFireTrap(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithDifferentKoopa(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
+}
+
+void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
+	if (e->ny < 0 && state == KOOPA_STATE_WALKING) {
+		if (abs(x- start_x) > 6) {
+			vx = -vx;
+			start_x = x;
+		}
+	}
 }
 
 void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)

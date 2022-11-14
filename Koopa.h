@@ -68,6 +68,7 @@ protected:
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
 	void OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 public:
 	CKoopa(float x, float y) : CGameObject(x , y)
 	{
@@ -82,7 +83,7 @@ public:
 		isHeld = false;
 		close_start = -1;
 		waiting_start = -1;
-		SetState(KOOPA_STATE_CLOSE_SHELL);
+		SetState(KOOPA_STATE_WALKING);
 	};
 	void SetState(int state);
 	

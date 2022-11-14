@@ -88,6 +88,15 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopaParatroopas(e);
 	else if (dynamic_cast<CParaGoomba*>(e->obj))
 		OnCollisionWithParaGoomba(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
+}
+
+void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
+	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+	if (brick->isNoBlock()) {
+		brick->setCollisionMario(true);
+	}
 }
 
 void CMario::OnCollisionWithParaGoomba(LPCOLLISIONEVENT e)
