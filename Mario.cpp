@@ -68,8 +68,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = 0;
 	}
 
-	if (dynamic_cast<CGoomba*>(e->obj))
-		OnCollisionWithGoomba(e);
+	/*if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);*/
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
@@ -134,24 +134,6 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 	}
 }
 
-void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
-{
-	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-
-	// jump on top >> kill Goomba and deflect a bit 
-	if (e->ny < 0)
-	{
-		if (goomba->GetState() != GOOMBA_STATE_DIE)
-		{
-			goomba->SetState(GOOMBA_STATE_DIE);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-		}
-	}
-	else // hit by Goomba
-	{
-		LowerLevel();
-	}
-}
 
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {

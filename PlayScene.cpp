@@ -132,7 +132,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
+	/*case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;*/
 	case OBJECT_TYPE_BRICK: {
 		int type_brick = (int)atof(tokens[3].c_str());
 		obj = new CBrick(x, y, type_brick);

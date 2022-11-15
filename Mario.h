@@ -201,7 +201,6 @@ class CMario : public CGameObject
 	BOOLEAN isHolding;
 	BOOLEAN isRunning;
 
-	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushRoom(LPCOLLISIONEVENT e);

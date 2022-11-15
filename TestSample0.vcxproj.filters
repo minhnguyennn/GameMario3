@@ -84,9 +84,6 @@
     <ClCompile Include="Animations.cpp">
       <Filter>Header Files\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Goomba.cpp">
-      <Filter>Header Files\Object\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Header Files\Object\Player</Filter>
     </ClCompile>
@@ -190,9 +187,6 @@
     </ClInclude>
     <ClInclude Include="Coin.h">
       <Filter>Header Files\Object\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Goomba.h">
-      <Filter>Header Files\Object\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Mario.h">
       <Filter>Header Files\Object\Player</Filter>

@@ -40,7 +40,6 @@ void CKoopaParatroopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (state == KOOPA_PARATROOPAS_STATE_WALKING) {
 		if (dynamic_cast<CParaGoomba*>(e->obj)) return;
 		if (dynamic_cast<CKoopa*>(e->obj)) return;
-		if (dynamic_cast<CGoomba*>(e->obj)) return;
 		if (dynamic_cast<CKoopaParatroopas*>(e->obj)) return;
 		if (e->ny < 0) {
 			vy = -KOOPA_PARATROOPAS_FLY_SPEED;
