@@ -5,12 +5,12 @@
 #include "KoopaParatroopas.h"
 #include "PlayScene.h"
 
-CParaGoomba::CParaGoomba(float x, float y) :CGameObject(x, y)
+CParaGoomba::CParaGoomba(float x, float y, int level) :CGameObject(x, y)
 {
-	this->level = PARA_GOOMBA_LEVEL_BIG;
-	this->ay = 0.0001f;
+	this->level = level;
+	this->ay = GOOMBA_GRAVITY;
 	this->count_number_jumps = 0;
-	die_start = -1;
+	this->die_start = -1;
 	SetState(GOOMBA_STATE_WALKING);
 }
 

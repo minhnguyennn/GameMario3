@@ -132,7 +132,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
-	/*case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;*/
 	case OBJECT_TYPE_BRICK: {
 		int type_brick = (int)atof(tokens[3].c_str());
 		obj = new CBrick(x, y, type_brick);
@@ -149,7 +148,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_FIREBALLS: obj = new CFireBalls(x, y); break;
 	case OBJECT_TYPE_FIREBALL_OF_MARIO: obj = new CFireBallOfMario(x, y); break;
 	case OBJECT_TYPE_KOOPA_PARATROOPAS: obj = new CKoopaParatroopas(x, y); break;
-	case OBJECT_TYPE_PARA_GOOMBA: obj = new CParaGoomba(x, y); break;
+	case OBJECT_TYPE_GOOMBA:
+	{
+		int type_goomba = (int)atof(tokens[3].c_str());
+		obj = new CParaGoomba(x, y, type_goomba);
+		break;
+	}
 	case OBJECT_TYPE_POINT:
 	{
 		int type_point = (int)atof(tokens[3].c_str());

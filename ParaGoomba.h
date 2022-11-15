@@ -28,7 +28,6 @@
 #define	PARA_GOOMBA_LEVEL_BIG 1
 #define	PARA_GOOMBA_LEVEL_SMALL 2
 
-
 class CParaGoomba : public CGameObject
 {
 protected:
@@ -41,7 +40,7 @@ protected:
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 public:
-	CParaGoomba(float x, float y);
+	CParaGoomba(float x, float y, int level);
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
