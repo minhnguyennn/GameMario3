@@ -36,18 +36,19 @@ void CKoopaParatroopas::OnNoCollision(DWORD dt)
 
 void CKoopaParatroopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	//when walking
 	if (state == KOOPA_PARATROOPAS_STATE_WALKING) {
 		if (dynamic_cast<CParaGoomba*>(e->obj)) return;
 		if (dynamic_cast<CKoopa*>(e->obj)) return;
 		if (dynamic_cast<CGoomba*>(e->obj)) return;
 		if (dynamic_cast<CKoopaParatroopas*>(e->obj)) return;
-
 		if (e->ny < 0) {
 			vy = -KOOPA_PARATROOPAS_FLY_SPEED;
 		}
-		else if (e->nx != 0 && e->obj->IsBlocking()) {
-			vx = -vx;
-		}
+	}
+	
+	if (e->nx != 0 && e->obj->IsBlocking()) {
+		vx = -vx;
 	}
 
 	if (dynamic_cast<CPlatform*>(e->obj))

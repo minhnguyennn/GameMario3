@@ -103,7 +103,7 @@ void CMario::OnCollisionWithParaGoomba(LPCOLLISIONEVENT e)
 {
 	CParaGoomba* para_goomba = dynamic_cast<CParaGoomba*>(e->obj);
 	if (e->ny < 0) {
-		para_goomba->SetState(GOOMBA_STATE_DIE);
+		para_goomba->LowerLevel();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
 	else {
