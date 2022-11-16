@@ -60,15 +60,13 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CKoopa*>(e->obj)) return;
 	if (dynamic_cast<CKoopaParatroopas*>(e->obj)) return;
 
-	if (level == GOOMBA_LEVEL_BIG) {
-		if (e->ny < 0) 
+	if (e->ny < 0)
+	{
+		if (level == GOOMBA_LEVEL_BIG) 
 		{
 			SetState(GOOMBA_STATE_FLY);
 		}
-	} 
-	else
-	{
-		if (e->ny < 0)
+		else
 		{
 			vy = 0;
 		}

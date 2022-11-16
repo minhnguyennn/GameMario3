@@ -87,7 +87,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CKoopaParatroopas*>(e->obj))
 		OnCollisionWithKoopaParatroopas(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
-		OnCollisionWithParaGoomba(e);
+		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CBrick*>(e->obj))
 		OnCollisionWithBrick(e);
 }
@@ -99,11 +99,11 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
 	}
 }
 
-void CMario::OnCollisionWithParaGoomba(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
-	CGoomba* para_goomba = dynamic_cast<CGoomba*>(e->obj);
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 	if (e->ny < 0) {
-		para_goomba->LowerLevel();
+		goomba->LowerLevel();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
 	else {
@@ -134,24 +134,22 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 	}
 }
 
-
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 
-	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		koopa->SetVY(-KOOPA_JUMP_DEFLECT_SPEED);
-		if (!koopa->GetIsDefense() && !koopa->GetIsWaiting())
-		{
-			if (koopa->GetIsAttacking()) {
-				koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
-			}
-			koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
+		
+		if (koopa->GetIsAttacking()) {
+			koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
+			koopa->SetState(KOOPA_STATE_ATTACKING);
 		}
-		else koopa->SetState(KOOPA_STATE_ATTACKING);
+		else if (koopa->GetLevel() == KOOPA_LEVEL_BIG) 
+			koopa->SetLevel(KOOPA_LEVEL_SMALL);
+		else koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 	}
 	else if (e->nx != 0) {
 		

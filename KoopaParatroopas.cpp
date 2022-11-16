@@ -1,5 +1,5 @@
 #include "KoopaParatroopas.h"
-#include "ParaGoomba.h"
+#include "Goomba.h"
 #include"debug.h"
 #include"Platform.h"
 #include"PlayScene.h"
@@ -38,7 +38,7 @@ void CKoopaParatroopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	//when walking
 	if (state == KOOPA_PARATROOPAS_STATE_WALKING) {
-		if (dynamic_cast<CParaGoomba*>(e->obj)) return;
+		if (dynamic_cast<CGoomba*>(e->obj)) return;
 		if (dynamic_cast<CKoopa*>(e->obj)) return;
 		if (dynamic_cast<CKoopaParatroopas*>(e->obj)) return;
 		if (e->ny < 0) {
@@ -181,7 +181,7 @@ void CKoopaParatroopas::Render()
 	}
 	//DebugOut(L"[OKE] aniId: %d\n", aniId);
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CKoopaParatroopas::SetState(int state)

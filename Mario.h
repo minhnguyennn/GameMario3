@@ -209,7 +209,7 @@ class CMario : public CGameObject
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopaParatroopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
-	void OnCollisionWithParaGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();

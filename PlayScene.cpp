@@ -139,8 +139,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break; 
 	case OBJECT_TYPE_KOOPA: {
-		int type_koopa = (int)atof(tokens[3].c_str());
-		obj = new CKoopa(x, y, type_koopa);
+		int type = (int)atof(tokens[3].c_str());
+		int level = (int)atof(tokens[4].c_str());
+		obj = new CKoopa(x, y, type, level);
 		break;
 	}
 	case OBJECT_TYPE_VFTRAP: obj = new CVenusFireTrap(x, y); break;

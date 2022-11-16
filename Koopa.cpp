@@ -9,7 +9,7 @@
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if ((isDie)) return;
+	if (isDie) return;
 	if (isDefense || isWaiting || isAttacking || isTurnOver)
 	{
 		left = x - KOOPA_BBOX_WAITING / 2;
@@ -34,15 +34,24 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	//if (dynamic_cast<CKoopa*>(e->obj)) return;
-	if (e->ny != 0 && e->obj->IsBlocking())
+	if (state == KOOPA_STATE_WALKING)
 	{
-		vy = 0;
+		if (dynamic_cast<CGoomba*>(e->obj)) return;
+		if (dynamic_cast<CKoopa*>(e->obj)) return;
 	}
-	else if (e->nx != 0 && e->obj->IsBlocking())
+
+	if (e->ny < 0)
 	{
+		if (level == KOOPA_LEVEL_BIG)
+			SetState(KOOPA_STATE_FLY);
+		else if (level == KOOPA_LEVEL_SMALL)
+			vy = 0;
+	}
+	
+	if (e->nx != 0 && e->obj->IsBlocking()) {
 		vx = -vx;
 	}
+
 	if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatForm(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
@@ -182,53 +191,49 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CKoopa::Render()
 {
 	//Type of animation
-	int aniId;
-	if (type_koopa == KOOPA_TYPE_RED) {
+	int aniId = 0;
+	if (type == KOOPA_TYPE_TROOPA)
+	{
 		if (isWaiting)
-		{
 			aniId = ID_ANI_KOOPA_WAITING;
-		}
 		else if (isDefense)
-		{
 			aniId = ID_ANI_KOOPA_CLOSE_SHELL;
-		}
-		else if (isAttacking) {
+		else if (isAttacking)
 			aniId = ID_ANI_KOOPA_ATTACKING;
-		}
-		else if (isTurnOver) {
+		else if (isTurnOver)
 			aniId = ID_ANI_KOOPA_TURN_OVER;
-		}
 		else if (vx > 0)
-		{
 			aniId = ID_ANI_KOOPA_WALKING_RIGHT;
-		}
-		else {
+		else
 			aniId = ID_ANI_KOOPA_WALKING_LEFT;
-		}
 	}
-	else {
+	else if (type == KOOPA_TYPE_PARATROOPA)
+	{
+		if (level == KOOPA_LEVEL_SMALL) 
+		{
+			if (vx > 0)
+				aniId = ID_ANI_KOOPA_GREEN_SMALL_WALKING_RIGHT;
+			else if (vx < 0)
+				aniId = ID_ANI_KOOPA_GREEN_SMALL_WALKING_LEFT;
+		}
+		else if (level == KOOPA_LEVEL_BIG) 
+		{
+			if (vx > 0)
+				aniId = ID_ANI_KOOPA_GREEN_BIG_WALKING_RIGHT;
+			else if (vx < 0)
+				aniId = ID_ANI_KOOPA_GREEN_BIG_WALKING_LEFT;
+		}
+
 		if (isWaiting)
-		{
 			aniId = ID_ANI_KOOPA_GREEN_WAITING;
-		}
 		else if (isDefense)
-		{
 			aniId = ID_ANI_KOOPA_GREEN_CLOSE_SHELL;
-		}
-		else if (isAttacking) {
-			aniId = ID_ANI_KOOPA_GREEN_ATTACKING;
-		}
-		else if (isTurnOver) {
+		else if (isAttacking)
+			aniId = 5034;
+		else if (isTurnOver)
 			aniId = ID_ANI_KOOPA_GREEN_TURN_OVER;
-		}
-		else if (vx > 0)
-		{
-			aniId = ID_ANI_KOOPA_GREEN_WALKING_RIGHT;
-		}
-		else {
-			aniId = ID_ANI_KOOPA_GREEN_WALKING_LEFT;
-		}
 	}
+	
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -238,12 +243,16 @@ void CKoopa::SetState(int state)
 
 	switch (state)
 	{
+	case KOOPA_STATE_FLY: 
+	{
+		vy = -GOOMBA_FLY_SPEED;
+		break;
+	}
 	case KOOPA_STATE_DIE_TURN_OVER:
 	{
 		if (isSummon == true) {
 			ay = 0;
 		}
-
 		isTurnOver = true;
 		isDie = true;
 		isWaiting = false;
@@ -319,7 +328,7 @@ void CKoopa::SetState(int state)
 	case KOOPA_STATE_WALKING:
 	{
 		ay = KOOPA_GRAVITY;
-		if (type_koopa == KOOPA_TYPE_RED) {
+		if (type == KOOPA_TYPE_PARATROOPA) {
 			vx = KOOPA_WALKING_SPEED * isLeftWithMario();
 		}
 		else {
