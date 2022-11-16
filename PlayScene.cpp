@@ -20,7 +20,7 @@
 #include "FireBalls.h"
 #include "FireBallOfMario.h"
 #include "KoopaParatroopas.h"
-#include "ParaGoomba.h"
+#include "Goomba.h"
 
 
 
@@ -150,8 +150,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_KOOPA_PARATROOPAS: obj = new CKoopaParatroopas(x, y); break;
 	case OBJECT_TYPE_GOOMBA:
 	{
-		int type_goomba = (int)atof(tokens[3].c_str());
-		obj = new CParaGoomba(x, y, type_goomba);
+		int level = (int)atof(tokens[3].c_str());
+		int type = (int)atof(tokens[4].c_str());
+		obj = new CGoomba(x, y, level, type);
 		break;
 	}
 	case OBJECT_TYPE_POINT:

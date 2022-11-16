@@ -160,7 +160,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
-    <ClCompile Include="ParaGoomba.cpp" />
+    <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="VenusFireTrap.cpp" />
     <ClCompile Include="Platform.cpp" />
@@ -194,7 +194,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
-    <ClInclude Include="ParaGoomba.h" />
+    <ClInclude Include="Goomba.h" />
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="VenusFireTrap.h" />
     <ClInclude Include="Platform.h" />

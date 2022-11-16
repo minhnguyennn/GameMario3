@@ -18,7 +18,7 @@
 #include "PlayScene.h"
 #include "FireBallOfMario.h"
 #include "KoopaParatroopas.h"
-#include "ParaGoomba.h"
+#include "Goomba.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
@@ -86,7 +86,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlatform(e);
 	else if (dynamic_cast<CKoopaParatroopas*>(e->obj))
 		OnCollisionWithKoopaParatroopas(e);
-	else if (dynamic_cast<CParaGoomba*>(e->obj))
+	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithParaGoomba(e);
 	else if (dynamic_cast<CBrick*>(e->obj))
 		OnCollisionWithBrick(e);
@@ -101,7 +101,7 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
 
 void CMario::OnCollisionWithParaGoomba(LPCOLLISIONEVENT e)
 {
-	CParaGoomba* para_goomba = dynamic_cast<CParaGoomba*>(e->obj);
+	CGoomba* para_goomba = dynamic_cast<CGoomba*>(e->obj);
 	if (e->ny < 0) {
 		para_goomba->LowerLevel();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;

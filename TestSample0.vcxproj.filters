@@ -126,7 +126,7 @@
     <ClCompile Include="KoopaParatroopas.cpp">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="ParaGoomba.cpp">
+    <ClCompile Include="Goomba.cpp">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
@@ -230,7 +230,7 @@
     <ClInclude Include="KoopaParatroopas.h">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="ParaGoomba.h">
+    <ClInclude Include="Goomba.h">
       <Filter>Header Files\Object\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
