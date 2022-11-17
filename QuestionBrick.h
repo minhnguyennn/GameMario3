@@ -27,7 +27,7 @@ class CQuestionBrick : public CGameObject
 	float start_y;
 	BOOL unbox;
 public:
-	CQuestionBrick(float x, float y,int type) : CGameObject(x, y) {
+	CQuestionBrick(float x, float y, int type) : CGameObject(x, y) {
 		SetState(QUESTION_STATE_IDLE);
 		start_y = y;
 		this->type = type;

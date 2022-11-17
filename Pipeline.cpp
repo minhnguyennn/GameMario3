@@ -18,29 +18,24 @@ void CPipeline::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = t + PIPELINE_BBOX_HEIGHT;
 }
 
-void CPipeline::OnNoCollision(DWORD dt)
-{
-	x += vx * dt;
-	y += vy * dt;
-};
-
-void CPipeline::SetState(int state) {
-	
-	CGameObject::SetState(state);
-}
 
 void CPipeline::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
-	float mario_x = mario->GetX();
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CPipeline::SummonVenusFireTrap() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CVenusFireTrap* vftrap = new CVenusFireTrap(x, y-6, 4);
-	scene->CreateObject(vftrap);
+	
+	if (type == 1) {
+		CVenusFireTrap* vft_green = new CVenusFireTrap(x, y - PIPELINE_DISTANCE_GREEN, VFTRAP_TYPE_GREEN);
+		scene->CreateObject(vft_green);
+	}
+	else if (type == 2) {
+		CVenusFireTrap* vft_red = new CVenusFireTrap(x, y - PIPELINE_DISTANCE_RED, VFTRAP_TYPE_RED);
+		scene->CreateObject(vft_red);
+	}
+	
 }
 
 
