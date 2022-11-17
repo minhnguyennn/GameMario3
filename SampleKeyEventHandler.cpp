@@ -10,6 +10,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
 	switch (KeyCode)
 	{
+	case DIK_D:
+		mario->SetState(MARIO_STATE_FLYING);
+		break;
 	case DIK_A:
 		mario->SummonFireBalls();
 		break;
@@ -46,6 +49,9 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
+	case DIK_D:
+		mario->SetState(MARIO_STATE_RELEASE_FLYING);
+		break;
 	case DIK_A:
 		mario->SetIsHolding(false);
 		mario->SetIsRunning(false);

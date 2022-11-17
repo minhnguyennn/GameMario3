@@ -500,19 +500,24 @@ int CMario::GetAniIdRaccoon()
 		}
 		else
 		{
-			if (!isHolding) {
-				if (nx >= 0)
-					aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
-				else
-					aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
-			}
-			else {
+			if (isHolding) {
 				if (nx >= 0)
 					aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
 				else
 					aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
 			}
-			
+			else if (isFlying) {
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_RACCOON_FLYING_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_RACCOON_FLYING_LEFT;
+			}
+			else {
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
+			}
 		}
 	}
 	else
@@ -523,7 +528,15 @@ int CMario::GetAniIdRaccoon()
 			else
 				aniId = ID_ANI_MARIO_RACCOON_SIT_LEFT;
 		}
+		else if (isFlying) 
+		{
+			if (nx > 0)
+				aniId = ID_ANI_MARIO_RACCOON_FLYING_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_RACCOON_FLYING_LEFT;
+		}
 		else
+		{
 			if (vx == 0)
 			{
 				if (!isHolding) {
@@ -556,6 +569,8 @@ int CMario::GetAniIdRaccoon()
 					if (!isHolding) { aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT; }
 					else { aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT; }
 			}
+		}
+			
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
 
@@ -590,6 +605,19 @@ void CMario::SetState(int state)
 	{
 	case MARIO_STATE_SUMMON_KOOPA:
 		isHolding = true;
+		break;
+	case MARIO_STATE_FLYING:
+		if (isSitting) break;
+
+		isFlying = true;
+		vy = -0.25f;
+		ay = -MARIO_GRAVITY;
+		break;
+	case MARIO_STATE_RELEASE_FLYING:
+		if (vy < 0) {
+			vy += 0.25f / 2;
+			ay = MARIO_GRAVITY;
+		}
 		break;
 	case MARIO_STATE_DECELERATION:
 		isDeceleration = true;
