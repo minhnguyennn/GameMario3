@@ -147,7 +147,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_VFTRAP: 
 	{ 
 		int type = (int)atof(tokens[3].c_str());
-		obj = new CVenusFireTrap(x, y, 1); break; 
+		obj = new CVenusFireTrap(x, y, type); break; 
 	}
 	case OBJECT_TYPE_PIPELINE: obj = new CPipeline(x, y); break;
 	case OBJECT_TYPE_FIREBALLS: obj = new CFireBalls(x, y); break;

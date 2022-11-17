@@ -15,10 +15,20 @@ CVenusFireTrap::CVenusFireTrap(float x, float y, int type) :CGameObject(x, y)
 
 void CVenusFireTrap::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x - VFTRAP_BBOX_WIDTH / 2;
-	top = y - VFTRAP_BBOX_HEIGHT / 2;
-	right = left + VFTRAP_BBOX_WIDTH;
-	bottom = top + VFTRAP_BBOX_HEIGHT;
+	if (type == VFTRAP_TYPE_RED)
+	{
+		left = x - VFTRAP_BBOX_RED_WIDTH / 2;
+		top = y - VFTRAP_BBOX_RED_HEIGHT / 2;
+		right = left + VFTRAP_BBOX_RED_WIDTH;
+		bottom = top + VFTRAP_BBOX_RED_HEIGHT;
+	}
+	else
+	{
+		left = x - VFTRAP_BBOX_GREEN_WIDTH / 2;
+		top = y - VFTRAP_BBOX_GREEN_HEIGHT / 2;
+		right = left + VFTRAP_BBOX_GREEN_WIDTH;
+		bottom = top + VFTRAP_BBOX_GREEN_HEIGHT;
+	}
 }
 
 void CVenusFireTrap::OnNoCollision(DWORD dt)
@@ -77,14 +87,21 @@ void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CVenusFireTrap::Render()
 {
 	int aniId = 0;
-	if (VFTRAP_TYPE_GREEN) {
-		if (isMarioLeftWithPlant()) 
-			if(isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_GREEN_TOP_RIGHT;
+	if (type == VFTRAP_TYPE_GREEN)
+		if (isMarioLeftWithPlant())
+			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_GREEN_TOP_RIGHT;
 			else aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_RIGHT;
 		else
 			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_GREEN_TOP_LEFT;
 			else aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_LEFT;
-	}
+	else
+		if (isMarioLeftWithPlant())
+			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_RED_TOP_RIGHT;
+			else aniId = ID_ANI_VFTRAP_RED_BOTTOM_RIGHT;
+		else
+			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_RED_TOP_LEFT;
+			else aniId = ID_ANI_VFTRAP_RED_BOTTOM_LEFT;
+
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }
