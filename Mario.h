@@ -146,6 +146,11 @@
 
 #define ID_ANI_MARIO_RACCOON_IDLE_HOLD_RIGHT 3201
 #define ID_ANI_MARIO_RACCOON_IDLE_HOLD_LEFT 3200
+
+
+#define ID_ANI_MARIO_RACCOON_FLYING_RIGHT 3301
+#define ID_ANI_MARIO_RACCOON_FLYING_LEFT 3300
+
 #define ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT 3101
 #define ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT 3100
 
@@ -200,6 +205,7 @@ class CMario : public CGameObject
 	BOOLEAN isDeceleration;
 	BOOLEAN isHolding;
 	BOOLEAN isRunning;
+	BOOLEAN isFlying;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -220,6 +226,7 @@ class CMario : public CGameObject
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
+		isFlying = false;;
 		isRunning = false;
 		isHolding = false;
 		isSitting = false;
@@ -241,6 +248,9 @@ public:
 
 	void SetIsHolding(bool isHolding) { this->isHolding = isHolding; }
 	bool GetIsHolding() { return isHolding; };
+	void SetIsFlying(bool isFlying) { this->isFlying = isFlying; }
+	bool GetIsFlying() { return isFlying; };
+
 	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }
 
 	int IsCollidable()

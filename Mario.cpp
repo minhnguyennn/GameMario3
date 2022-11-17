@@ -223,7 +223,6 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
-
 	CMushRoom* p = (CMushRoom*)e->obj;
 	p->Delete();
 
@@ -237,7 +236,6 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
-
 	CLeaf* p = (CLeaf*)e->obj;
 	p->Delete();
 	if ((level == MARIO_LEVEL_SMALL) || (level == MARIO_LEVEL_BIG)) {
@@ -250,12 +248,10 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
-
 	CQuestionBrick* p = dynamic_cast<CQuestionBrick*>(e->obj);
 	if ((p->GetState() == QUESTION_STATE_IDLE) && (e->ny>0)){
 		p->SetState(QUESTION_STATE_MOVE_UP);
 	}
-
 }
 
 
@@ -312,7 +308,7 @@ int CMario::GetAniIdSmall()
 				if (ax < 0)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X) {
-					if (!isHolding) { aniId = ID_ANI_MARIO_RUNNING_RIGHT; }
+					if (!isHolding) { aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT; }
 					else { aniId = ID_ANI_MARIO_SMALL_HOLD_WALK_RIGHT; }
 				}
 				else if (ax == MARIO_ACCEL_WALK_X || isDeceleration)
@@ -323,7 +319,7 @@ int CMario::GetAniIdSmall()
 				if (ax > 0)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X)
-					if (!isHolding) { aniId = ID_ANI_MARIO_RUNNING_LEFT; }
+					if (!isHolding) { aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT; }
 					else { aniId = ID_ANI_MARIO_SMALL_HOLD_WALK_LEFT; }
 				else if (ax == -MARIO_ACCEL_WALK_X || isDeceleration)
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;

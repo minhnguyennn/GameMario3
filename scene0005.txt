@@ -20,7 +20,7 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	1920	380
+0	2140	380
 
 ######### Brick ###########
 1	1952	400	1
@@ -51,11 +51,11 @@ Resource/Tilemaps/world1-1.txt
 
 ######### Goomba ###########
 2	550	350	2	2
-#2	1906	370	1	2
+2	1885	370	1	2
 
 ######### Koopa Paratropas ###########
 #15	1906	370
-10	1850	370	2	2
+10	1906	370	2	2
 
 
 ######### Pipeline ###########
@@ -74,7 +74,7 @@ Resource/Tilemaps/world1-1.txt
 ######### Koopa ###########
 #10	574	359	1
 #10	450	300	1
-#10	2104	358	1
+10	2090	358	1	1
 #10	1472	380	2
 
 ######### Coin ###########

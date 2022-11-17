@@ -34,18 +34,14 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (state == KOOPA_STATE_WALKING)
-	{
-		if (dynamic_cast<CGoomba*>(e->obj)) return;
-		if (dynamic_cast<CKoopa*>(e->obj)) return;
-	}
-
 	if (e->ny < 0)
 	{
-		if (level == KOOPA_LEVEL_BIG)
+		if (level == KOOPA_LEVEL_BIG && state == KOOPA_STATE_WALKING) {
+			if (dynamic_cast<CGoomba*>(e->obj)) return;
+			if (dynamic_cast<CKoopa*>(e->obj)) return;
 			SetState(KOOPA_STATE_FLY);
-		else if (level == KOOPA_LEVEL_SMALL)
-			vy = 0;
+		}
+		else vy = 0;
 	}
 	
 	if (e->nx != 0 && e->obj->IsBlocking()) {

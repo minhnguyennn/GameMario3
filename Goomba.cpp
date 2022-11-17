@@ -156,7 +156,7 @@ void CGoomba::SetState(int state)
 
 void CGoomba::LowerLevel()
 {
-	if (level == GOOMBA_LEVEL_BIG)
+	if (level == GOOMBA_LEVEL_BIG )
 	{
 		level = GOOMBA_LEVEL_SMALL;
 	}
