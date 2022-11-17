@@ -20,7 +20,7 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	2140	380
+0	1749	390
 
 ######### Brick ###########
 1	1952	400	1
@@ -60,10 +60,12 @@ Resource/Tilemaps/world1-1.txt
 
 ######### Pipeline ###########
 12	360	384
+12	1865	384
 
 ######### Venus fire trap ###########
-11	330	378
-11	390	378
+11	330	378	1
+11	340	378	1
+11	1840	378	1
 
 ######### Goomba ###########
 #2	550	300

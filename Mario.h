@@ -194,6 +194,7 @@ class CMario : public CGameObject
 {
 	
 	float maxVx;
+	float maxVy;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 	int time;
@@ -236,6 +237,7 @@ public:
 		isSitting = false;
 		isDeceleration = false;
 		maxVx = 0.0f;
+		maxVy = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
 		level = MARIO_LEVEL_FIRE;

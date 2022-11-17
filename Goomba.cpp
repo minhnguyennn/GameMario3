@@ -79,7 +79,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"[oke] isCloseWing: %d\n", isCloseWing);
+	//DebugOut(L"[oke] isCloseWing: %d\n", isCloseWing);
 	vy += ay * dt;
 	/*DebugOut(L"[X] %f\n", x);
 	DebugOut(L"[cam_X] %f\n", CGame::GetInstance()->GetCamX());*/

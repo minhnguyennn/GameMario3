@@ -39,7 +39,7 @@ void CPipeline::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 void CPipeline::SummonVenusFireTrap() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CVenusFireTrap* vftrap = new CVenusFireTrap(x, y-6);
+	CVenusFireTrap* vftrap = new CVenusFireTrap(x, y-6, 1);
 	scene->CreateObject(vftrap);
 }
 

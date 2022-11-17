@@ -144,7 +144,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CKoopa(x, y, type, level);
 		break;
 	}
-	case OBJECT_TYPE_VFTRAP: obj = new CVenusFireTrap(x, y); break;
+	case OBJECT_TYPE_VFTRAP: 
+	{ 
+		int type = (int)atof(tokens[3].c_str());
+		obj = new CVenusFireTrap(x, y, 1); break; 
+	}
 	case OBJECT_TYPE_PIPELINE: obj = new CPipeline(x, y); break;
 	case OBJECT_TYPE_FIREBALLS: obj = new CFireBalls(x, y); break;
 	case OBJECT_TYPE_FIREBALL_OF_MARIO: obj = new CFireBallOfMario(x, y); break;

@@ -5,8 +5,9 @@
 #include "FireBalls.h"
 #include "Point.h"
 
-CVenusFireTrap::CVenusFireTrap(float x, float y) :CGameObject(x, y)
+CVenusFireTrap::CVenusFireTrap(float x, float y, int type) :CGameObject(x, y)
 {
+	this->type = type;
 	this->ay = VFTRAP_GRAVITY;
 	this->start_y = y;
 	SetState(VFTRAP_STATE_UP);
@@ -75,7 +76,15 @@ void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CVenusFireTrap::Render()
 {
-	int aniId = ID_ANI_VFTRAP_MOVING_UP_LEFT;
+	int aniId = 0;
+	if (VFTRAP_TYPE_GREEN) {
+		if (isMarioLeftWithPlant()) 
+			if(isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_GREEN_TOP_RIGHT;
+			else aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_RIGHT;
+		else
+			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_GREEN_TOP_LEFT;
+			else aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_LEFT;
+	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -158,4 +167,20 @@ void CVenusFireTrap::SetSummonItems(int type) {
 		break;
 	}
 	
+}
+
+bool CVenusFireTrap::isMarioLeftWithPlant()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (x < mario->GetX()) return true;
+	else return false;
+}
+
+bool CVenusFireTrap::isMarioAboveWithPlant()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (y > mario->GetY()) return true;
+	else return false;
 }
