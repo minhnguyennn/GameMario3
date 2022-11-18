@@ -149,7 +149,6 @@
     <ClCompile Include="FireBallOfMario.cpp" />
     <ClCompile Include="FireBalls.cpp" />
     <ClCompile Include="Koopa.cpp" />
-    <ClCompile Include="KoopaParatroopas.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MushRoom.cpp" />
@@ -183,7 +182,6 @@
     <ClInclude Include="FireBallOfMario.h" />
     <ClInclude Include="FireBalls.h" />
     <ClInclude Include="Koopa.h" />
-    <ClInclude Include="KoopaParatroopas.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MushRoom.h" />

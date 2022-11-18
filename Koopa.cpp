@@ -36,12 +36,14 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->ny < 0)
 	{
-		if (level == KOOPA_LEVEL_BIG && state == KOOPA_STATE_WALKING) {
-			if (dynamic_cast<CGoomba*>(e->obj)) return;
-			if (dynamic_cast<CKoopa*>(e->obj)) return;
+		if (level == KOOPA_LEVEL_BIG) {
+			
 			SetState(KOOPA_STATE_FLY);
 		}
-		else vy = 0;
+		else
+		{
+			vy = 0;
+		}
 	}
 	
 	if (e->nx != 0 && e->obj->IsBlocking()) {
@@ -75,30 +77,33 @@ void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 	float plant_form_y = platform->GetY();
 	float plat_form_x_start = platform->GetX() - KOOPA_REMAINDER_OF_DISTANCE;
 	float plat_form_x_end = platform->GetX() + (platform->GetLength() * KOOPA_WIDTH_OF_BOX) - KOOPA_REMAINDER_OF_DISTANCE;
-	if (!platform->IsBlocking()) {
-		if (e->ny < 0) {
-			vy = 0;
-			if (!isDefense) {
-				//CASE WHEN KOOPA WAIT AND ATTACK AND TURN OVER
-				if (isWaiting || isAttacking || isTurnOver){
+	if (level != KOOPA_LEVEL_BIG) {
+		if (!platform->IsBlocking()) {
+			if (e->ny < 0) {
+
+				vy = 0;
+				if (!isDefense) {
+					//CASE WHEN KOOPA WAIT AND ATTACK AND TURN OVER
+					if (isWaiting || isAttacking || isTurnOver) {
+						y = plant_form_y - KOOPA_UP_DISTANCE;
+					}
+					//CASE WHEN KOOPA MOVE
+					else {
+						y = plant_form_y - KOOPA_UP_DISTANCE_MOVE;
+						if (x < plat_form_x_start) {
+							vx = -vx;
+							x = plat_form_x_start;
+						}
+						if (x > plat_form_x_end) {
+							vx = -vx;
+							x = plat_form_x_end;
+						}
+					}
+				}
+				//CASE WHEN KOOPA DEFENSE
+				else {
 					y = plant_form_y - KOOPA_UP_DISTANCE;
 				}
-				//CASE WHEN KOOPA MOVE
-				else {
-					y = plant_form_y - KOOPA_UP_DISTANCE_MOVE;
-					if (x < plat_form_x_start) {
-						vx = -vx;
-						x = plat_form_x_start;
-					}
-					if (x > plat_form_x_end) {
-						vx = -vx;
-						x = plat_form_x_end;
-					}
-				}
-			}
-			//CASE WHEN KOOPA DEFENSE
-			else {
-				y = plant_form_y - KOOPA_UP_DISTANCE;
 			}
 		}
 	}
@@ -236,12 +241,12 @@ void CKoopa::Render()
 
 void CKoopa::SetState(int state)
 {
-
+	DebugOut(L"STATE LEVEL %d %d \n", state,level);
 	switch (state)
 	{
 	case KOOPA_STATE_FLY: 
 	{
-		vy = -GOOMBA_FLY_SPEED;
+		vy = -KOOPA_FLY_SPEED;
 		break;
 	}
 	case KOOPA_STATE_DIE_TURN_OVER:

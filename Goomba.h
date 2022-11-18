@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 //PROPERTY
-#define GOOMBA_GRAVITY 0.0001f
+#define GOOMBA_GRAVITY 0.0003f
 #define GOOMBA_WALKING_SPEED 0.05f
 #define GOOMBA_FLY_SPEED 0.06f
 #define GOOMBA_MAX_FLY_SPEED 0.09f

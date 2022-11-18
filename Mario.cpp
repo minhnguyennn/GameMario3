@@ -17,7 +17,6 @@
 #include "Collision.h"
 #include "PlayScene.h"
 #include "FireBallOfMario.h"
-#include "KoopaParatroopas.h"
 #include "Goomba.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -94,8 +93,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatform(e);
-	else if (dynamic_cast<CKoopaParatroopas*>(e->obj))
-		OnCollisionWithKoopaParatroopas(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CBrick*>(e->obj))
@@ -152,68 +149,41 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		koopa->SetVY(-KOOPA_JUMP_DEFLECT_SPEED);
-		
-		if (koopa->GetIsAttacking()) {
-			koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
-			koopa->SetState(KOOPA_STATE_ATTACKING);
-		}
-		else if (koopa->GetLevel() == KOOPA_LEVEL_BIG) 
+		//Logic for big
+		if (koopa->GetLevel() == KOOPA_LEVEL_BIG) {
 			koopa->SetLevel(KOOPA_LEVEL_SMALL);
-		else koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
-	}
-	else if (e->nx != 0) {
-		
-		if ((koopa->GetState() == KOOPA_STATE_WALKING) || (koopa->GetIsAttacking())) {
-			LowerLevel();
 		}
-		else if (isRunning)
-		{
-			//DebugOut(L"[OKE2] \n");
-			isHolding = true;
-			koopa->SetIsHeld(true);
-		}
+		// Logic for level small
+
 		else {
-			//DebugOut(L"[OKE1] \n");
-			//isHolding = false;
-			koopa->SetState(KOOPA_STATE_ATTACKING);
-		}
-	}
-}
-
-void CMario::OnCollisionWithKoopaParatroopas(LPCOLLISIONEVENT e)
-{
-	CKoopaParatroopas* koopa_paratroopas = dynamic_cast<CKoopaParatroopas*>(e->obj);
-
-	// jump on top >> kill Goomba and deflect a bit 
-	if (e->ny < 0)
-	{
-		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		koopa_paratroopas->SetVY(-KOOPA_PARATROOPAS_JUMP_DEFLECT_SPEED);
-		if (!koopa_paratroopas->GetIsDefense() && !koopa_paratroopas->GetIsWaiting()) {
-			if (koopa_paratroopas->GetIsAttacking()) {
-				koopa_paratroopas->SetY(koopa_paratroopas->GetY() - KOOPA_PARATROOPAS_DISTANCE_WHEN_ATTACKING);
+			if (koopa->GetIsAttacking() || (koopa->GetState() == KOOPA_STATE_WALKING)) {
+				koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
+				koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 			}
-			koopa_paratroopas->SetState(KOOPA_PARATROOPAS_STATE_CLOSE_SHELL);
-		}
-		else { 
-			koopa_paratroopas->SetState(KOOPA_PARATROOPAS_STATE_ATTACKING); 
+			else if (koopa->GetIsDefense() || koopa->GetIsWaiting())
+				koopa->SetState(KOOPA_STATE_ATTACKING);
 		}
 	}
 	else if (e->nx != 0) {
+		if (koopa->GetLevel() != KOOPA_LEVEL_BIG) {
+			if ((koopa->GetState() == KOOPA_STATE_WALKING) || (koopa->GetIsAttacking())) {
+				LowerLevel();
+			}
+			else if (isRunning)
+			{
+				//DebugOut(L"[OKE2] \n");
+				isHolding = true;
+				koopa->SetIsHeld(true);
+			}
+			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting())) {
 
-		if ((koopa_paratroopas->GetState() == KOOPA_PARATROOPAS_STATE_WALKING) || (koopa_paratroopas->GetIsAttacking())) {
-			LowerLevel();
-		}
-		else if (isRunning)
-		{
-			//DebugOut(L"[OKE2] \n");
-			isHolding = true;
-			koopa_paratroopas->SetIsHeld(true);
+				koopa->SetState(KOOPA_STATE_ATTACKING);
+			
+			}
 		}
 		else {
-			//DebugOut(L"[OKE1] \n");
-			//isHolding = false;
-			koopa_paratroopas->SetState(KOOPA_PARATROOPAS_STATE_ATTACKING);
+			LowerLevel();
+
 		}
 	}
 }
@@ -596,7 +566,11 @@ void CMario::Render()
 		aniId = GetAniIdFire();
 	else if (level == MARIO_LEVEL_RACCOON)
 		aniId = GetAniIdRaccoon();
-	animations->Get(aniId)->Render(x, y);
+	if (level != MARIO_LEVEL_RACCOON)  animations->Get(aniId)->Render(x, y); 
+	else {
+		if (nx > 0) animations->Get(aniId)->Render(x - 4, y);
+		else animations->Get(aniId)->Render(x + 4, y);
+	}
 	RenderBoundingBox();
 }
 
@@ -726,9 +700,9 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		}
 		else
 		{
-			left = x - MARIO_RACCOON_BBOX_WIDTH / 2 ;
+			left = x - MARIO_BIG_BBOX_WIDTH / 2 ;
 			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
-			right = left + MARIO_RACCOON_BBOX_WIDTH;
+			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}

@@ -34,16 +34,10 @@ void CPipeline::GetBoundingBox(float& l, float& t, float& r, float& b)
 	}
 }
 
-void CPipeline::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	CGameObject::Update(dt, coObjects);
-	CCollision::GetInstance()->Process(this, dt, coObjects);
-}
-
 void CPipeline::SummonVenusFireTrap() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-
 	if (type_summon_plant == PIPELINE_TYPE_GREEN) {
-		CVenusFireTrap* vft_green = new CVenusFireTrap(x, y , VFTRAP_TYPE_GREEN);
+		CVenusFireTrap* vft_green = new CVenusFireTrap(x, y, VFTRAP_TYPE_GREEN);
 		scene->CreateObject(vft_green);
 	}
 	else if (type_summon_plant == PIPELINE_TYPE_RED) {
@@ -52,10 +46,9 @@ void CPipeline::SummonVenusFireTrap() {
 	}
 	else if (type_summon_plant == PIPELINE_TYPE_PIRANHA)
 	{
-		CVenusFireTrap* piranha = new CVenusFireTrap(x, y , VFTRAP_TYPE_PIRANHA);
+		CVenusFireTrap* piranha = new CVenusFireTrap(x, y, VFTRAP_TYPE_PIRANHA);
 		scene->CreateObject(piranha);
 	}
-	
 }
 
 

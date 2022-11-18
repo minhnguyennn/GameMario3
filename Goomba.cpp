@@ -2,7 +2,6 @@
 #include "debug.h"
 #include "Goomba.h"
 #include "Koopa.h"
-#include "KoopaParatroopas.h"
 #include "PlayScene.h"
 #include "Platform.h"
 
@@ -25,8 +24,15 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 		right = left + GOOMBA_SMALL_BBOX_WIDTH;
 		bottom = top + GOOMBA_BBOX_HEIGHT_DIE;
 	}
+	else 
+	{
+		left = x - GOOMBA_SMALL_BBOX_WIDTH / 2;
+		top = y - GOOMBA_SMALL_BBOX_HEIGHT / 2;
+		right = left + GOOMBA_SMALL_BBOX_WIDTH;
+		bottom = top + GOOMBA_SMALL_BBOX_HEIGHT;
+	}
 
-	if (level == GOOMBA_LEVEL_BIG && !isCloseWing)
+	/*if (level == GOOMBA_LEVEL_BIG && !isCloseWing)
 	{
 			left = x - GOOMBA_BIG_BBOX_WIDTH / 2;
 			top = y - GOOMBA_BIG_BBOX_HEIGHT / 2;
@@ -45,7 +51,7 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 		top = y - GOOMBA_BBOX_CLOSE_WING_HEIGHT / 2;
 		right = left + GOOMBA_BIG_BBOX_WIDTH;
 		bottom = top + GOOMBA_BBOX_CLOSE_WING_HEIGHT;
-	}
+	}*/
 }
 
 void CGoomba::OnNoCollision(DWORD dt)
@@ -58,7 +64,6 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CGoomba*>(e->obj)) return;
 	if (dynamic_cast<CKoopa*>(e->obj)) return;
-	if (dynamic_cast<CKoopaParatroopas*>(e->obj)) return;
 
 	if (e->ny < 0)
 	{
@@ -123,6 +128,7 @@ void CGoomba::Render()
 void CGoomba::SetState(int state)
 {
 	CGameObject::SetState(state);
+	//DebugOut(L"state: ay: %d %f\n", state, ay);
 	switch (state)
 	{
 	case GOOMBA_STATE_DIE:

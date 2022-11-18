@@ -20,7 +20,10 @@
 //#define FIREBALLS_DISTANCE_DOWN 20
 //#define FIREBALLS_DISTANCE_MAX_UP 15
 //#define FIREBALLS_DISTANCE_MAX_DOWN 15
-#define FIREBALLS_GRAVITY 0.0001f
+#define FIREBALLS_SPEED_Y 0.2f
+#define FIREBALLS_SPEED_X 0.15f
+#define FIREBALLS_GRAVITY 0.0006f
+
 
 class CFireBallOfMario : public CGameObject {
 	float ax;

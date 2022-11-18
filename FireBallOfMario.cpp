@@ -2,13 +2,11 @@
 #include "debug.h"
 #include "PlayScene.h"
 #include"Koopa.h"
-#include"KoopaParatroopas.h"
 #include"VenusFireTrap.h"
 #include"Goomba.h"
 #include"Goomba.h"
 
-#define FIREBALLS_SPEED_Y 0.09f
-#define FIREBALLS_SPEED_X 0.06f
+
 
 CFireBallOfMario::CFireBallOfMario(float x, float y) :CGameObject(x, y)
 {
@@ -61,7 +59,7 @@ void CFireBallOfMario::OnCollisionWith(LPCOLLISIONEVENT e){
 
 	if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
-	else if (dynamic_cast<CKoopaParatroopas*>(e->obj))
+	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopaParatroopas(e);
 	else if (dynamic_cast<CVenusFireTrap*>(e->obj))
 		OnCollisionWithVenusFireTrap(e);
@@ -93,8 +91,8 @@ void CFireBallOfMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 void CFireBallOfMario::OnCollisionWithKoopaParatroopas(LPCOLLISIONEVENT e)
 {
 	//Koopa paratroopa will turned over and died.
-	CKoopaParatroopas* koopa_paratroopa = dynamic_cast<CKoopaParatroopas*>(e->obj);
-	koopa_paratroopa->SetState(KOOPA_PARATROOPAS_STATE_DIE_TURN_OVER);
+	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+	koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
 }
 
 void CFireBallOfMario::SetState(int state)

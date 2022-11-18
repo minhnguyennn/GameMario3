@@ -6,7 +6,7 @@
 #define KOOPA_GRAVITY 0.0002f
 #define KOOPA_WALKING_SPEED 0.05f
 #define KOOPA_WALKING_ATTACKING_SPEED (KOOPA_WALKING_SPEED * 3)
-#define KOOPA_FLY_SPEED 0.09f
+#define KOOPA_FLY_SPEED 0.1f
 #define KOOPA_JUMP_DEFLECT_SPEED 0.02f
 
 //TIME
@@ -116,7 +116,12 @@ public:
 	bool GetIsWaiting() { return isWaiting; };
 	bool GetIsAttacking (){ return isAttacking; };
 	int GetLevel() { return level; };
-	void SetLevel(int level) { this->level = level; };
+	void SetLevel(int setLevel) { 
+		if (setLevel == KOOPA_LEVEL_SMALL) {
+			SetState(KOOPA_STATE_WALKING);
+			this->level = setLevel;
+		}
+	};
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
