@@ -8,6 +8,9 @@
 #define VFTRAP_BBOX_GREEN_WIDTH 17
 #define VFTRAP_BBOX_GREEN_HEIGHT 25
 
+#define VFTRAP_BBOX_PIRANHA_WIDTH 15
+#define VFTRAP_BBOX_PIRANHA_HEIGHT 25
+
 //ANIMATION
 #define ID_ANI_VFTRAP_RED_TOP_LEFT 5020
 #define ID_ANI_VFTRAP_RED_BOTTOM_LEFT 5021
@@ -21,14 +24,26 @@
 #define ID_ANI_VFTRAP_GREEN_TOP_RIGHT 5024
 #define ID_ANI_VFTRAP_GREEN_BOTTOM_RIGHT 5025
 
+#define ID_ANI_PIRANHA_PLANT 5028
 
 //PROPERTY
 #define VFTRAP_GRAVITY 0.00001f
 #define VFTRAP_MOVING_SPEED 0.02f
-#define VFTRAP_DISTANCE_MAX_UP 32
-#define VFTRAP_DISTANCE_MAX_DOWN 13
-#define	VFTRAP_WAITING_MAX	1000
 #define VFTRAP_DIE_TIMEOUT 500
+
+//TIME
+#define	VFTRAP_WAITING_MAX		1000
+#define	VFTRAP_WAITING_PIRAN	1490
+
+//DISTANCE
+#define VFTRAP_DIS_UP_RED		31
+#define VFTRAP_DIS_DOWN_RED		11
+
+#define VFTRAP_DIS_UP_GREEN		34
+#define VFTRAP_DIS_DOWN_GREEN	10
+
+#define VFTRAP_DIST_UP_PIRA		26
+#define VFTRAP_DIST_DOWN_PIRA	1
 
 //STATE
 #define VFTRAP_STATE_IDLE 0
@@ -43,6 +58,7 @@
 //TYPE PLANT
 #define VFTRAP_TYPE_GREEN 3
 #define VFTRAP_TYPE_RED 4
+#define VFTRAP_TYPE_PIRANHA 5
 
 
 class CVenusFireTrap : public CGameObject
@@ -62,13 +78,14 @@ public:
 	void Render();
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
-	void ChangeStateMotionDown();
-	void ChangeStateMotionUp();
+	void ChangeStateMotionDown(ULONGLONG time_type);
+	void ChangeStateMotionUp(ULONGLONG time_type);
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
 	void SetSummonItems(int type);
 	bool isMarioLeftWithPlant();
 	bool isMarioAboveWithPlant();
+	void MoveFunctionPlant(float disUp, float disDown);
 };
 
 

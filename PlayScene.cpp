@@ -151,8 +151,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_PIPELINE: 
 	{
-		int type = (int)atof(tokens[3].c_str());
-		obj = new CPipeline(x, y, type); break; 
+		int type_summon_plant = (int)atof(tokens[3].c_str());
+		int type_pineline = (int)atof(tokens[4].c_str());
+		obj = new CPipeline(x, y, type_summon_plant, type_pineline); break;
 	}
 	case OBJECT_TYPE_FIREBALLS: obj = new CFireBalls(x, y); break;
 	case OBJECT_TYPE_FIREBALL_OF_MARIO: obj = new CFireBallOfMario(x, y); break;

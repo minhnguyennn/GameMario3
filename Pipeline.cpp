@@ -5,19 +5,34 @@
 
 void CPipeline::Render()
 {
-	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(ID_ANI_PIPELINE)->Render(x, y);
+	int aniId = 0;
+
+	if (type_pineline == PIPELINE_TYPE_SMALL) 
+		aniId = ID_ANI_SMALL_PIPELINE;
+	else 
+		aniId = ID_ANI_BIG_PIPELINE;
+
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }
 
 void CPipeline::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - PIPELINE_BBOX_WIDTH / 2;
-	t = y - PIPELINE_BBOX_HEIGHT / 2;
-	r = l + PIPELINE_BBOX_WIDTH;
-	b = t + PIPELINE_BBOX_HEIGHT;
+	if (type_pineline == PIPELINE_TYPE_BIG)
+	{
+		l = x - PIPELINE_BBOX_BIG_WIDTH / 2;
+		t = y - PIPELINE_BBOX_BIG_HEIGHT / 2;
+		r = l + PIPELINE_BBOX_BIG_WIDTH;
+		b = t + PIPELINE_BBOX_BIG_HEIGHT;
+	}
+	else 
+	{
+		l = x - PIPELINE_BBOX_SMALL_WIDTH / 2;
+		t = y - PIPELINE_BBOX_SMALL_HEIGHT / 2;
+		r = l + PIPELINE_BBOX_SMALL_WIDTH;
+		b = t + PIPELINE_BBOX_SMALL_HEIGHT;
+	}
 }
-
 
 void CPipeline::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	CGameObject::Update(dt, coObjects);
@@ -26,14 +41,19 @@ void CPipeline::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 void CPipeline::SummonVenusFireTrap() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	
-	if (type == 1) {
-		CVenusFireTrap* vft_green = new CVenusFireTrap(x, y - PIPELINE_DISTANCE_GREEN, VFTRAP_TYPE_GREEN);
+
+	if (type_summon_plant == PIPELINE_TYPE_GREEN) {
+		CVenusFireTrap* vft_green = new CVenusFireTrap(x, y , VFTRAP_TYPE_GREEN);
 		scene->CreateObject(vft_green);
 	}
-	else if (type == 2) {
+	else if (type_summon_plant == PIPELINE_TYPE_RED) {
 		CVenusFireTrap* vft_red = new CVenusFireTrap(x, y - PIPELINE_DISTANCE_RED, VFTRAP_TYPE_RED);
 		scene->CreateObject(vft_red);
+	}
+	else if (type_summon_plant == PIPELINE_TYPE_PIRANHA)
+	{
+		CVenusFireTrap* piranha = new CVenusFireTrap(x, y , VFTRAP_TYPE_PIRANHA);
+		scene->CreateObject(piranha);
 	}
 	
 }

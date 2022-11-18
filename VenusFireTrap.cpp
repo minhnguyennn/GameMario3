@@ -22,12 +22,19 @@ void CVenusFireTrap::GetBoundingBox(float& left, float& top, float& right, float
 		right = left + VFTRAP_BBOX_RED_WIDTH;
 		bottom = top + VFTRAP_BBOX_RED_HEIGHT;
 	}
-	else
+	else if (type == VFTRAP_TYPE_GREEN)
 	{
 		left = x - VFTRAP_BBOX_GREEN_WIDTH / 2;
 		top = y - VFTRAP_BBOX_GREEN_HEIGHT / 2;
 		right = left + VFTRAP_BBOX_GREEN_WIDTH;
 		bottom = top + VFTRAP_BBOX_GREEN_HEIGHT;
+	}
+	else if (type == VFTRAP_TYPE_PIRANHA)
+	{
+		left = x - VFTRAP_BBOX_PIRANHA_WIDTH / 2;
+		top = y - VFTRAP_BBOX_PIRANHA_HEIGHT / 2;
+		right = left + VFTRAP_BBOX_PIRANHA_WIDTH;
+		bottom = top + VFTRAP_BBOX_PIRANHA_HEIGHT;
 	}
 }
 
@@ -53,26 +60,20 @@ void CVenusFireTrap::OnCollisionWith(LPCOLLISIONEVENT e)
 void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	//DebugOut(L"[STATE] STATE: %d\n",state);
-	if ((start_y - y) > VFTRAP_DISTANCE_MAX_UP) {
-		//DebugOut(L"[OK1] \n");
-		if (state == VFTRAP_STATE_UP) {
-			SetState(VFTRAP_STATE_IDLE);
-		}
-		else if (state == VFTRAP_STATE_IDLE) {
-			ChangeStateMotionDown();
-		}
-	}
 
-	if ((y - start_y) > VFTRAP_DISTANCE_MAX_DOWN) {
-		//DebugOut(L"[OKE2]\n");
-		if (state == VFTRAP_STATE_DOWN) {
-			SetState(VFTRAP_STATE_IDLE);
-		}
-		else if (state == VFTRAP_STATE_IDLE) {
-			ChangeStateMotionUp();
-		}
+	if (type == VFTRAP_TYPE_PIRANHA)
+	{
+		MoveFunctionPlant(VFTRAP_DIST_UP_PIRA, VFTRAP_DIST_DOWN_PIRA);
 	}
+	else if (type == VFTRAP_TYPE_GREEN) 
+	{
+		MoveFunctionPlant(VFTRAP_DIS_UP_GREEN, VFTRAP_DIS_DOWN_GREEN);
+	}
+	else
+	{
+		MoveFunctionPlant(VFTRAP_DIS_UP_RED, VFTRAP_DIS_DOWN_RED);
+	}
+	
 
 	if ((state == VFTRAP_STATE_DIE) && (GetTickCount64() - die_start > VFTRAP_DIE_TIMEOUT))
 	{
@@ -88,19 +89,24 @@ void CVenusFireTrap::Render()
 {
 	int aniId = 0;
 	if (type == VFTRAP_TYPE_GREEN)
+	{
 		if (isMarioLeftWithPlant())
 			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_GREEN_TOP_RIGHT;
 			else aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_RIGHT;
 		else
 			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_GREEN_TOP_LEFT;
 			else aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_LEFT;
-	else
+	}
+	else if (type == VFTRAP_TYPE_RED)
+	{
 		if (isMarioLeftWithPlant())
 			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_RED_TOP_RIGHT;
 			else aniId = ID_ANI_VFTRAP_RED_BOTTOM_RIGHT;
 		else
 			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_RED_TOP_LEFT;
 			else aniId = ID_ANI_VFTRAP_RED_BOTTOM_LEFT;
+	}
+	else aniId = ID_ANI_PIRANHA_PLANT;
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
@@ -134,15 +140,17 @@ void CVenusFireTrap::SetState(int state)
 	CGameObject::SetState(state);
 }
 
-void CVenusFireTrap::ChangeStateMotionDown() {
-	if ((GetTickCount64() - time_line) > VFTRAP_WAITING_MAX) {
-		SetSummonItems(VFTRAP_TYPE_FIRE_BALL);
+void CVenusFireTrap::ChangeStateMotionDown(ULONGLONG time_type) {
+	if ((GetTickCount64() - time_line) > time_type) {
+		if (type == VFTRAP_TYPE_RED) {
+			SetSummonItems(VFTRAP_TYPE_FIRE_BALL);
+		}
 		SetState(VFTRAP_STATE_DOWN);
 	}
 }
 
-void CVenusFireTrap::ChangeStateMotionUp() {
-	if ((GetTickCount64() - time_line) > VFTRAP_WAITING_MAX) {
+void CVenusFireTrap::ChangeStateMotionUp(ULONGLONG time_type) {
+	if ((GetTickCount64() - time_line) > time_type) {
 		SetState(VFTRAP_STATE_UP);
 	}
 }
@@ -200,4 +208,31 @@ bool CVenusFireTrap::isMarioAboveWithPlant()
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (y > mario->GetY()) return true;
 	else return false;
+}
+
+void CVenusFireTrap::MoveFunctionPlant(float disUp, float disDown) {
+	if ((start_y - y) > disUp) {
+		if (state == VFTRAP_STATE_UP) {
+			SetState(VFTRAP_STATE_IDLE);
+		}
+		else if (state == VFTRAP_STATE_IDLE) {
+			if (type == VFTRAP_TYPE_PIRANHA)
+				ChangeStateMotionDown(VFTRAP_WAITING_PIRAN);
+			else 
+				ChangeStateMotionDown(VFTRAP_WAITING_MAX);
+		}
+	}
+
+	if ((y - start_y) > disDown) {;
+		if (state == VFTRAP_STATE_DOWN) {
+			SetState(VFTRAP_STATE_IDLE);
+		}
+		else if (state == VFTRAP_STATE_IDLE) {
+			if (type == VFTRAP_TYPE_PIRANHA)
+				ChangeStateMotionUp(VFTRAP_WAITING_PIRAN);
+			else
+				ChangeStateMotionUp(VFTRAP_WAITING_MAX);
+		}
+	}
+
 }
