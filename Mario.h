@@ -26,6 +26,8 @@
 #define MARIO_STATE_WALKING_RIGHT	100
 #define MARIO_STATE_WALKING_LEFT	200
 
+#define MARIO_STATE_ATTACK			900
+
 #define MARIO_STATE_FLYING			800
 #define MARIO_STATE_RELEASE_FLYING	801
 
@@ -158,6 +160,8 @@
 #define ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT 3101
 #define ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT 3100
 
+#define	ID_ANI_MARIO_RACCOON_ATTACK	3301
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -205,6 +209,7 @@ class CMario : public CGameObject
 
 	ULONGLONG untouchable_start;
 	ULONGLONG count_1_second = 0;
+	ULONGLONG time_attack;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -213,6 +218,7 @@ class CMario : public CGameObject
 	BOOLEAN isRunning;
 	BOOLEAN isFlying;
 	BOOLEAN isGhostBox;
+	BOOLEAN isAttack;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -232,12 +238,16 @@ class CMario : public CGameObject
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
+		this->time_attack = 0;
+		isAttack = false;
+
 		isFlying = false;;
 		isRunning = false;
 		isHolding = false;
 		isSitting = false;
 		isDeceleration = false;
 		isGhostBox = false;
+		
 		maxVx = 0.0f;
 		maxVy = 0.0f;
 		ax = 0.0f;
@@ -249,6 +259,11 @@ public:
 		coin = 0;
 		time = 300;
 	}
+
+	ULONGLONG GetTimeAttack() { return time_attack; }
+	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
+	bool GetIsAttack() {return isAttack;  }
+
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
@@ -258,6 +273,7 @@ public:
 	bool GetIsHolding() { return isHolding; };
 	void SetIsFlying(bool isFlying) { this->isFlying = isFlying; }
 	bool GetIsFlying() { return isFlying; };
+
 
 	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }
 

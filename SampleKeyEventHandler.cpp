@@ -10,8 +10,19 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
 	switch (KeyCode)
 	{
-	case DIK_A:
+	case DIK_D:
 		//if(mario->GetLevel()==MARIO_LEVEL_FIRE) mario->SummonFireBalls();
+		
+		break;
+	case DIK_A:
+		if (mario->GetLevel() == MARIO_LEVEL_FIRE)
+		{
+			mario->SummonFireBalls();
+		}
+		else if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
+		{
+			mario->SetState(MARIO_STATE_ATTACK);
+		}
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT);
@@ -50,9 +61,9 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
-	case DIK_D:
+	/*case DIK_D:
 		mario->SetState(MARIO_STATE_RELEASE_FLYING);
-		break;
+		break;*/
 	case DIK_A:
 		mario->SetIsHolding(false);
 		mario->SetIsRunning(false);
@@ -81,25 +92,29 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
-	if (game->IsKeyDown(DIK_RIGHT))
+	if (mario->GetIsAttack() == false) 
 	{
-		if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_RUNNING_RIGHT);
-		else if (game->IsKeyDown(DIK_DOWN)) mario->SetState(MARIO_STATE_SIT);
-		else mario->SetState(MARIO_STATE_WALKING_RIGHT);
-	}
-	else if (game->IsKeyDown(DIK_LEFT))
-	{
-		if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_RUNNING_LEFT);
-		else if (game->IsKeyDown(DIK_DOWN)) mario->SetState(MARIO_STATE_SIT);
-		else mario->SetState(MARIO_STATE_WALKING_LEFT);
-	}
-	else {
-		if (!mario->GetVX()) {
-		
-			mario->SetState(MARIO_STATE_IDLE); 
+		if (game->IsKeyDown(DIK_RIGHT))
+		{
+			if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_RUNNING_RIGHT);
+			else if (game->IsKeyDown(DIK_DOWN)) mario->SetState(MARIO_STATE_SIT);
+			else mario->SetState(MARIO_STATE_WALKING_RIGHT);
 		}
-		else { 
-			mario->SetState(MARIO_STATE_DECELERATION); 
+		else if (game->IsKeyDown(DIK_LEFT))
+		{
+			if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_RUNNING_LEFT);
+			else if (game->IsKeyDown(DIK_DOWN)) mario->SetState(MARIO_STATE_SIT);
+			else mario->SetState(MARIO_STATE_WALKING_LEFT);
+		}
+		else {
+			if (!mario->GetVX())
+			{
+				mario->SetState(MARIO_STATE_IDLE);
+			}
+			else
+			{
+				mario->SetState(MARIO_STATE_DECELERATION);
+			}
 		}
 	}
 }

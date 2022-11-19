@@ -10,19 +10,19 @@
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (isDie) return;
-	if (isDefense || isWaiting || isAttacking || isTurnOver)
+
+	if (state == KOOPA_STATE_WALKING || state == KOOPA_STATE_FLY) {
+		left = x - KOOPA_BBOX_WIDTH / 2;
+		top = y - KOOPA_BBOX_HEIGHT / 2;
+		right = left + KOOPA_BBOX_WIDTH;
+		bottom = top + KOOPA_BBOX_HEIGHT;
+	}
+	else
 	{
 		left = x - KOOPA_BBOX_WAITING / 2;
 		top = y - KOOPA_BBOX_WAITING / 2;
 		right = left + KOOPA_BBOX_WAITING;
 		bottom = top + KOOPA_BBOX_WAITING;
-	}
-	else 
-	{
-		left = x - KOOPA_BBOX_WIDTH / 2;
-		top = y - KOOPA_BBOX_HEIGHT / 2;
-		right = left + KOOPA_BBOX_WIDTH;
-		bottom = top + KOOPA_BBOX_HEIGHT;
 	}
 }
 
@@ -77,10 +77,9 @@ void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 	float plant_form_y = platform->GetY();
 	float plat_form_x_start = platform->GetX() - KOOPA_REMAINDER_OF_DISTANCE;
 	float plat_form_x_end = platform->GetX() + (platform->GetLength() * KOOPA_WIDTH_OF_BOX) - KOOPA_REMAINDER_OF_DISTANCE;
-	if (level != KOOPA_LEVEL_BIG) {
+	if (level == KOOPA_LEVEL_SMALL) {
 		if (!platform->IsBlocking()) {
 			if (e->ny < 0) {
-
 				vy = 0;
 				if (!isDefense) {
 					//CASE WHEN KOOPA WAIT AND ATTACK AND TURN OVER
@@ -195,13 +194,13 @@ void CKoopa::Render()
 	int aniId = 0;
 	if (type == KOOPA_TYPE_TROOPA)
 	{
-		if (isWaiting)
+		if (state == KOOPA_STATE_WAITING)
 			aniId = ID_ANI_KOOPA_WAITING;
-		else if (isDefense)
+		else if (state == KOOPA_STATE_CLOSE_SHELL)
 			aniId = ID_ANI_KOOPA_CLOSE_SHELL;
-		else if (isAttacking)
+		else if (state == KOOPA_STATE_ATTACKING)
 			aniId = ID_ANI_KOOPA_ATTACKING;
-		else if (isTurnOver)
+		else if (state == KOOPA_STATE_TURN_OVER)
 			aniId = ID_ANI_KOOPA_TURN_OVER;
 		else if (vx > 0)
 			aniId = ID_ANI_KOOPA_WALKING_RIGHT;
@@ -225,13 +224,13 @@ void CKoopa::Render()
 				aniId = ID_ANI_KOOPA_GREEN_BIG_WALKING_LEFT;
 		}
 
-		if (isWaiting)
+		if (state == KOOPA_STATE_WAITING)
 			aniId = ID_ANI_KOOPA_GREEN_WAITING;
-		else if (isDefense)
+		else if (state == KOOPA_STATE_CLOSE_SHELL)
 			aniId = ID_ANI_KOOPA_GREEN_CLOSE_SHELL;
-		else if (isAttacking)
-			aniId = 5034;
-		else if (isTurnOver)
+		else if (state == KOOPA_STATE_ATTACKING)
+			aniId = ID_ANI_KOOPA_GREEN_ATTACKING;
+		else if (state == KOOPA_STATE_TURN_OVER)
 			aniId = ID_ANI_KOOPA_GREEN_TURN_OVER;
 	}
 	
@@ -369,7 +368,8 @@ void CKoopa::ChangePositionFollowMario()
 
 	}
 	y = mario->GetY() - 2;
+	ay = 0;
 	//vx = mario->GetVX()-0.05f;
-	vy = mario->GetVY();
+	//vy = mario->GetVY();
 }
 

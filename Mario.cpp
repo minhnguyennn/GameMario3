@@ -21,9 +21,10 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	//DebugOut(L"isHold %d \n", isHolding);
+	DebugOutTitle(L"state %d \n", state);
 	//DebugOut(L"Level %d", level);
 	// DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
+	DebugOut(L"isAttack: %d\n", isAttack);
 	
 	//CountDown1Second();
 	vy += ay * dt;
@@ -38,6 +39,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	/*if (isOnPlatform) {
 		if (abs(vy) > abs(maxVy)) vy = maxVy;
 	}*/
+
+	if (isAttack && GetTickCount64() - time_attack > 400)
+	{
+		isAttack = false;
+	}
 	
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
 	{
@@ -184,7 +190,6 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting())) {
 
 				koopa->SetState(KOOPA_STATE_ATTACKING);
-			
 			}
 		}
 		else {
@@ -518,12 +523,17 @@ int CMario::GetAniIdRaccoon()
 		{
 			if (vx == 0)
 			{
-				if (isHolding) {
+				if (isHolding) 
+				{
 					if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
 					else aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
-					
 				}
-				else {
+				else if (isAttack)
+				{
+					aniId = ID_ANI_MARIO_RACCOON_ATTACK;
+				}
+				else 
+				{
 					if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
 					else aniId = ID_ANI_MARIO_RACCOON_IDLE_LEFT;
 				}
@@ -575,14 +585,11 @@ void CMario::Render()
 
 	if (level != MARIO_LEVEL_RACCOON) 
 	{
-		if (level == MARIO_LEVEL_SMALL && isGhostBox) 
+		if (isGhostBox) 
 		{
 			animations->Get(aniId)->Render(x, y - 1);
 		}
-		else
-		{
-			animations->Get(aniId)->Render(x, y);
-		}
+		animations->Get(aniId)->Render(x, y);
 	}
 	else 
 	{
@@ -617,9 +624,14 @@ void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
 	if (this->state == MARIO_STATE_DIE) return;
+	DebugOut(L"STATE: %d\n", state);
 
 	switch (state)
 	{
+	case MARIO_STATE_ATTACK:
+		isAttack = true;
+		time_attack = GetTickCount64();
+		break;
 	case MARIO_STATE_SUMMON_KOOPA:
 		isHolding = true;
 		break;
