@@ -71,7 +71,11 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->ny != 0 && e->obj->IsBlocking()) {
 		vy = 0;
-		if (e->ny < 0) isOnPlatform = true;
+		if (e->ny < 0) 
+		{ 
+			isOnPlatform = true; 
+			isGhostBox = false;
+		}
 	}
 	else if (e->nx != 0 && e->obj->IsBlocking()) {
 		vx = 0;
@@ -125,6 +129,9 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 	if (!platform->IsBlocking()) {
 		if (e->ny < 0) {
 			vy = 0;
+			isOnPlatform = true;
+			isGhostBox = true;
+
 			if (level != MARIO_LEVEL_SMALL) {
 				if (!isSitting) {
 					y = (plant_form_y - MARIO_DISTANCE_WITH_GHOST_BOX);
@@ -136,7 +143,6 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 			else {
 				y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - 6));
 			}
-			isOnPlatform = true;
 		}
 	}
 }
@@ -566,11 +572,44 @@ void CMario::Render()
 		aniId = GetAniIdFire();
 	else if (level == MARIO_LEVEL_RACCOON)
 		aniId = GetAniIdRaccoon();
-	if (level != MARIO_LEVEL_RACCOON)  animations->Get(aniId)->Render(x, y); 
-	else {
-		if (nx > 0) animations->Get(aniId)->Render(x - 4, y);
-		else animations->Get(aniId)->Render(x + 4, y);
+
+	if (level != MARIO_LEVEL_RACCOON) 
+	{
+		if (level == MARIO_LEVEL_SMALL && isGhostBox) 
+		{
+			animations->Get(aniId)->Render(x, y - 1);
+		}
+		else
+		{
+			animations->Get(aniId)->Render(x, y);
+		}
 	}
+	else 
+	{
+		if (nx > 0)
+		{
+			if (isGhostBox) 
+			{
+				animations->Get(aniId)->Render(x - 4, y - 2);
+			}
+			else 
+			{
+				animations->Get(aniId)->Render(x - 4, y - 1);
+			}
+		}
+		else 
+		{ 
+			if (isGhostBox)
+			{
+				animations->Get(aniId)->Render(x + 4, y - 2);
+			}
+			else
+			{
+				animations->Get(aniId)->Render(x + 4, y - 1);
+			}
+		}
+	}
+
 	RenderBoundingBox();
 }
 
@@ -689,24 +728,7 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (level == MARIO_LEVEL_RACCOON){
-		
-		if (isSitting)
-		{
-			left = x - MARIO_RACCOON_SITTING_BBOX_WIDTH / 2 ;
-			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
-			right = left + MARIO_RACCOON_SITTING_BBOX_WIDTH;
-			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
-		}
-		else
-		{
-			left = x - MARIO_BIG_BBOX_WIDTH / 2 ;
-			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
-			right = left + MARIO_BIG_BBOX_WIDTH;
-			bottom = top + MARIO_BIG_BBOX_HEIGHT;
-		}
-	}
-	else if ((level == MARIO_LEVEL_BIG) || (level == MARIO_LEVEL_FIRE))
+	if ((level == MARIO_LEVEL_BIG) || (level == MARIO_LEVEL_FIRE) || (level == MARIO_LEVEL_RACCOON))
 	{
 		if (isSitting)
 		{

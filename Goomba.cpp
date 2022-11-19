@@ -113,15 +113,24 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CGoomba::Render()
 {
 	int aniId = 0;
+
 	if (state == GOOMBA_STATE_DIE)
 		aniId = ID_ANI_GOOMBA_DIE;
-	else if (level == GOOMBA_LEVEL_BIG && !isCloseWing && type == GOOMBA_TYPE_PARA_GOOMBA)
-		aniId = ID_ANI_GOOMBA_BIG_WALKING;
-	else if (level == GOOMBA_LEVEL_SMALL && type == GOOMBA_TYPE_PARA_GOOMBA)
-		aniId = ID_ANI_GOOMBA_SMALL_WALKING;
-	else if (isCloseWing)
+
+	else if (level == GOOMBA_LEVEL_BIG && !isCloseWing)
+		aniId = ID_ANI_GOOMBA_BIG;
+
+	else if (level == GOOMBA_LEVEL_BIG && isCloseWing)
 		aniId = ID_ANI_GOOMBA_CLOSE_WING;
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+
+	else if (level == GOOMBA_LEVEL_SMALL)
+		aniId = ID_ANI_GOOMBA_SMALL;
+
+	if (level == GOOMBA_LEVEL_BIG && !isCloseWing)
+		CAnimations::GetInstance()->Get(aniId)->Render(x, y - 2);
+	else
+		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+
 	RenderBoundingBox();
 }
 

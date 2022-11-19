@@ -9,6 +9,11 @@
 #include "Goomba.h"
 //#include "Koopas.h"
 
+#define PLSCENE_MIN_X_CAM	0
+#define PLSCENE_MAX_X_CAM	2502
+#define PLSCENE_MAX_Y_CAM	256
+#define PLSCENE_MIN_Y_CAM	0
+
 
 class CPlayScene: public CScene
 {

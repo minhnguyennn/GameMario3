@@ -241,7 +241,7 @@ void CKoopa::Render()
 
 void CKoopa::SetState(int state)
 {
-	DebugOut(L"STATE LEVEL %d %d \n", state,level);
+	//DebugOut(L"STATE LEVEL %d %d \n", state,level);
 	switch (state)
 	{
 	case KOOPA_STATE_FLY: 

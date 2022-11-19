@@ -23,10 +23,14 @@ CMap::~CMap()
 
 void CMap::Render()
 {
-	int FirstColumn = int(floor(CamX / TILE_WIDTH));
-	int LastColumn = int(ceil((CamX * TILE_WIDTH + CGame::GetInstance()->GetScreenWidth()) / TILE_WIDTH));
-	if (LastColumn >= TotalColumnsOfMap)
+	float width_screen = CGame::GetInstance()->GetScreenWidth();
+	int FirstColumn = 0;
+	int LastColumn = width_screen / TILE_WIDTH;
+
+	if (LastColumn >= TotalColumnsOfMap) 
+	{
 		LastColumn = TotalColumnsOfMap - 1;
+	}
 	for (int CurrentRow = 0; CurrentRow < TotalRowsOfMap; CurrentRow++){
 		for (int CurrentColumn = FirstColumn; CurrentColumn <= LastColumn; CurrentColumn++)
 		{

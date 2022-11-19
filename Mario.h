@@ -212,6 +212,7 @@ class CMario : public CGameObject
 	BOOLEAN isHolding;
 	BOOLEAN isRunning;
 	BOOLEAN isFlying;
+	BOOLEAN isGhostBox;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -236,6 +237,7 @@ public:
 		isHolding = false;
 		isSitting = false;
 		isDeceleration = false;
+		isGhostBox = false;
 		maxVx = 0.0f;
 		maxVy = 0.0f;
 		ax = 0.0f;

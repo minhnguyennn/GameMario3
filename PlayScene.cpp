@@ -354,10 +354,11 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 
 	//DebugOutTitle(L"cy %f", cy);
-	if (cx < 0) cx = 0;
-	if (cx > 2502) cx = 2502;
-	if (cy > 256) cy = 256;
-
+	
+	if (cx < PLSCENE_MIN_X_CAM) cx = PLSCENE_MIN_X_CAM;
+	if (cx > PLSCENE_MAX_X_CAM) cx = PLSCENE_MAX_X_CAM;
+	if (cy > PLSCENE_MAX_Y_CAM) cy = PLSCENE_MAX_Y_CAM;
+	if (cy < PLSCENE_MIN_Y_CAM) cy = PLSCENE_MIN_Y_CAM;
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
