@@ -206,6 +206,7 @@ class CMario : public CGameObject
 	int coin;
 	int level; 
 	int untouchable; 
+	
 
 	ULONGLONG untouchable_start;
 	ULONGLONG count_1_second = 0;
@@ -240,7 +241,6 @@ public:
 	{
 		this->time_attack = 0;
 		isAttack = false;
-
 		isFlying = false;;
 		isRunning = false;
 		isHolding = false;
@@ -276,6 +276,7 @@ public:
 
 
 	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }
+	bool GetIsRunning() {return isRunning; }
 
 	int IsCollidable()
 	{ 

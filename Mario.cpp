@@ -21,10 +21,11 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	DebugOutTitle(L"state %d \n", state);
+	DebugOutTitle(L"isAttack %d", isAttack);
 	//DebugOut(L"Level %d", level);
 	// DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
-	DebugOut(L"isAttack: %d\n", isAttack);
+	DebugOut(L"isRunning: %d\n", isRunning);
+	//DebugOut(L"isRunning: %d\n", isRunning);
 	
 	//CountDown1Second();
 	vy += ay * dt;
@@ -39,8 +40,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	/*if (isOnPlatform) {
 		if (abs(vy) > abs(maxVy)) vy = maxVy;
 	}*/
-
-	if (isAttack && GetTickCount64() - time_attack > 500)
+	if (GetTickCount64() - time_attack > 500)
 	{
 		isAttack = false;
 	}
@@ -541,10 +541,21 @@ int CMario::GetAniIdRaccoon()
 			else if (vx > 0)
 			{
 				if (ax < 0)
+				{
 					aniId = ID_ANI_MARIO_RACCOON_BRACE_RIGHT;
+				}
 				else if (ax == MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_RACCOON_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X || (isDeceleration)) {
+				{
+					if (isAttack)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_ATTACK;
+					}
+					else
+					{
+						aniId = ID_ANI_MARIO_RACCOON_RUNNING_RIGHT;
+					}
+				}
+				else if (ax == MARIO_ACCEL_WALK_X || isDeceleration ) {
 					if (isHolding)
 					{
 						aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
@@ -562,10 +573,21 @@ int CMario::GetAniIdRaccoon()
 			else // vx < 0
 			{
 				if (ax > 0)
+				{
 					aniId = ID_ANI_MARIO_RACCOON_BRACE_LEFT;
+				}
 				else if (ax == -MARIO_ACCEL_RUN_X)
-					aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X || isDeceleration)
+				{
+					if (isAttack)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_ATTACK;
+					}
+					else
+					{
+						aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
+					}
+				}
+				else if ( ax == -MARIO_ACCEL_WALK_X || isDeceleration )
 				{
 					if (isHolding) 
 					{

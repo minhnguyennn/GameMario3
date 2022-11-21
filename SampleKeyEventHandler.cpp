@@ -60,10 +60,6 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_A:
 		mario->SetIsHolding(false);
 		mario->SetIsRunning(false);
-		/*if (mario->GetIsAttack())
-		{
-			mario->SetIsAttack(false);
-		}*/
 		break;
 	case DIK_S:
 		if (mario->GetState() == MARIO_STATE_FLYING) 
