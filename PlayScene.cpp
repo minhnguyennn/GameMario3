@@ -20,6 +20,7 @@
 #include "FireBalls.h"
 #include "FireBallOfMario.h"
 #include "Goomba.h"
+#include "Tail.h"
 
 
 
@@ -136,7 +137,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBrick(x, y, type_brick);
 		break;
 	}
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break; 
+	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case OBJECT_TYPE_TAIL: 
+	{
+		obj = new CTail(x, y); 
+		break; 
+	}
 	case OBJECT_TYPE_KOOPA: {
 		int type = (int)atof(tokens[3].c_str());
 		int level = (int)atof(tokens[4].c_str());

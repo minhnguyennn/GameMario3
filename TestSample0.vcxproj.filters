@@ -126,6 +126,9 @@
     <ClCompile Include="Portal.cpp">
       <Filter>Header Files\Object\Platforms</Filter>
     </ClCompile>
+    <ClCompile Include="Tail.cpp">
+      <Filter>Header Files\Object\Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>Header Files\Object\Platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="Tail.h">
+      <Filter>Header Files\Object\Effects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

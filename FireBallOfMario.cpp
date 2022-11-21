@@ -60,14 +60,14 @@ void CFireBallOfMario::OnCollisionWith(LPCOLLISIONEVENT e){
 	if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
-		OnCollisionWithKoopaParatroopas(e);
+		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CVenusFireTrap*>(e->obj))
 		OnCollisionWithVenusFireTrap(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
-		OnCollisionWithParaGoomba(e);
+		OnCollisionWithGoomba(e);
 }
 
-void CFireBallOfMario::OnCollisionWithParaGoomba(LPCOLLISIONEVENT e)
+void CFireBallOfMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	//Koopa will turned over and died.
 	CGoomba* para_goomba = dynamic_cast<CGoomba*>(e->obj);
@@ -84,13 +84,6 @@ void CFireBallOfMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 void CFireBallOfMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	//Koopa will turned over and died.
-	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-	koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
-}
-
-void CFireBallOfMario::OnCollisionWithKoopaParatroopas(LPCOLLISIONEVENT e)
-{
-	//Koopa paratroopa will turned over and died.
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 	koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
 }

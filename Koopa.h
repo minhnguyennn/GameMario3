@@ -122,6 +122,7 @@ public:
 			this->level = setLevel;
 		}
 	};
+	void LowerLevel();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

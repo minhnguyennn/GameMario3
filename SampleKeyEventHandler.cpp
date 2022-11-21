@@ -18,6 +18,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		else if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
 		{
 			mario->SetState(MARIO_STATE_ATTACK);
+			mario->SummonTail();
 		}
 		break;
 	case DIK_DOWN:

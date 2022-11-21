@@ -18,6 +18,7 @@
 #include "PlayScene.h"
 #include "FireBallOfMario.h"
 #include "Goomba.h"
+#include "Tail.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
@@ -756,7 +757,7 @@ void CMario::SetState(int state)
 			isSitting = true;
 			isDeceleration = false;
 			vy = 0.0f;
-			y += MARIO_SIT_HEIGHT_ADJUST - 4;
+			y += MARIO_SIT_HEIGHT_ADJUST;
 		}
 		break;
 
@@ -866,4 +867,10 @@ void CMario::SummonFireBalls() {
 	} else {
 		frBalls->SetState(FIREBALLS_STATE_LEFT);
 	}
+}
+
+void CMario::SummonTail() {
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CTail* tail = new CTail(x, y);
+	scene->CreateObject(tail);
 }

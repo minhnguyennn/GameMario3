@@ -297,4 +297,5 @@ public:
 	void CountDown1Second();
 	void LowerLevel();
 	void SummonFireBalls();
+	void SummonTail();
 };

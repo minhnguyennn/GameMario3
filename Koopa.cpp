@@ -373,3 +373,16 @@ void CKoopa::ChangePositionFollowMario()
 	//vy = mario->GetVY();
 }
 
+void CKoopa::LowerLevel()
+{
+	if (level == KOOPA_LEVEL_BIG)
+	{
+		level = MARIO_LEVEL_SMALL;
+	}
+	else
+	{
+		DebugOut(L">>> Koopa DIE >>> \n");
+		SetState(KOOPA_STATE_DIE_TURN_OVER);
+	}
+}
+
