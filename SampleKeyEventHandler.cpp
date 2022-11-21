@@ -10,10 +10,6 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
 	switch (KeyCode)
 	{
-	case DIK_D:
-		//if(mario->GetLevel()==MARIO_LEVEL_FIRE) mario->SummonFireBalls();
-		
-		break;
 	case DIK_A:
 		if (mario->GetLevel() == MARIO_LEVEL_FIRE)
 		{
@@ -61,12 +57,13 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
-	/*case DIK_D:
-		mario->SetState(MARIO_STATE_RELEASE_FLYING);
-		break;*/
 	case DIK_A:
 		mario->SetIsHolding(false);
 		mario->SetIsRunning(false);
+		/*if (mario->GetIsAttack())
+		{
+			mario->SetIsAttack(false);
+		}*/
 		break;
 	case DIK_S:
 		if (mario->GetState() == MARIO_STATE_FLYING) 
@@ -92,22 +89,39 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
-	if (mario->GetIsAttack() == false) 
-	{
+	
 		if (game->IsKeyDown(DIK_RIGHT))
 		{
-			if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_RUNNING_RIGHT);
-			else if (game->IsKeyDown(DIK_DOWN)) mario->SetState(MARIO_STATE_SIT);
-			else mario->SetState(MARIO_STATE_WALKING_RIGHT);
+			if (game->IsKeyDown(DIK_A))
+			{
+				mario->SetState(MARIO_STATE_RUNNING_RIGHT);
+			}
+			else if (game->IsKeyDown(DIK_DOWN)) 
+			{ 
+				mario->SetState(MARIO_STATE_SIT); 
+			}
+			else 
+			{ 
+				mario->SetState(MARIO_STATE_WALKING_RIGHT); 
+			}
 		}
 		else if (game->IsKeyDown(DIK_LEFT))
 		{
-			if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_RUNNING_LEFT);
-			else if (game->IsKeyDown(DIK_DOWN)) mario->SetState(MARIO_STATE_SIT);
-			else mario->SetState(MARIO_STATE_WALKING_LEFT);
+			if (game->IsKeyDown(DIK_A))
+			{
+				mario->SetState(MARIO_STATE_RUNNING_LEFT);
+			}
+			else if (game->IsKeyDown(DIK_DOWN))
+			{
+				mario->SetState(MARIO_STATE_SIT);
+			}
+			else 
+			{ 
+				mario->SetState(MARIO_STATE_WALKING_LEFT); 
+			}
 		}
 		else {
-			if (!mario->GetVX())
+			if (!mario->GetVX() )
 			{
 				mario->SetState(MARIO_STATE_IDLE);
 			}
@@ -116,5 +130,5 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 				mario->SetState(MARIO_STATE_DECELERATION);
 			}
 		}
-	}
+	
 }

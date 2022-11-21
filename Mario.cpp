@@ -40,7 +40,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (abs(vy) > abs(maxVy)) vy = maxVy;
 	}*/
 
-	if (isAttack && GetTickCount64() - time_attack > 400)
+	if (isAttack && GetTickCount64() - time_attack > 500)
 	{
 		isAttack = false;
 	}
@@ -545,8 +545,18 @@ int CMario::GetAniIdRaccoon()
 				else if (ax == MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_RACCOON_RUNNING_RIGHT;
 				else if (ax == MARIO_ACCEL_WALK_X || (isDeceleration)) {
-					if (!isHolding) { aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT; }
-					else { aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT; }
+					if (isHolding)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
+					}
+					else if (isAttack)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_ATTACK;
+					}
+					else
+					{
+						aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
+					}
 				}
 			}
 			else // vx < 0
@@ -556,8 +566,20 @@ int CMario::GetAniIdRaccoon()
 				else if (ax == -MARIO_ACCEL_RUN_X)
 					aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
 				else if (ax == -MARIO_ACCEL_WALK_X || isDeceleration)
-					if (!isHolding) { aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT; }
-					else { aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT; }
+				{
+					if (isHolding) 
+					{
+						aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
+					}
+					else if (isAttack)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_ATTACK;
+					}
+					else
+					{
+						aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT;
+					}
+				}
 			}
 		}
 			
@@ -589,7 +611,10 @@ void CMario::Render()
 		{
 			animations->Get(aniId)->Render(x, y - 1);
 		}
-		animations->Get(aniId)->Render(x, y);
+		else 
+		{
+			animations->Get(aniId)->Render(x, y);
+		}
 	}
 	else 
 	{
@@ -597,22 +622,22 @@ void CMario::Render()
 		{
 			if (isGhostBox) 
 			{
-				animations->Get(aniId)->Render(x - 4, y - 2);
+				animations->Get(aniId)->Render(x - 4, y - 1);
 			}
 			else 
 			{
-				animations->Get(aniId)->Render(x - 4, y - 1);
+				animations->Get(aniId)->Render(x - 4, y);
 			}
 		}
 		else 
 		{ 
 			if (isGhostBox)
 			{
-				animations->Get(aniId)->Render(x + 4, y - 2);
+				animations->Get(aniId)->Render(x + 4, y - 1);
 			}
 			else
 			{
-				animations->Get(aniId)->Render(x + 4, y - 1);
+				animations->Get(aniId)->Render(x + 4, y);
 			}
 		}
 	}
@@ -624,11 +649,12 @@ void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
 	if (this->state == MARIO_STATE_DIE) return;
-	DebugOut(L"STATE: %d\n", state);
+	//DebugOut(L"STATE: %d\n", state);
 
 	switch (state)
 	{
 	case MARIO_STATE_ATTACK:
+		if (isSitting) break;
 		isAttack = true;
 		time_attack = GetTickCount64();
 		break;
@@ -724,6 +750,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_IDLE:
 		isDeceleration = false;
+		//isAttack = false;
 		ax = 0.0f;
 		vx = 0.0f;
 		break;
