@@ -65,7 +65,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
 	float left, top, right, bottom;
 	e->obj->GetBoundingBox(left, top, right, bottom);
-	DebugOutTitle(L"right %f", right);
+	
 	if (vx > 0 && x > right || vx < 0 && x < left)
 	{
 		vx = -vx;

@@ -20,10 +20,7 @@ Resource/Tilemaps/world1-1.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 ########## Mario #########
-0	2158	322
-
-######### Tail ###########
-3	320	300
+0	300	322
 
 ######### Brick ###########
 1	1952	400	1

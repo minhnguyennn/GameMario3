@@ -8,7 +8,6 @@
 CVenusFireTrap::CVenusFireTrap(float x, float y, int type) :CGameObject(x, y)
 {
 	this->type = type;
-	this->ay = VFTRAP_GRAVITY;
 	this->start_y = y;
 	SetState(VFTRAP_STATE_UP);
 }
@@ -59,8 +58,6 @@ void CVenusFireTrap::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
-
 	if (type == VFTRAP_TYPE_PIRANHA)
 	{
 		MoveFunctionPlant(VFTRAP_DIST_UP_PIRA, VFTRAP_DIST_DOWN_PIRA);
@@ -116,24 +113,33 @@ void CVenusFireTrap::SetState(int state)
 {
 	switch (state)
 	{
-	case VFTRAP_STATE_UP:
-		vy = -VFTRAP_MOVING_SPEED;
-		ay = -VFTRAP_GRAVITY;
-		break;
-	case VFTRAP_STATE_DOWN:
-		vy = VFTRAP_MOVING_SPEED;
-		ay = VFTRAP_GRAVITY;
-		break;
-	case VFTRAP_STATE_IDLE:
+	case VFTRAP_STATE_SLEEP:
+	{
 		vy = 0;
-		ay = 0;
+		break;
+	}
+	case VFTRAP_STATE_UP:
+	{
+		vy = -VFTRAP_MOVING_SPEED;
+		break;
+	}
+	case VFTRAP_STATE_DOWN:
+	{
+		vy = VFTRAP_MOVING_SPEED;
+		break;
+	}
+	case VFTRAP_STATE_IDLE:
+	{
+		vy = 0;
 		time_line = GetTickCount64();
 		break;
+	}
 	case VFTRAP_STATE_DIE:
+	{
 		die_start = GetTickCount64();
 		vy = 0;
-		ay = 0;
 		break;
+	}
 	default:
 		break;
 	}
@@ -141,8 +147,10 @@ void CVenusFireTrap::SetState(int state)
 }
 
 void CVenusFireTrap::ChangeStateMotionDown(ULONGLONG time_type) {
-	if ((GetTickCount64() - time_line) > time_type) {
-		if (type == VFTRAP_TYPE_RED) {
+	if ((GetTickCount64() - time_line) > time_type) 
+	{
+		if (type == VFTRAP_TYPE_RED) 
+		{
 			SetSummonItems(VFTRAP_TYPE_FIRE_BALL);
 		}
 		SetState(VFTRAP_STATE_DOWN);
@@ -161,24 +169,41 @@ void CVenusFireTrap::SetSummonItems(int type) {
 	{
 	case VFTRAP_TYPE_FIRE_BALL:
 	{
-		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 		CMario* mario = (CMario*)scene->GetPlayer();
 		CFireBalls* fire_balls = new CFireBalls(x, y);
 		scene->CreateObject(fire_balls);
-		if (mario->GetX() > x) {
-			if (mario->GetY() < y) {
+		if (mario->GetX() > x) 
+		{
+			if (mario->GetY() < y) 
+			{
 				fire_balls->SetState(FIREBALLS_STATE_MOVE_RIGHT_TOP);
 			}
-			fire_balls->SetState(FIREBALLS_STATE_MOVE_RIGHT);
+			else if (mario->GetY() > y)
+			{
+				fire_balls->SetState(FIREBALLS_STATE_MOVE_RIGHT);
+			}
+			/*else if (x - mario->GetX() < 80)
+			{
+				fire_balls->SetState(FIREBALLS_STATE_RIGHT_BOTTOM);
+			}*/
 		}
-		else if (mario->GetX() < x){
-			if (mario->GetY() < y) {
+		else if (mario->GetX() < x)
+		{
+			if (mario->GetY() < y)
+			{
 				fire_balls->SetState(FIREBALLS_STATE_MOVE_LEFT_TOP);
 			}
-			fire_balls->SetState(FIREBALLS_STATE_MOVE_LEFT);
-		}
-		else {
-			return;
+			else if (mario->GetY() > y)
+			{
+				if (x - mario->GetX() < 80)
+				{
+					fire_balls->SetState(FIREBALLS_STATE_LEFT_BOTTOM);
+				}
+				else
+				{
+					fire_balls->SetState(FIREBALLS_STATE_MOVE_LEFT);
+				}
+			}
 		}
 		break;
 	}
@@ -210,29 +235,47 @@ bool CVenusFireTrap::isMarioAboveWithPlant()
 	else return false;
 }
 
-void CVenusFireTrap::MoveFunctionPlant(float disUp, float disDown) {
-	if ((start_y - y) > disUp) {
-		if (state == VFTRAP_STATE_UP) {
-			SetState(VFTRAP_STATE_IDLE);
-		}
-		else if (state == VFTRAP_STATE_IDLE) {
-			if (type == VFTRAP_TYPE_PIRANHA)
-				ChangeStateMotionDown(VFTRAP_WAITING_PIRAN);
-			else 
-				ChangeStateMotionDown(VFTRAP_WAITING_MAX);
-		}
-	}
+void CVenusFireTrap::MoveFunctionPlant(float disUp, float disDown) 
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
 
-	if ((y - start_y) > disDown) {;
-		if (state == VFTRAP_STATE_DOWN) {
+	if ((start_y - y) > disUp)
+		{
+			if (state == VFTRAP_STATE_UP)
+			{
+				SetState(VFTRAP_STATE_IDLE);
+			}
+			else if (state == VFTRAP_STATE_IDLE)
+			{
+				if (type == VFTRAP_TYPE_PIRANHA)
+					ChangeStateMotionDown(VFTRAP_WAITING_PIRAN);
+				else
+					ChangeStateMotionDown(VFTRAP_WAITING_MAX);
+			}
+		}
+
+	if ((y - start_y) > disDown)
+	{
+		if (x - mario->GetX() < 30)
+		{
+			SetState(VFTRAP_STATE_SLEEP);
+		}
+		else
+		{
+			SetState(VFTRAP_STATE_UP);
+		}
+		
+		if (state == VFTRAP_STATE_DOWN)
+		{
 			SetState(VFTRAP_STATE_IDLE);
 		}
-		else if (state == VFTRAP_STATE_IDLE) {
+		else if (state == VFTRAP_STATE_IDLE)
+		{
 			if (type == VFTRAP_TYPE_PIRANHA)
 				ChangeStateMotionUp(VFTRAP_WAITING_PIRAN);
 			else
 				ChangeStateMotionUp(VFTRAP_WAITING_MAX);
 		}
 	}
-
 }

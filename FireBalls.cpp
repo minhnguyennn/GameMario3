@@ -12,11 +12,8 @@ CFireBalls::CFireBalls(float x, float y) :CGameObject(x, y)
 }
 
 void CFireBalls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-
-	
-
-
 	//vy += ay * dt;
+	// 
 	//DebugOut(L"[TEST] start_x: %d\n", x);
 	//if (vy < 0) {
 	//	if ((x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
@@ -62,38 +59,47 @@ void CFireBalls::SetState(int state)
 	
 	switch (state)
 	{
-	case FIREBALLS_STATE_DOWN:
-		vy = FIREBALLS_SPEED_Y;
-		ay = FIREBALLS_GRAVITY;
-		start_x = x;
-		break;
 	case FIREBALLS_STATE_DELETE:
 	{
 		Delete();
 		break;
 	}
-	case FIREBALLS_STATE_UP:
-		vy = -FIREBALLS_SPEED_Y;
-		ay = -FIREBALLS_GRAVITY;
-		start_x = x;
+	case FIREBALLS_STATE_RIGHT_BOTTOM:
+	{
+		vx = FIREBALLS_SPEED_X;
+		vy = 0.03f;
 		break;
+	}
+	case FIREBALLS_STATE_LEFT_BOTTOM:
+	{
+		vx = -FIREBALLS_SPEED_X;
+		vy = 0.03f;
+		break;
+	}
 	case FIREBALLS_STATE_MOVE_RIGHT:
+	{
 		vx = FIREBALLS_SPEED_X;
-
+		vy = 0.01f;
 		break;
+	}
 	case FIREBALLS_STATE_MOVE_LEFT:
+	{
 		vx = -FIREBALLS_SPEED_X;
-
+		vy = 0.01f;
 		break;
+	}
 	case FIREBALLS_STATE_MOVE_RIGHT_TOP:
+	{
 		vx = FIREBALLS_SPEED_X;
 		vy = -FIREBALLS_SPEED_Y;
-		
 		break;
+	}
 	case FIREBALLS_STATE_MOVE_LEFT_TOP:
+	{
 		vx = -FIREBALLS_SPEED_X;
 		vy = -FIREBALLS_SPEED_Y;
 		break;
+	}
 	default:
 		break;
 	}
