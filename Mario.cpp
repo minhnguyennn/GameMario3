@@ -22,10 +22,10 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	DebugOutTitle(L"isAttack %d", isAttack);
+	//DebugOutTitle(L"isAttack %d", isAttack);
 	//DebugOut(L"Level %d", level);
 	// DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
-	DebugOut(L"isRunning: %d\n", isRunning);
+	//DebugOut(L"isRunning: %d\n", isRunning);
 	//DebugOut(L"isRunning: %d\n", isRunning);
 	
 	//CountDown1Second();
@@ -112,9 +112,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-	if (brick->isNoBlock()) {
-		brick->setCollisionMario(true);
-	}
+	
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)

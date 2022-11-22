@@ -63,12 +63,19 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 }
 
 void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
-	if (e->ny < 0 && state == KOOPA_STATE_WALKING) {
+	float left, top, right, bottom;
+	e->obj->GetBoundingBox(left, top, right, bottom);
+	DebugOutTitle(L"right %f", right);
+	if (vx > 0 && x > right || vx < 0 && x < left)
+	{
+		vx = -vx;
+	}
+	/*if (e->ny < 0 && state == KOOPA_STATE_WALKING) {
 		if (abs(x- start_x) > 6) {
 			vx = -vx;
 			start_x = x;
 		}
-	}
+	}*/
 }
 
 void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
