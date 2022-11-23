@@ -19,6 +19,7 @@
 #include "FireBallOfMario.h"
 #include "Goomba.h"
 #include "Tail.h"
+#include "VenusFireTrap.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
@@ -88,8 +89,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = 0;
 	}
 
-	/*if (dynamic_cast<CGoomba*>(e->obj))
-		OnCollisionWithGoomba(e);*/
+	if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
@@ -108,6 +109,20 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CBrick*>(e->obj))
 		OnCollisionWithBrick(e);
+	else if (dynamic_cast<CFireBalls*>(e->obj))
+		OnCollisionWithFireBalls(e);
+	else if (dynamic_cast<CVenusFireTrap*>(e->obj))
+		OnCollisionWithVenusFireTrap(e);
+}
+
+void CMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e) 
+{
+	this->LowerLevel();
+}
+
+void CMario::OnCollisionWithFireBalls(LPCOLLISIONEVENT e) 
+{
+	this->LowerLevel();
 }
 
 void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
@@ -238,9 +253,9 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
-	CQuestionBrick* p = dynamic_cast<CQuestionBrick*>(e->obj);
-	if ((p->GetState() == QUESTION_STATE_IDLE) && (e->ny>0)){
-		p->SetState(QUESTION_STATE_MOVE_UP);
+	CQuestionBrick* quest_brick = dynamic_cast<CQuestionBrick*>(e->obj);
+	if ((quest_brick->GetState() == QUESTION_STATE_IDLE) && (e->ny>0)){
+		quest_brick->SetState(QUESTION_STATE_MOVE_UP);
 	}
 }
 
@@ -821,6 +836,7 @@ void CMario::SetLevel(int l)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
+
 	level = l;
 }
 

@@ -37,7 +37,7 @@ public:
 	void Render();
 	void SummonItemsFromBrickQuestion();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	int IsCollidable() { return 0; }
+	int IsCollidable() { return 1; }
 	int IsBlocking() { return 1; }
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 };

@@ -14,13 +14,13 @@ void CQuestionBrick::Render()
 	if (!unbox) animations->Get(ID_ANI_QUESTIONBRICK)->Render(x, y);
 	else animations->Get(ID_ANI_QUESTIONBRICK_UNBOX)->Render(x, y);
 	//DebugOut(L"Unbox: %d, state: %d \n", unbox, state);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CQuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x - QUESIONBRICK_BBOX_WIDTH / 2;
-	t = y - QUESIONBRICK_BBOX_HEIGHT /2+1;
+	t = y - QUESIONBRICK_BBOX_HEIGHT /2;
 	r = l + QUESIONBRICK_BBOX_WIDTH;
 	b = t + QUESIONBRICK_BBOX_HEIGHT;
 }
