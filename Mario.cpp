@@ -28,8 +28,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
 	//DebugOut(L"isRunning: %d\n", isRunning);
 	//DebugOut(L"isRunning: %d\n", isRunning);
-	
-	//CountDown1Second();
+	CountDown1Second();
 	vy += ay * dt;
 	vx += ax * dt;
 
@@ -42,6 +41,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	/*if (isOnPlatform) {
 		if (abs(vy) > abs(maxVy)) vy = maxVy;
 	}*/
+	if (coin > 99) {
+		heart++;
+		coin = 0;
+	}
+	if (heart > 99) {
+		heart = 99;
+	}
 	if (GetTickCount64() - time_attack > 500)
 	{
 		isAttack = false;
@@ -256,9 +262,10 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	CQuestionBrick* quest_brick = dynamic_cast<CQuestionBrick*>(e->obj);
 	if ((quest_brick->GetState() == QUESTION_STATE_IDLE) && (e->ny>0)){
 		quest_brick->SetState(QUESTION_STATE_MOVE_UP);
+		
 	}
+	coin++;
 }
-
 
 int CMario::GetAniIdSmall()
 {

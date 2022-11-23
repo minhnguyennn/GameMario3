@@ -41,6 +41,8 @@ private:
 	float y;
 public:
 	CHUD(float x, float y);
+	void DrawNumber(int number, float position_x, float position_y);
+	void DrawPower(int power, float position_x, float position_y);
 	void Render();
 };
 

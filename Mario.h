@@ -202,10 +202,14 @@ class CMario : public CGameObject
 	float maxVy;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
-	int time;
-	int coin;
 	int level; 
 	int untouchable; 
+
+	int time;
+	int heart;
+	int coin;
+	int score;
+	int power;
 	
 
 	ULONGLONG untouchable_start;
@@ -243,7 +247,7 @@ public:
 	{
 		this->time_attack = 0;
 		isAttack = false;
-		isFlying = false;;
+		isFlying = false;
 		isRunning = false;
 		isHolding = false;
 		isSitting = false;
@@ -259,7 +263,10 @@ public:
 		untouchable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
+		heart = 4;
 		time = 300;
+		score = 1234567;
+		power = 7;
 	}
 
 	ULONGLONG GetTimeAttack() { return time_attack; }
@@ -276,6 +283,11 @@ public:
 	void SetIsFlying(bool isFlying) { this->isFlying = isFlying; }
 	bool GetIsFlying() { return isFlying; };
 
+	int GetTime() { return time; }
+	int GetCoin() { return coin; }
+	int GetHeart() { return heart; }
+	int GetScore() { return score; }
+	int GetPower() { return power; }
 
 	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }
 	bool GetIsRunning() {return isRunning; }
@@ -296,7 +308,9 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
 	void CountDown1Second();
+
 	void LowerLevel();
 	void SummonFireBalls();
 	void SummonTail();
