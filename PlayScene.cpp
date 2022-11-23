@@ -21,6 +21,7 @@
 #include "FireBallOfMario.h"
 #include "Goomba.h"
 #include "Tail.h"
+#include "HUD.h"
 
 
 
@@ -256,7 +257,6 @@ void CPlayScene::_ParseSection_TILEMAP_DATA(string line)
 	current_map->SetTileMapData(TileMapData);
 }
 
-
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -374,8 +374,16 @@ void CPlayScene::Render()
 {
 	current_map->Render();
 
+	CGame* game = CGame::GetInstance();
+	float cam_x = game->GetCamX() + BLACK_BACKGROUND_ADJUST_X;
+	float cam_y = game->GetCamY() + BLACK_BACKGROUND_ADJUST_Y;
+	hud = new CHUD(cam_x, cam_y);
+
 	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+
+	
+	hud->Render();
 }
 
 /*

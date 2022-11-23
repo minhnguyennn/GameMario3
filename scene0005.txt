@@ -11,6 +11,7 @@ venusFireTrap.txt
 pipeline.txt
 effects.txt
 koopaParatroopas.txt
+hud.txt
 
 [TILEMAP]
 Resource/Tilemaps/world1-1.txt

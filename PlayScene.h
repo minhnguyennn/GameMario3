@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "Brick.h"
 #include "Mario.h"
+#include "HUD.h"
 #include"Map.h"
 #include "Goomba.h"
 //#include "Koopas.h"
@@ -14,6 +15,11 @@
 #define PLSCENE_MAX_Y_CAM	256
 #define PLSCENE_MIN_Y_CAM	0
 
+//POSITION BLACK BACKGROUND OF TABLE HUD
+#define BLACK_BACKGROUND_ADJUST_X	120
+#define BLACK_BACKGROUND_ADJUST_Y	193
+
+
 
 class CPlayScene: public CScene
 {
@@ -21,7 +27,7 @@ protected:
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;					
 	CMap* current_map = NULL;
-
+	CHUD* hud = NULL;
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_SPRITES(string line);

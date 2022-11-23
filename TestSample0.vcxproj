@@ -148,6 +148,7 @@
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="FireBallOfMario.cpp" />
     <ClCompile Include="FireBalls.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Brick.h" />
     <ClInclude Include="FireBallOfMario.h" />
     <ClInclude Include="FireBalls.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Map.h" />

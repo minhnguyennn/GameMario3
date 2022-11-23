@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Object\Effects">
       <UniqueIdentifier>{acbe1783-b632-4f9f-98d8-cf4c79d6c5d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\HUD">
+      <UniqueIdentifier>{e2b16dd8-c53b-444b-b62e-5f9a6e3ad47d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -128,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="Tail.cpp">
       <Filter>Header Files\Object\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Header Files\HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="Tail.h">
       <Filter>Header Files\Object\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Header Files\HUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
