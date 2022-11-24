@@ -37,6 +37,11 @@ void CTail::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = t + TAIL_BBOX_HEIGHT;
 }
 
+void CTail::OnNoCollision(DWORD dt) {
+	x += vx * dt;
+	y += vy * dt;
+}
+
 void CTail::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CKoopa*>(e->obj))
@@ -71,4 +76,25 @@ void CTail::ChangePositionFollowMario()
 	CMario* mario = (CMario*)scene->GetPlayer();
 	x = mario->GetX();
 	y = mario->GetY();
+}
+
+void CTail::SetState(int state)
+{
+
+	switch (state)
+	{
+	case TAIL_STATE_RIGHT:
+	{
+		vx = 0.1f;
+		break;
+	}
+	case TAIL_STATE_LEFT:
+	{
+		vx = -0.1f;
+		break;
+	}
+	default:
+		break;
+	}
+	CGameObject::SetState(state);
 }

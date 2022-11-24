@@ -175,7 +175,6 @@ void CHUD::DrawPower(int power, float position_x, float position_y)
 		CAnimations::GetInstance()->Get(ID_ANI_HUD_ARROW_POWER)->Render(position_x + 24, position_y);
 		CAnimations::GetInstance()->Get(ID_ANI_HUD_ARROW_POWER)->Render(position_x + 32, position_y);
 		CAnimations::GetInstance()->Get(ID_ANI_HUD_ARROW_POWER)->Render(position_x + 40, position_y);
-
 		CAnimations::GetInstance()->Get(ID_ANI_HUD_POWER_P)->Render(position_x + 52, position_y);
 
 		break;

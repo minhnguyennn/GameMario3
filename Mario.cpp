@@ -892,6 +892,13 @@ void CMario::SummonFireBalls() {
 
 void CMario::SummonTail() {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CTail* tail = new CTail(x, y);
-	scene->CreateObject(tail);
+
+	CTail* tail_right = new CTail(x, y);
+	tail_right->SetState(TAIL_STATE_RIGHT);
+	scene->CreateObject(tail_right);
+
+	CTail* tail_left = new CTail(x - 12, y);
+	tail_left->SetState(TAIL_STATE_LEFT);
+	scene->CreateObject(tail_left);
+
 }
