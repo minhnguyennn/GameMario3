@@ -82,7 +82,8 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->ny != 0 && e->obj->IsBlocking()) {
+	if (e->ny != 0 && e->obj->IsBlocking()) 
+	{
 		vy = 0;
 		if (e->ny < 0) 
 		{ 
@@ -90,7 +91,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 			isGhostBox = false;
 		}
 	}
-	else if (e->nx != 0 && e->obj->IsBlocking()) {
+	else if (e->nx != 0 && e->obj->IsBlocking()) 
+	{
 		vx = 0;
 	}
 
@@ -138,11 +140,13 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	if (e->ny < 0) {
+	if (e->ny < 0) 
+	{
 		goomba->LowerLevel();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
-	else {
+	else 
+	{
 		LowerLevel();
 	}
 }
@@ -151,21 +155,26 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 {
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	float plant_form_y = platform->GetY();
-	if (!platform->IsBlocking()) {
-		if (e->ny < 0) {
+	if (!platform->IsBlocking()) 
+	{
+		if (e->ny < 0) 
+		{
 			vy = 0;
 			isOnPlatform = true;
 			isGhostBox = true;
-
-			if (level != MARIO_LEVEL_SMALL) {
-				if (!isSitting) {
+			if (level != MARIO_LEVEL_SMALL) 
+			{
+				if (!isSitting) 
+				{
 					y = (plant_form_y - MARIO_DISTANCE_WITH_GHOST_BOX);
 				}
-				else {
+				else 
+				{
 					y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - 4));
 				}
 			}
-			else {
+			else 
+			{
 				y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - 6));
 			}
 		}
@@ -179,25 +188,30 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	if (e->ny < 0)
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		koopa->SetVY(-KOOPA_JUMP_DEFLECT_SPEED);
-		//Logic for big
-		if (koopa->GetLevel() == KOOPA_LEVEL_BIG) {
+		//koopa->SetVY(-KOOPA_JUMP_DEFLECT_SPEED);
+		if (koopa->GetLevel() == KOOPA_LEVEL_BIG)
+		{
 			koopa->SetLevel(KOOPA_LEVEL_SMALL);
 		}
-		// Logic for level small
-
-		else {
-			if (koopa->GetIsAttacking() || (koopa->GetState() == KOOPA_STATE_WALKING)) {
+		else 
+		{
+			if (koopa->GetIsAttacking() || koopa->GetState() == KOOPA_STATE_WALKING) 
+			{
 				koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
 				koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 			}
 			else if (koopa->GetIsDefense() || koopa->GetIsWaiting())
+			{
 				koopa->SetState(KOOPA_STATE_ATTACKING);
+			}
 		}
 	}
-	else if (e->nx != 0) {
-		if (koopa->GetLevel() != KOOPA_LEVEL_BIG) {
-			if ((koopa->GetState() == KOOPA_STATE_WALKING) || (koopa->GetIsAttacking())) {
+	else if (e->nx != 0) 
+	{
+		if (koopa->GetLevel() == KOOPA_LEVEL_SMALL) 
+		{
+			if (koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetIsAttacking()) 
+			{
 				LowerLevel();
 			}
 			else if (isRunning)
@@ -206,14 +220,15 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				isHolding = true;
 				koopa->SetIsHeld(true);
 			}
-			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting())) {
-
+			else if (koopa->GetIsDefense() || koopa->GetIsWaiting()) 
+			{
+				isKick = true;
 				koopa->SetState(KOOPA_STATE_ATTACKING);
 			}
 		}
-		else {
+		else 
+		{
 			LowerLevel();
-
 		}
 	}
 }
@@ -235,11 +250,12 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
 	CMushRoom* p = (CMushRoom*)e->obj;
 	p->Delete();
-
-	if (level == MARIO_LEVEL_SMALL) {
+	if (level == MARIO_LEVEL_SMALL) 
+	{
 		SetLevel(MARIO_LEVEL_BIG);
 	}
-	else {
+	else 
+	{
 		coin++;
 	}
 }
@@ -248,10 +264,12 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
 	CLeaf* p = (CLeaf*)e->obj;
 	p->Delete();
-	if ((level == MARIO_LEVEL_SMALL) || (level == MARIO_LEVEL_BIG)) {
+	if (level == MARIO_LEVEL_SMALL || level == MARIO_LEVEL_BIG) 
+	{
 		SetLevel(MARIO_LEVEL_FIRE);
 	}
-	else {
+	else 
+	{
 		coin++;
 	}
 }
@@ -259,7 +277,8 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
 	CQuestionBrick* quest_brick = dynamic_cast<CQuestionBrick*>(e->obj);
-	if ((quest_brick->GetState() == QUESTION_STATE_IDLE) && (e->ny>0)){
+	if (quest_brick->GetState() == QUESTION_STATE_IDLE && e->ny > 0)
+	{
 		quest_brick->SetState(QUESTION_STATE_MOVE_UP);
 		
 	}

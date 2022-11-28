@@ -6,6 +6,7 @@
 
 #include "debug.h"
 
+//PROPERTY
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
 #define MARIO_DECELERATION		0.0055f
@@ -166,12 +167,13 @@
 
 #define GROUND_Y 160.0f
 
+//LEVEL
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
 #define	MARIO_LEVEL_FIRE	3
 #define	MARIO_LEVEL_RACCOON	4
 
-
+//BBOX
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
 
@@ -224,6 +226,7 @@ class CMario : public CGameObject
 	BOOLEAN isFlying;
 	BOOLEAN isGhostBox;
 	BOOLEAN isAttack;
+	BOOLEAN isKick;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -253,6 +256,7 @@ public:
 		isSitting = false;
 		isDeceleration = false;
 		isGhostBox = false;
+		isKick = false;
 		
 		maxVx = 0.0f;
 		maxVy = 0.0f;

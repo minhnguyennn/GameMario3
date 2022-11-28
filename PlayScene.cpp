@@ -123,28 +123,36 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
-		if (player!=NULL) 
+	{
+		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
+		obj = new CMario(x, y);
+		player = (CMario*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
-	case OBJECT_TYPE_BRICK: {
+	}
+	case OBJECT_TYPE_BRICK: 
+	{
 		int type_brick = (int)atof(tokens[3].c_str());
 		obj = new CBrick(x, y, type_brick);
 		break;
 	}
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case OBJECT_TYPE_COIN: 
+	{
+		obj = new CCoin(x, y); 
+		break; 
+	}
 	case OBJECT_TYPE_TAIL: 
 	{
 		obj = new CTail(x, y); 
 		break; 
 	}
-	case OBJECT_TYPE_KOOPA: {
+	case OBJECT_TYPE_KOOPA: 
+	{
 		int type = (int)atof(tokens[3].c_str());
 		int level = (int)atof(tokens[4].c_str());
 		obj = new CKoopa(x, y, type, level);
@@ -153,16 +161,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_VFTRAP: 
 	{ 
 		int type = (int)atof(tokens[3].c_str());
-		obj = new CVenusFireTrap(x, y, type); break; 
+		obj = new CVenusFireTrap(x, y, type); 
+		break; 
 	}
 	case OBJECT_TYPE_PIPELINE: 
 	{
 		int type_summon_plant = (int)atof(tokens[3].c_str());
 		int type_pineline = (int)atof(tokens[4].c_str());
-		obj = new CPipeline(x, y, type_summon_plant, type_pineline); break;
+		obj = new CPipeline(x, y, type_summon_plant, type_pineline); 
+		break;
 	}
-	case OBJECT_TYPE_FIREBALLS: obj = new CFireBalls(x, y); break;
-	case OBJECT_TYPE_FIREBALL_OF_MARIO: obj = new CFireBallOfMario(x, y); break;
+	case OBJECT_TYPE_FIREBALLS: 
+	{
+		obj = new CFireBalls(x, y);
+		break;
+	}
+	case OBJECT_TYPE_FIREBALL_OF_MARIO: 
+	{
+		obj = new CFireBallOfMario(x, y);
+		break;
+	}
 	case OBJECT_TYPE_GOOMBA:
 	{
 		int level = (int)atof(tokens[3].c_str());
@@ -182,32 +200,32 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CQuestionBrick(x, y, type); 
 		break;
 	}
-	case OBJECT_TYPE_MUSHROOM: {
+	case OBJECT_TYPE_MUSHROOM: 
+	{
 		int type_mushroom = (int)atof(tokens[3].c_str()); 
 		obj = new CMushRoom(x, y, type_mushroom);
 		break; 
 	}
-	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
-
+	case OBJECT_TYPE_LEAF: 
+	{
+		obj = new CLeaf(x, y);
+		break;
+	}
 	case OBJECT_TYPE_PLATFORM:
 	{
-
 		float cell_width = (float)atof(tokens[3].c_str());
 		float cell_height = (float)atof(tokens[4].c_str());
 		int length = atoi(tokens[5].c_str());
 		int sprite_begin = atoi(tokens[6].c_str());
 		int sprite_middle = atoi(tokens[7].c_str());
 		int sprite_end = atoi(tokens[8].c_str());
-
 		obj = new CPlatform(
 			x, y,
 			cell_width, cell_height, length,
 			sprite_begin, sprite_middle, sprite_end
 		);
-
 		break;
 	}
-
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = (float)atof(tokens[3].c_str());
@@ -216,8 +234,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPortal(x, y, r, b, scene_id);
 	}
 	break;
-
-
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -225,7 +241,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	// General object setup
 	obj->SetPosition(x, y);
-
 
 	objects.push_back(obj);
 }
