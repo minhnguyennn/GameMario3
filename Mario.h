@@ -314,4 +314,5 @@ public:
 	void LowerLevel();
 	void SummonFireBalls();
 	void SummonTail();
+	void DecelerationFunction();
 };

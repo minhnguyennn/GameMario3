@@ -32,7 +32,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (abs(vx) > abs(maxVx)) vx = maxVx;
+	if (abs(vx) > abs(maxVx))
+	{
+		vx = maxVx;
+	} 
+	
+	
+	if (isSitting || isDeceleration)
+	{
+		DecelerationFunction();
+	}
+	
 
 	/*if (level == MARIO_LEVEL_RACCOON && vx == maxVx) {
 		SetState(MARIO_STATE_FLYING);
@@ -58,18 +68,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-	if (isSitting || isDeceleration){
-		//DebugOut(L"[oke]");
-		ax = 0.0f;
-		if (abs(maxVx) > MARIO_DECELERATION) {
-			if (nx > 0) { maxVx -= MARIO_DECELERATION; }
-			else if (nx < 0) { maxVx += MARIO_DECELERATION;  }
-		} 
-		else
-		{
-			maxVx = 0;
-		}
-	}
+	
 	
 	isOnPlatform = false;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -724,7 +723,7 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (isSitting) break;
-		isDeceleration = false;
+		//isDeceleration = false;
 		isRunning = true;
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
@@ -732,7 +731,7 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		if (isSitting) break;
-		isDeceleration = false;
+		//isDeceleration = false;
 		isRunning = true;
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
@@ -740,21 +739,21 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_WALKING_RIGHT:
 		if (isSitting) break;
-		isDeceleration = false;
+		//isDeceleration = false;
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
 		break;
 	case MARIO_STATE_WALKING_LEFT:
 		if (isSitting) break;
-		isDeceleration = false;
+		//isDeceleration = false;
 		maxVx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 		break;
 	case MARIO_STATE_JUMP:
 		if (isSitting) break;
-		isDeceleration = false;
+		//isDeceleration = false;
 		if (isOnPlatform)
 		{
 			if (abs(this->vx) == MARIO_RUNNING_SPEED)
@@ -766,16 +765,16 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_RELEASE_JUMP:
 		if (vy < 0) { 
-			isDeceleration = false;
+			//isDeceleration = false;
 			vy += MARIO_JUMP_SPEED_Y / 2; 
 		}
 		break;
 
 	case MARIO_STATE_SIT:
-		if (isOnPlatform && level != MARIO_LEVEL_SMALL)
+		if (isOnPlatform && level != MARIO_LEVEL_SMALL && vx == 0)
 		{
 			isSitting = true;
-			isDeceleration = false;
+			//isDeceleration = false;
 			vy = 0.0f;
 			y += MARIO_SIT_HEIGHT_ADJUST;
 		}
@@ -785,14 +784,14 @@ void CMario::SetState(int state)
 		if (isSitting)
 		{
 			isSitting = false;
-			isDeceleration = false;
+			//isDeceleration = false;
 			state = MARIO_STATE_IDLE;
 			y -= MARIO_SIT_HEIGHT_ADJUST;
 		}
 		break;
 
 	case MARIO_STATE_IDLE:
-		isDeceleration = false;
+		//isDeceleration = false;
 		//isAttack = false;
 		ax = 0.0f;
 		vx = 0.0f;
@@ -800,7 +799,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_DIE:
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		isDeceleration = false;
+		//isDeceleration = false;
 		vx = 0;
 		ax = 0;
 		break;
@@ -901,4 +900,24 @@ void CMario::SummonTail() {
 	tail_left->SetState(TAIL_STATE_LEFT);
 	scene->CreateObject(tail_left);
 
+}
+
+void CMario::DecelerationFunction()
+{
+	ax = 0.0f;
+	if (abs(maxVx) > MARIO_DECELERATION) 
+	{
+		if (nx > 0) 
+		{ 
+			maxVx -= MARIO_DECELERATION; 
+		}
+		else if (nx < 0) 
+		{ 
+			maxVx += MARIO_DECELERATION; 
+		}
+	}
+	else
+	{
+		maxVx = 0;
+	}
 }
