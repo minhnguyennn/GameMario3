@@ -74,8 +74,15 @@
 
 #define ID_ANI_MARIO_IDLE_HOLD_RIGHT 3301
 #define ID_ANI_MARIO_IDLE_HOLD_LEFT 3300
+
 #define ID_ANI_MARIO_HOLD_WALK_RIGHT 3401
 #define ID_ANI_MARIO_HOLD_WALK_LEFT 3400
+
+#define ID_ANI_MARIO_HOLD_WALK_RIGHT 3401
+#define ID_ANI_MARIO_HOLD_WALK_LEFT 3400
+
+#define ID_ANI_MARIO_KICK_RIGHT 3901
+#define ID_ANI_MARIO_KICK_LEFT 3900
 
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1101
@@ -98,6 +105,7 @@
 
 #define ID_ANI_MARIO_SMALL_IDLE_HOLD_RIGHT 3501
 #define ID_ANI_MARIO_SMALL_IDLE_HOLD_LEFT 3500
+
 #define ID_ANI_MARIO_SMALL_HOLD_WALK_RIGHT 3601
 #define ID_ANI_MARIO_SMALL_HOLD_WALK_LEFT 3600
 
@@ -126,6 +134,7 @@
 
 #define ID_ANI_MARIO_FIRE_IDLE_HOLD_RIGHT 3701
 #define ID_ANI_MARIO_FIRE_IDLE_HOLD_LEFT 3700
+
 #define ID_ANI_MARIO_FIRE_HOLD_WALK_RIGHT 3801
 #define ID_ANI_MARIO_FIRE_HOLD_WALK_LEFT 3800
 
@@ -218,6 +227,7 @@ class CMario : public CGameObject
 	ULONGLONG count_1_second = 0;
 	ULONGLONG time_attack;
 
+
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
 	BOOLEAN isDeceleration;
@@ -248,7 +258,7 @@ class CMario : public CGameObject
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
-		this->time_attack = 0;
+		time_attack = 0;
 		isAttack = false;
 		isFlying = false;
 		isRunning = false;

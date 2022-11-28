@@ -418,8 +418,17 @@ int CMario::GetAniIdBig()
 					if (!isHolding) { aniId = ID_ANI_MARIO_RUNNING_RIGHT; }
 					else { aniId = ID_ANI_MARIO_HOLD_WALK_RIGHT; }
 				}
-				else if ((ax == MARIO_ACCEL_WALK_X) || isDeceleration)
-					aniId = ID_ANI_MARIO_WALKING_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X || isDeceleration)
+				{
+					if (isKick)
+					{
+						aniId = ID_ANI_MARIO_KICK_LEFT;						
+					}
+					else
+					{
+						aniId = ID_ANI_MARIO_WALKING_RIGHT;
+					}
+				}
 			}
 			else // vx < 0
 			{
@@ -430,7 +439,16 @@ int CMario::GetAniIdBig()
 					else { aniId = ID_ANI_MARIO_HOLD_WALK_LEFT; }
 				}
 				else if ((ax == -MARIO_ACCEL_WALK_X) || isDeceleration)
-					aniId = ID_ANI_MARIO_WALKING_LEFT;
+				{
+					if (isKick)
+					{
+						aniId = ID_ANI_MARIO_KICK_RIGHT;
+					}
+					else
+					{
+						aniId = ID_ANI_MARIO_WALKING_LEFT;
+					}
+				}
 			}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
@@ -739,6 +757,7 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_DECELERATION:
 		isDeceleration = true;
+		isKick = false;
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (isSitting) break;
@@ -812,6 +831,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_IDLE:
 		//isDeceleration = false;
 		//isAttack = false;
+		
 		ax = 0.0f;
 		vx = 0.0f;
 		break;
@@ -819,6 +839,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_DIE:
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		//isDeceleration = false;
+
 		vx = 0;
 		ax = 0;
 		break;
