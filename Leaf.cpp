@@ -4,10 +4,12 @@
 
 CLeaf::CLeaf(float x, float y) :CGameObject(x, y)
 {
-	this->ax = 0;
-	this->ay = LEAF_GRAVITY;
-	start_position = x;
-	SetState(LEAF_STATE_WALKING);
+	ax = 0;
+	ay = LEAF_GRAVITY;
+	isUp = false;
+	isChange = false;
+	isFlyLow = false;
+	SetState(LEAF_STATE_FLY_UP);
 }
 
 void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -20,41 +22,37 @@ void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	float distance_x = x - start_position;
 	vy += ay * dt;
 	vx += ax * dt;
+	
 
-	if (vy < 0) {
-		ax = 0;
-		vx = 0;
+	if (isUp && vy > 0)
+	{
+		SetState(LEAF_STATE_CHANGE);
+		vx = LEAF_SPEED_X;
+	}
+	else if (isChange && CountDownTimer(LEAF_TIME_CHANGE))
+	{
+		SetState(LEAF_STATE_FLY_LOW);
+	}
+	else if (isFlyLow && CountDownTimer(LEAF_TIME_FLY_LOW))
+	{
+		SetState(LEAF_STATE_CHANGE);
 	}
 
-	if (vy > 0) {
-
-		if (abs(vy) > MAX_VY) {
-			vy = MAX_VY;
-			if ((distance_x < DISTANCE_LEAF_MAX) && (vx > 0)) {
-				vx = LEAF_WALKING_SPEED;
-			}
-			else {
-				//DebugOutTitle(L"OK")
-				vx = -LEAF_WALKING_SPEED;
-				if ((distance_x < -DISTANCE_LEAF_MAX) && (vx < 0)) { vx = LEAF_WALKING_SPEED; }
-			}
-		}
-	}
-	//DebugOut(L"[VX vy cua la cay] %f %f\n", vx,vy);
-	CGameObject::Update(dt, coObjects);
-	CCollision::GetInstance()->Process(this, dt, coObjects);
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CLeaf::Render()
 {
-	int aniId = ID_ANI_LEAF_WALKING;
+	int aniId = ID_ANI_LEAF_LEFT;
+	if (vx > 0)
+	{
+		aniId = ID_ANI_LEAF_RIGHT;
+	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CLeaf::SetState(int state)
@@ -62,14 +60,35 @@ void CLeaf::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case  LEAF_STATE_WALKING:
-		vx = -LEAF_WALKING_SPEED;
-		break;
-	default:
-
-
+	case LEAF_STATE_FLY_UP:
+	{
+		isUp = true;
+		vx = 0;
+		vy = -LEAF_SPEED_Y;
 		break;
 	}
+	case LEAF_STATE_CHANGE:
+	{
+		isChange = true;
+		isUp = false;
+		isFlyLow = false;
+		time_line = GetTickCount64();
+		ay = LEAF_GRAVITY;
+		vx = -vx;
+		vy = LEAF_SPEED_Y / 4;
+		break;
+	}
+	case LEAF_STATE_FLY_LOW:
+	{
+		isFlyLow = true;
+		isChange = false;
+		ay = -LEAF_GRAVITY * 4;
+		break;
+	}
+	default:
+		break;
+	}
+	
 }
 
 void CLeaf::OnNoCollision(DWORD dt)
@@ -93,4 +112,13 @@ void CLeaf::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = 0;
 	}
+}
+
+bool CLeaf::CountDownTimer(int time)
+{
+	if (GetTickCount64() - time_line > time)
+	{
+		return true;
+	}
+	return false;
 }

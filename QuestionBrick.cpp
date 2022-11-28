@@ -85,7 +85,7 @@ void CQuestionBrick::SummonItemsFromBrickQuestion() {
 			}
 			else {
 				CLeaf* leaf = new CLeaf(x, y);
-				leaf->SetVY(LEAF_VY_UP);
+				//leaf->SetVY(LEAF_VY_UP);
 				scene->CreateObject(leaf);
 			}
 			break;
