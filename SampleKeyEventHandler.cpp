@@ -11,7 +11,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_A:
-		if (mario->GetLevel() == MARIO_LEVEL_FIRE)
+		/*if (mario->GetLevel() == MARIO_LEVEL_FIRE)
 		{
 			mario->SummonFireBalls();
 		}
@@ -19,7 +19,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		{
 			mario->SetState(MARIO_STATE_ATTACK);
 			mario->SummonTail();
-		}
+		}*/
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT);
@@ -67,7 +67,10 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		{
 			mario->SetState(MARIO_STATE_RELEASE_FLYING);
 		}
-		else mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		else
+		{
+			mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		}
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
@@ -116,15 +119,17 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
 		}
 	}
-	else {
-		if (!mario->GetVX())
+	else 
+	{
+		mario->SetState(MARIO_STATE_IDLE);
+		/*if (!mario->GetVX())
 		{
 			mario->SetState(MARIO_STATE_IDLE);
 		}
 		else
 		{
 			mario->SetState(MARIO_STATE_DECELERATION);
-		}
+		}*/
 	}
 		
 	

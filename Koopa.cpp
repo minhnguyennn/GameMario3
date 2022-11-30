@@ -155,44 +155,26 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	DebugOutTitle(L"STATE: %d", state);
+	//DebugOutTitle(L"STATE: %d", state);
 	//DebugOut(L"x y %f %f \n", x,y);
 	//DebugOut(L"isHeld %d \n", isHeld);
 	//DebugOut(L"AY VY %f %f \n", ay, vy);
 	//DebugOut(L"[OKE] x: %f\n", start_x);
 	//DebugOut(L"[OKE] isDefense  %d  \n", isDefense);
 	//DebugOut(L"isDie %d", isDie);
-
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
+	// DebugOut(L"[OKE] isDefense isWaiting waiting_start %d %d %f \n", isDefense, isWaiting, waiting_start);
 	if (isHeld)
 	{
 		ChangePositionFollowMario();
 	}
 	
-	if (isSummon) 
-	{
-		y = mario->GetY();
-		//DebugOut(L"[oke] right: %d\n", mario->GetState());
-		if ((mario->GetState() == MARIO_STATE_WALKING_RIGHT) || (mario->GetState() == MARIO_STATE_IDLE) || (mario->GetState() == MARIO_STATE_SUMMON_KOOPA)) 
-		{
-			x = mario->GetX() + 14;
-		}
-		else 
-		{
-			x = mario->GetX() - 14;
-		}
-	}
-
-	if ( isDefense && (GetTickCount64() - close_start > KOOPA_CLOSE_SHELL_TIMEOUT))
+	if ( isDefense && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		SetState(KOOPA_STATE_WAITING);
-		//DebugOut(L"[OKE] isDefense isWaiting waiting_start %d %d %f \n", isDefense, isWaiting, waiting_start);
 	}
 
-	if (isWaiting && (GetTickCount64() - waiting_start > KOOPA_CLOSE_SHELL_TIMEOUT))
+	if (isWaiting && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
-		//DebugOut(L"[OKE]\n");
 		SetState(KOOPA_STATE_WALKING);
 	}
 
@@ -298,14 +280,14 @@ void CKoopa::SetState(int state)
 		//vy = 0;
 		isWaiting = true;
 		isDefense = false;
-		waiting_start = GetTickCount64();
+		time_line = GetTickCount64();
 		break;
 	}
 	case KOOPA_STATE_CLOSE_SHELL:
 	{
 		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 		vx = 0;
-		close_start = GetTickCount64();
+		time_line = GetTickCount64();
 		isDefense = true;
 		isAttacking = false;
 		break;
@@ -347,16 +329,18 @@ void CKoopa::ChangePositionFollowMario()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-	if (mario->GetNx() <0) {
-		x = mario->GetX() - 19 +1;
+	if (mario->GetNx() <0) 
+	{
+		x = mario->GetX() - 13;
 	}
-	else {
-		x = mario->GetX() + 19 - 1;
+	else 
+	{
+		x = mario->GetX() + 13;
 
 	}
-	y = mario->GetY() - 2;
+	y = mario->GetY();
 	ay = 0;
-	//vx = mario->GetVX()-0.05f;
+	//vx = mario->GetVX();
 	//vy = mario->GetVY();
 }
 
@@ -371,5 +355,14 @@ void CKoopa::LowerLevel()
 		DebugOut(L">>> Koopa DIE >>> \n");
 		SetState(KOOPA_STATE_DIE_TURN_OVER);
 	}
+}
+
+bool CKoopa::CountDownTimer(int time)
+{
+	if (GetTickCount64() - time_line > time)
+	{
+		return true;
+	}
+	return false;
 }
 

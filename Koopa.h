@@ -10,7 +10,7 @@
 #define KOOPA_JUMP_DEFLECT_SPEED 0.02f
 
 //TIME
-#define KOOPA_CLOSE_SHELL_TIMEOUT 5000
+#define KOOPA_CLOSE_SHELL_TIMEOUT 3000
 
 //BBOX
 #define KOOPA_BBOX_WIDTH 17
@@ -80,9 +80,8 @@ protected:
 	bool isSummon;
 	bool isHeld;
 
-	ULONGLONG close_start;
-	ULONGLONG waiting_start;
 	ULONGLONG die_start;
+	ULONGLONG time_line;
 
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
@@ -94,8 +93,8 @@ public:
 	{
 		this->type = type;
 		this->level = level;
-		this->ay = KOOPA_GRAVITY;
-		this->start_x = x;
+		ay = KOOPA_GRAVITY;
+		start_x = x;
 		isDie = false;
 		isDefense = false;
 		isTurnOver = false;
@@ -103,8 +102,6 @@ public:
 		isAttacking = false;
 		isSummon = false;
 		isHeld = false;
-		close_start = -1;
-		waiting_start = -1;
 		SetState(KOOPA_STATE_WALKING);
 	};
 	void SetState(int state);
@@ -132,4 +129,5 @@ public:
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void ChangePositionFollowMario();
+	bool CountDownTimer(int time);
 };
