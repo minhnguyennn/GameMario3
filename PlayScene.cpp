@@ -41,6 +41,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
 #define SCENE_SECTION_TILEMAP 3
+#define SCENE_SECTION_HIDDEN 4
+
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -272,6 +274,33 @@ void CPlayScene::_ParseSection_TILEMAP_DATA(string line)
 	current_map->SetTileMapData(TileMapData);
 }
 
+
+void CPlayScene::_ParseSection_HIDDEN_DATA(string line)
+{
+	int ID, rowMap, columnMap, columnTile, rowTile, totalTiles, startX, startY;
+	LPCWSTR path = ToLPCWSTR(line);
+	ifstream f;
+
+	f.open(path);
+	f >> ID >> rowMap >> columnMap >> rowTile >> columnTile >> totalTiles >> startX >> startY;
+	//Init Map Matrix
+
+	int** HiddenTileMapData = new int* [rowMap];
+	for (int i = 0; i < rowMap; i++)
+	{
+		HiddenTileMapData[i] = new int[columnMap];
+		for (int j = 0; j < columnMap; j++)
+		{
+			f >> HiddenTileMapData[i][j];
+		}
+
+	}
+	f.close();
+
+	hidden_map = new CMap(ID, rowMap, columnMap, rowTile, columnTile, totalTiles, startX, startY);
+	hidden_map->ExtractTileFromTileSet();
+	hidden_map->SetTileMapData(HiddenTileMapData);
+}
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -329,6 +358,8 @@ void CPlayScene::Load()
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line == "[TILEMAP]") { section = SCENE_SECTION_TILEMAP; continue; }
+		if (line == "[HIDDEN]") { section = SCENE_SECTION_HIDDEN; continue; }
+
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
@@ -338,6 +369,8 @@ void CPlayScene::Load()
 		{ 
 			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 			case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP_DATA(line); break;
+			case SCENE_SECTION_HIDDEN: _ParseSection_HIDDEN_DATA(line); break;
+
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
@@ -429,6 +462,8 @@ void CPlayScene::Unload()
 	delete current_map;
 	current_map = nullptr;
 
+	delete hidden_map;
+	hidden_map = nullptr;
 	objects.clear();
 	player = NULL;
 

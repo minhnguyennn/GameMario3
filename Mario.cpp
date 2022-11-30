@@ -27,7 +27,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//DebugOut(L"Level %d", level);
 	// DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
 	//DebugOut(L"isRunning: %d\n", isRunning);
-	//DebugOutTitle(L"isHolding: %d", isHolding);
+	DebugOutTitle(L"isHolding: %d", isHolding);
+	//DebugOutTitle(L"aniId: %d", aniId);
 	CountDown1Second();
 	vy += ay * dt;
 	vx += ax * dt;
@@ -215,10 +216,11 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			{
 				LowerLevel();
 			}
-			else if (isRunning && (koopa->GetIsDefense() || koopa->GetIsWaiting()))
+			else if (isRunning)
 			{
 				isHolding = true;
-				koopa->SetIsHeld(true);
+				//koopa->SetIsHeld(true);
+				//SetState()
 			}
 			else if (koopa->GetIsDefense() || koopa->GetIsWaiting()) 
 			{
@@ -430,11 +432,11 @@ int CMario::GetAniIdBig()
 					if (nx > 0) aniId = ID_ANI_MARIO_IDLE_RIGHT;
 					else aniId = ID_ANI_MARIO_IDLE_LEFT;
 				}
-				else 
+				/*else 
 				{
 					if (nx > 0) aniId = ID_ANI_MARIO_IDLE_HOLD_RIGHT;
 					else aniId = ID_ANI_MARIO_IDLE_HOLD_LEFT;
-				}
+				}*/
 			}
 			else if (vx > 0)
 			{
@@ -494,7 +496,7 @@ int CMario::GetAniIdBig()
 			}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
-	DebugOutTitle(L"aniId: %d", aniId);
+
 	return aniId;
 }
 
@@ -799,6 +801,17 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	case MARIO_STATE_HOLDING:
+	{
+		if (isSitting) break;
+		
+		break;
+	}
+	case MARIO_STATE_RELEASE_HOLDING:
+	{
+		
+		break;
+	}
 	case MARIO_STATE_ATTACK:
 	{
 		if (isSitting) break;
@@ -914,6 +927,7 @@ void CMario::SetState(int state)
 	}
 	case MARIO_STATE_IDLE:
 	{
+		isHolding = false;
 		ax = 0.0f;
 		vx = 0.0f;
 		break;

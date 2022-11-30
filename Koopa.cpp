@@ -157,7 +157,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	//DebugOutTitle(L"STATE: %d", state);
 	//DebugOut(L"x y %f %f \n", x,y);
-	//DebugOut(L"isHeld %d \n", isHeld);
+	//DebugOutTitle(L"isHeld %d", isHeld);
 	//DebugOut(L"AY VY %f %f \n", ay, vy);
 	//DebugOut(L"[OKE] x: %f\n", start_x);
 	//DebugOut(L"[OKE] isDefense  %d  \n", isDefense);
