@@ -2,38 +2,23 @@
 #include <fstream>
 #include "AssetIDs.h"
 
-#include "PlayScene.h"
+#include "WorldScene.h"
 #include "Utils.h"
+
 #include "Textures.h"
 #include "Sprites.h"
-#include "Portal.h"
-#include "Coin.h"
 #include"debug.h"
-#include "QuestionBrick.h"
-#include "Platform.h"
-#include "MushRoom.h"
-#include "Leaf.h"
-#include "Point.h"
-#include "Koopa.h"
-#include "VenusFireTrap.h"
-#include "Pipeline.h"
-#include "FireBalls.h"
-#include "FireBallOfMario.h"
-#include "Goomba.h"
-#include "Tail.h"
 #include "HUD.h"
-
-
-
-#include "SampleKeyEventHandler.h"
+#include "MarioWorld.h"
+#include "WorldKeyEvent.h"
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath):
+CWorldScene::CWorldScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	player = NULL;
-	key_handler = new CSampleKeyHandler(this);
+	key_handler = new CWorldKeyEvent(this);
 }
 
 
@@ -41,8 +26,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
 #define SCENE_SECTION_TILEMAP 3
-#define SCENE_SECTION_HIDDEN 4
-
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -51,7 +34,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 #define MAX_SCENE_LINE 1024
 
-void CPlayScene::_ParseSection_SPRITES(string line)
+void CWorldScene::_ParseSection_SPRITES(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -68,24 +51,24 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 	if (tex == NULL)
 	{
 		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
-		return; 
+		return;
 	}
 
 	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
 }
 
-void CPlayScene::_ParseSection_ASSETS(string line)
+void CWorldScene::_ParseSection_ASSETS(string line)
 {
 	vector<string> tokens = split(line);
 
 	if (tokens.size() < 1) return;
 
 	wstring path = ToWSTR(tokens[0]);
-	
+
 	LoadAssets(path.c_str());
 }
 
-void CPlayScene::_ParseSection_ANIMATIONS(string line)
+void CWorldScene::_ParseSection_ANIMATIONS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -99,7 +82,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	for (unsigned int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
 	{
 		int sprite_id = atoi(tokens[i].c_str());
-		int frame_time = atoi(tokens[i+1].c_str());
+		int frame_time = atoi(tokens[i + 1].c_str());
 		ani->Add(sprite_id, frame_time);
 	}
 
@@ -107,9 +90,9 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 }
 
 /*
-	Parse a line in section [OBJECTS] 
+	Parse a line in section [OBJECTS]
 */
-void CPlayScene::_ParseSection_OBJECTS(string line)
+void CWorldScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -120,7 +103,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
 
-	CGameObject *obj = NULL;
+	CGameObject* obj = NULL;
 
 	switch (object_type)
 	{
@@ -131,111 +114,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x, y);
-		player = (CMario*)obj;
+		obj = new CMarioWorld(x, y);
+		player = (CMarioWorld*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 	}
-	case OBJECT_TYPE_BRICK: 
-	{
-		int type_brick = (int)atof(tokens[3].c_str());
-		obj = new CBrick(x, y, type_brick);
-		break;
-	}
-	case OBJECT_TYPE_COIN: 
-	{
-		obj = new CCoin(x, y); 
-		break; 
-	}
-	case OBJECT_TYPE_TAIL: 
-	{
-		obj = new CTail(x, y); 
-		break; 
-	}
-	case OBJECT_TYPE_KOOPA: 
-	{
-		int type = (int)atof(tokens[3].c_str());
-		int level = (int)atof(tokens[4].c_str());
-		obj = new CKoopa(x, y, type, level);
-		break;
-	}
-	case OBJECT_TYPE_VFTRAP: 
-	{ 
-		int type = (int)atof(tokens[3].c_str());
-		obj = new CVenusFireTrap(x, y, type); 
-		break; 
-	}
-	case OBJECT_TYPE_PIPELINE: 
-	{
-		int type_summon_plant = (int)atof(tokens[3].c_str());
-		int type_pineline = (int)atof(tokens[4].c_str());
-		obj = new CPipeline(x, y, type_summon_plant, type_pineline); 
-		break;
-	}
-	case OBJECT_TYPE_FIREBALLS: 
-	{
-		obj = new CFireBalls(x, y);
-		break;
-	}
-	case OBJECT_TYPE_FIREBALL_OF_MARIO: 
-	{
-		obj = new CFireBallOfMario(x, y);
-		break;
-	}
-	case OBJECT_TYPE_GOOMBA:
-	{
-		int level = (int)atof(tokens[3].c_str());
-		int type = (int)atof(tokens[4].c_str());
-		obj = new CGoomba(x, y, level, type);
-		break;
-	}
-	case OBJECT_TYPE_POINT:
-	{
-		int type_point = (int)atof(tokens[3].c_str());
-		obj = new CPoint(x, y, type_point);
-		break;
-	}
-	case OBJECT_TYPE_QUESTIONBRICK:
-	{
-		int type = (int)atof(tokens[3].c_str());
-		obj = new CQuestionBrick(x, y, type); 
-		break;
-	}
-	case OBJECT_TYPE_MUSHROOM: 
-	{
-		int type_mushroom = (int)atof(tokens[3].c_str()); 
-		obj = new CMushRoom(x, y, type_mushroom);
-		break; 
-	}
-	case OBJECT_TYPE_LEAF: 
-	{
-		obj = new CLeaf(x, y);
-		break;
-	}
-	case OBJECT_TYPE_PLATFORM:
-	{
-		float cell_width = (float)atof(tokens[3].c_str());
-		float cell_height = (float)atof(tokens[4].c_str());
-		int length = atoi(tokens[5].c_str());
-		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = atoi(tokens[7].c_str());
-		int sprite_end = atoi(tokens[8].c_str());
-		obj = new CPlatform(
-			x, y,
-			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
-		);
-		break;
-	}
-	case OBJECT_TYPE_PORTAL:
-	{
-		float r = (float)atof(tokens[3].c_str());
-		float b = (float)atof(tokens[4].c_str());
-		int scene_id = atoi(tokens[5].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
-	}
-	break;
+	
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -247,7 +132,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
-void CPlayScene::_ParseSection_TILEMAP_DATA(string line)
+void CWorldScene::_ParseSection_TILEMAP_DATA(string line)
 {
 	int ID, rowMap, columnMap, columnTile, rowTile, totalTiles, startX, startY;
 	LPCWSTR path = ToLPCWSTR(line);
@@ -274,34 +159,7 @@ void CPlayScene::_ParseSection_TILEMAP_DATA(string line)
 	current_map->SetTileMapData(TileMapData);
 }
 
-
-void CPlayScene::_ParseSection_HIDDEN_DATA(string line)
-{
-	int ID, rowMap, columnMap, columnTile, rowTile, totalTiles, startX, startY;
-	LPCWSTR path = ToLPCWSTR(line);
-	ifstream f;
-
-	f.open(path);
-	f >> ID >> rowMap >> columnMap >> rowTile >> columnTile >> totalTiles >> startX >> startY;
-	//Init Map Matrix
-
-	int** HiddenTileMapData = new int* [rowMap];
-	for (int i = 0; i < rowMap; i++)
-	{
-		HiddenTileMapData[i] = new int[columnMap];
-		for (int j = 0; j < columnMap; j++)
-		{
-			f >> HiddenTileMapData[i][j];
-		}
-
-	}
-	f.close();
-
-	hidden_map = new CMap(ID, rowMap, columnMap, rowTile, columnTile, totalTiles, startX, startY);
-	hidden_map->ExtractTileFromTileSet();
-	hidden_map->SetTileMapData(HiddenTileMapData);
-}
-void CPlayScene::LoadAssets(LPCWSTR assetFile)
+void CWorldScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
 
@@ -336,10 +194,7 @@ void CPlayScene::LoadAssets(LPCWSTR assetFile)
 	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
 
-
-
-
-void CPlayScene::Load()
+void CWorldScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
 
@@ -347,7 +202,7 @@ void CPlayScene::Load()
 	f.open(sceneFilePath);
 
 	// current resource section flag
-	int section = SCENE_SECTION_UNKNOWN;					
+	int section = SCENE_SECTION_UNKNOWN;
 
 	char str[MAX_SCENE_LINE];
 	while (f.getline(str, MAX_SCENE_LINE))
@@ -357,20 +212,17 @@ void CPlayScene::Load()
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
-		if (line == "[TILEMAP]") { section = SCENE_SECTION_TILEMAP; continue; }
-		if (line == "[HIDDEN]") { section = SCENE_SECTION_HIDDEN; continue; }
-
-		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
+		if (line == "[TILEMAP]") { section = SCENE_SECTION_TILEMAP; continue; };
+		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; };
 
 		//
 		// data section
 		//
 		switch (section)
-		{ 
-			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-			case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP_DATA(line); break;
-			case SCENE_SECTION_HIDDEN: _ParseSection_HIDDEN_DATA(line); break;
-			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		{
+		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
+		//case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP_DATA(line); break;
+		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
 
@@ -379,7 +231,7 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
 
-void CPlayScene::Update(DWORD dt)
+void CWorldScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
@@ -396,50 +248,44 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
+	if (player == NULL) return;
 
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
-	CGame *game = CGame::GetInstance();
+	CGame* game = CGame::GetInstance();
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
 	//DebugOutTitle(L"cy %f", cy);
-	if (cx < 3100) {
-		if (cx < PLSCENE_MIN_X_CAM) cx = PLSCENE_MIN_X_CAM;
-		if ((cx > PLSCENE_MAX_X_CAM)) cx = PLSCENE_MAX_X_CAM;
-
-		if (cy > PLSCENE_MAX_Y_CAM) cy = PLSCENE_MAX_Y_CAM;
-		if (cy < PLSCENE_MIN_Y_CAM) cy = PLSCENE_MIN_Y_CAM;
-	}
+	
 
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
 }
 
-void CPlayScene::Render()
+void CWorldScene::Render()
 {
 	current_map->Render();
 
 	CGame* game = CGame::GetInstance();
 	float cam_x = game->GetCamX() + BLACK_BACKGROUND_ADJUST_X;
 	float cam_y = game->GetCamY() + BLACK_BACKGROUND_ADJUST_Y;
-	hud = new CHUD(cam_x, cam_y);
+	//hud = new CHUD(cam_x, cam_y);
 
 	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 
-	
-	hud->Render();
+
+	//hud->Render();
 }
 
 /*
 *	Clear all objects from this scene
 */
-void CPlayScene::Clear()
+void CWorldScene::Clear()
 {
 	vector<LPGAMEOBJECT>::iterator it;
 	for (it = objects.begin(); it != objects.end(); it++)
@@ -452,29 +298,29 @@ void CPlayScene::Clear()
 /*
 	Unload scene
 
-	TODO: Beside objects, we need to clean up sprites, animations and textures as well 
+	TODO: Beside objects, we need to clean up sprites, animations and textures as well
 
 */
-void CPlayScene::Unload()
+void CWorldScene::Unload()
 {
 
 	for (unsigned int i = 0; i < objects.size(); i++)
 		delete objects[i];
 
+	objects.clear();
+
 	delete current_map;
 	current_map = nullptr;
 
-	delete hidden_map;
-	hidden_map = nullptr;
-	objects.clear();
+	
 	player = NULL;
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
-bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+bool CWorldScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
 
-void CPlayScene::PurgeDeletedObjects()
+void CWorldScene::PurgeDeletedObjects()
 {
 	vector<LPGAMEOBJECT>::iterator it;
 	for (it = objects.begin(); it != objects.end(); it++)
@@ -490,6 +336,6 @@ void CPlayScene::PurgeDeletedObjects()
 	// NOTE: remove_if will swap all deleted items to the end of the vector
 	// then simply trim the vector, this is much more efficient than deleting individual items
 	objects.erase(
-		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
+		std::remove_if(objects.begin(), objects.end(), CWorldScene::IsGameObjectDeleted),
 		objects.end());
 }

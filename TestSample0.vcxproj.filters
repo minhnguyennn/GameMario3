@@ -37,6 +37,18 @@
     <Filter Include="Header Files\HUD">
       <UniqueIdentifier>{e2b16dd8-c53b-444b-b62e-5f9a6e3ad47d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scenes">
+      <UniqueIdentifier>{503a6012-35b8-4ea4-a8c5-d9fea28711e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\PlayScene">
+      <UniqueIdentifier>{42353636-32fa-445c-9f71-03f755b4b5ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\WorldMap">
+      <UniqueIdentifier>{3af168a6-b081-42d9-8515-2c6d1caf4372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\IntroMap">
+      <UniqueIdentifier>{4842871d-e297-4b09-8b37-6e9e2c691efb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -55,12 +67,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SampleKeyEventHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
@@ -135,6 +141,21 @@
     <ClCompile Include="HUD.cpp">
       <Filter>Header Files\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Header Files\Scenes\PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleKeyEventHandler.cpp">
+      <Filter>Header Files\Scenes\PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldScene.cpp">
+      <Filter>Header Files\Scenes\WorldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioWorld.cpp">
+      <Filter>Header Files\Scenes\WorldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldKeyEvent.cpp">
+      <Filter>Header Files\Scenes\WorldMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -150,15 +171,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyEventHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleKeyEventHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
@@ -241,6 +253,24 @@
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>Header Files\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Header Files\Scenes\PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleKeyEventHandler.h">
+      <Filter>Header Files\Scenes\PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldScene.h">
+      <Filter>Header Files\Scenes\WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioWorld.h">
+      <Filter>Header Files\Scenes\WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldKeyEvent.h">
+      <Filter>Header Files\Scenes\WorldMap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
