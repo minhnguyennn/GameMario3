@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include "Animations.h"
 #include "debug.h"
+#include "Koopa.h"
 
 #pragma region ANIMATION_ID
 
@@ -216,7 +217,7 @@
 
 class CMario : public CGameObject
 {
-	
+	CKoopa* koopa_holding;
 	float maxVx;
 	float maxVy;
 	float ax;				// acceleration on x 
@@ -230,11 +231,9 @@ class CMario : public CGameObject
 	int score;
 	int power;
 	
-
 	ULONGLONG untouchable_start;
 	ULONGLONG count_1_second = 0;
 	ULONGLONG time_attack;
-
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -275,6 +274,7 @@ public:
 		isDeceleration = false;
 		isGhostBox = false;
 		isKick = false;
+		koopa_holding = NULL;
 		
 		maxVx = 0.0f;
 		maxVy = 0.0f;
@@ -301,6 +301,7 @@ public:
 
 	void SetIsHolding(bool isHolding) { this->isHolding = isHolding; }
 	bool GetIsHolding() { return isHolding; };
+
 	void SetIsFlying(bool isFlying) { this->isFlying = isFlying; }
 	bool GetIsFlying() { return isFlying; };
 
@@ -336,4 +337,6 @@ public:
 	void SummonFireBalls();
 	void SummonTail();
 	void DecelerationFunction();
+	void MarioHoldKoopaFunction();
+	void MarioThrowKoopaFunction();
 };

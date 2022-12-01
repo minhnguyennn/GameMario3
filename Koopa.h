@@ -10,7 +10,7 @@
 #define KOOPA_JUMP_DEFLECT_SPEED 0.02f
 
 //TIME
-#define KOOPA_CLOSE_SHELL_TIMEOUT 3000
+#define KOOPA_CLOSE_SHELL_TIMEOUT 30000
 
 //BBOX
 #define KOOPA_BBOX_WIDTH 17
@@ -104,14 +104,25 @@ public:
 		isHeld = false;
 		SetState(KOOPA_STATE_WALKING);
 	};
+
+	void SetAy(float ay) { this->ay = ay; };
+
 	void SetState(int state);
 	void SetIsSummon(bool isSummon) { this->isSummon = isSummon; };
+
 	bool GetIsDefense() { return isDefense; };
+
+	void SetIsAttacking(bool isAttacking) { this->isAttacking = isAttacking; };
+
 	void SetIsHeld(bool isHeld) { this->isHeld = isHeld; };
 	bool GetIsHeld() { return isHeld; };
+
 	bool GetIsTurnOver () { return isTurnOver; };
+
 	bool GetIsWaiting() { return isWaiting; };
+
 	bool GetIsAttacking (){ return isAttacking; };
+
 	int GetLevel() { return level; };
 	void SetLevel(int setLevel) { 
 		if (setLevel == KOOPA_LEVEL_SMALL) {
@@ -120,6 +131,7 @@ public:
 		}
 	};
 	void LowerLevel();
+
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -128,6 +140,8 @@ public:
 	int isLeftWithMario();
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
+
 	void ChangePositionFollowMario();
+
 	bool CountDownTimer(int time);
 };

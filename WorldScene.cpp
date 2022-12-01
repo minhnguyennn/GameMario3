@@ -132,32 +132,32 @@ void CWorldScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
-void CWorldScene::_ParseSection_TILEMAP_DATA(string line)
-{
-	int ID, rowMap, columnMap, columnTile, rowTile, totalTiles, startX, startY;
-	LPCWSTR path = ToLPCWSTR(line);
-	ifstream f;
-
-	f.open(path);
-	f >> ID >> rowMap >> columnMap >> rowTile >> columnTile >> totalTiles >> startX >> startY;
-	//Init Map Matrix
-
-	int** TileMapData = new int* [rowMap];
-	for (int i = 0; i < rowMap; i++)
-	{
-		TileMapData[i] = new int[columnMap];
-		for (int j = 0; j < columnMap; j++)
-		{
-			f >> TileMapData[i][j];
-		}
-
-	}
-	f.close();
-
-	current_map = new CMap(ID, rowMap, columnMap, rowTile, columnTile, totalTiles, startX, startY);
-	current_map->ExtractTileFromTileSet();
-	current_map->SetTileMapData(TileMapData);
-}
+//void CWorldScene::_ParseSection_TILEMAP_DATA(string line)
+//{
+//	int ID, rowMap, columnMap, columnTile, rowTile, totalTiles, startX, startY;
+//	LPCWSTR path = ToLPCWSTR(line);
+//	ifstream f;
+//
+//	f.open(path);
+//	f >> ID >> rowMap >> columnMap >> rowTile >> columnTile >> totalTiles >> startX >> startY;
+//	//Init Map Matrix
+//
+//	int** TileMapData = new int* [rowMap];
+//	for (int i = 0; i < rowMap; i++)
+//	{
+//		TileMapData[i] = new int[columnMap];
+//		for (int j = 0; j < columnMap; j++)
+//		{
+//			f >> TileMapData[i][j];
+//		}
+//
+//	}
+//	f.close();
+//
+//	current_map = new CMap(ID, rowMap, columnMap, rowTile, columnTile, totalTiles, startX, startY);
+//	current_map->ExtractTileFromTileSet();
+//	current_map->SetTileMapData(TileMapData);
+//}
 
 void CWorldScene::LoadAssets(LPCWSTR assetFile)
 {
@@ -268,7 +268,7 @@ void CWorldScene::Update(DWORD dt)
 
 void CWorldScene::Render()
 {
-	current_map->Render();
+	//current_map->Render();
 
 	CGame* game = CGame::GetInstance();
 	float cam_x = game->GetCamX() + BLACK_BACKGROUND_ADJUST_X;
@@ -309,8 +309,8 @@ void CWorldScene::Unload()
 
 	objects.clear();
 
-	delete current_map;
-	current_map = nullptr;
+	/*delete current_map;
+	current_map = nullptr;*/
 
 	
 	player = NULL;

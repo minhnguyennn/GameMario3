@@ -27,23 +27,25 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//DebugOut(L"Level %d", level);
 	// DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
 	//DebugOut(L"isRunning: %d\n", isRunning);
-	DebugOutTitle(L"isHolding: %d", isHolding);
+	//DebugOutTitle(L"isrunning: %d and isHolding: %d", isRunning, isHolding);
+	//DebugOutTitle(L"ax: %f", ax);
 	//DebugOutTitle(L"aniId: %d", aniId);
-	CountDown1Second();
+	
 	vy += ay * dt;
 	vx += ax * dt;
 
 	if (abs(vx) > abs(maxVx))
 	{
 		vx = maxVx;
-	} 
-	
+	}
+
+	CountDown1Second();
+
 	if (isSitting || isDeceleration)
 	{
 		DecelerationFunction();
 	}
 	
-
 	/*if (level == MARIO_LEVEL_RACCOON && vx == maxVx) {
 		SetState(MARIO_STATE_FLYING);
 	}*/
@@ -70,10 +72,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-	
-	
+
 	isOnPlatform = false;
+
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+
+	if (isHolding)
+	{
+		MarioHoldKoopaFunction();
+	}
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -186,7 +193,6 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-
 	if (e->ny < 0)
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -216,11 +222,10 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			{
 				LowerLevel();
 			}
-			else if (isRunning)
+			else if (isRunning && !isHolding)
 			{
-				isHolding = true;
-				//koopa->SetIsHeld(true);
-				//SetState()
+				koopa_holding = koopa;
+				SetState(MARIO_STATE_HOLDING);
 			}
 			else if (koopa->GetIsDefense() || koopa->GetIsWaiting()) 
 			{
@@ -797,19 +802,20 @@ void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
 	if (this->state == MARIO_STATE_DIE) return;
-	//DebugOut(L"STATE: %d\n", state);
 
 	switch (state)
 	{
 	case MARIO_STATE_HOLDING:
 	{
 		if (isSitting) break;
-		
+		isHolding = true;
+		koopa_holding->SetIsAttacking(true);
 		break;
 	}
 	case MARIO_STATE_RELEASE_HOLDING:
 	{
-		
+		isHolding = false;
+		isRunning = false;
 		break;
 	}
 	case MARIO_STATE_ATTACK:
@@ -927,7 +933,6 @@ void CMario::SetState(int state)
 	}
 	case MARIO_STATE_IDLE:
 	{
-		isHolding = false;
 		ax = 0.0f;
 		vx = 0.0f;
 		break;
@@ -1057,5 +1062,30 @@ void CMario::DecelerationFunction()
 	else
 	{
 		maxVx = 0;
+	}
+}
+
+void CMario::MarioHoldKoopaFunction()
+{
+	if (nx < 0)
+	{
+		koopa_holding->SetX(x - 13);
+	}
+	else
+	{
+		koopa_holding->SetX(x + 13);
+	}
+	koopa_holding->SetY(y - 2);
+	koopa_holding->SetAy(0);
+	koopa_holding->SetVX(vx);
+}
+
+void CMario::MarioThrowKoopaFunction()
+{
+	if (!isHolding && koopa_holding != NULL)
+	{
+		koopa_holding->SetState(KOOPA_STATE_ATTACKING);
+		
+		koopa_holding = NULL;
 	}
 }

@@ -144,18 +144,17 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 {
 	//Different Koopa will turned over and died.
 	CKoopa* df_koopa = dynamic_cast<CKoopa*>(e->obj);
-	//DebugOut(L"e->nx %f", e->nx);
-		if ((isAttacking) || (isHeld)) {
-			df_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
-			//df_koopa->SetState(KOOPA_STATE_DIE);
-		}
-	
+	if (isAttacking) 
+	{
+		df_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
+		//df_koopa->SetState(KOOPA_STATE_DIE);
+	}
 }
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	//DebugOutTitle(L"STATE: %d", state);
+	DebugOutTitle(L"isHeld: %d", isHeld);
 	//DebugOut(L"x y %f %f \n", x,y);
 	//DebugOutTitle(L"isHeld %d", isHeld);
 	//DebugOut(L"AY VY %f %f \n", ay, vy);
@@ -163,10 +162,10 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOut(L"[OKE] isDefense  %d  \n", isDefense);
 	//DebugOut(L"isDie %d", isDie);
 	// DebugOut(L"[OKE] isDefense isWaiting waiting_start %d %d %f \n", isDefense, isWaiting, waiting_start);
-	if (isHeld)
+	/*if (isHeld)
 	{
 		ChangePositionFollowMario();
-	}
+	}*/
 	
 	if ( isDefense && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
 	{

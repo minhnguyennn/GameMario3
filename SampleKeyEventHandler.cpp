@@ -62,8 +62,11 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_A:
-		mario->SetIsHolding(false);
-		mario->SetIsRunning(false);
+		mario->SetState(MARIO_STATE_RELEASE_HOLDING);
+		if (!mario->GetIsHolding())
+		{
+			mario->MarioThrowKoopaFunction();
+		}
 		break;
 	case DIK_S:
 		if (mario->GetState() == MARIO_STATE_FLYING) 

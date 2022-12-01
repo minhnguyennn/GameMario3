@@ -1,8 +1,8 @@
 [ASSETS]
 
 
-#[TILEMAP]
-
+[TILEMAP]
+Resource\Tilemaps\world_map.txt
 
 [OBJECTS]
 
