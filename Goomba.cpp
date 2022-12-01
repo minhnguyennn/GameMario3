@@ -89,13 +89,16 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	/*DebugOut(L"[X] %f\n", x);
 	DebugOut(L"[cam_X] %f\n", CGame::GetInstance()->GetCamX());*/
 
-	if (!checkObjectInCamera()) {
+	if (!checkObjectInCamera()) 
+	{
 		//SetState(PARA_GOOMBA_STATE_DIE);
 	}
 
-	if (count_number_jumps > 2 ) {
+	if (count_number_jumps > 2 ) 
+	{
 		SetState(GOOMBA_STATE_CLOSE_WING);
-		if (GetTickCount64() - time_line > 1000) {
+		if (GetTickCount64() - time_line > 1000) 
+		{
 			SetState(GOOMBA_STATE_FLY_MAX);
 		}
 	}

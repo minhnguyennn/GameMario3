@@ -72,7 +72,7 @@ void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	
 
-	if ((state == VFTRAP_STATE_DIE) && (GetTickCount64() - die_start > VFTRAP_DIE_TIMEOUT))
+	if ((state == VFTRAP_STATE_DIE) && CountDownTimer(VFTRAP_DIE_TIMEOUT))
 	{
 		isDeleted = true;
 		return;
@@ -88,22 +88,65 @@ void CVenusFireTrap::Render()
 	if (type == VFTRAP_TYPE_GREEN)
 	{
 		if (isMarioLeftWithPlant())
-			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_GREEN_TOP_RIGHT;
-			else aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_RIGHT;
-		else
-			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_GREEN_TOP_LEFT;
-			else aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_LEFT;
+		{
+			if (isMarioAboveWithPlant())
+			{
+				aniId = ID_ANI_VFTRAP_GREEN_TOP_RIGHT;
+			}
+			else
+			{
+				aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_RIGHT;
+			}
+		}
+		else if (!isMarioLeftWithPlant())
+		{
+			if (isMarioAboveWithPlant())
+			{
+				aniId = ID_ANI_VFTRAP_GREEN_TOP_LEFT;
+			}
+			else 
+			{
+				aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_LEFT;
+			}
+		}
+		else if (state == VFTRAP_STATE_DIE)
+		{
+			aniId = ID_ANI_VFTRAP_GREEN_DIE;
+		}
 	}
 	else if (type == VFTRAP_TYPE_RED)
 	{
 		if (isMarioLeftWithPlant())
-			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_RED_TOP_RIGHT;
-			else aniId = ID_ANI_VFTRAP_RED_BOTTOM_RIGHT;
-		else
-			if (isMarioAboveWithPlant()) aniId = ID_ANI_VFTRAP_RED_TOP_LEFT;
-			else aniId = ID_ANI_VFTRAP_RED_BOTTOM_LEFT;
+		{
+			if (isMarioAboveWithPlant())
+			{
+				aniId = ID_ANI_VFTRAP_RED_TOP_RIGHT;
+			}
+			else 
+			{
+				aniId = ID_ANI_VFTRAP_RED_BOTTOM_RIGHT;
+			}
+		}
+		else if (!isMarioLeftWithPlant())
+		{
+			if (isMarioAboveWithPlant())
+			{
+				aniId = ID_ANI_VFTRAP_RED_TOP_LEFT;
+			}
+			else
+			{
+				aniId = ID_ANI_VFTRAP_RED_BOTTOM_LEFT;
+			}
+		}
+		else if (state == VFTRAP_STATE_DIE)
+		{
+			aniId = ID_ANI_VFTRAP_RED_DIE;
+		}
 	}
-	else aniId = ID_ANI_PIRANHA_PLANT;
+	else
+	{
+		aniId = ID_ANI_PIRANHA_PLANT;
+	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
@@ -136,7 +179,7 @@ void CVenusFireTrap::SetState(int state)
 	}
 	case VFTRAP_STATE_DIE:
 	{
-		die_start = GetTickCount64();
+		time_line = GetTickCount64();
 		vy = 0;
 		break;
 	}
@@ -278,4 +321,13 @@ void CVenusFireTrap::MoveFunctionPlant(float disUp, float disDown)
 				ChangeStateMotionUp(VFTRAP_WAITING_MAX);
 		}
 	}
+}
+
+bool CVenusFireTrap::CountDownTimer(int time)
+{
+	if (GetTickCount64() - time_line > time)
+	{
+		return true;
+	}
+	return false;
 }

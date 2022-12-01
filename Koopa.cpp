@@ -132,10 +132,12 @@ void CKoopa::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 {
 	//Venus fire trap will deleted
 	CVenusFireTrap* vf_trap = dynamic_cast<CVenusFireTrap*>(e->obj);
-	if ((e->nx != 0) || (e->nx < 0)) {
-		if (isAttacking) {
+	if ((e->nx != 0) || (e->nx < 0)) 
+	{
+		if (isAttacking) 
+		{
 			vf_trap->SetSummonItems(VFTRAP_TYPE_POINT);
-			vf_trap->Delete();
+			vf_trap->SetState(VFTRAP_STATE_DIE);
 		}
 	}
 }
@@ -147,7 +149,6 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 	if (isAttacking) 
 	{
 		df_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
-		//df_koopa->SetState(KOOPA_STATE_DIE);
 	}
 }
 
@@ -364,4 +365,3 @@ bool CKoopa::CountDownTimer(int time)
 	}
 	return false;
 }
-

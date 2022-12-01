@@ -12,28 +12,36 @@
 #define VFTRAP_BBOX_PIRANHA_HEIGHT 25
 
 //ANIMATION
+
+//red
 #define ID_ANI_VFTRAP_RED_TOP_LEFT 5020
 #define ID_ANI_VFTRAP_RED_BOTTOM_LEFT 5021
 
 #define ID_ANI_VFTRAP_RED_TOP_RIGHT 5022
 #define ID_ANI_VFTRAP_RED_BOTTOM_RIGHT 5027
 
+#define ID_ANI_VFTRAP_RED_DIE 5029
+
+//green
 #define ID_ANI_VFTRAP_GREEN_TOP_LEFT 5023
 #define ID_ANI_VFTRAP_GREEN_BOTTOM_LEFT 5026
 
 #define ID_ANI_VFTRAP_GREEN_TOP_RIGHT 5024
 #define ID_ANI_VFTRAP_GREEN_BOTTOM_RIGHT 5025
 
+#define ID_ANI_VFTRAP_GREEN_DIE 5130
+
+//piranha
 #define ID_ANI_PIRANHA_PLANT 5028
 
 //PROPERTY
 #define VFTRAP_GRAVITY 0.00001f
 #define VFTRAP_MOVING_SPEED 0.02f
-#define VFTRAP_DIE_TIMEOUT 500
 
 //TIME
 #define	VFTRAP_WAITING_MAX		1000
 #define	VFTRAP_WAITING_PIRAN	1490
+#define VFTRAP_DIE_TIMEOUT		500
 
 //DISTANCE
 #define VFTRAP_DIS_UP_RED		31
@@ -68,7 +76,6 @@ protected:
 	float start_y;
 	int type;
 	ULONGLONG time_line;
-	ULONGLONG die_start;
 public:
 	CVenusFireTrap(float x, float y, int type);
 	void SetState(int state);
@@ -85,6 +92,7 @@ public:
 	bool isMarioLeftWithPlant();
 	bool isMarioAboveWithPlant();
 	void MoveFunctionPlant(float disUp, float disDown);
+	bool CountDownTimer(int time);
 };
 
 
