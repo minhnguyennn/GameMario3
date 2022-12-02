@@ -23,7 +23,7 @@ CMap::~CMap()
 
 void CMap::Render()
 {
-	float width_screen = CGame::GetInstance()->GetScreenWidth();
+	int width_screen = CGame::GetInstance()->GetScreenWidth();
 	int FirstColumn = 0;
 	int LastColumn = width_screen / TILE_WIDTH;
 

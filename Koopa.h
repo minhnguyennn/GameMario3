@@ -88,6 +88,7 @@ protected:
 	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
 	void OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 public:
 	CKoopa(float x, float y, int type, int level) : CGameObject(x , y)
 	{

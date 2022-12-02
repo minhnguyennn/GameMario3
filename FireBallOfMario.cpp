@@ -43,15 +43,15 @@ void CFireBallOfMario::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = t + FIREBALLS_BBOX_HEIGHT;
 }
 
-void CFireBallOfMario::OnNoCollision(DWORD dt) {
+void CFireBallOfMario::OnNoCollision(DWORD dt) 
+{
 	x += vx * dt;
 	y += vy * dt;
-
 }
 
 void CFireBallOfMario::OnCollisionWith(LPCOLLISIONEVENT e){
 	if (e->ny != 0 && e->obj->IsBlocking()) {
-		vy = -FIREBALLS_SPEED_Y;
+		vy = -FIREBALLS_MARIO_SPEED_Y;
 	}
 	else if (e->nx != 0 && e->obj->IsBlocking()) {
 		vx = -vx;
@@ -93,10 +93,10 @@ void CFireBallOfMario::SetState(int state)
 	switch (state)
 	{
 	case FIREBALLS_STATE_RIGHT:
-		vx = FIREBALLS_SPEED_X;
+		vx = FIREBALLS_MARIO_SPEED_X;
 		break;
 	case FIREBALLS_STATE_LEFT:
-		vx = -FIREBALLS_SPEED_X;
+		vx = -FIREBALLS_MARIO_SPEED_X;
 		break;
 	/*case FIREBALLS_STATE_DOWN:
 		vy = FIREBALLS_SPEED_Y;
@@ -108,7 +108,7 @@ void CFireBallOfMario::SetState(int state)
 		break;
 	}
 	case FIREBALLS_STATE_SHOOT:
-		ay = FIREBALLS_GRAVITY;
+		ay = FIREBALLS_MARIO_GRAVITY;
 		break;
 	default:
 		break;

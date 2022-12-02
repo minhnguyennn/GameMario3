@@ -72,11 +72,11 @@ void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	
 
-	if ((state == VFTRAP_STATE_DIE) && CountDownTimer(VFTRAP_DIE_TIMEOUT))
+	/*if ((state == VFTRAP_STATE_DIE) && CountDownTimer(VFTRAP_DIE_TIMEOUT))
 	{
 		isDeleted = true;
 		return;
-	}
+	}*/
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -179,8 +179,7 @@ void CVenusFireTrap::SetState(int state)
 	}
 	case VFTRAP_STATE_DIE:
 	{
-		time_line = GetTickCount64();
-		vy = 0;
+		isDeleted = true;
 		break;
 	}
 	default:

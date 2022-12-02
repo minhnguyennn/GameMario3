@@ -11,7 +11,8 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 {
 	if (isDie) return;
 
-	if (state == KOOPA_STATE_WALKING || state == KOOPA_STATE_FLY) {
+	if (state == KOOPA_STATE_WALKING || state == KOOPA_STATE_FLY) 
+	{
 		left = x - KOOPA_BBOX_WIDTH / 2;
 		top = y - KOOPA_BBOX_HEIGHT / 2;
 		right = left + KOOPA_BBOX_WIDTH;
@@ -60,9 +61,21 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithDifferentKoopa(e);
 	else if (dynamic_cast<CBrick*>(e->obj))
 		OnCollisionWithBrick(e);
+	else if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
 }
 
-void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
+void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) 
+{
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+	if (isAttacking)
+	{
+		goomba->SetState(GOOMBA_STATE_DIE_TURN_OVER);
+	}
+}
+
+void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e) 
+{
 	float left, top, right, bottom;
 	e->obj->GetBoundingBox(left, top, right, bottom);
 	
@@ -70,12 +83,6 @@ void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
 	{
 		vx = -vx;
 	}
-	/*if (e->ny < 0 && state == KOOPA_STATE_WALKING) {
-		if (abs(x- start_x) > 6) {
-			vx = -vx;
-			start_x = x;
-		}
-	}*/
 }
 
 void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
@@ -155,7 +162,7 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	DebugOutTitle(L"isHeld: %d", isHeld);
+	//DebugOutTitle(L"isHeld: %d", isHeld);
 	//DebugOut(L"x y %f %f \n", x,y);
 	//DebugOutTitle(L"isHeld %d", isHeld);
 	//DebugOut(L"AY VY %f %f \n", ay, vy);

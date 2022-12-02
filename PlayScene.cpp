@@ -185,9 +185,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_GOOMBA:
 	{
-		int level = (int)atof(tokens[3].c_str());
-		int type = (int)atof(tokens[4].c_str());
-		obj = new CGoomba(x, y, level, type);
+		int type = (int)atof(tokens[3].c_str());
+		int level = (int)atof(tokens[4].c_str());
+		obj = new CGoomba(x, y, type, level);
 		break;
 	}
 	case OBJECT_TYPE_POINT:

@@ -40,11 +40,11 @@ void CMarioWorld::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMarioWorld::SetState(int state)
 {
 
-	switch (state)
+	/*switch (state)
 	{
 	
 	default:
 		break;
-	}
+	}*/
 	CGameObject::SetState(state);
 }
