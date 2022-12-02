@@ -357,16 +357,16 @@ void CPlayScene::Load()
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
-		if (line == "[TILEMAP]") { section = SCENE_SECTION_TILEMAP; continue; }
-		if (line == "[HIDDEN]") { section = SCENE_SECTION_HIDDEN; continue; }
-
+		if (line == "[TILEMAP]") { section = SCENE_SECTION_TILEMAP; continue; };
+		if (line == "[HIDDEN]") { section = SCENE_SECTION_HIDDEN; continue; };
+		
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
 		// data section
 		//
 		switch (section)
-		{ 
+		{
 			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 			case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP_DATA(line); break;
 			case SCENE_SECTION_HIDDEN: _ParseSection_HIDDEN_DATA(line); break;
@@ -423,6 +423,7 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	current_map->Render();
+	hidden_map->Render();
 
 	CGame* game = CGame::GetInstance();
 	float cam_x = game->GetCamX() + BLACK_BACKGROUND_ADJUST_X;

@@ -1,58 +1,28 @@
 #include "WorldKeyEvent.h"
 #include "debug.h"
 #include "Game.h"
-#include "Mario.h"
+#include "MarioWorld.h"
 #include "PlayScene.h"
 
 void CWorldKeyEvent::OnKeyDown(int KeyCode)
 {
 	////DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	//CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	//switch (KeyCode)
-	//{
-	//case DIK_A:
-	//	/*if (mario->GetLevel() == MARIO_LEVEL_FIRE)
-	//	{
-	//		mario->SummonFireBalls();
-	//	}
-	//	else if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
-	//	{
-	//		mario->SetState(MARIO_STATE_ATTACK);
-	//		mario->SummonTail();
-	//	}*/
-	//	break;
-	//case DIK_DOWN:
-	//	mario->SetState(MARIO_STATE_SIT);
-	//	break;
-	//case DIK_S:
-	//	if ((mario->GetLevel() == MARIO_LEVEL_RACCOON)
-	//		&& ((mario->GetState() == MARIO_STATE_RUNNING_LEFT)
-	//			|| (mario->GetState() == MARIO_STATE_RUNNING_LEFT)))
-	//		mario->SetState(MARIO_STATE_FLYING);
-	//	else mario->SetState(MARIO_STATE_JUMP);
-	//	break;
-	//case DIK_1:
-	//	mario->SetLevel(MARIO_LEVEL_SMALL);
-	//	break;
-	//case DIK_2:
-	//	mario->SetLevel(MARIO_LEVEL_BIG);
-	//	break;
-	//case DIK_3:
-	//	mario->SetLevel(MARIO_LEVEL_FIRE);
-	//	break;
-	//case DIK_4:
-	//	mario->SetLevel(MARIO_LEVEL_RACCOON);
-	//	break;
-	//case DIK_5:
-	//	mario->SetPosition(3340, 0); // To Hidden Map
-	//	break;
-	//case DIK_0:
-	//	mario->SetState(MARIO_STATE_DIE);
-	//	break;
-	//case DIK_R: // reset
-	//	//Reload();
-	//	break;
-	//}
+	CMarioWorld* mario_world = (CMarioWorld*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	switch (KeyCode)
+	{
+	case DIK_UP:
+		mario_world->SetState(MARIO_WORLD_STATE_UP);
+		break;
+	case DIK_DOWN:
+		mario_world->SetState(MARIO_WORLD_STATE_DOWN);
+		break;
+	case DIK_LEFT:
+		mario_world->SetState(MARIO_WORLD_STATE_LEFT);
+		break;
+	case DIK_RIGHT:
+		mario_world->SetState(MARIO_WORLD_STATE_RIGHT);
+		break;
+	}
 }
 
 void CWorldKeyEvent::OnKeyUp(int KeyCode)

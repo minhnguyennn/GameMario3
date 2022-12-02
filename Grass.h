@@ -1,23 +1,12 @@
 #pragma once
-#include "GameObject.h"
-#include "Animation.h"
-#include "Animations.h"
-#include "debug.h"
-
+#include"GameObject.h"
 //ANIMATION
-#define ID_ANI_SMALL_MARIO_WORLD	7000
-#define ID_ANI_BIG_MARIO_WORLD		7100
-#define ID_ANI_FIRE_MARIO_WORLD		7200
-#define ID_ANI_RACCON_MARIO_WORLD	7300
+#define ID_ANI_GRASS		15000
 //PROPERTY
 
 
 
 //STATE
-#define	MARIO_WORLD_STATE_UP		1
-#define	MARIO_WORLD_STATE_DOWN		2
-#define	MARIO_WORLD_STATE_LEFT		3
-#define	MARIO_WORLD_STATE_RIGHT		4
 
 
 
@@ -27,10 +16,10 @@
 
 
 
-class CMarioWorld : public CGameObject
+class CGrass : public CGameObject
 {
 public:
-	CMarioWorld(float x, float y);
+	CGrass(float x, float y);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);

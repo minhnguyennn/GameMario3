@@ -1,16 +1,16 @@
 #include <iostream>
 #include <fstream>
 #include "AssetIDs.h"
-
 #include "WorldScene.h"
 #include "Utils.h"
-#include"Coin.h"
 #include "Textures.h"
 #include "Sprites.h"
 #include"debug.h"
 #include "HUD.h"
 #include "MarioWorld.h"
 #include "WorldKeyEvent.h"
+#include "MarioWorld.h"
+#include "Grass.h"
 
 using namespace std;
 
@@ -107,7 +107,7 @@ void CWorldScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
+	case OBJECT_TYPE_MARIO_WORLD:
 	{
 		if (player != NULL)
 		{
@@ -120,9 +120,9 @@ void CWorldScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 	}
-	case OBJECT_TYPE_COIN:
+	case OBJECT_TYPE_GRASS_WORLD:
 	{
-		obj = new CCoin(x, y);
+		obj = new CGrass(x, y);
 		break;
 	}
 	

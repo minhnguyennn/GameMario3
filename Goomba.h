@@ -56,9 +56,10 @@ protected:
 	bool isCloseWing;
 	bool isTurnOver;
 	bool isDie;
-	bool isFlyMax;
+	bool isWalk;
 	int type;
 	ULONGLONG time_line;
+	ULONGLONG time_close;
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);

@@ -12,7 +12,7 @@ CGoomba::CGoomba(float x, float y, int level, int type) :CGameObject(x, y)
 	isCloseWing = false;
 	isTurnOver = false;
 	isDie = false;
-	isFlyMax = false;
+	isWalk = false;
 	ay = GOOMBA_GRAVITY;
 	count_number_jumps = 0;
 	time_line = 0;
@@ -51,7 +51,18 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		if (level == GOOMBA_LEVEL_BIG) 
 		{
-			SetState(GOOMBA_STATE_FLY);
+			if (count_number_jumps == 3)
+			{
+				SetState(GOOMBA_STATE_FLY_MAX);
+			}
+			else if (isWalk)
+			{
+				SetState(GOOMBA_STATE_CLOSE_WING);
+			}
+			else if (GetTickCount64() - time_close > 1000)
+			{
+				SetState(GOOMBA_STATE_FLY);
+			}
 		}
 		else
 		{
@@ -66,7 +77,8 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	//DebugOut(L"[oke] isCloseWing: %d\n", isCloseWing);
+	DebugOutTitle(L"state: %d", state);
+	//DebugOut(L"STATE: %d\n", state);
 	/*DebugOut(L"[X] %f\n", x);
 	DebugOut(L"[cam_X] %f\n", CGame::GetInstance()->GetCamX());*/
 
@@ -77,19 +89,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//SetState(PARA_GOOMBA_STATE_DIE);
 	}
 
-	if (count_number_jumps == 3) 
-	{
-		SetState(GOOMBA_STATE_FLY_MAX);
-		/*SetState(GOOMBA_STATE_CLOSE_WING);
-		if (GetTickCount64() - time_line > 1000) 
-		{
-			SetState(GOOMBA_STATE_FLY_MAX);
-		}*/
-	}
-	else if (isFlyMax)
-	{
-
-	}
+	
 	
 	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - time_line > GOOMBA_DIE_TIMEOUT))
 	{
@@ -199,19 +199,20 @@ void CGoomba::SetState(int state)
 		vx = -GOOMBA_WALKING_SPEED;
 		break;
 	case GOOMBA_STATE_FLY:
-		time_line = GetTickCount64();
 		count_number_jumps++;
 		vy = -GOOMBA_FLY_SPEED;
+		isCloseWing = false;
 		break;
 	case GOOMBA_STATE_CLOSE_WING:
+		isWalk = false;
 		vy = 0;
 		isCloseWing = true;
+		time_close = GetTickCount64();
 		break;
 	case GOOMBA_STATE_FLY_MAX:
-		isFlyMax = true;
+		isWalk = true;
 		vy = -GOOMBA_MAX_FLY_SPEED;
 		count_number_jumps = 0;
-		isCloseWing = false;
 		break;
 	default:
 		break;
