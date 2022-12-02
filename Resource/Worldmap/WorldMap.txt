@@ -1,10 +1,9 @@
 [ASSETS]
-
-
+Items.txt
 [TILEMAP]
 Resource\Tilemaps\world_map.txt
-
 [OBJECTS]
+4	50	50
 
 
 

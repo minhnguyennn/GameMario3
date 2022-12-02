@@ -4,7 +4,7 @@
 
 #include "WorldScene.h"
 #include "Utils.h"
-
+#include"Coin.h"
 #include "Textures.h"
 #include "Sprites.h"
 #include"debug.h"
@@ -120,6 +120,11 @@ void CWorldScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 	}
+	case OBJECT_TYPE_COIN:
+	{
+		obj = new CCoin(x, y);
+		break;
+	}
 	
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
@@ -132,32 +137,32 @@ void CWorldScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
-//void CWorldScene::_ParseSection_TILEMAP_DATA(string line)
-//{
-//	int ID, rowMap, columnMap, columnTile, rowTile, totalTiles, startX, startY;
-//	LPCWSTR path = ToLPCWSTR(line);
-//	ifstream f;
-//
-//	f.open(path);
-//	f >> ID >> rowMap >> columnMap >> rowTile >> columnTile >> totalTiles >> startX >> startY;
-//	//Init Map Matrix
-//
-//	int** TileMapData = new int* [rowMap];
-//	for (int i = 0; i < rowMap; i++)
-//	{
-//		TileMapData[i] = new int[columnMap];
-//		for (int j = 0; j < columnMap; j++)
-//		{
-//			f >> TileMapData[i][j];
-//		}
-//
-//	}
-//	f.close();
-//
-//	current_map = new CMap(ID, rowMap, columnMap, rowTile, columnTile, totalTiles, startX, startY);
-//	current_map->ExtractTileFromTileSet();
-//	current_map->SetTileMapData(TileMapData);
-//}
+void CWorldScene::_ParseSection_TILEMAP_DATA(string line)
+{
+	int ID, rowMap, columnMap, columnTile, rowTile, totalTiles, startX, startY;
+	LPCWSTR path = ToLPCWSTR(line);
+	ifstream f;
+
+	f.open(path);
+	f >> ID >> rowMap >> columnMap >> rowTile >> columnTile >> totalTiles >> startX >> startY;
+	//Init Map Matrix
+
+	int** TileMapData = new int* [rowMap];
+	for (int i = 0; i < rowMap; i++)
+	{
+		TileMapData[i] = new int[columnMap];
+		for (int j = 0; j < columnMap; j++)
+		{
+			f >> TileMapData[i][j];
+		}
+
+	}
+	f.close();
+
+	current_map = new CMap(ID, rowMap, columnMap, rowTile, columnTile, totalTiles, startX, startY);
+	current_map->ExtractTileFromTileSet();
+	current_map->SetTileMapData(TileMapData);
+}
 
 void CWorldScene::LoadAssets(LPCWSTR assetFile)
 {
@@ -221,7 +226,7 @@ void CWorldScene::Load()
 		switch (section)
 		{
 		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-		//case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP_DATA(line); break;
+		case SCENE_SECTION_TILEMAP: _ParseSection_TILEMAP_DATA(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
@@ -246,29 +251,20 @@ void CWorldScene::Update(DWORD dt)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
+	CGame::GetInstance()->SetCamPos(-5, -8);
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
 	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
-
-	CGame* game = CGame::GetInstance();
-	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
-
-	//DebugOutTitle(L"cy %f", cy);
 	
-
-	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
 }
 
 void CWorldScene::Render()
 {
-	//current_map->Render();
+	current_map->Render();
 
 	CGame* game = CGame::GetInstance();
 	float cam_x = game->GetCamX() + BLACK_BACKGROUND_ADJUST_X;
@@ -309,8 +305,8 @@ void CWorldScene::Unload()
 
 	objects.clear();
 
-	/*delete current_map;
-	current_map = nullptr;*/
+	delete current_map;
+	current_map = nullptr;
 
 	
 	player = NULL;
