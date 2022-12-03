@@ -227,7 +227,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				koopa_holding = koopa;
 				SetState(MARIO_STATE_HOLDING);
 			}
-			else if (koopa->GetIsDefense() || koopa->GetIsWaiting()) 
+			else if (koopa->GetIsDefense() || koopa->GetIsWaiting() || koopa->GetIsTurnOver()) 
 			{
 				isKick = true;
 				koopa->SetState(KOOPA_STATE_ATTACKING);
@@ -805,6 +805,13 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	case MARIO_STATE_KICK:
+	{
+		if (isSitting) break;
+		isHolding = true;
+		koopa_holding->SetIsAttacking(true);
+		break;
+	}
 	case MARIO_STATE_HOLDING:
 	{
 		if (isSitting) break;
@@ -1039,7 +1046,7 @@ void CMario::SummonTail() {
 	tail_right->SetState(TAIL_STATE_RIGHT);
 	scene->CreateObject(tail_right);
 
-	CTail* tail_left = new CTail(x - 12, y);
+	CTail* tail_left = new CTail(x, y);
 	tail_left->SetState(TAIL_STATE_LEFT);
 	scene->CreateObject(tail_left);
 

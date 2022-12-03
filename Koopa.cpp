@@ -43,11 +43,14 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		}
 		else
 		{
-			if (isTurnOver)
+			if (isTurnOver && !isAttacking)
 			{
 				vx = 0;
 			}
-			vy = 0;
+			else
+			{
+				vy = 0;
+			}
 		}
 	}
 	
@@ -280,6 +283,7 @@ void CKoopa::SetState(int state)
 	{
 		isTurnOver = true;
 		isDie = false;
+		isAttacking = false;
 		time_line = GetTickCount64();
 		vx = 0.05f * isLeftWithMario();
 		vy = -0.05f;

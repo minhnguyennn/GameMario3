@@ -70,14 +70,6 @@ void CTail::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	goomba->LowerLevel();
 }
 
-void CTail::ChangePositionFollowMario()
-{
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
-	x = mario->GetX();
-	y = mario->GetY();
-}
-
 void CTail::SetState(int state)
 {
 
@@ -85,12 +77,12 @@ void CTail::SetState(int state)
 	{
 	case TAIL_STATE_RIGHT:
 	{
-		vx = 0.1f;
+		vx = 0.2f;
 		break;
 	}
 	case TAIL_STATE_LEFT:
 	{
-		vx = -0.1f;
+		vx = -0.2f;
 		break;
 	}
 	default:
