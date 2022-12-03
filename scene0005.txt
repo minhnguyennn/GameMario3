@@ -20,7 +20,6 @@ Resource/Tilemaps/world1-1-1.txt
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
-
 ########## Mario #########
 0	300	322
 

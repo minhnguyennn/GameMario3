@@ -55,14 +55,7 @@ void CTail::OnCollisionWith(LPCOLLISIONEVENT e)
 void CTail::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-	if (koopa->GetLevel() == KOOPA_LEVEL_BIG)
-	{
-		koopa->LowerLevel();
-	}
-	else
-	{
-		koopa->SetState(KOOPA_STATE_TURN_OVER);
-	}
+	koopa->SetState(KOOPA_STATE_TURN_OVER);
 }
 
 void CTail::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)

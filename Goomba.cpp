@@ -21,6 +21,7 @@ CGoomba::CGoomba(float x, float y, int level, int type) :CGameObject(x, y)
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	if (isTurnOver) return;
 	if (state == GOOMBA_STATE_DIE) {
 		left = x - GOOMBA_BBOX_WIDTH / 2;
 		top = y - GOOMBA_BBOX_DIE / 2;
@@ -77,7 +78,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOutTitle(L"state: %d", state);
+	//DebugOutTitle(L"state: %d", state);
 	//DebugOut(L"STATE: %d\n", state);
 	/*DebugOut(L"[X] %f\n", x);
 	DebugOut(L"[cam_X] %f\n", CGame::GetInstance()->GetCamX());*/

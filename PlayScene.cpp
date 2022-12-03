@@ -155,9 +155,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_KOOPA: 
 	{
-		int type = (int)atof(tokens[3].c_str());
-		int level = (int)atof(tokens[4].c_str());
-		obj = new CKoopa(x, y, type, level);
+		int level = (int)atof(tokens[3].c_str());
+		int type = (int)atof(tokens[4].c_str());
+		obj = new CKoopa(x, y, level, type);
 		break;
 	}
 	case OBJECT_TYPE_VFTRAP: 

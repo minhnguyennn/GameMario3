@@ -11,7 +11,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_A:
-		/*if (mario->GetLevel() == MARIO_LEVEL_FIRE)
+		if (mario->GetLevel() == MARIO_LEVEL_FIRE)
 		{
 			mario->SummonFireBalls();
 		}
@@ -19,7 +19,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		{
 			mario->SetState(MARIO_STATE_ATTACK);
 			mario->SummonTail();
-		}*/
+		}
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT);
