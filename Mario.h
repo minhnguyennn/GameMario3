@@ -142,7 +142,7 @@
 //PROPERTY
 #define MARIO_WALKING_SPEED			0.1f
 #define MARIO_RUNNING_SPEED			0.2f
-#define MARIO_DECELERATION			0.0055f
+#define	MARIO_DECELERATION_SPEED	0.0055f
 
 #define MARIO_ACCEL_WALK_X			0.0002f
 #define MARIO_ACCEL_RUN_X			0.0003f
@@ -217,6 +217,7 @@ class CMario : public CGameObject
 {
 	CKoopa* koopa_holding;
 	float maxVx;
+	float minVx;
 	float maxVy;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
@@ -277,6 +278,7 @@ public:
 		koopa_holding = NULL;
 		
 		maxVx = 0.0f;
+		minVx = 0.0f;
 		maxVy = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
@@ -336,7 +338,6 @@ public:
 	void LowerLevel();
 	void SummonFireBalls();
 	void SummonTail();
-	void DecelerationFunction();
 	void MarioHoldKoopaFunction();
 	void MarioThrowKoopaFunction();
 };
