@@ -46,6 +46,8 @@
 #define ID_ANI_KOOPA_RED_CLOSE_SHELL 6015
 #define ID_ANI_KOOPA_RED_ATTACKING 6016
 #define ID_ANI_KOOPA_RED_TURN_OVER 6017
+#define	ID_ANI_KOOPA_RED_TURN_OVER_ATTACKING 6018
+
 //////////////////////// GREEN //////////////////////
 #define ID_ANI_KOOPA_GREEN_SMALL_WALKING_LEFT 6050
 #define ID_ANI_KOOPA_GREEN_SMALL_WALKING_RIGHT 6051
@@ -55,6 +57,7 @@
 #define ID_ANI_KOOPA_GREEN_CLOSE_SHELL 6055
 #define ID_ANI_KOOPA_GREEN_ATTACKING 6056
 #define ID_ANI_KOOPA_GREEN_TURN_OVER 6057
+#define	ID_ANI_KOOPA_GREEN_TURN_OVER_ATTACKING 6058
 
 //LEVEL
 #define KOOPA_LEVEL_SMALL 1
@@ -90,6 +93,7 @@ protected:
 	void OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWitTail(LPCOLLISIONEVENT e);
 public:
 	CKoopa(float x, float y, int level, int type) : CGameObject(x , y)
 	{

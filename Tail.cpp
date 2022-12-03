@@ -67,7 +67,7 @@ void CTail::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 void CTail::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	goomba->LowerLevel();
+	goomba->SetState(GOOMBA_STATE_DIE_TURN_OVER);
 }
 
 void CTail::SetState(int state)
@@ -77,12 +77,12 @@ void CTail::SetState(int state)
 	{
 	case TAIL_STATE_RIGHT:
 	{
-		vx = 0.2f;
+		vx = 0.1f;
 		break;
 	}
 	case TAIL_STATE_LEFT:
 	{
-		vx = -0.2f;
+		vx = -0.1f;
 		break;
 	}
 	default:

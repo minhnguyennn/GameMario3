@@ -5,6 +5,7 @@
 #include"QuestionBrick.h"
 #include"VenusFireTrap.h"
 #include"Brick.h"
+#include"Tail.h"
 
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -71,6 +72,13 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CTail*>(e->obj))
+		OnCollisionWitTail(e);
+}
+
+void CKoopa::OnCollisionWitTail(LPCOLLISIONEVENT e)
+{
+	SetState(KOOPA_STATE_TURN_OVER);
 }
 
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) 
@@ -223,7 +231,16 @@ void CKoopa::Render()
 		else if (state == KOOPA_STATE_CLOSE_SHELL)
 			aniId = ID_ANI_KOOPA_RED_CLOSE_SHELL;
 		else if (state == KOOPA_STATE_ATTACKING)
-			aniId = ID_ANI_KOOPA_RED_ATTACKING;
+		{
+			if (isTurnOver)
+			{
+				aniId = ID_ANI_KOOPA_RED_TURN_OVER_ATTACKING;
+			}
+			else
+			{
+				aniId = ID_ANI_KOOPA_RED_ATTACKING;
+			}
+		}
 		else if (state == KOOPA_STATE_TURN_OVER)
 			aniId = ID_ANI_KOOPA_RED_TURN_OVER;
 	}
@@ -263,7 +280,7 @@ void CKoopa::Render()
 void CKoopa::SetState(int state)
 {
 	//DebugOut(L"STATE LEVEL %d %d \n", state,level);
-	DebugOutTitle(L"state: %d", state);
+	//DebugOutTitle(L"state: %d", state);
 	switch (state)
 	{
 	case KOOPA_STATE_FLY: 

@@ -232,6 +232,7 @@ class CMario : public CGameObject
 	ULONGLONG untouchable_start;
 	ULONGLONG count_1_second = 0;
 	ULONGLONG time_attack;
+	ULONGLONG time_kick;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -264,6 +265,7 @@ public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		time_attack = 0;
+		time_kick = 0;
 		isAttack = false;
 		isFlying = false;
 		isRunning = false;

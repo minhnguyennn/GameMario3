@@ -23,7 +23,7 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	//DebugOutTitle(L"isAttack %d", isAttack);
+	DebugOutTitle(L"isAttack %d", GetTickCount64() - time_kick);
 	//DebugOut(L"Level %d", level);
 	// DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
 	//DebugOut(L"isRunning: %d\n", isRunning);
@@ -71,6 +71,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+		if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+		{
+			untouchable_start = 0;
+			untouchable = 0;
+		}
+	}
+
+	if (isKick && (GetTickCount64() - time_kick > 1000))
+	{
+		isKick = false;
 	}
 
 	isOnPlatform = false;
@@ -229,7 +239,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			}
 			else if (koopa->GetIsDefense() || koopa->GetIsWaiting() || koopa->GetIsTurnOver()) 
 			{
-				isKick = true;
+				SetState(MARIO_STATE_KICK);
 				koopa->SetState(KOOPA_STATE_ATTACKING);
 			}
 		}
@@ -808,8 +818,8 @@ void CMario::SetState(int state)
 	case MARIO_STATE_KICK:
 	{
 		if (isSitting) break;
-		isHolding = true;
-		koopa_holding->SetIsAttacking(true);
+		time_kick = GetTickCount64();
+		isKick = true;
 		break;
 	}
 	case MARIO_STATE_HOLDING:
