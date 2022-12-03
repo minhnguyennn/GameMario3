@@ -19,7 +19,8 @@ void CPoint::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 void CPoint::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	if (POINT_TYPE_100) {
+	if (POINT_TYPE_100) 
+	{
 		animations->Get(ID_ANI_100_POINT)->Render(x, y);
 	}
 	//RenderBoundingBox();
@@ -60,9 +61,10 @@ void CPoint::SetState(int state)
 	CGameObject::SetState(state);
 }
 
-void CPoint::AdditionPoint() {
+void CPoint::AdditionPoint() 
+{
 	number_point = number_point + 100;
-	DebugOutTitle(L"Point: %d", number_point);
+	//DebugOutTitle(L"Point: %d", number_point);
 }
 
 

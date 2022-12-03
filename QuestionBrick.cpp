@@ -70,22 +70,26 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
-void CQuestionBrick::SummonItemsFromBrickQuestion() {
+void CQuestionBrick::SummonItemsFromBrickQuestion() 
+{
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
+
 	SetState(QUESTION_STATE_UNBOX);
+
 	switch (type)
 	{
 		case QUESTION_TYPE_ITEM:
 		{
-			if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
+			if (mario->GetLevel() == MARIO_LEVEL_SMALL) 
+			{
 				CMushRoom* mush_room = new CMushRoom(x, y, MUSHROOM_TYPE_RED);
 				scene->CreateObject(mush_room);
 				mush_room->SetState(MUSHROOM_STATE_UP);
 			}
-			else {
+			else 
+			{
 				CLeaf* leaf = new CLeaf(x, y);
-				//leaf->SetVY(LEAF_VY_UP);
 				scene->CreateObject(leaf);
 			}
 			break;

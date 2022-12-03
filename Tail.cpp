@@ -4,6 +4,7 @@
 #include "PlayScene.h"
 #include "VenusFireTrap.h"
 #include "Goomba.h"
+#include "QuestionBrick.h"
 
 
 CTail::CTail(float x, float y) :CGameObject(x, y)
@@ -50,6 +51,18 @@ void CTail::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithVenusFireTrap(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CQuestionBrick*>(e->obj))
+		OnCollisionWithQuestionBrick(e);
+}
+
+void CTail::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+	CQuestionBrick* question_brick = dynamic_cast<CQuestionBrick*>(e->obj);
+	
+	if (question_brick->GetState() == QUESTION_STATE_IDLE)
+	{
+		question_brick->SummonItemsFromBrickQuestion();
+	}
 }
 
 void CTail::OnCollisionWithKoopa(LPCOLLISIONEVENT e)

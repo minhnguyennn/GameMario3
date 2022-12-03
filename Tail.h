@@ -21,6 +21,7 @@ class CTail : public CGameObject {
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 public:
 	CTail(float x, float y);
 	void Render();

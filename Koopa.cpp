@@ -144,8 +144,10 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
 	//Question brick will summon leaf or green mushroom follow level mario
 	CQuestionBrick* question_brick = dynamic_cast<CQuestionBrick*>(e->obj);
-	if (e->nx != 0) {
-		if (isAttacking) {
+	if (e->nx != 0) 
+	{
+		if (question_brick->GetState() == QUESTION_STATE_IDLE && isAttacking)
+		{
 			question_brick->SummonItemsFromBrickQuestion();
 		}
 	}

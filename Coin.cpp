@@ -12,15 +12,17 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		SetCoppyPosition(x, y);
 		SummonAndMovePoint();
 	}
+
 	if ((vy > 0) && (y > (start_y - COIN_DISTANCE_DOWN)))
 	{
 		SetState(COIN_STATE_DELETE);
 		check_delete_coin = 1;
 	}
-	if (check_delete_coin = 1) {
+
+	/*if (check_delete_coin = 1) {
 
 
-	}
+	}*/
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -71,7 +73,8 @@ void CCoin::SetState(int state)
 	CGameObject::SetState(state);
 }
 
-void CCoin::SummonAndMovePoint() {
+void CCoin::SummonAndMovePoint() 
+{
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CPoint* point = new CPoint(coppy_x, coppy_y, POINT_TYPE_100);
 	scene->CreateObject(point);

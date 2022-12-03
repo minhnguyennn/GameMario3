@@ -4,7 +4,7 @@
 #include "Animation.h"
 #include "Animations.h"
 
-#define ID_ANI_100_POINT 13000
+#define ID_ANI_100_POINT 15000
 
 #define	POINT_WIDTH 10
 #define POINT_BBOX_WIDTH 10
