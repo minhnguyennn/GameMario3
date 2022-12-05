@@ -19,6 +19,9 @@
 #define ID_ANI_MARIO_JUMP_WALK_RIGHT 701
 #define ID_ANI_MARIO_JUMP_WALK_LEFT 700
 
+#define ID_ANI_MARIO_FALL_RIGHT 4501
+#define ID_ANI_MARIO_FALL_LEFT 4500
+
 #define ID_ANI_MARIO_JUMP_RUN_RIGHT 801
 #define ID_ANI_MARIO_JUMP_RUN_LEFT 800
 
@@ -67,7 +70,6 @@
 #define ID_ANI_MARIO_SMALL_KICK_RIGHT 4001
 #define ID_ANI_MARIO_SMALL_KICK_LEFT 4000
 
-
 //FIRE MARIO
 #define ID_ANI_MARIO_FIRE_IDLE_RIGHT 1701
 #define ID_ANI_MARIO_FIRE_IDLE_LEFT 1700
@@ -98,6 +100,9 @@
 
 #define ID_ANI_MARIO_FIRE_KICK_RIGHT 4101
 #define ID_ANI_MARIO_FIRE_KICK_LEFT 4100
+
+#define ID_ANI_MARIO_FIRE_FALL_RIGHT 4601
+#define ID_ANI_MARIO_FIRE_FALL_LEFT 4600
 
 //RACCOON MARIO
 #define ID_ANI_MARIO_RACCOON_IDLE_RIGHT 2401
@@ -135,6 +140,12 @@
 
 #define	ID_ANI_MARIO_RACCOON_ATTACK	4400
 
+#define ID_ANI_MARIO_RACCOON_FALL_RIGHT 4701
+#define ID_ANI_MARIO_RACCOON_FALL_LEFT 4700
+
+#define ID_ANI_MARIO_RACCOON_FALL_SLOWLY_RIGHT 4801
+#define ID_ANI_MARIO_RACCOON_FALL_SLOWLY_LEFT 4800
+
 #pragma endregion
 
 #define GROUND_Y					160.0f
@@ -147,7 +158,8 @@
 #define MARIO_ACCEL_WALK_X			0.0002f
 #define MARIO_ACCEL_RUN_X			0.0003f
 
-#define MARIO_JUMP_SPEED_Y			0.23f
+//#define MARIO_JUMP_SPEED_Y			0.23f
+#define MARIO_JUMP_SPEED_Y			0.5f
 #define MARIO_JUMP_RUN_SPEED_Y		0.23f
 
 #define MARIO_GRAVITY				0.00042f
@@ -167,6 +179,7 @@
 
 #define MARIO_STATE_ATTACK				900
 #define MARIO_STATE_KICK				901
+#define MARIO_STATE_FALL_SLOWLY			902
 
 #define MARIO_STATE_FLYING				800
 #define MARIO_STATE_RELEASE_FLYING		801
@@ -234,6 +247,8 @@ class CMario : public CGameObject
 	ULONGLONG count_1_second = 0;
 	ULONGLONG time_attack;
 	ULONGLONG time_kick;
+	ULONGLONG time_fly;
+	ULONGLONG time_fall_slowly;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -244,6 +259,10 @@ class CMario : public CGameObject
 	BOOLEAN isGhostBox;
 	BOOLEAN isAttack;
 	BOOLEAN isKick;
+	BOOLEAN isJump;
+	
+
+	
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -263,10 +282,18 @@ class CMario : public CGameObject
 	int GetAniIdRaccoon();
 
 public:
+	BOOLEAN isSlowFly;
+	BOOLEAN isFall;
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		time_attack = 0;
 		time_kick = 0;
+		time_fly = 0;
+		time_fall_slowly = 0;
+
+		isJump = false;
+		isFall = false;
+		isSlowFly = false;
 		isAttack = false;
 		isFlying = false;
 		isRunning = false;
@@ -294,6 +321,7 @@ public:
 	}
 
 	ULONGLONG GetTimeAttack() { return time_attack; }
+
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
 	bool GetIsAttack() {return isAttack;  }
 

@@ -25,11 +25,18 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_SIT);
 		break;
 	case DIK_S:
-		if ((mario->GetLevel() == MARIO_LEVEL_RACCOON) 
-			&& ((mario->GetState() == MARIO_STATE_RUNNING_LEFT)
-			|| (mario->GetState() == MARIO_STATE_RUNNING_LEFT))) 
+		if (mario->GetIsRunning() || mario->GetIsFlying())
+		{
 			mario->SetState(MARIO_STATE_FLYING);
-		else mario->SetState(MARIO_STATE_JUMP);
+		}
+		else if (mario->isFall)
+		{
+			mario->SetState(MARIO_STATE_FALL_SLOWLY);
+		}
+		else
+		{
+			mario->SetState(MARIO_STATE_JUMP);
+		}
 		break;
 	case DIK_1:
 		mario->SetLevel(MARIO_LEVEL_SMALL);
@@ -69,7 +76,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		}
 		break;
 	case DIK_S:
-		if (mario->GetState() == MARIO_STATE_FLYING) 
+		if (mario->GetIsFlying()) 
 		{
 			mario->SetState(MARIO_STATE_RELEASE_FLYING);
 		}
@@ -81,12 +88,6 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
-	/*case DIK_LEFT:
-		mario->SetState(MARIO_STATE_DECELERATION);
-		break;
-	case DIK_RIGHT:
-		mario->SetState(MARIO_STATE_DECELERATION);
-		break;*/
 	}
 }
 
@@ -101,10 +102,6 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		{
 			mario->SetState(MARIO_STATE_RUNNING_RIGHT);
 		}
-		/*else if (game->IsKeyDown(DIK_DOWN))
-		{
-			mario->SetState(MARIO_STATE_SIT);
-		}*/
 		else
 		{
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);
@@ -116,10 +113,6 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		{
 			mario->SetState(MARIO_STATE_RUNNING_LEFT);
 		}
-		/*	else if (game->IsKeyDown(DIK_DOWN))
-			{
-				mario->SetState(MARIO_STATE_SIT);
-			}*/
 		else
 		{
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
@@ -127,16 +120,13 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	}
 	else 
 	{
-		//mario->SetState(MARIO_STATE_IDLE);
-		if (!mario->GetVX())
-		{
-			mario->SetState(MARIO_STATE_IDLE);
-		}
-		else
+		if (mario->GetVX())
 		{
 			mario->SetState(MARIO_STATE_DECELERATION);
 		}
+		else
+		{
+			mario->SetState(MARIO_STATE_IDLE);
+		}
 	}
-		
-	
 }
