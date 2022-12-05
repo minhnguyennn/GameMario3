@@ -28,6 +28,9 @@
 //////////////// OBJECT WORLD MAP ////////////////
 #define OBJECT_TYPE_MARIO_WORLD		15
 #define OBJECT_TYPE_GRASS_WORLD		16
+#define OBJECT_TYPE_GOSH_BOX_WORLD		17
+#define OBJECT_TYPE_KOOPA_WORLD		18
+#define OBJECT_TYPE_HELP_WORLD		19
 
 
 #pragma region MARIO 

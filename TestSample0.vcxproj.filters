@@ -159,6 +159,9 @@
     <ClCompile Include="Grass.cpp">
       <Filter>Header Files\Scenes\WorldMap</Filter>
     </ClCompile>
+    <ClCompile Include="KoopaWorld.cpp">
+      <Filter>Header Files\Scenes\WorldMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -276,6 +279,9 @@
       <Filter>Header Files\Scenes\WorldMap</Filter>
     </ClInclude>
     <ClInclude Include="Grass.h">
+      <Filter>Header Files\Scenes\WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="KoopaWorld.h">
       <Filter>Header Files\Scenes\WorldMap</Filter>
     </ClInclude>
   </ItemGroup>

@@ -151,6 +151,7 @@
     <ClCompile Include="Grass.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Koopa.cpp" />
+    <ClCompile Include="KoopaWorld.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MarioWorld.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Grass.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Koopa.h" />
+    <ClInclude Include="KoopaWorld.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MarioWorld.h" />

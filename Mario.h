@@ -158,8 +158,8 @@
 #define MARIO_ACCEL_WALK_X			0.0002f
 #define MARIO_ACCEL_RUN_X			0.0003f
 
-//#define MARIO_JUMP_SPEED_Y			0.23f
-#define MARIO_JUMP_SPEED_Y			0.5f
+#define MARIO_JUMP_SPEED_Y			0.23f
+//#define MARIO_JUMP_SPEED_Y			0.5f
 #define MARIO_JUMP_RUN_SPEED_Y		0.23f
 
 #define MARIO_GRAVITY				0.00042f
@@ -223,7 +223,10 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 
-
+//TIME
+#define	MARIO_FALL_SLOWLY_TIMEOUT 300
+#define	MARIO_KICK_TIMEOUT 1000
+#define	MARIO_ATTACK_TIMEOUT 500
 #define TIME_ONE_SECOND 1000
 
 class CMario : public CGameObject
@@ -249,6 +252,7 @@ class CMario : public CGameObject
 	ULONGLONG time_kick;
 	ULONGLONG time_fly;
 	ULONGLONG time_fall_slowly;
+	ULONGLONG time_line;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -259,9 +263,7 @@ class CMario : public CGameObject
 	BOOLEAN isGhostBox;
 	BOOLEAN isAttack;
 	BOOLEAN isKick;
-	BOOLEAN isJump;
-	
-
+	BOOLEAN isSlowFly;
 	
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -282,17 +284,14 @@ class CMario : public CGameObject
 	int GetAniIdRaccoon();
 
 public:
-	BOOLEAN isSlowFly;
-	BOOLEAN isFall;
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		time_attack = 0;
 		time_kick = 0;
 		time_fly = 0;
 		time_fall_slowly = 0;
+		time_line = 0;
 
-		isJump = false;
-		isFall = false;
 		isSlowFly = false;
 		isAttack = false;
 		isFlying = false;
@@ -368,4 +367,5 @@ public:
 	void SummonTail();
 	void MarioHoldKoopaFunction();
 	void MarioThrowKoopaFunction();
+	bool CountDownTimer(int time);
 };

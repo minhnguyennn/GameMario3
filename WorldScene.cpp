@@ -11,6 +11,8 @@
 #include "WorldKeyEvent.h"
 #include "MarioWorld.h"
 #include "Grass.h"
+#include "Platform.h"
+#include "KoopaWorld.h"
 
 using namespace std;
 
@@ -125,7 +127,21 @@ void CWorldScene::_ParseSection_OBJECTS(string line)
 		obj = new CGrass(x, y);
 		break;
 	}
-	
+	case OBJECT_TYPE_KOOPA_WORLD:
+	{
+		obj = new CKoopaWorld(x, y);
+		break;
+	}
+	/*case OBJECT_TYPE_HELP_WORLD:
+	{
+		obj = new CGrass(x, y);
+		break;
+	}*/
+	//case OBJECT_TYPE_PLATFORM:
+	//{
+	//	//obj = new CPlatform(x, y);
+	//	break;
+	//}
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -251,7 +267,7 @@ void CWorldScene::Update(DWORD dt)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
-	CGame::GetInstance()->SetCamPos(-5, -8);
+	CGame::GetInstance()->SetCamPos(CAM_POSITION_ADJUST, CAM_POSITION_ADJUST);
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;

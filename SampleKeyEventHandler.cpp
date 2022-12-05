@@ -29,7 +29,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		{
 			mario->SetState(MARIO_STATE_FLYING);
 		}
-		else if (mario->isFall)
+		else if (mario->GetVY() > 0)
 		{
 			mario->SetState(MARIO_STATE_FALL_SLOWLY);
 		}
