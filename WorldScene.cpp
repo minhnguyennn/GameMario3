@@ -14,6 +14,7 @@
 #include "Platform.h"
 #include "KoopaWorld.h"
 #include "Help.h"
+#include "Door.h"
 
 using namespace std;
 
@@ -136,6 +137,12 @@ void CWorldScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_HELP_WORLD:
 	{
 		obj = new CHelp(x, y);
+		break;
+	}
+	case OBJECT_TYPE_DOOR_WORLD:
+	{
+		int type = (int)atof(tokens[3].c_str());
+		obj = new CDoor(x, y, type);
 		break;
 	}
 	//case OBJECT_TYPE_PLATFORM:

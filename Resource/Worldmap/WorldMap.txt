@@ -3,7 +3,7 @@ Resource\Worldmap\mario_world.txt
 Resource\Worldmap\grass.txt
 Resource\Worldmap\help.txt
 Resource\Worldmap\koopa_world.txt
-platform.txt
+Resource\Worldmap\door.txt
 [TILEMAP]
 Resource\Tilemaps\world_map.txt
 [OBJECTS]
@@ -69,6 +69,19 @@ Resource\Tilemaps\world_map.txt
 
 #help
 19	208	96
+
+################# DOOR #############
+#SPECIAL
+20	128	80	10
+#START
+20	32	48	0
+#1->6
+20	64	16	1
+20	128	16	2
+20	160	16	3
+20	160	48	4
+20	64	144	5
+20	128	144	6
 
 #Gosh box
 5	0	4	16	16	16	54000	54000	54000

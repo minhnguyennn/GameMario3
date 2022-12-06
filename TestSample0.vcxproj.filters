@@ -58,6 +58,9 @@
     <Filter Include="Header Files\Scenes\WorldMap\Keyboard">
       <UniqueIdentifier>{bc3cb3d5-9bff-44bb-9454-1813efc1e803}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scenes\WorldMap\Door">
+      <UniqueIdentifier>{8f905c20-15fe-4dd7-a406-7ff727650408}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -173,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="WorldKeyEvent.cpp">
       <Filter>Header Files\Scenes\WorldMap\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Header Files\Scenes\WorldMap\Door</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="WorldKeyEvent.h">
       <Filter>Header Files\Scenes\WorldMap\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Header Files\Scenes\WorldMap\Door</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
