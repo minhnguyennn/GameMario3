@@ -1,7 +1,7 @@
 #include "MushRoom.h"
 #include"debug.h"
 
-#define DISTANCE_MAX 15
+
 
 CMushRoom::CMushRoom(float x, float y, int type_mushroom) :CGameObject(x, y)
 {
@@ -55,7 +55,7 @@ void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOutTitle(L"state %d", state);
 	if(state != MUSHROOM_STATE_UP) vy += ay * dt;
 
-	if ((start_y - y) > DISTANCE_MAX) {
+	if ((start_y - y) > DISTANCE_MAX_MUSHROOM) {
 		
 		//SetState(MUSHROOM_STATE_WALKING);
 		

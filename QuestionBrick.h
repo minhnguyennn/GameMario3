@@ -17,8 +17,7 @@
 #define QUESTION_TYPE_MUSHROOM_GREEN 3
 #define QUESTION_TYPE_BUTTON 4
 
-
-
+#define DISTANCE_MAX_QUESTIONBRICK 6
 
 #include "GameObject.h"
 class CQuestionBrick : public CGameObject

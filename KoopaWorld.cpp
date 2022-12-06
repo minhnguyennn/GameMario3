@@ -3,21 +3,15 @@
 CKoopaWorld::CKoopaWorld(float x, float y) : CGameObject(x, y)
 {
 	vx = 0.03f;
-	position_start = x;
+	time_line = GetTickCount64();
 }
 
 void CKoopaWorld::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
-	if (vx > 0 && x - position_start > 28)
+	if (GetTickCount64() - time_line > KOOPA_WORLD_WALKING_TIMEOUT)
 	{
+		time_line = GetTickCount64();
 		vx = -vx;
-		position_start = x;
-	}
-
-	if (vx < 0 &&  position_start - x> 26)
-	{
-		vx = -vx;
-		position_start = x;
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

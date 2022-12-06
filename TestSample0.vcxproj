@@ -149,6 +149,7 @@
     <ClCompile Include="FireBallOfMario.cpp" />
     <ClCompile Include="FireBalls.cpp" />
     <ClCompile Include="Grass.cpp" />
+    <ClCompile Include="Help.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="KoopaWorld.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="FireBallOfMario.h" />
     <ClInclude Include="FireBalls.h" />
     <ClInclude Include="Grass.h" />
+    <ClInclude Include="Help.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="KoopaWorld.h" />

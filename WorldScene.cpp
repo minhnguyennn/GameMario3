@@ -13,6 +13,7 @@
 #include "Grass.h"
 #include "Platform.h"
 #include "KoopaWorld.h"
+#include "Help.h"
 
 using namespace std;
 
@@ -132,11 +133,11 @@ void CWorldScene::_ParseSection_OBJECTS(string line)
 		obj = new CKoopaWorld(x, y);
 		break;
 	}
-	/*case OBJECT_TYPE_HELP_WORLD:
+	case OBJECT_TYPE_HELP_WORLD:
 	{
-		obj = new CGrass(x, y);
+		obj = new CHelp(x, y);
 		break;
-	}*/
+	}
 	//case OBJECT_TYPE_PLATFORM:
 	//{
 	//	//obj = new CPlatform(x, y);

@@ -24,6 +24,8 @@
 
 #define TIME_HALF_SECOND 8000
 
+#define DISTANCE_MAX_MUSHROOM 15
+
 class CMushRoom : public CGameObject
 {
 protected:

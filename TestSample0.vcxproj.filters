@@ -49,6 +49,15 @@
     <Filter Include="Header Files\Scenes\IntroMap">
       <UniqueIdentifier>{4842871d-e297-4b09-8b37-6e9e2c691efb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scenes\WorldMap\Decoration">
+      <UniqueIdentifier>{3531bd72-9069-4970-aaa6-6571aedb2094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\WorldMap\Hero">
+      <UniqueIdentifier>{41bb6155-f07c-447e-a70c-75e912c74611}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\WorldMap\Keyboard">
+      <UniqueIdentifier>{bc3cb3d5-9bff-44bb-9454-1813efc1e803}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -150,17 +159,20 @@
     <ClCompile Include="WorldScene.cpp">
       <Filter>Header Files\Scenes\WorldMap</Filter>
     </ClCompile>
-    <ClCompile Include="MarioWorld.cpp">
-      <Filter>Header Files\Scenes\WorldMap</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldKeyEvent.cpp">
-      <Filter>Header Files\Scenes\WorldMap</Filter>
-    </ClCompile>
     <ClCompile Include="Grass.cpp">
-      <Filter>Header Files\Scenes\WorldMap</Filter>
+      <Filter>Header Files\Scenes\WorldMap\Decoration</Filter>
+    </ClCompile>
+    <ClCompile Include="Help.cpp">
+      <Filter>Header Files\Scenes\WorldMap\Decoration</Filter>
     </ClCompile>
     <ClCompile Include="KoopaWorld.cpp">
-      <Filter>Header Files\Scenes\WorldMap</Filter>
+      <Filter>Header Files\Scenes\WorldMap\Decoration</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioWorld.cpp">
+      <Filter>Header Files\Scenes\WorldMap\Hero</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldKeyEvent.cpp">
+      <Filter>Header Files\Scenes\WorldMap\Keyboard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,17 +284,20 @@
     <ClInclude Include="WorldScene.h">
       <Filter>Header Files\Scenes\WorldMap</Filter>
     </ClInclude>
-    <ClInclude Include="MarioWorld.h">
-      <Filter>Header Files\Scenes\WorldMap</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldKeyEvent.h">
-      <Filter>Header Files\Scenes\WorldMap</Filter>
-    </ClInclude>
     <ClInclude Include="Grass.h">
-      <Filter>Header Files\Scenes\WorldMap</Filter>
+      <Filter>Header Files\Scenes\WorldMap\Decoration</Filter>
+    </ClInclude>
+    <ClInclude Include="Help.h">
+      <Filter>Header Files\Scenes\WorldMap\Decoration</Filter>
     </ClInclude>
     <ClInclude Include="KoopaWorld.h">
-      <Filter>Header Files\Scenes\WorldMap</Filter>
+      <Filter>Header Files\Scenes\WorldMap\Decoration</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioWorld.h">
+      <Filter>Header Files\Scenes\WorldMap\Hero</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldKeyEvent.h">
+      <Filter>Header Files\Scenes\WorldMap\Keyboard</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

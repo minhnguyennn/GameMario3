@@ -6,7 +6,7 @@
 #include "Coin.h"
 #include "Leaf.h"
 
-#define DISTANCE_MAX 6
+
 
 void CQuestionBrick::Render()
 {
@@ -56,7 +56,7 @@ void CQuestionBrick::SetState(int state) {
 }
 
 void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	if ((start_y - y) > DISTANCE_MAX)
+	if ((start_y - y) > DISTANCE_MAX_QUESTIONBRICK)
 	{
 		SetState(QUESTION_STATE_MOVE_DOWN);
 	}

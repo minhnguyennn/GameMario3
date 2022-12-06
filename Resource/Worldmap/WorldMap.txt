@@ -1,6 +1,7 @@
 [ASSETS]
 Resource\Worldmap\mario_world.txt
 Resource\Worldmap\grass.txt
+Resource\Worldmap\help.txt
 Resource\Worldmap\koopa_world.txt
 platform.txt
 [TILEMAP]
@@ -65,6 +66,9 @@ Resource\Tilemaps\world_map.txt
 16	224	112
 16	224	128
 16	224	144
+
+#help
+19	208	96
 
 #Gosh box
 5	0	4	16	16	16	54000	54000	54000
