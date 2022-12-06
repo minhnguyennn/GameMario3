@@ -1,9 +1,4 @@
 #pragma once
-
-
-
-
-//ANIMATION
 //point
 #define ID_ANI_HUD_0	10
 #define ID_ANI_HUD_1	1
@@ -31,11 +26,8 @@
 //power_P
 #define ID_ANI_HUD_POWER_P		60
 
-
-
-
-
-class CHUD {
+class CHUD 
+{
 private:
 	float x;
 	float y;
@@ -45,6 +37,3 @@ public:
 	void DrawPower(int power, float position_x, float position_y);
 	void Render();
 };
-
-
-

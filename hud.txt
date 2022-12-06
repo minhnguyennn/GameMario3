@@ -31,6 +31,7 @@
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
+##################### HUD IN PLAYER SCENE #######################
 #backgournd__black
 101	101	100
 
@@ -57,6 +58,34 @@
 7	7	100
 8	8	100
 9	9	100
+
+##################### HUD IN WORLD MAP SCENE #######################
+#backgournd__black
+102	101	100
+
+#table_hud
+101	100	100
+
+#arrow_power
+51	50	100
+
+#power_M
+41	40	100
+
+#power_P
+61	60	100	61	100
+
+#point
+12	10	100
+11	1	100
+21	2	100
+31	3	100
+41	4	100
+51	5	100
+61	6	100
+71	7	100
+81	8	100
+91	9	100
 
 
 

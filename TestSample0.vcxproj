@@ -149,9 +149,11 @@
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="FireBallOfMario.cpp" />
     <ClCompile Include="FireBalls.cpp" />
+    <ClCompile Include="GoshBox.cpp" />
     <ClCompile Include="Grass.cpp" />
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="HudWorld.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="KoopaWorld.cpp" />
     <ClCompile Include="Leaf.cpp" />
@@ -191,9 +193,11 @@
     <ClInclude Include="Door.h" />
     <ClInclude Include="FireBallOfMario.h" />
     <ClInclude Include="FireBalls.h" />
+    <ClInclude Include="GoshBox.h" />
     <ClInclude Include="Grass.h" />
     <ClInclude Include="Help.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="HudWorld.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="KoopaWorld.h" />
     <ClInclude Include="Leaf.h" />

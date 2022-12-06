@@ -4,8 +4,6 @@
 #include"Mario.h"
 #include"PlayScene.h"
 
-
-
 void CHUD::Render()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();

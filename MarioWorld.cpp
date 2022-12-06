@@ -34,7 +34,10 @@ void CMarioWorld::OnNoCollision(DWORD dt) {
 
 void CMarioWorld::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	
+	if (e->nx != 0 && e->obj->IsBlocking()) 
+	{
+		vx = 0;
+	}
 }
 
 void CMarioWorld::SetState(int state)

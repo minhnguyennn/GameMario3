@@ -11,7 +11,7 @@
 #include "WorldKeyEvent.h"
 #include "MarioWorld.h"
 #include "Grass.h"
-#include "Platform.h"
+#include "GoshBox.h"
 #include "KoopaWorld.h"
 #include "Help.h"
 #include "Door.h"
@@ -145,11 +145,11 @@ void CWorldScene::_ParseSection_OBJECTS(string line)
 		obj = new CDoor(x, y, type);
 		break;
 	}
-	//case OBJECT_TYPE_PLATFORM:
-	//{
-	//	//obj = new CPlatform(x, y);
-	//	break;
-	//}
+	case OBJECT_TYPE_GOSH_BOX_WORLD:
+	{
+		obj = new CGoshBox(x, y);
+		break;
+	}
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -293,13 +293,12 @@ void CWorldScene::Render()
 	CGame* game = CGame::GetInstance();
 	float cam_x = game->GetCamX() + BLACK_BACKGROUND_ADJUST_X;
 	float cam_y = game->GetCamY() + BLACK_BACKGROUND_ADJUST_Y;
-	//hud = new CHUD(cam_x, cam_y);
+	hud_world = new CHudWorld(cam_x, cam_y);
 
 	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 
-
-	//hud->Render();
+	hud_world->Render();
 }
 
 /*
@@ -331,6 +330,9 @@ void CWorldScene::Unload()
 
 	delete current_map;
 	current_map = nullptr;
+
+	delete hud_world;
+	hud_world = nullptr;
 
 	
 	player = NULL;

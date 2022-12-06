@@ -3,7 +3,7 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "HUD.h"
+#include "HudWorld.h"
 #include"Map.h"
 
 //POSITION BLACK BACKGROUND OF TABLE HUD
@@ -18,7 +18,7 @@ protected:
 	LPGAMEOBJECT player;
 
 	CMap* current_map = NULL;
-	//CHUD* hud = NULL;
+	CHudWorld* hud_world = NULL;
 
 	vector<LPGAMEOBJECT> objects;
 

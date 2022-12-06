@@ -4,7 +4,8 @@
 #include "PlayScene.h"
 
 
-void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
+void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
+{
 	//DebugOut(L"[TEST] y of coin: %d\n", y);
 	if ((start_y - y) > COIN_DISTANCE_UP)
 	{
