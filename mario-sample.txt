@@ -1,5 +1,5 @@
 [SETTINGS]
-start	10
+start	5
 width	320
 height	240
 
@@ -43,6 +43,7 @@ height	240
 196	textures\enemies - 1 - Copy.png
 197	textures\enemies - 1 - Copy (2).png
 198	textures\worldmapObj.png
+199	textures\items.png
 
 200	Resource\Tilemaps\world1-1_bank.png
 205	Resource\Tilemaps\world_map.png

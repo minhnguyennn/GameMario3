@@ -178,6 +178,7 @@ void CHUD::DrawPower(int power, float position_x, float position_y)
 		break;
 	}
 	default:
+		
 		break;
 	}
 }

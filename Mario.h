@@ -180,6 +180,7 @@
 #define MARIO_STATE_ATTACK				900
 #define MARIO_STATE_KICK				901
 #define MARIO_STATE_FALL_SLOWLY			902
+#define MARIO_STATE_CHANGE_LEVEL		903
 
 #define MARIO_STATE_FLYING				800
 #define MARIO_STATE_RELEASE_FLYING		801
@@ -195,7 +196,9 @@
 
 #define MARIO_STATE_DECELERATION		700
 
-
+//ANIMATION CHANGE LEVEL
+#define ID_ANI_FROM_SMALL_BIG_RIGHT		4802
+#define ID_ANI_FROM_SMALL_BIG_LEFT		4803
 //LEVEL
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
@@ -253,6 +256,8 @@ class CMario : public CGameObject
 	ULONGLONG time_fly;
 	ULONGLONG time_fall_slowly;
 	ULONGLONG time_line;
+	ULONGLONG time_running;
+	ULONGLONG time_change_level;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -264,6 +269,9 @@ class CMario : public CGameObject
 	BOOLEAN isAttack;
 	BOOLEAN isKick;
 	BOOLEAN isSlowFly;
+	BOOLEAN isChangeLevel;
+	BOOLEAN isCanUpdate;
+
 	
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -277,11 +285,13 @@ class CMario : public CGameObject
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireBalls(LPCOLLISIONEVENT e);
 	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
+	void OnCollisionWithFlowerBox(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdFire();
 	int GetAniIdRaccoon();
+	int GetAniIdChangeLevel();
 
 public:
 	CMario(float x, float y) : CGameObject(x, y)
@@ -291,6 +301,7 @@ public:
 		time_fly = 0;
 		time_fall_slowly = 0;
 		time_line = 0;
+		time_change_level = 0;
 
 		isSlowFly = false;
 		isAttack = false;
@@ -301,6 +312,8 @@ public:
 		isDeceleration = false;
 		isGhostBox = false;
 		isKick = false;
+		isChangeLevel = false;
+		isCanUpdate = true;
 		koopa_holding = NULL;
 		
 		maxVx = 0.0f;
@@ -308,15 +321,15 @@ public:
 		maxVy = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
-		level = MARIO_LEVEL_FIRE;
+		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
 		heart = 4;
 		time = 300;
-		score = 1234567;
-		power = 7;
+		score = 0;
+		power = 0;
 	}
 
 	ULONGLONG GetTimeAttack() { return time_attack; }

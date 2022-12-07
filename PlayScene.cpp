@@ -22,6 +22,7 @@
 #include "Goomba.h"
 #include "Tail.h"
 #include "HUD.h"
+#include "FlowerBox.h"
 
 
 
@@ -211,6 +212,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_LEAF: 
 	{
 		obj = new CLeaf(x, y);
+		break;
+	}
+	case OBJECT_TYPE_FLOWER_BOX:
+	{
+		obj = new CFlowerBox(x, y);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:

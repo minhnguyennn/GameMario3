@@ -20,6 +20,7 @@
 #include "Goomba.h"
 #include "Tail.h"
 #include "VenusFireTrap.h"
+#include "FlowerBox.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
@@ -27,10 +28,24 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//DebugOut(L"Level %d", level);
 	// DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
 	//DebugOut(L"isRunning: %d\n", isRunning);
+	//DebugOut(L"state: %d\n", state);
+
 	//DebugOutTitle(L"isrunning: %d and isHolding: %d", isRunning, isHolding);
 	//DebugOutTitle(L"ax: %f", ax);
-	//DebugOutTitle(L"aniId: %d", aniId);
+	DebugOutTitle(L"isCan: %d", isCanUpdate);
 	
+	if (isChangeLevel)
+	{
+		SetState(MARIO_STATE_IDLE);
+		if (GetTickCount64() - time_change_level > 1000)
+		{
+			isChangeLevel = false;
+			isCanUpdate = true;
+		}
+		time_change_level = GetTickCount64();
+	}
+
+
 	vy += ay * dt;
 	vx += ax * dt;
 
@@ -38,6 +53,29 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		vx = maxVx;
 	}
+	if (power > 7) { power = 7; }
+	if (power < 0) { power = 0; }
+	if (isRunning) {
+		if (GetTickCount64() - time_running >200)
+		{
+			if (power < 7) {
+				power = power + 1;
+			}
+			
+			time_running = GetTickCount64();
+		}
+		
+	}
+	else {
+		if (GetTickCount64() - time_running > 200)
+		{
+			if (power >0) {
+				power = power -1 ;
+			}
+			time_running = GetTickCount64();
+		}
+	}
+	
 
 	if (abs(vx) < abs(minVx))
 	{
@@ -149,6 +187,17 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFireBalls(e);
 	else if (dynamic_cast<CVenusFireTrap*>(e->obj))
 		OnCollisionWithVenusFireTrap(e);
+	else if (dynamic_cast<CFlowerBox*>(e->obj))
+		OnCollisionWithFlowerBox(e);
+}
+
+void CMario::OnCollisionWithFlowerBox(LPCOLLISIONEVENT e)
+{
+	CFlowerBox* flower_box = dynamic_cast<CFlowerBox*>(e->obj);
+	if (e->ny > 0)
+	{
+		flower_box->SetState(FLOWER_BOX_STATE_UP);
+	}
 }
 
 void CMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e) 
@@ -161,9 +210,9 @@ void CMario::OnCollisionWithFireBalls(LPCOLLISIONEVENT e)
 	this->LowerLevel();
 }
 
-void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
+void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) 
+{
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-	
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -289,11 +338,15 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
-	CLeaf* p = (CLeaf*)e->obj;
-	p->Delete();
-	if (level == MARIO_LEVEL_SMALL || level == MARIO_LEVEL_BIG) 
+	CLeaf* leaf = (CLeaf*)e->obj;
+	leaf->Delete();
+	if (level == MARIO_LEVEL_SMALL) 
 	{
-		SetLevel(MARIO_LEVEL_FIRE);
+		SetLevel(MARIO_LEVEL_BIG);
+	}
+	else if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_FIRE)
+	{
+		SetLevel(MARIO_LEVEL_RACCOON);
 	}
 	else 
 	{
@@ -713,7 +766,7 @@ int CMario::GetAniIdFire()
 			}
 			else // vx < 0
 			{
-				if (ax > 0 && !isDeceleration)
+				if (ax > 0)
 				{
 					if (isDeceleration)
 					{
@@ -749,6 +802,7 @@ int CMario::GetAniIdFire()
 int CMario::GetAniIdRaccoon()
 {
 	int aniId = -1;
+
 	if (!isOnPlatform)
 	{
 		if (abs(ax) == MARIO_ACCEL_RUN_X)
@@ -767,7 +821,7 @@ int CMario::GetAniIdRaccoon()
 				else
 					aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
 			}
-			else if (isFlying) 
+			else if (isFlying && !isAttack) 
 			{
 				if (nx >= 0)
 					aniId = ID_ANI_MARIO_RACCOON_FLYING_RIGHT;
@@ -938,6 +992,23 @@ int CMario::GetAniIdRaccoon()
 	return aniId;
 }
 
+int CMario::GetAniIdChangeLevel()
+{
+	int aniId = -1;
+	if (level == MARIO_LEVEL_SMALL)
+	{
+		if (nx > 0)
+		{
+			aniId = ID_ANI_FROM_SMALL_BIG_RIGHT;
+		}
+		else
+		{
+			aniId = ID_ANI_FROM_SMALL_BIG_LEFT;
+		}
+	}
+	return aniId;
+}
+
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -953,6 +1024,8 @@ void CMario::Render()
 		aniId = GetAniIdFire();
 	else if (level == MARIO_LEVEL_RACCOON)
 		aniId = GetAniIdRaccoon();
+	else if (isChangeLevel)
+		aniId = GetAniIdChangeLevel();
 
 	if (level != MARIO_LEVEL_RACCOON) 
 	{
@@ -1001,6 +1074,12 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	case MARIO_STATE_CHANGE_LEVEL:
+	{
+		isChangeLevel = true;
+		time_change_level = GetTickCount64();
+		break;
+	}
 	case MARIO_STATE_KICK:
 	{
 		if (isSitting) break;
@@ -1051,6 +1130,7 @@ void CMario::SetState(int state)
 		{
 			vy += 0.2f / 2;
 		}
+		
 		break;
 	}
 	case MARIO_STATE_DECELERATION:
@@ -1086,7 +1166,7 @@ void CMario::SetState(int state)
 	{
 		if (isSitting) break;
 		isRunning = true;
-		maxVx = MARIO_RUNNING_SPEED;
+		maxVx = MARIO_RUNNING_SPEED + power * 0.005f;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 		break;
@@ -1095,7 +1175,8 @@ void CMario::SetState(int state)
 	{
 		if (isSitting) break;
 		isRunning = true;
-		maxVx = -MARIO_RUNNING_SPEED;
+
+		maxVx = -MARIO_RUNNING_SPEED - power*0.005f;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
 		break;
@@ -1162,7 +1243,7 @@ void CMario::SetState(int state)
 		vx = 0.0f;
 		ax = 0.0f;
 		isDeceleration = false;
-		//isSlowFly = false;
+		isFlying = false;
 		break;
 	}
 	case MARIO_STATE_DIE:
@@ -1213,7 +1294,7 @@ void CMario::SetLevel(int l)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
-
+	SetState(MARIO_STATE_CHANGE_LEVEL);
 	level = l;
 }
 

@@ -3,9 +3,9 @@
 #include "debug.h"
 
 //PROPERTY
-#define LEAF_GRAVITY 0.0001f
-#define LEAF_SPEED_Y 0.1f
-#define LEAF_SPEED_X 0.04f
+#define LEAF_GRAVITY 0.00005f
+#define LEAF_SPEED_Y 0.05f
+#define LEAF_SPEED_X 0.05f
 
 //STATE
 #define LEAF_STATE_FLY_LOW 100

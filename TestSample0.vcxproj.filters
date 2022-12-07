@@ -189,6 +189,9 @@
     <ClCompile Include="GoshBox.cpp">
       <Filter>Header Files\Scenes\WorldMap\Decoration</Filter>
     </ClCompile>
+    <ClCompile Include="FlowerBox.cpp">
+      <Filter>Header Files\Object\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="GoshBox.h">
       <Filter>Header Files\Scenes\WorldMap\Decoration</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowerBox.h">
+      <Filter>Header Files\Object\Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

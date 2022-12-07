@@ -11,6 +11,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_A:
+
 		if (mario->GetLevel() == MARIO_LEVEL_FIRE)
 		{
 			mario->SummonFireBalls();
@@ -50,6 +51,10 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_4:
 		mario->SetLevel(MARIO_LEVEL_RACCOON);
 		break;
+	case DIK_6:
+		mario->SetPosition(16, 300);		
+		break;
+
 	case DIK_9:
 		mario->SetPosition(3340, 0); // To Hidden Map
 		break;

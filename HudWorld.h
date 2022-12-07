@@ -15,7 +15,7 @@
 #define ID_ANI_HUD_WORLD_BA_BLACK		102
 
 //table_hud
-#define ID_ANI_HUD_WORLD_TABLE_HUD	101
+#define ID_ANI_HUD_WORLD_TABLE_HUD	107
 
 //arrow_power
 #define ID_ANI_HUD_WORLD_ARROW_POWER	51

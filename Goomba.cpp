@@ -78,6 +78,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (!checkObjectInCamera()) return;
 	//DebugOutTitle(L"state: %d", state);
 	//DebugOut(L"STATE: %d\n", state);
 	/*DebugOut(L"[X] %f\n", x);
@@ -85,10 +86,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	vy += ay * dt;
 	
-	if (!checkObjectInCamera()) 
-	{
-		//SetState(PARA_GOOMBA_STATE_DIE);
-	}
+
 
 	
 	
@@ -104,6 +102,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CGoomba::Render()
 {
+	if (!checkObjectInCamera()) return;
+
 	int aniId = 0;
 
 	if (isTurnOver)
