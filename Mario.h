@@ -270,9 +270,6 @@ class CMario : public CGameObject
 	BOOLEAN isKick;
 	BOOLEAN isSlowFly;
 	BOOLEAN isChangeLevel;
-	BOOLEAN isCanUpdate;
-
-	
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -313,7 +310,6 @@ public:
 		isGhostBox = false;
 		isKick = false;
 		isChangeLevel = false;
-		isCanUpdate = true;
 		koopa_holding = NULL;
 		
 		maxVx = 0.0f;
@@ -352,6 +348,8 @@ public:
 	int GetHeart() { return heart; }
 	int GetScore() { return score; }
 	int GetPower() { return power; }
+
+	bool GetIsChangeLevel() { return isChangeLevel; }
 
 	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }
 	bool GetIsRunning() {return isRunning; }

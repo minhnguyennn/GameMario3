@@ -32,22 +32,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	//DebugOutTitle(L"isrunning: %d and isHolding: %d", isRunning, isHolding);
 	//DebugOutTitle(L"ax: %f", ax);
-	DebugOutTitle(L"isCan: %d", isCanUpdate);
 	
 	if (isChangeLevel)
 	{
-		SetState(MARIO_STATE_IDLE);
-		if (GetTickCount64() - time_change_level > 1000)
-		{
-			isChangeLevel = false;
-			isCanUpdate = true;
-		}
-		time_change_level = GetTickCount64();
+		vx = 0;
+		vy = 0;
+	}
+	else
+	{
+		vy += ay * dt;
+		vx += ax * dt;
 	}
 
-
-	vy += ay * dt;
-	vx += ax * dt;
+	if (GetTickCount64() - time_change_level > 1000)
+	{
+		isChangeLevel = false;
+	}
 
 	if (abs(vx) > abs(maxVx))
 	{
@@ -995,7 +995,7 @@ int CMario::GetAniIdRaccoon()
 int CMario::GetAniIdChangeLevel()
 {
 	int aniId = -1;
-	if (level == MARIO_LEVEL_SMALL)
+	if (level == MARIO_LEVEL_BIG)
 	{
 		if (nx > 0)
 		{
@@ -1013,19 +1013,21 @@ void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
-	
-	if (state == MARIO_STATE_DIE)
-		aniId = ID_ANI_MARIO_DIE;
-	else if (level == MARIO_LEVEL_BIG)
-		aniId = GetAniIdBig();
-	else if (level == MARIO_LEVEL_SMALL)
-		aniId = GetAniIdSmall();
-	else if (level == MARIO_LEVEL_FIRE)
-		aniId = GetAniIdFire();
-	else if (level == MARIO_LEVEL_RACCOON)
-		aniId = GetAniIdRaccoon();
-	else if (isChangeLevel)
+	if (isChangeLevel)
 		aniId = GetAniIdChangeLevel();
+	else {
+		if (state == MARIO_STATE_DIE)
+			aniId = ID_ANI_MARIO_DIE;
+		else if (level == MARIO_LEVEL_BIG)
+			aniId = GetAniIdBig();
+		else if (level == MARIO_LEVEL_SMALL)
+			aniId = GetAniIdSmall();
+		else if (level == MARIO_LEVEL_FIRE)
+			aniId = GetAniIdFire();
+		else if (level == MARIO_LEVEL_RACCOON)
+			aniId = GetAniIdRaccoon();
+	}
+	
 
 	if (level != MARIO_LEVEL_RACCOON) 
 	{

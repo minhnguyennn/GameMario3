@@ -180,6 +180,9 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (mario->GetIsChangeLevel()) return;
 	
 	//DebugOut(L"x y %f %f \n", x,y);
 	//DebugOutTitle(L"isHeld %d", isHeld);

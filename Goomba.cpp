@@ -79,23 +79,15 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (!checkObjectInCamera()) return;
-	//DebugOutTitle(L"state: %d", state);
-	//DebugOut(L"STATE: %d\n", state);
-	/*DebugOut(L"[X] %f\n", x);
-	DebugOut(L"[cam_X] %f\n", CGame::GetInstance()->GetCamX());*/
-
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (mario->GetIsChangeLevel()) return;
 	vy += ay * dt;
-	
-
-
-	
-	
 	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - time_line > GOOMBA_DIE_TIMEOUT))
 	{
 		isDeleted = true;
 		return;
 	}
-
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
