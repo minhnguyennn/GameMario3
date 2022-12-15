@@ -2,6 +2,7 @@
 #include "Point.h"
 #include "debug.h"
 #include "PlayScene.h"
+#include "Automation.h"
 
 
 void CFlowerBox::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -9,8 +10,7 @@ void CFlowerBox::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (!checkObjectInCamera()) return;
 	if (isUp && CountDownTimer(FLOWER_BOX_UP_TIMEOUT))
 	{
-		isUp = false;
-		isDeleted = true;
+		SetState(FLOWER_BOX_SUMMON_AUTOMATION);
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -51,6 +51,15 @@ void CFlowerBox::SetState(int state)
 {
 	switch (state)
 	{
+	case FLOWER_BOX_SUMMON_AUTOMATION:
+	{
+		isUp = false;
+		isDeleted = true;
+		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+		CAutomation* automation = new CAutomation(x, y);
+		scene->CreateObject(automation);
+		break;
+	}
 	case FLOWER_BOX_STATE_UP:
 		time_line = GetTickCount64();
 		vy = -FLOWER_BOX_SPEED_Y;

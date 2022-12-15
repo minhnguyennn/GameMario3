@@ -10,6 +10,7 @@
 #define FLOWER_BOX_BBOX_HEIGHT 16
 //state
 #define FLOWER_BOX_STATE_UP	1
+#define FLOWER_BOX_SUMMON_AUTOMATION 2
 //property
 #define	FLOWER_BOX_SPEED_Y	0.1f
 //time
