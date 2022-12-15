@@ -6,10 +6,9 @@
 #include "Coin.h"
 #include "Leaf.h"
 
-
-
 void CQuestionBrick::Render()
 {
+	if (!checkObjectInCamera()) return;
 	CAnimations* animations = CAnimations::GetInstance();
 	if (!unbox) animations->Get(ID_ANI_QUESTIONBRICK)->Render(x, y);
 	else animations->Get(ID_ANI_QUESTIONBRICK_UNBOX)->Render(x, y);
@@ -55,7 +54,9 @@ void CQuestionBrick::SetState(int state) {
 	CGameObject::SetState(state);
 }
 
-void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
+void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
+{
+	if (!checkObjectInCamera()) return;
 	if ((start_y - y) > DISTANCE_MAX_QUESTIONBRICK)
 	{
 		SetState(QUESTION_STATE_MOVE_DOWN);
@@ -105,4 +106,3 @@ void CQuestionBrick::SummonItemsFromBrickQuestion()
 			break;
 	}
 }
-

@@ -58,6 +58,7 @@ void CVenusFireTrap::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (!checkObjectInCamera()) return;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetIsChangeLevel()) return;
@@ -87,6 +88,7 @@ void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CVenusFireTrap::Render()
 {
+	if (!checkObjectInCamera()) return;
 	int aniId = 0;
 	if (type == VFTRAP_TYPE_GREEN)
 	{

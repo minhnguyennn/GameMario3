@@ -4,6 +4,7 @@
 
 void CBrick::Render()
 {
+	if (!checkObjectInCamera()) return;
 	int aniId = ID_ANI_BRICK;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();

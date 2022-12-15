@@ -6,12 +6,19 @@
 
 void CFlowerBox::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (!checkObjectInCamera()) return;
+	if (isUp && CountDownTimer(FLOWER_BOX_UP_TIMEOUT))
+	{
+		isUp = false;
+		isDeleted = true;
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CFlowerBox::Render()
 {
+	if (!checkObjectInCamera()) return;
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = 0;
 	if (isUp)
@@ -45,6 +52,7 @@ void CFlowerBox::SetState(int state)
 	switch (state)
 	{
 	case FLOWER_BOX_STATE_UP:
+		time_line = GetTickCount64();
 		vy = -FLOWER_BOX_SPEED_Y;
 		isUp = true;
 		break;
@@ -52,4 +60,18 @@ void CFlowerBox::SetState(int state)
 		break;
 	}
 	CGameObject::SetState(state);
+}
+
+bool CFlowerBox::CountDownTimer(int time)
+{
+	if (GetTickCount64() - time_line > time)
+	{
+		return true;
+	}
+	return false;
+}
+
+void CFlowerBox::AutomationFunction()
+{
+	
 }

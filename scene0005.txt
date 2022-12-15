@@ -12,6 +12,7 @@ pipeline.txt
 effects.txt
 koopaParatroopas.txt
 hud.txt
+automation.txt
 [TILEMAP]
 Resource/Tilemaps/world1-1.txt
 [HIDDEN]
@@ -21,7 +22,10 @@ Resource/Tilemaps/world1-1-1.txt
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 ########## Mario #########
-0	200	380
+0	2690	380
+
+########## Automation #######
+22	2694	284
 
 ######### Brick ###########
 1	1952	400	1

@@ -54,7 +54,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_6:
 		mario->SetPosition(16, 300);		
 		break;
-
+	case DIK_7:
+		mario->SetPosition(2682, 383);
+		break;
 	case DIK_9:
 		mario->SetPosition(3340, 0); // To Hidden Map
 		break;

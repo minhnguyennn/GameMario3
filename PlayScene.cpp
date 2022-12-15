@@ -23,6 +23,7 @@
 #include "Tail.h"
 #include "HUD.h"
 #include "FlowerBox.h"
+#include "Automation.h"
 
 
 
@@ -217,6 +218,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_FLOWER_BOX:
 	{
 		obj = new CFlowerBox(x, y);
+		break;
+	}
+	case OBJECT_TYPE_AUTOMATION:
+	{
+		obj = new CAutomation(x, y);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:

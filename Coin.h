@@ -21,7 +21,8 @@
 
 #define MAX_VY 0.07f
 
-class CCoin : public CGameObject {
+class CCoin : public CGameObject 
+{
 	float start_y;
 	int c;
 	float coppy_x;

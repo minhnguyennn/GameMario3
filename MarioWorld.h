@@ -20,6 +20,10 @@
 
 class CMarioWorld : public CGameObject
 {
+	bool isGoLeft;
+	bool isGoRight;
+	bool isGoTop;
+	bool isGoBottom;
 public:
 	CMarioWorld(float x, float y);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

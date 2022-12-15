@@ -12,13 +12,17 @@
 #define FLOWER_BOX_STATE_UP	1
 //property
 #define	FLOWER_BOX_SPEED_Y	0.1f
+//time
+#define FLOWER_BOX_UP_TIMEOUT	700
 
 class CFlowerBox : public CGameObject 
 {
 	bool isUp;
+	ULONGLONG time_line;
 public:
 	CFlowerBox(float x, float y) : CGameObject(x, y) 
 	{
+		time_line = 0;
 		isUp = false;
 	}
 	void OnNoCollision(DWORD dt);
@@ -28,4 +32,6 @@ public:
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
 	int IsCollidable() { return 0; };
+	bool CountDownTimer(int time);
+	void AutomationFunction();
 };

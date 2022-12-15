@@ -6,7 +6,7 @@
 
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
-	//DebugOut(L"[TEST] y of coin: %d\n", y);
+	if (!checkObjectInCamera()) return;
 	if ((start_y - y) > COIN_DISTANCE_UP)
 	{
 		SetState(COIN_STATE_MOVE_DOWN);
@@ -31,9 +31,9 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CCoin::Render()
 {
+	if (!checkObjectInCamera()) return;
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ID_ANI_COIN)->Render(x, y);
-
 	//RenderBoundingBox();
 }
 

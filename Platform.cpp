@@ -30,6 +30,7 @@ void CPlatform::RenderBoundingBox()
 
 void CPlatform::Render()
 {
+	if (!checkObjectInCamera()) return;
 	if (this->length <= 0) return; 
 	float xx = x; 
 	CSprites * s = CSprites::GetInstance();

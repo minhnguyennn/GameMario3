@@ -2,22 +2,16 @@
 #include "debug.h"
 
 
-void CPoint::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	/*DebugOut(L"[TEST] y of coin: %d\n", y);
-	if ((start_y - y) > 70)
-	{
-		SetState(COIN_STATE_MOVE_DOWN);
-	}
-	if ((vy > 0) && (y > start_y - 50))
-	{
-		SetState(COIN_STATE_DELETE);
-	}*/
+void CPoint::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
+{
+	if (!checkObjectInCamera()) return;
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CPoint::Render()
 {
+	if (!checkObjectInCamera()) return;
 	CAnimations* animations = CAnimations::GetInstance();
 	if (POINT_TYPE_100) 
 	{

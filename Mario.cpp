@@ -24,15 +24,6 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	//DebugOutTitle(L"vx: %f vy: %f ax: %f ay: %f nx: %d", vx, vy, ax, ay, nx);
-	//DebugOut(L"Level %d", level);
-	// DebugOut(L"[test] vx ax state nx time vmax %f %f %d %d %d %f\n", vx , ax, state, nx,time,maxVx);
-	//DebugOut(L"isRunning: %d\n", isRunning);
-	//DebugOut(L"state: %d\n", state);
-
-	//DebugOutTitle(L"isrunning: %d and isHolding: %d", isRunning, isHolding);
-	//DebugOutTitle(L"ax: %f", ax);
-	
 	if (isChangeLevel)
 	{
 		vx = 0;

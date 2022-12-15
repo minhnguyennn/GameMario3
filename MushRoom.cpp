@@ -48,17 +48,11 @@ void CMushRoom::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOutTitle(L"countDebug %d", countDebug);
-	//DebugOutTitle(L"check %d", check);
-
-
-	//DebugOutTitle(L"state %d", state);
+	if (!checkObjectInCamera()) return;
 	if(state != MUSHROOM_STATE_UP) vy += ay * dt;
 
-	if ((start_y - y) > DISTANCE_MAX_MUSHROOM) {
-		
-		//SetState(MUSHROOM_STATE_WALKING);
-		
+	if ((start_y - y) > DISTANCE_MAX_MUSHROOM) 
+	{
 		if (!check) {
 			SetState(MUSHROOM_STATE_IDLE);
 			check = true;
@@ -74,6 +68,7 @@ void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CMushRoom::Render()
 {
+	if (!checkObjectInCamera()) return;
 	int aniId = ID_ANI_MUSHROOM_GREEN;
 	if (type_mushroom == MUSHROOM_TYPE_RED) {
 		aniId = ID_ANI_MUSHROOM_RED;

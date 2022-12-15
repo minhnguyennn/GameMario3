@@ -22,9 +22,9 @@ void CLeaf::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
 	vx += ax * dt;
-	
 
 	if (isUp && vy > 0)
 	{
@@ -46,6 +46,7 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CLeaf::Render()
 {
+	if (!checkObjectInCamera()) return;
 	int aniId = ID_ANI_LEAF_LEFT;
 	if (vx > 0)
 	{
