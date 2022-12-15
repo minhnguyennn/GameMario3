@@ -148,7 +148,18 @@
 
 #pragma endregion
 
-#define GROUND_Y					160.0f
+//ANIMATION CHANGE LEVEL
+#define ID_ANI_SMALL_TO_BIG_RIGHT		4802
+#define ID_ANI_SMALL_TO_BIG_LEFT		4803
+
+#define ID_ANI_SMALL_TO_SMALL_RIGHT		4804
+#define ID_ANI_SMALL_TO_SMALL_LEFT		4805
+
+#define ID_ANI_BIG_TO_FIRE_RIGHT		4806
+#define ID_ANI_BIG_TO_FIRE_LEFT			4807
+
+#define ID_ANI_BIG_TO_RACCOON_RIGHT		4808
+#define ID_ANI_BIG_TO_RACCOON_LEFT		4809
 
 //PROPERTY
 #define MARIO_WALKING_SPEED			0.1f
@@ -196,9 +207,6 @@
 
 #define MARIO_STATE_DECELERATION		700
 
-//ANIMATION CHANGE LEVEL
-#define ID_ANI_FROM_SMALL_BIG_RIGHT		4802
-#define ID_ANI_FROM_SMALL_BIG_LEFT		4803
 //LEVEL
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
@@ -231,6 +239,7 @@
 #define	MARIO_KICK_TIMEOUT 1000
 #define	MARIO_ATTACK_TIMEOUT 500
 #define TIME_ONE_SECOND 1000
+#define MARIO_CHANGE_LEVEL_TIMEOUT 1000
 
 class CMario : public CGameObject
 {
@@ -299,7 +308,7 @@ public:
 		time_fall_slowly = 0;
 		time_line = 0;
 		time_change_level = 0;
-
+		time_running = 0;
 		isSlowFly = false;
 		isAttack = false;
 		isFlying = false;
@@ -327,7 +336,6 @@ public:
 		score = 0;
 		power = 0;
 	}
-
 	ULONGLONG GetTimeAttack() { return time_attack; }
 
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
@@ -379,4 +387,5 @@ public:
 	void MarioHoldKoopaFunction();
 	void MarioThrowKoopaFunction();
 	bool CountDownTimer(int time);
+	void ChangeLevelMario(DWORD dt);
 };

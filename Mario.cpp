@@ -24,22 +24,7 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	if (isChangeLevel)
-	{
-		vx = 0;
-		vy = 0;
-	}
-	else
-	{
-		vy += ay * dt;
-		vx += ax * dt;
-	}
-
-	if (GetTickCount64() - time_change_level > 1000)
-	{
-		isChangeLevel = false;
-	}
-
+	ChangeLevelMario(dt);
 	if (abs(vx) > abs(maxVx))
 	{
 		vx = maxVx;
@@ -132,6 +117,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 }
 
+//ONCOLLISION
 void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
@@ -356,6 +342,76 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	coin++;
 }
 
+//GET ANIMATION
+void CMario::Render()
+{
+	CAnimations* animations = CAnimations::GetInstance();
+	int aniId = -1;
+	if (isChangeLevel)
+	{
+		aniId = GetAniIdChangeLevel();
+	}
+	else if (state == MARIO_STATE_DIE)
+	{
+		aniId = ID_ANI_MARIO_DIE;
+	}
+	else if (level == MARIO_LEVEL_BIG)
+	{
+		aniId = GetAniIdBig();
+	}
+	else if (level == MARIO_LEVEL_SMALL)
+	{
+		aniId = GetAniIdSmall();
+	}
+	else if (level == MARIO_LEVEL_FIRE)
+	{
+		aniId = GetAniIdFire();
+	}
+	else if (level == MARIO_LEVEL_RACCOON)
+	{
+		aniId = GetAniIdRaccoon();
+	}
+
+	if (level != MARIO_LEVEL_RACCOON)
+	{
+		if (isGhostBox)
+		{
+			animations->Get(aniId)->Render(x, y - 1);
+		}
+		else
+		{
+			animations->Get(aniId)->Render(x, y);
+		}
+	}
+	else
+	{
+		if (nx > 0)
+		{
+			if (isGhostBox)
+			{
+				animations->Get(aniId)->Render(x - 4, y - 1);
+			}
+			else
+			{
+				animations->Get(aniId)->Render(x - 4, y);
+			}
+		}
+		else
+		{
+			if (isGhostBox)
+			{
+				animations->Get(aniId)->Render(x + 4, y - 1);
+			}
+			else
+			{
+				animations->Get(aniId)->Render(x + 4, y);
+			}
+		}
+	}
+
+	RenderBoundingBox();
+}
+
 int CMario::GetAniIdSmall()
 {
 	int aniId = -1;
@@ -504,9 +560,6 @@ int CMario::GetAniIdSmall()
 	return aniId;
 }
 
-//
-// Get animdation ID for big Mario
-//
 int CMario::GetAniIdBig()
 {
 	int aniId = -1;
@@ -990,74 +1043,47 @@ int CMario::GetAniIdChangeLevel()
 	{
 		if (nx > 0)
 		{
-			aniId = ID_ANI_FROM_SMALL_BIG_RIGHT;
+			aniId = ID_ANI_SMALL_TO_BIG_RIGHT;
 		}
 		else
 		{
-			aniId = ID_ANI_FROM_SMALL_BIG_LEFT;
+			aniId = ID_ANI_SMALL_TO_BIG_LEFT;
 		}
 	}
-	return aniId;
-}
-
-void CMario::Render()
-{
-	CAnimations* animations = CAnimations::GetInstance();
-	int aniId = -1;
-	if (isChangeLevel)
-		aniId = GetAniIdChangeLevel();
-	else {
-		if (state == MARIO_STATE_DIE)
-			aniId = ID_ANI_MARIO_DIE;
-		else if (level == MARIO_LEVEL_BIG)
-			aniId = GetAniIdBig();
-		else if (level == MARIO_LEVEL_SMALL)
-			aniId = GetAniIdSmall();
-		else if (level == MARIO_LEVEL_FIRE)
-			aniId = GetAniIdFire();
-		else if (level == MARIO_LEVEL_RACCOON)
-			aniId = GetAniIdRaccoon();
-	}
-	
-
-	if (level != MARIO_LEVEL_RACCOON) 
-	{
-		if (isGhostBox) 
-		{
-			animations->Get(aniId)->Render(x, y - 1);
-		}
-		else 
-		{
-			animations->Get(aniId)->Render(x, y);
-		}
-	}
-	else 
+	else if (level == MARIO_LEVEL_SMALL)
 	{
 		if (nx > 0)
 		{
-			if (isGhostBox) 
-			{
-				animations->Get(aniId)->Render(x - 4, y - 1);
-			}
-			else 
-			{
-				animations->Get(aniId)->Render(x - 4, y);
-			}
+			aniId = ID_ANI_SMALL_TO_SMALL_RIGHT;
 		}
-		else 
-		{ 
-			if (isGhostBox)
-			{
-				animations->Get(aniId)->Render(x + 4, y - 1);
-			}
-			else
-			{
-				animations->Get(aniId)->Render(x + 4, y);
-			}
+		else
+		{
+			aniId = ID_ANI_SMALL_TO_SMALL_LEFT;
 		}
 	}
-
-	RenderBoundingBox();
+	else if (level == MARIO_LEVEL_FIRE)
+	{
+		if (nx > 0)
+		{
+			aniId = ID_ANI_BIG_TO_FIRE_RIGHT;
+		}
+		else
+		{
+			aniId = ID_ANI_BIG_TO_FIRE_LEFT;
+		}
+	}
+	else if (level == MARIO_LEVEL_RACCOON)
+	{
+		if (nx > 0)
+		{
+			aniId = ID_ANI_BIG_TO_RACCOON_RIGHT;
+		}
+		else
+		{
+			aniId = ID_ANI_BIG_TO_RACCOON_LEFT;
+		}
+	}
+	return aniId;
 }
 
 void CMario::SetState(int state)
@@ -1282,12 +1308,12 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CMario::SetLevel(int l)
 {
-	// Adjust position to avoid falling off platform
 	if(this->level == MARIO_LEVEL_SMALL)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
-	SetState(MARIO_STATE_CHANGE_LEVEL);
+	isChangeLevel = true;
+	time_line = GetTickCount64();
 	level = l;
 }
 
@@ -1379,4 +1405,23 @@ bool CMario::CountDownTimer(int time)
 		return true;
 	}
 	return false;
+}
+
+void CMario::ChangeLevelMario(DWORD dt)
+{
+	if (isChangeLevel)
+	{
+		vx = 0;
+		vy = 0;
+	}
+	else
+	{
+		vy += ay * dt;
+		vx += ax * dt;
+	}
+
+	if (CountDownTimer(MARIO_CHANGE_LEVEL_TIMEOUT))
+	{
+		isChangeLevel = false;
+	}
 }
