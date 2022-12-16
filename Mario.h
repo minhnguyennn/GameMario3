@@ -170,9 +170,9 @@
 #define MARIO_ACCEL_WALK_X			0.0002f
 #define MARIO_ACCEL_RUN_X			0.0003f
 
-#define MARIO_JUMP_SPEED_Y			0.23f
+#define MARIO_JUMP_SPEED_Y			0.25f
 //#define MARIO_JUMP_SPEED_Y			0.5f
-#define MARIO_JUMP_RUN_SPEED_Y		0.23f
+#define MARIO_JUMP_RUN_SPEED_Y		0.26f
 
 #define MARIO_GRAVITY				0.00042f
 
@@ -252,7 +252,6 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 	int level; 
-	bool check_fall_while_flying;
 	int untouchable; 
 
 	int time;
@@ -261,12 +260,12 @@ class CMario : public CGameObject
 	int score;
 	int power;
 	
-	ULONGLONG untouchable_start;
+	ULONGLONG untouchable_start = 0;
 	ULONGLONG count_1_second = 0;
-	ULONGLONG time_fly;
-	ULONGLONG time_line;
-	ULONGLONG time_power;
-	ULONGLONG time_running;
+	ULONGLONG time_fly = 0;
+	ULONGLONG time_line = 0;
+	ULONGLONG time_power = 0;
+	ULONGLONG time_running = 0;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;

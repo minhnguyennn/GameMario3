@@ -294,7 +294,6 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 		quest_brick->SetState(QUESTION_STATE_MOVE_UP);
 		
 	}
-	coin++;
 }
 
 //GET ANIMATION
@@ -805,19 +804,34 @@ int CMario::GetAniIdRaccoon()
 
 	if (!isOnPlatform)
 	{
+		
 		if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
-			if (nx >= 0)
-			{
-				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_RIGHT;
+			if (!isFlying) {
+				if (nx >= 0)
+				{
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_RIGHT;
+				}
+				else
+				{
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_LEFT;
+				}
 			}
-			else
-			{
-				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_LEFT;
+			else {
+				if (IsMaxPower()) {
+					if (nx < 0) aniId = ID_ANI_MARIO_RACCOON_FLYING_LEFT;
+					else  aniId = ID_ANI_MARIO_RACCOON_FLYING_RIGHT;
+				}
+				else {
+					if (nx < 0) aniId = ID_ANI_MARIO_RACCOON_FALL_SLOWLY_LEFT;
+					else  aniId = ID_ANI_MARIO_RACCOON_FALL_SLOWLY_RIGHT;
+				}
+
 			}
 		}
 		else
 		{
+			
 			if (nx >= 0)
 			{
 				if (vy > 0)
@@ -1237,6 +1251,8 @@ void CMario::SetState(int state)
 	}
 	case MARIO_STATE_IDLE:
 	{
+		isRunning = false;
+		isFlying = false;
 		vx = 0.0f;
 		ax = 0.0f;
 		isDeceleration = false;

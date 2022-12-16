@@ -126,7 +126,10 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	{
 		if (game->IsKeyDown(DIK_A))
 		{
-			mario->SetState(MARIO_STATE_RUNNING_LEFT);
+			if (mario->GetIsOnPlatform())
+			{
+				mario->SetState(MARIO_STATE_RUNNING_LEFT);
+			}
 		}
 		else
 		{
