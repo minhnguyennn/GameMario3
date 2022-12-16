@@ -162,6 +162,7 @@
 #define ID_ANI_BIG_TO_RACCOON_LEFT		4809
 
 //PROPERTY
+#define MARIO_VMAX_X_ADJUST			0.005f
 #define MARIO_WALKING_SPEED			0.1f
 #define MARIO_RUNNING_SPEED			0.2f
 #define	MARIO_DECELERATION_SPEED	0.0055f
@@ -240,7 +241,8 @@
 #define	MARIO_ATTACK_TIMEOUT 500
 #define TIME_ONE_SECOND 1000
 #define MARIO_CHANGE_LEVEL_TIMEOUT 1000
-
+#define MARIO_CALCULATE_POWER_TIMEOUT 200
+#define MARIO_MAX_POWER_UP 7
 class CMario : public CGameObject
 {
 	CKoopa* koopa_holding;
@@ -250,6 +252,7 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 	int level; 
+	bool check_fall_while_flying;
 	int untouchable; 
 
 	int time;
@@ -260,13 +263,10 @@ class CMario : public CGameObject
 	
 	ULONGLONG untouchable_start;
 	ULONGLONG count_1_second = 0;
-	ULONGLONG time_attack;
-	ULONGLONG time_kick;
 	ULONGLONG time_fly;
-	ULONGLONG time_fall_slowly;
 	ULONGLONG time_line;
+	ULONGLONG time_power;
 	ULONGLONG time_running;
-	ULONGLONG time_change_level;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -302,13 +302,10 @@ class CMario : public CGameObject
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
-		time_attack = 0;
-		time_kick = 0;
 		time_fly = 0;
-		time_fall_slowly = 0;
 		time_line = 0;
-		time_change_level = 0;
-		time_running = 0;
+		time_power = 0;
+
 		isSlowFly = false;
 		isAttack = false;
 		isFlying = false;
@@ -336,10 +333,10 @@ public:
 		score = 0;
 		power = 0;
 	}
-	ULONGLONG GetTimeAttack() { return time_attack; }
-
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
 	bool GetIsAttack() {return isAttack;  }
+
+	bool GetIsOnPlatform() { return isOnPlatform; }
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -356,7 +353,7 @@ public:
 	int GetHeart() { return heart; }
 	int GetScore() { return score; }
 	int GetPower() { return power; }
-
+	bool IsMaxPower() { return (power == MARIO_MAX_POWER_UP); }
 	bool GetIsChangeLevel() { return isChangeLevel; }
 
 	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }
@@ -388,4 +385,8 @@ public:
 	void MarioThrowKoopaFunction();
 	bool CountDownTimer(int time);
 	void ChangeLevelMario(DWORD dt);
+	void AccelerationFunction();
+	void CalculatePowerToFly();
+	void CalculateHeartAndCoin();
+	bool CountDownTimer2(ULONGLONG time_calculate, int time_out);
 };

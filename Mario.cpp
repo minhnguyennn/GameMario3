@@ -24,56 +24,19 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
+	/*DebugOutTitle(L"isAttack: %d and isfly: %d", isAttack, isFlying);*/
+	DebugOutTitle(L"isfly: %d and time_fly: %d",isFlying, time_fly);
+	DebugOut(L"Power %d", power);
 	ChangeLevelMario(dt);
-	if (abs(vx) > abs(maxVx))
-	{
-		vx = maxVx;
-	}
-	if (power > 7) { power = 7; }
-	if (power < 0) { power = 0; }
-	if (isRunning) {
-		if (GetTickCount64() - time_running >200)
-		{
-			if (power < 7) {
-				power = power + 1;
-			}
-			
-			time_running = GetTickCount64();
-		}
-		
-	}
-	else {
-		if (GetTickCount64() - time_running > 200)
-		{
-			if (power >0) {
-				power = power -1 ;
-			}
-			time_running = GetTickCount64();
-		}
-	}
-	
-
-	if (abs(vx) < abs(minVx))
-	{
-		SetState(MARIO_STATE_IDLE);
-	}
-	
+	AccelerationFunction();
+	CalculatePowerToFly();
+	CalculateHeartAndCoin();
 	CountDown1Second();
+	
 
-	/*if (level == MARIO_LEVEL_RACCOON && vx == maxVx) {
-		SetState(MARIO_STATE_FLYING);
-	}*/
-
-	/*if (isOnPlatform) {
-		if (abs(vy) > abs(maxVy)) vy = maxVy;
-	}*/
-	if (coin > 99) {
-		heart++;
-		coin = 0;
-	}
-
-	if (heart > 99) {
-		heart = 99;
+	if (isFlying)
+	{
+		time_fly = GetTickCount64();
 	}
 
 	if (isAttack && CountDownTimer(MARIO_ATTACK_TIMEOUT))
@@ -86,10 +49,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		isSlowFly = false;
 	}
 
-	/*if (isFlying && GetTickCount64() - time_fly > 1000)
+	if (isKick && CountDownTimer(MARIO_KICK_TIMEOUT))
 	{
-		SetState(MARIO_STATE_RELEASE_FLYING);
-	}*/
+		isKick = false;
+	}
 	
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
 	{
@@ -102,19 +65,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 
-	if (isKick && CountDownTimer(MARIO_KICK_TIMEOUT))
-	{
-		isKick = false;
-	}
-
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
-	if (isHolding)
-	{
-		MarioHoldKoopaFunction();
-	}
+	if (isHolding) MarioHoldKoopaFunction();
 }
 
 //ONCOLLISION
@@ -345,6 +300,7 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 //GET ANIMATION
 void CMario::Render()
 {
+	
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
 	if (isChangeLevel)
@@ -852,95 +808,121 @@ int CMario::GetAniIdRaccoon()
 		if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
 			if (nx >= 0)
+			{
 				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_RIGHT;
+			}
 			else
+			{
 				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_LEFT;
+			}
 		}
 		else
 		{
-			if (isHolding) 
+			if (nx >= 0)
 			{
-				if (nx >= 0)
-					aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
-				else
-					aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
-			}
-			else if (isFlying && !isAttack) 
-			{
-				if (nx >= 0)
-					aniId = ID_ANI_MARIO_RACCOON_FLYING_RIGHT;
-				else
-					aniId = ID_ANI_MARIO_RACCOON_FLYING_LEFT;
-			}
-			else 
-			{
-				if (nx >= 0)
+				if (vy > 0)
 				{
-					if (vy > 0)
+					if (!isSlowFly)
 					{
-						if (!isSlowFly)
-						{
-							aniId = ID_ANI_MARIO_RACCOON_FALL_RIGHT;
-						}
-						else if (isSlowFly)
-						{
-							aniId = ID_ANI_MARIO_RACCOON_FALL_SLOWLY_RIGHT;
-						}
+						aniId = ID_ANI_MARIO_RACCOON_FALL_RIGHT;
 					}
-					else 
+					else if (isSlowFly)
 					{
-						aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
+						aniId = ID_ANI_MARIO_RACCOON_FALL_SLOWLY_RIGHT;
 					}
 				}
 				else
 				{
-					if (vy > 0)
+					if (isFlying)
 					{
-						if (!isSlowFly)
-						{
-							aniId = ID_ANI_MARIO_RACCOON_FALL_LEFT;
-						}
-						else if (isSlowFly)
-						{
-							aniId = ID_ANI_MARIO_RACCOON_FALL_SLOWLY_LEFT;
-						}
+						aniId = ID_ANI_MARIO_RACCOON_FLYING_RIGHT;
+					}
+					else if (isHolding)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
+					}
+					else
+					{
+						aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
+					}
+				}
+			}
+			else
+			{
+				if (vy > 0)
+				{
+					if (!isSlowFly)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_FALL_LEFT;
+					}
+					else if (isSlowFly)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_FALL_SLOWLY_LEFT;
+					}
+				}
+				else
+				{
+					if (isFlying)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_FLYING_LEFT;
+					}
+					else if (isHolding)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
 					}
 					else
 					{
 						aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
 					}
 				}
-			}
+			}	
 		}
 	}
 	else
+	{
 		if (isSitting)
 		{
 			if (nx > 0)
+			{
 				aniId = ID_ANI_MARIO_RACCOON_SIT_RIGHT;
+			}
 			else
+			{
 				aniId = ID_ANI_MARIO_RACCOON_SIT_LEFT;
+			}
 		}
 		else
 		{
 			if (vx == 0)
 			{
-				if (isHolding) 
+				if (isHolding)
 				{
-					if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
-					else aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
+					if (nx > 0)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
+					}
+					else 
+					{ 
+						aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT; 
+					}
 				}
 				else if (isAttack)
 				{
 					aniId = ID_ANI_MARIO_RACCOON_ATTACK;
 				}
-				else 
+				else
 				{
-					if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
-					else aniId = ID_ANI_MARIO_RACCOON_IDLE_LEFT;
+					if (nx > 0)
+					{
+						aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
+					}
+					else
+					{
+						aniId = ID_ANI_MARIO_RACCOON_IDLE_LEFT;
+					}
 				}
 			}
-			else if (vx > 0 )
+			else if (vx > 0)
 			{
 				if (ax < 0)
 				{
@@ -1008,9 +990,9 @@ int CMario::GetAniIdRaccoon()
 						aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
 					}
 				}
-				else if ( ax == -MARIO_ACCEL_WALK_X)
+				else if (ax == -MARIO_ACCEL_WALK_X)
 				{
-					if (isHolding) 
+					if (isHolding)
 					{
 						aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
 					}
@@ -1029,10 +1011,9 @@ int CMario::GetAniIdRaccoon()
 				}
 			}
 		}
-			
 
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACCOON_IDLE_RIGHT;
-
 	return aniId;
 }
 
@@ -1088,17 +1069,12 @@ int CMario::GetAniIdChangeLevel()
 
 void CMario::SetState(int state)
 {
+	// DebugOut(L"STATE: %d\n", state);
 	// DIE is the end state, cannot be changed! 
 	if (this->state == MARIO_STATE_DIE) return;
 
 	switch (state)
 	{
-	case MARIO_STATE_CHANGE_LEVEL:
-	{
-		isChangeLevel = true;
-		time_change_level = GetTickCount64();
-		break;
-	}
 	case MARIO_STATE_KICK:
 	{
 		if (isSitting) break;
@@ -1137,18 +1113,19 @@ void CMario::SetState(int state)
 	case MARIO_STATE_FLYING:
 	{
 		if (isSitting) break;
+		isOnPlatform = false;
 		if (level != MARIO_LEVEL_RACCOON) break;
-		time_line = GetTickCount64();
 		isFlying = true;
 		vy = -0.2f;
 		break;
 	}
 	case MARIO_STATE_RELEASE_FLYING:
 	{
-		if (level == MARIO_LEVEL_RACCOON && vy < 0)
+		/*if (level == MARIO_LEVEL_RACCOON && vy < 0)
 		{
 			vy += 0.2f / 2;
-		}
+		}*/
+		//time_fly = GetTickCount64();
 		
 		break;
 	}
@@ -1185,7 +1162,8 @@ void CMario::SetState(int state)
 	{
 		if (isSitting) break;
 		isRunning = true;
-		maxVx = MARIO_RUNNING_SPEED + power * 0.005f;
+		isFlying = false;
+		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 		break;
@@ -1194,8 +1172,8 @@ void CMario::SetState(int state)
 	{
 		if (isSitting) break;
 		isRunning = true;
-
-		maxVx = -MARIO_RUNNING_SPEED - power*0.005f;
+		isFlying = false;
+		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
 		break;
@@ -1262,7 +1240,6 @@ void CMario::SetState(int state)
 		vx = 0.0f;
 		ax = 0.0f;
 		isDeceleration = false;
-		isFlying = false;
 		break;
 	}
 	case MARIO_STATE_DIE:
@@ -1407,6 +1384,15 @@ bool CMario::CountDownTimer(int time)
 	return false;
 }
 
+bool CMario::CountDownTimer2(ULONGLONG time_calculate, int time_out)
+{
+	if (GetTickCount64() - time_calculate > time_out)
+	{
+		return true;
+	}
+	return false;
+}
+
 void CMario::ChangeLevelMario(DWORD dt)
 {
 	if (isChangeLevel)
@@ -1423,5 +1409,77 @@ void CMario::ChangeLevelMario(DWORD dt)
 	if (CountDownTimer(MARIO_CHANGE_LEVEL_TIMEOUT))
 	{
 		isChangeLevel = false;
+	}
+}
+
+void CMario::AccelerationFunction()
+{
+	if (abs(vx) > abs(maxVx))
+	{
+		vx = maxVx;
+	}
+	else if (abs(vx) < abs(minVx))
+	{
+		SetState(MARIO_STATE_IDLE);
+	}
+}
+
+void CMario::CalculatePowerToFly()
+{
+	if (IsMaxPower()) {
+		if (GetTickCount64() - time_power > 5000) {
+			if (power > 0) {
+				power -= 1;
+			}
+			time_power = GetTickCount64();
+		}
+	}
+	else {
+		if (!isFlying) {
+			if (isRunning) {
+				if (GetTickCount64() - time_running > 200)
+				{
+					if (power < 7) {
+						power = power + 1;
+					}
+
+					time_running = GetTickCount64();
+				}
+
+			}
+			else {
+				if (GetTickCount64() - time_running > 200)
+				{
+					if (power > 0) {
+						power = power - 1;
+					}
+					time_running = GetTickCount64();
+				}
+			}
+		}
+		if (!isOnPlatform) {
+			if (GetTickCount64() - time_running > 200)
+			{
+				if (power > 0) {
+					power = power - 1;
+				}
+				time_running = GetTickCount64();
+			}
+		}
+
+	}
+}
+
+void CMario::CalculateHeartAndCoin()
+{
+	if (coin > 99)
+	{
+		heart++;
+		coin = 0;
+	}
+
+	if (heart > 99)
+	{
+		heart = 99;
 	}
 }
