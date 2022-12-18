@@ -140,8 +140,11 @@
 
 #define	ID_ANI_MARIO_RACCOON_ATTACK	4400
 
-#define ID_ANI_MARIO_RACCOON_FALL_RIGHT 4701
-#define ID_ANI_MARIO_RACCOON_FALL_LEFT 4700
+#define ID_ANI_MARIO_RACCOON_FALL_WALK_RIGHT 4701
+#define ID_ANI_MARIO_RACCOON_FALL_WALK_LEFT 4700
+
+#define ID_ANI_MARIO_RACCOON_FALL_RUN_RIGHT 4901
+#define ID_ANI_MARIO_RACCOON_FALL_RUN_LEFT 4900
 
 #define ID_ANI_MARIO_RACCOON_FALL_SLOWLY_RIGHT 4801
 #define ID_ANI_MARIO_RACCOON_FALL_SLOWLY_LEFT 4800
@@ -175,8 +178,8 @@
 #define MARIO_JUMP_RUN_SPEED_Y		0.26f
 
 #define MARIO_GRAVITY				0.00042f
-
 #define MARIO_JUMP_DEFLECT_SPEED	0.15f
+#define MARIO_MAX_POWER_UP			7
 
 //STATE
 #define MARIO_STATE_DIE					-10
@@ -242,7 +245,7 @@
 #define TIME_ONE_SECOND 1000
 #define MARIO_CHANGE_LEVEL_TIMEOUT 1000
 #define MARIO_CALCULATE_POWER_TIMEOUT 200
-#define MARIO_MAX_POWER_UP 7
+
 class CMario : public CGameObject
 {
 	CKoopa* koopa_holding;
@@ -262,9 +265,9 @@ class CMario : public CGameObject
 	
 	ULONGLONG untouchable_start = 0;
 	ULONGLONG count_1_second = 0;
-	ULONGLONG time_fly = 0;
+	ULONGLONG time_fly;
 	ULONGLONG time_line = 0;
-	ULONGLONG time_power = 0;
+	ULONGLONG time_power;
 	ULONGLONG time_running = 0;
 
 	BOOLEAN isOnPlatform;
@@ -304,7 +307,6 @@ public:
 		time_fly = 0;
 		time_line = 0;
 		time_power = 0;
-
 		isSlowFly = false;
 		isAttack = false;
 		isFlying = false;
@@ -352,7 +354,7 @@ public:
 	int GetHeart() { return heart; }
 	int GetScore() { return score; }
 	int GetPower() { return power; }
-	bool IsMaxPower() { return (power == MARIO_MAX_POWER_UP); }
+	bool IsMaxPower() { return power == MARIO_MAX_POWER_UP; }
 	bool GetIsChangeLevel() { return isChangeLevel; }
 
 	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }

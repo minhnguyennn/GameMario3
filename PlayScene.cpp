@@ -159,6 +159,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int level = (int)atof(tokens[3].c_str());
 		int type = (int)atof(tokens[4].c_str());
+
 		obj = new CKoopa(x, y, level, type);
 		break;
 	}
@@ -172,6 +173,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		int type_summon_plant = (int)atof(tokens[3].c_str());
 		int type_pineline = (int)atof(tokens[4].c_str());
+
 		obj = new CPipeline(x, y, type_summon_plant, type_pineline); 
 		break;
 	}
@@ -418,8 +420,8 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
-	//DebugOutTitle(L"cy %f", cy);
-	if (cx < 3100) {
+	if (cx < 3100) 
+	{
 		if (cx < PLSCENE_MIN_X_CAM) cx = PLSCENE_MIN_X_CAM;
 		if ((cx > PLSCENE_MAX_X_CAM)) cx = PLSCENE_MAX_X_CAM;
 

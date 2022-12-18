@@ -25,7 +25,6 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
 	vx += ax * dt;
-
 	if (isUp && vy > 0)
 	{
 		SetState(LEAF_STATE_CHANGE);
@@ -39,7 +38,6 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		SetState(LEAF_STATE_CHANGE);
 	}
-
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

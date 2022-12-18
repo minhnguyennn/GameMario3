@@ -374,11 +374,11 @@ void CKoopa::ChangePositionFollowMario()
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetNx() <0) 
 	{
-		x = mario->GetX() - 13;
+		x = mario->GetX() - 10;
 	}
 	else 
 	{
-		x = mario->GetX() + 13;
+		x = mario->GetX() + 10;
 
 	}
 	y = mario->GetY();

@@ -112,6 +112,7 @@ public:
 	};
 
 	void SetAy(float ay) { this->ay = ay; };
+	void SetAx(float ax) { this->ax = ax; };
 
 	void SetState(int state);
 	void SetIsSummon(bool isSummon) { this->isSummon = isSummon; };

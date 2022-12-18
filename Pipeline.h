@@ -30,7 +30,8 @@ class CPipeline : public CGameObject
 	int type_summon_plant;
 	int type_pineline;
 public:
-	CPipeline(float x, float y, int type_summon_plant, int type_pineline) : CGameObject(x, y) {
+	CPipeline(float x, float y, int type_summon_plant, int type_pineline) : CGameObject(x, y) 
+	{
 		this->type_summon_plant = type_summon_plant;
 		this->type_pineline = type_pineline;
 		SummonVenusFireTrap();
