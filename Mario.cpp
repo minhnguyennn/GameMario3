@@ -25,7 +25,7 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	/*DebugOutTitle(L"isAttack: %d and isfly: %d", isAttack, isFlying);*/
-	DebugOutTitle(L"isDeceleration: %d and time_fly: %d", isDeceleration, time_fly);
+	DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	
 	DebugOut(L"--STATE-- %d\n", state);
 	ChangeLevelMario(dt);
@@ -82,16 +82,25 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 && e->obj->IsBlocking()) 
 	{
 		vy = 0;
+		
 		if (e->ny < 0) 
 		{ 
 			isOnPlatform = true; 
 			isGhostBox = false;
 		}
+		else
+		{
+			if (!isDecreasePower) time_power = GetTickCount64();
+			isIncreasePower = true;
+		}
 	}
 	else if (e->nx != 0 && e->obj->IsBlocking()) 
 	{
 		vx = 0;
+		if(!isDecreasePower) time_power = GetTickCount64();
+		isIncreasePower = true;
 	}
+
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
@@ -696,13 +705,19 @@ int CMario::GetAniIdRaccoon()
 			}
 			else if (vx > 0)
 			{
-				if (ax < 0) aniId = ID_ANI_MARIO_RACCOON_BRACE_RIGHT;
+				if (ax < 0) 
+				{
+					aniId = ID_ANI_MARIO_RACCOON_BRACE_RIGHT;
+				}
 				else if (ax == MARIO_ACCEL_RUN_X) aniId = ID_ANI_MARIO_RACCOON_RUNNING_RIGHT;
 				else if (ax == MARIO_ACCEL_WALK_X) aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
 			}
 			else
 			{
-				if (ax > 0) aniId = ID_ANI_MARIO_RACCOON_BRACE_LEFT;
+				if (ax > 0)
+				{
+					aniId = ID_ANI_MARIO_RACCOON_BRACE_LEFT;
+				}
 				else if (ax == -MARIO_ACCEL_RUN_X) aniId = ID_ANI_MARIO_RACCOON_RUNNING_LEFT;
 				else if (ax == -MARIO_ACCEL_WALK_X) aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT;
 			}
@@ -864,7 +879,6 @@ void CMario::SetState(int state)
 	{
 		if (isSitting) break;
 		isRunning = true;
-		//isFlying = false;
 		maxVx = -MARIO_RUNNING_SPEED + power * MARIO_VMAX_X_ADJUST;;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
@@ -1119,6 +1133,12 @@ void CMario::AccelerationFunction()
 
 void CMario::CalculatePowerToFly()
 {
+	if (CountDownTimer2(time_power, 1000))
+	{
+		isDecreasePower = false;
+		time_power = 0;
+	}
+
 	if (isFlying && IsMaxPower()) 
 	{
 		if (GetTickCount64() - time_fly > 5000) 
@@ -1130,7 +1150,7 @@ void CMario::CalculatePowerToFly()
 	}
 	else 
 	{
-		if (isRunning && isOnPlatform)
+		if (isRunning && isOnPlatform && !isDecreasePower)
 		{
 			if (GetTickCount64() - time_running > 200)
 			{

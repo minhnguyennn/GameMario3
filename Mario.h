@@ -281,6 +281,7 @@ class CMario : public CGameObject
 	BOOLEAN isKick;
 	BOOLEAN isSlowFly;
 	BOOLEAN isChangeLevel;
+	BOOLEAN isDecreasePower;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -307,6 +308,7 @@ public:
 		time_fly = 0;
 		time_line = 0;
 		time_power = 0;
+		
 		isSlowFly = false;
 		isAttack = false;
 		isFlying = false;
@@ -317,6 +319,7 @@ public:
 		isGhostBox = false;
 		isKick = false;
 		isChangeLevel = false;
+		isDecreasePower = false;
 		koopa_holding = NULL;
 		
 		maxVx = 0.0f;
