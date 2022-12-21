@@ -14,7 +14,7 @@
 //property
 #define	FLOWER_BOX_SPEED_Y	0.1f
 //time
-#define FLOWER_BOX_UP_TIMEOUT	700
+#define FLOWER_BOX_UP_TIMEOUT	1000
 
 class CFlowerBox : public CGameObject 
 {

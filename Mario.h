@@ -240,7 +240,7 @@
 
 //TIME
 #define	MARIO_FALL_SLOWLY_TIMEOUT 300
-#define	MARIO_KICK_TIMEOUT 1000
+#define	MARIO_KICK_TIMEOUT 100
 #define	MARIO_ATTACK_TIMEOUT 500
 #define TIME_ONE_SECOND 1000
 #define MARIO_CHANGE_LEVEL_TIMEOUT 1000
@@ -282,7 +282,8 @@ class CMario : public CGameObject
 	BOOLEAN isSlowFly;
 	BOOLEAN isChangeLevel;
 	BOOLEAN isDecreasePower;
-
+	BOOLEAN disableKey;
+	BOOLEAN canReturnWorldMap;
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushRoom(LPCOLLISIONEVENT e);
@@ -309,6 +310,7 @@ public:
 		time_line = 0;
 		time_power = 0;
 		
+		canReturnWorldMap = false;
 		isSlowFly = false;
 		isAttack = false;
 		isFlying = false;
@@ -321,7 +323,7 @@ public:
 		isChangeLevel = false;
 		isDecreasePower = false;
 		koopa_holding = NULL;
-		
+		disableKey = false;
 		maxVx = 0.0f;
 		minVx = 0.0f;
 		maxVy = 0.0f;
@@ -357,8 +359,11 @@ public:
 	int GetHeart() { return heart; }
 	int GetScore() { return score; }
 	int GetPower() { return power; }
+
 	bool IsMaxPower() { return power == MARIO_MAX_POWER_UP; }
 	bool GetIsChangeLevel() { return isChangeLevel; }
+	bool GetDisableKey() { return disableKey; }
+
 
 	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }
 	bool GetIsRunning() {return isRunning; }
@@ -393,4 +398,6 @@ public:
 	void CalculatePowerToFly();
 	void CalculateHeartAndCoin();
 	bool CountDownTimer2(ULONGLONG time_calculate, int time_out);
+	bool MarioOutWorld() { return (x < 2900); }
+
 };

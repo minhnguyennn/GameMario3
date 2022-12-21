@@ -56,7 +56,7 @@ void CFlowerBox::SetState(int state)
 		isUp = false;
 		isDeleted = true;
 		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-		CAutomation* automation = new CAutomation(x, y);
+		CAutomation* automation = new CAutomation(2682,270);
 		scene->CreateObject(automation);
 		break;
 	}

@@ -5,7 +5,7 @@
 #define ID_ANI_COURSE_CLEAR 11300
 #define ID_ANI_YOU_GOT_A_CARD 11301
 //TIME
-#define COURSE_CLEAR_TIMEOUT 1000
+#define COURSE_CLEAR_TIMEOUT 500
 
 class CAutomation : public CGameObject
 {

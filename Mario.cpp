@@ -34,7 +34,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CalculateHeartAndCoin();
 	CountDown1Second();
 	
-
+	if (canReturnWorldMap) {
+		//sau 2s
+		//doi canh world map
+	}
+	if (disableKey && isOnPlatform) {
+		if (MarioOutWorld())
+		{
+			SetState(MARIO_STATE_WALKING_RIGHT);
+		}
+		else
+		{
+			vx = 0;
+			vy = 0;
+			ax = 0;
+			ay = 0;
+		}
+	}
 	
 
 	if (isAttack && CountDownTimer(MARIO_ATTACK_TIMEOUT))
@@ -91,14 +107,14 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		else
 		{
 			if (!isDecreasePower) time_power = GetTickCount64();
-			isIncreasePower = true;
+			isDecreasePower = true;
 		}
 	}
 	else if (e->nx != 0 && e->obj->IsBlocking()) 
 	{
 		vx = 0;
 		if(!isDecreasePower) time_power = GetTickCount64();
-		isIncreasePower = true;
+		isDecreasePower = true;
 	}
 
 
@@ -133,10 +149,11 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithFlowerBox(LPCOLLISIONEVENT e)
 {
 	CFlowerBox* flower_box = dynamic_cast<CFlowerBox*>(e->obj);
-	if (e->ny > 0)
-	{
+
+		disableKey = true;
+		SetState(MARIO_STATE_IDLE);
 		flower_box->SetState(FLOWER_BOX_STATE_UP);
-	}
+	
 }
 
 void CMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e) 
@@ -491,8 +508,8 @@ int CMario::GetAniIdBig()
 		}
 		else
 		{
-			if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_FALL_WALK_RIGHT;
-			else  aniId = ID_ANI_MARIO_RACCOON_FALL_WALK_LEFT;
+			if (nx > 0) aniId = ID_ANI_MARIO_FALL_RIGHT;
+			else  aniId = ID_ANI_MARIO_FALL_LEFT;
 		}
 	}
 	else
@@ -1003,15 +1020,30 @@ void CMario::CountDown1Second() {
 	//GetTickCount64() - x > y => x da chay y giay
 	//x=GetTickCount64() => x bat dau chây 0 giay (khoi tao)
 	if (time > 0) {
-		if (GetTickCount64() - count_1_second > TIME_ONE_SECOND) {
-			time--;
-			//THUC HIEN SAU 1 GIAY
-			count_1_second = GetTickCount64();
+		if (MarioOutWorld()) {
+			if (GetTickCount64() - count_1_second > TIME_ONE_SECOND) {
+				time--;
+				//THUC HIEN SAU 1 GIAY
+				count_1_second = GetTickCount64();
+			}
+		}
+		else {
+			if (GetTickCount64() - count_1_second > 0) {
+				time-=7;
+				//THUC HIEN SAU 1 GIAY
+				count_1_second = GetTickCount64();
+			}
 		}
 	}
 	else {
 		time = 0;
-		SetState(MARIO_STATE_DIE);
+		if (!disableKey) {
+			SetState(MARIO_STATE_DIE);
+		}
+		else {
+			canReturnWorldMap = true;
+			//dem gio return worldmap = GetTickCount(64)
+		}
 	}
 }
 
