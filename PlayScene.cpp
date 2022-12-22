@@ -11,20 +11,11 @@
 #include"debug.h"
 #include "QuestionBrick.h"
 #include "Platform.h"
-#include "MushRoom.h"
-#include "Leaf.h"
-#include "Point.h"
 #include "Koopa.h"
-#include "VenusFireTrap.h"
 #include "Pipeline.h"
-#include "FireBalls.h"
-#include "FireBallOfMario.h"
 #include "Goomba.h"
-#include "Tail.h"
 #include "HUD.h"
 #include "FlowerBox.h"
-#include "Automation.h"
-#include "Debris.h"
 
 
 
@@ -151,11 +142,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CCoin(x, y); 
 		break; 
 	}
-	case OBJECT_TYPE_TAIL: 
-	{
-		obj = new CTail(x, y); 
-		break; 
-	}
 	case OBJECT_TYPE_KOOPA: 
 	{
 		int level = (int)atof(tokens[3].c_str());
@@ -164,28 +150,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CKoopa(x, y, level, type);
 		break;
 	}
-	case OBJECT_TYPE_VFTRAP: 
-	{ 
-		int type = (int)atof(tokens[3].c_str());
-		obj = new CVenusFireTrap(x, y, type); 
-		break; 
-	}
 	case OBJECT_TYPE_PIPELINE: 
 	{
 		int type_summon_plant = (int)atof(tokens[3].c_str());
 		int type_pineline = (int)atof(tokens[4].c_str());
-
 		obj = new CPipeline(x, y, type_summon_plant, type_pineline); 
-		break;
-	}
-	case OBJECT_TYPE_FIREBALLS: 
-	{
-		obj = new CFireBalls(x, y);
-		break;
-	}
-	case OBJECT_TYPE_FIREBALL_OF_MARIO: 
-	{
-		obj = new CFireBallOfMario(x, y);
 		break;
 	}
 	case OBJECT_TYPE_GOOMBA:
@@ -195,37 +164,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CGoomba(x, y, type, level);
 		break;
 	}
-	case OBJECT_TYPE_POINT:
-	{
-		int type_point = (int)atof(tokens[3].c_str());
-		obj = new CPoint(x, y, type_point);
-		break;
-	}
 	case OBJECT_TYPE_QUESTIONBRICK:
 	{
 		int type = (int)atof(tokens[3].c_str());
 		obj = new CQuestionBrick(x, y, type); 
 		break;
 	}
-	case OBJECT_TYPE_MUSHROOM: 
-	{
-		int type_mushroom = (int)atof(tokens[3].c_str()); 
-		obj = new CMushRoom(x, y, type_mushroom);
-		break; 
-	}
-	case OBJECT_TYPE_LEAF: 
-	{
-		obj = new CLeaf(x, y);
-		break;
-	}
 	case OBJECT_TYPE_FLOWER_BOX:
 	{
 		obj = new CFlowerBox(x, y);
-		break;
-	}
-	case OBJECT_TYPE_AUTOMATION:
-	{
-		obj = new CAutomation(x, y);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:

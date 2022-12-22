@@ -25,9 +25,8 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	/*DebugOutTitle(L"isAttack: %d and isfly: %d", isAttack, isFlying);*/
-	DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
-	
-	DebugOut(L"--STATE-- %d\n", state);
+	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
+	//DebugOut(L"--STATE-- %d\n", state);
 	ChangeLevelMario(dt);
 	AccelerationFunction();
 	CalculatePowerToFly();
@@ -412,11 +411,6 @@ int CMario::GetAniIdSmall()
 		if (nx > 0)	aniId = ID_ANI_MARIO_SMALL_KICK_RIGHT;
 		else  aniId = ID_ANI_MARIO_SMALL_KICK_LEFT;
 	}
-	else if (isDeceleration)
-	{
-		if (nx > 0)	aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
-		else  aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
-	}
 	else if (!isOnPlatform)
 	{
 		if (IsMaxPower())
@@ -434,10 +428,13 @@ int CMario::GetAniIdSmall()
 	{
 		if (isSitting)
 		{
-			if (nx > 0)
-				aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
-			else
-				aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
+			if (nx > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
+			else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
+		}
+		else if (isDeceleration)
+		{
+			if (nx > 0)	aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
+			else  aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 		}
 		else
 		{
@@ -486,11 +483,6 @@ int CMario::GetAniIdBig()
 		if (nx > 0)	aniId = ID_ANI_MARIO_KICK_RIGHT;
 		else  aniId = ID_ANI_MARIO_KICK_LEFT;
 	}
-	else if (isDeceleration)
-	{
-		if (nx > 0)	aniId = ID_ANI_MARIO_WALKING_RIGHT;
-		else  aniId = ID_ANI_MARIO_WALKING_LEFT;
-	}
 	else if (!isOnPlatform)
 	{
 		if (vy < 0)
@@ -520,6 +512,11 @@ int CMario::GetAniIdBig()
 				aniId = ID_ANI_MARIO_SIT_RIGHT;
 			else
 				aniId = ID_ANI_MARIO_SIT_LEFT;
+		}
+		else if (isDeceleration)
+		{
+			if (nx > 0)	aniId = ID_ANI_MARIO_WALKING_RIGHT;
+			else  aniId = ID_ANI_MARIO_WALKING_LEFT;
 		}
 		else
 		{
@@ -569,11 +566,6 @@ int CMario::GetAniIdFire()
 		if (nx > 0)	aniId = ID_ANI_MARIO_FIRE_KICK_RIGHT;
 		else  aniId = ID_ANI_MARIO_FIRE_KICK_LEFT;
 	}
-	else if (isDeceleration)
-	{
-		if (nx > 0)	aniId = ID_ANI_MARIO_FIRE_WALKING_RIGHT;
-		else  aniId = ID_ANI_MARIO_FIRE_WALKING_LEFT;
-	}
 	else if (!isOnPlatform)
 	{
 		if (vy < 0)
@@ -591,8 +583,8 @@ int CMario::GetAniIdFire()
 		}
 		else
 		{
-			if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_FALL_WALK_RIGHT;
-			else  aniId = ID_ANI_MARIO_RACCOON_FALL_WALK_LEFT;
+			if (nx > 0) aniId = ID_ANI_MARIO_FIRE_FALL_RIGHT;
+			else  aniId = ID_ANI_MARIO_FIRE_FALL_LEFT;
 		}
 	}
 	else
@@ -601,6 +593,11 @@ int CMario::GetAniIdFire()
 		{
 			if (nx > 0) aniId = ID_ANI_MARIO_FIRE_SIT_RIGHT;
 			else aniId = ID_ANI_MARIO_FIRE_SIT_LEFT;
+		}
+		else if (isDeceleration)
+		{
+			if (nx > 0)	aniId = ID_ANI_MARIO_FIRE_WALKING_RIGHT;
+			else  aniId = ID_ANI_MARIO_FIRE_WALKING_LEFT;
 		}
 		else
 		{
@@ -747,49 +744,25 @@ int CMario::GetAniIdRaccoon()
 int CMario::GetAniIdChangeLevel()
 {
 	int aniId = -1;
+	if (level == MARIO_LEVEL_SMALL)
+	{
+		if (nx > 0) aniId = ID_ANI_SMALL_TO_SMALL_RIGHT;
+		else aniId = ID_ANI_SMALL_TO_SMALL_LEFT;
+	}
 	if (level == MARIO_LEVEL_BIG)
 	{
-		if (nx > 0)
-		{
-			aniId = ID_ANI_SMALL_TO_BIG_RIGHT;
-		}
-		else
-		{
-			aniId = ID_ANI_SMALL_TO_BIG_LEFT;
-		}
-	}
-	else if (level == MARIO_LEVEL_SMALL)
-	{
-		if (nx > 0)
-		{
-			aniId = ID_ANI_SMALL_TO_SMALL_RIGHT;
-		}
-		else
-		{
-			aniId = ID_ANI_SMALL_TO_SMALL_LEFT;
-		}
+		if (nx > 0) aniId = ID_ANI_SMALL_TO_BIG_RIGHT;
+		else aniId = ID_ANI_SMALL_TO_BIG_LEFT;
 	}
 	else if (level == MARIO_LEVEL_FIRE)
 	{
-		if (nx > 0)
-		{
-			aniId = ID_ANI_BIG_TO_FIRE_RIGHT;
-		}
-		else
-		{
-			aniId = ID_ANI_BIG_TO_FIRE_LEFT;
-		}
+		if (nx > 0) aniId = ID_ANI_BIG_TO_FIRE_RIGHT;
+		else aniId = ID_ANI_BIG_TO_FIRE_LEFT;
 	}
 	else if (level == MARIO_LEVEL_RACCOON)
 	{
-		if (nx > 0)
-		{
-			aniId = ID_ANI_BIG_TO_RACCOON_RIGHT;
-		}
-		else
-		{
-			aniId = ID_ANI_BIG_TO_RACCOON_LEFT;
-		}
+		if (nx > 0) aniId = ID_ANI_BIG_TO_RACCOON_RIGHT;
+		else aniId = ID_ANI_BIG_TO_RACCOON_LEFT;
 	}
 	return aniId;
 }
@@ -1007,9 +980,10 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CMario::SetLevel(int l)
 {
-	if(this->level == MARIO_LEVEL_SMALL)
+	if (isSitting) return;
+	if(isOnPlatform)
 	{
-		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+		y -= MARIO_CHANGE_LEVEL_HEIGHT;
 	}
 	isChangeLevel = true;
 	time_line = GetTickCount64();

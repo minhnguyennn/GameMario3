@@ -74,14 +74,6 @@ void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		MoveFunctionPlant(VFTRAP_DIS_UP_RED, VFTRAP_DIS_DOWN_RED);
 	}
-	
-
-	/*if ((state == VFTRAP_STATE_DIE) && CountDownTimer(VFTRAP_DIE_TIMEOUT))
-	{
-		isDeleted = true;
-		return;
-	}*/
-
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -92,7 +84,7 @@ void CVenusFireTrap::Render()
 	int aniId = 0;
 	if (type == VFTRAP_TYPE_GREEN)
 	{
-		if (isMarioLeftWithPlant())
+		if (!isMarioLeftWithPlant())
 		{
 			if (isMarioAboveWithPlant())
 			{
@@ -103,7 +95,7 @@ void CVenusFireTrap::Render()
 				aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_RIGHT;
 			}
 		}
-		else if (!isMarioLeftWithPlant())
+		else
 		{
 			if (isMarioAboveWithPlant())
 			{
@@ -114,14 +106,15 @@ void CVenusFireTrap::Render()
 				aniId = ID_ANI_VFTRAP_GREEN_BOTTOM_LEFT;
 			}
 		}
-		else if (state == VFTRAP_STATE_DIE)
+
+		if (state == VFTRAP_STATE_DIE)
 		{
 			aniId = ID_ANI_VFTRAP_GREEN_DIE;
 		}
 	}
 	else if (type == VFTRAP_TYPE_RED)
 	{
-		if (isMarioLeftWithPlant())
+		if (!isMarioLeftWithPlant())
 		{
 			if (isMarioAboveWithPlant())
 			{
@@ -132,7 +125,7 @@ void CVenusFireTrap::Render()
 				aniId = ID_ANI_VFTRAP_RED_BOTTOM_RIGHT;
 			}
 		}
-		else if (!isMarioLeftWithPlant())
+		else if (isMarioLeftWithPlant())
 		{
 			if (isMarioAboveWithPlant())
 			{
@@ -193,7 +186,8 @@ void CVenusFireTrap::SetState(int state)
 	CGameObject::SetState(state);
 }
 
-void CVenusFireTrap::ChangeStateMotionDown(ULONGLONG time_type) {
+void CVenusFireTrap::ChangeStateMotionDown(ULONGLONG time_type) 
+{
 	if ((GetTickCount64() - time_line) > time_type) 
 	{
 		if (type == VFTRAP_TYPE_RED) 
@@ -204,13 +198,16 @@ void CVenusFireTrap::ChangeStateMotionDown(ULONGLONG time_type) {
 	}
 }
 
-void CVenusFireTrap::ChangeStateMotionUp(ULONGLONG time_type) {
-	if ((GetTickCount64() - time_line) > time_type) {
-		SetState(VFTRAP_STATE_UP);
-	}
+void CVenusFireTrap::ChangeStateMotionUp(ULONGLONG time_type) 
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (abs(x - mario->GetX()) < VFTRAP_DIST_MARIO) return;
+	if (CountDownTimer(time_type)) SetState(VFTRAP_STATE_UP);
 }
 
-void CVenusFireTrap::SetSummonItems(int type) {
+void CVenusFireTrap::SetSummonItems(int type) 
+{
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	switch (type)
 	{
@@ -219,37 +216,22 @@ void CVenusFireTrap::SetSummonItems(int type) {
 		CMario* mario = (CMario*)scene->GetPlayer();
 		CFireBalls* fire_balls = new CFireBalls(x, y);
 		scene->CreateObject(fire_balls);
-		if (mario->GetX() > x) 
+		if (!isMarioLeftWithPlant())
 		{
-			if (mario->GetY() < y) 
+			if (isMarioAboveWithPlant()) fire_balls->SetState(FIREBALLS_STATE_MOVE_RIGHT_TOP);
+			else
 			{
-				fire_balls->SetState(FIREBALLS_STATE_MOVE_RIGHT_TOP);
+				if (mario->GetX() - x < VFTRAP_DIST_FIREBALL) fire_balls->SetState(FIREBALLS_STATE_RIGHT_BOTTOM);
+				else fire_balls->SetState(FIREBALLS_STATE_MOVE_RIGHT);
 			}
-			else if (mario->GetY() > y)
-			{
-				fire_balls->SetState(FIREBALLS_STATE_MOVE_RIGHT);
-			}
-			/*else if (x - mario->GetX() < 80)
-			{
-				fire_balls->SetState(FIREBALLS_STATE_RIGHT_BOTTOM);
-			}*/
 		}
-		else if (mario->GetX() < x)
+		else
 		{
-			if (mario->GetY() < y)
+			if (isMarioAboveWithPlant()) fire_balls->SetState(FIREBALLS_STATE_MOVE_LEFT_TOP);
+			else
 			{
-				fire_balls->SetState(FIREBALLS_STATE_MOVE_LEFT_TOP);
-			}
-			else if (mario->GetY() > y)
-			{
-				if (x - mario->GetX() < 80)
-				{
-					fire_balls->SetState(FIREBALLS_STATE_LEFT_BOTTOM);
-				}
-				else
-				{
-					fire_balls->SetState(FIREBALLS_STATE_MOVE_LEFT);
-				}
+				if (x - mario->GetX() < VFTRAP_DIST_FIREBALL) fire_balls->SetState(FIREBALLS_STATE_LEFT_BOTTOM);
+				else fire_balls->SetState(FIREBALLS_STATE_MOVE_LEFT);
 			}
 		}
 		break;
@@ -270,7 +252,7 @@ bool CVenusFireTrap::isMarioLeftWithPlant()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-	if (x < mario->GetX()) return true;
+	if (mario->GetX() < x) return true;
 	else return false;
 }
 
@@ -278,51 +260,29 @@ bool CVenusFireTrap::isMarioAboveWithPlant()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-	if (y > mario->GetY()) return true;
+	if (mario->GetY() < y) return true;
 	else return false;
 }
 
 void CVenusFireTrap::MoveFunctionPlant(float disUp, float disDown) 
 {
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
-
 	if ((start_y - y) > disUp)
+	{
+		if (state == VFTRAP_STATE_UP) SetState(VFTRAP_STATE_IDLE);
+		else
 		{
-			if (state == VFTRAP_STATE_UP)
-			{
-				SetState(VFTRAP_STATE_IDLE);
-			}
-			else if (state == VFTRAP_STATE_IDLE)
-			{
-				if (type == VFTRAP_TYPE_PIRANHA)
-					ChangeStateMotionDown(VFTRAP_WAITING_PIRAN);
-				else
-					ChangeStateMotionDown(VFTRAP_WAITING_MAX);
-			}
+			if (type == VFTRAP_TYPE_PIRANHA) ChangeStateMotionDown(VFTRAP_WAITING_PIRAN);
+			else ChangeStateMotionDown(VFTRAP_WAITING_MAX);
 		}
+	}
 
 	if ((y - start_y) > disDown)
 	{
-		if (x - mario->GetX() < 30)
-		{
-			SetState(VFTRAP_STATE_SLEEP);
-		}
+		if (state == VFTRAP_STATE_DOWN) SetState(VFTRAP_STATE_IDLE);
 		else
 		{
-			SetState(VFTRAP_STATE_UP);
-		}
-		
-		if (state == VFTRAP_STATE_DOWN)
-		{
-			SetState(VFTRAP_STATE_IDLE);
-		}
-		else if (state == VFTRAP_STATE_IDLE)
-		{
-			if (type == VFTRAP_TYPE_PIRANHA)
-				ChangeStateMotionUp(VFTRAP_WAITING_PIRAN);
-			else
-				ChangeStateMotionUp(VFTRAP_WAITING_MAX);
+			if (type == VFTRAP_TYPE_PIRANHA) ChangeStateMotionUp(VFTRAP_WAITING_PIRAN);
+			else ChangeStateMotionUp(VFTRAP_WAITING_MAX);
 		}
 	}
 }

@@ -13,7 +13,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	{
 	case DIK_A:
 
-		if (mario->GetLevel() == MARIO_LEVEL_FIRE)
+		if (!mario->GetIsRunning() && mario->GetIsOnPlatform() && mario->GetLevel() == MARIO_LEVEL_FIRE)
 		{
 			mario->SummonFireBalls();
 		}

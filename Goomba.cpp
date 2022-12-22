@@ -184,6 +184,7 @@ void CGoomba::SetState(int state)
 	}
 	case GOOMBA_STATE_DIE:
 		time_line = GetTickCount64();
+		isDie = true;
 		vx = 0;
 		vy = 0;
 		ay = 0;
