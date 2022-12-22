@@ -5,6 +5,8 @@
 #include "VenusFireTrap.h"
 #include "Goomba.h"
 #include "QuestionBrick.h"
+#include "Brick.h"
+#include "Debris.h"
 
 
 CTail::CTail(float x, float y) :CGameObject(x, y)
@@ -53,6 +55,37 @@ void CTail::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
+}
+
+void CTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	bool isFlag = false;
+	if (e->nx != 0)
+	{
+		if (!isFlag) {
+			brick->SetState(BRICK_STATE_DELETE);
+			/*CDebris* left_up = new CDebris(x, y);
+			scene->CreateObject(left_up);
+			left_up->SetState(DEBRIS_LEFT_UP);
+
+			CDebris* left_down = new CDebris(x +40, y);
+			scene->CreateObject(left_down);
+			left_up->SetState(DEBRIS_LEFT_DOWN);*/
+
+			/*CDebris* right_up = new CDebris(x + 6, y);
+			scene->CreateObject(right_up);
+			left_up->SetState(DEBRIS_RIGHT_UP);
+
+			CDebris* right_down = new CDebris(x+6, y);
+			scene->CreateObject(right_down);
+			left_up->SetState(DEBRIS_RIGHT_DOWN);*/
+			isFlag = true;
+		}
+	}
 }
 
 void CTail::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)

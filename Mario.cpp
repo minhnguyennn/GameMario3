@@ -1078,10 +1078,10 @@ void CMario::SummonTail()
 {
 	if (isChangeLevel || isSitting) return;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CTail* tail_right = new CTail(x, y);
+	CTail* tail_right = new CTail(x - 4, y);
 	tail_right->SetState(TAIL_STATE_RIGHT);
 	scene->CreateObject(tail_right);
-	CTail* tail_left = new CTail(x, y);
+	CTail* tail_left = new CTail(x + 4, y);
 	tail_left->SetState(TAIL_STATE_LEFT);
 	scene->CreateObject(tail_left);
 

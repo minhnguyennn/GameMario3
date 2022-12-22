@@ -222,6 +222,9 @@
     <ClCompile Include="Automation.cpp">
       <Filter>Header Files\Automation</Filter>
     </ClCompile>
+    <ClCompile Include="Debris.cpp">
+      <Filter>Header Files\Scenes\PlayScene\Object\Platforms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -361,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="Automation.h">
       <Filter>Header Files\Automation</Filter>
+    </ClInclude>
+    <ClInclude Include="Debris.h">
+      <Filter>Header Files\Scenes\PlayScene\Object\Platforms</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

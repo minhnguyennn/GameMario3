@@ -6,7 +6,7 @@
 #define ID_ANI_TAIL			14000
 
 //BBOX
-#define TAIL_BBOX_WIDTH		10
+#define TAIL_BBOX_WIDTH		20
 #define TAIL_BBOX_HEIGHT	10
 
 //STATE
@@ -22,6 +22,7 @@ class CTail : public CGameObject {
 	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 public:
 	CTail(float x, float y);
 	void Render();
