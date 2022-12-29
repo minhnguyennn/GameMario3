@@ -154,11 +154,6 @@ void CVenusFireTrap::SetState(int state)
 {
 	switch (state)
 	{
-	case VFTRAP_STATE_SLEEP:
-	{
-		vy = 0;
-		break;
-	}
 	case VFTRAP_STATE_UP:
 	{
 		vy = -VFTRAP_MOVING_SPEED;
@@ -188,7 +183,7 @@ void CVenusFireTrap::SetState(int state)
 
 void CVenusFireTrap::ChangeStateMotionDown(ULONGLONG time_type) 
 {
-	if ((GetTickCount64() - time_line) > time_type) 
+	if (CountDownTimer(time_type))
 	{
 		if (type == VFTRAP_TYPE_RED) 
 		{
@@ -287,7 +282,7 @@ void CVenusFireTrap::MoveFunctionPlant(float disUp, float disDown)
 	}
 }
 
-bool CVenusFireTrap::CountDownTimer(int time)
+bool CVenusFireTrap::CountDownTimer(ULONGLONG time)
 {
 	if (GetTickCount64() - time_line > time)
 	{

@@ -24,7 +24,8 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	/*DebugOutTitle(L"isAttack: %d and isfly: %d", isAttack, isFlying);*/
+	//if (power > 0) isRunning = false;
+	DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
 	ChangeLevelMario(dt);
@@ -203,12 +204,12 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 				}
 				else 
 				{
-					y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - 4));
+					y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - MARIO_ON_PLATFORM_Y_ADJUST));
 				}
 			}
 			else 
 			{
-				y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - 6));
+				y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - MARIO_SMALL_ON_PLATFORM_Y_ADJUST));
 			}
 		}
 	}
@@ -220,7 +221,6 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	if (e->ny < 0)
 	{
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		//koopa->SetVY(-KOOPA_JUMP_DEFLECT_SPEED);
 		if (koopa->GetLevel() == KOOPA_LEVEL_BIG)
 		{
 			koopa->SetLevel(KOOPA_LEVEL_SMALL);
@@ -312,17 +312,13 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
 	CQuestionBrick* quest_brick = dynamic_cast<CQuestionBrick*>(e->obj);
-	if (quest_brick->GetState() == QUESTION_STATE_IDLE && e->ny > 0)
-	{
+	if (quest_brick->GetState() == QUESTION_STATE_IDLE && e->ny > 0) 
 		quest_brick->SetState(QUESTION_STATE_MOVE_UP);
-		
-	}
 }
 
 //GET ANIMATION
 void CMario::Render()
 {
-	
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
 	if (isChangeLevel)
@@ -353,37 +349,25 @@ void CMario::Render()
 	if (level != MARIO_LEVEL_RACCOON)
 	{
 		if (isGhostBox)
-		{
-			animations->Get(aniId)->Render(x, y - 1);
-		}
+			animations->Get(aniId)->Render(x, y - MARIO_GHOSTBOX_Y);
 		else
-		{
 			animations->Get(aniId)->Render(x, y);
-		}
 	}
 	else
 	{
 		if (nx > 0)
 		{
 			if (isGhostBox)
-			{
-				animations->Get(aniId)->Render(x - 4, y - 1);
-			}
+				animations->Get(aniId)->Render(x - MARIO_RACCON_GHOSTBOX_X_ADJUST, y - MARIO_RACCON_GHOSTBOX_Y_ADJUST);
 			else
-			{
-				animations->Get(aniId)->Render(x - 4, y);
-			}
+				animations->Get(aniId)->Render(x - MARIO_RACCON_GHOSTBOX_X_ADJUST, y);
 		}
 		else
 		{
 			if (isGhostBox)
-			{
-				animations->Get(aniId)->Render(x + 4, y - 1);
-			}
+				animations->Get(aniId)->Render(x + MARIO_RACCON_GHOSTBOX_X_ADJUST, y - MARIO_RACCON_GHOSTBOX_Y_ADJUST);
 			else
-			{
-				animations->Get(aniId)->Render(x + 4, y);
-			}
+				animations->Get(aniId)->Render(x + MARIO_RACCON_GHOSTBOX_X_ADJUST, y);
 		}
 	}
 
@@ -651,24 +635,6 @@ int CMario::GetAniIdRaccoon()
 		if (nx > 0)	aniId = ID_ANI_MARIO_RACCOON_KICK_RIGHT;
 		else  aniId = ID_ANI_MARIO_RACCOON_KICK_LEFT;
 	}
-	else if (isDeceleration)
-	{
-		if (isFlying)
-		{
-			if (nx > 0)  aniId = ID_ANI_MARIO_RACCOON_FLYING_RIGHT;
-			else  aniId = ID_ANI_MARIO_RACCOON_FLYING_LEFT;
-		}
-		else if (vy > 0)
-		{
-			if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_FALL_WALK_RIGHT;
-			else  aniId = ID_ANI_MARIO_RACCOON_FALL_WALK_LEFT;
-		}
-		else
-		{
-			if (nx > 0)	aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
-			else  aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT;
-		}
-	}
 	else if (!isOnPlatform)
 	{
 		if (vy < 0)
@@ -709,6 +675,13 @@ int CMario::GetAniIdRaccoon()
 		{
 			if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_SIT_RIGHT;
 			else aniId = ID_ANI_MARIO_RACCOON_SIT_LEFT;
+		}
+		else if (isDeceleration)
+		{
+			
+				if (nx > 0)	aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
+				else  aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT;
+		
 		}
 		else
 		{
@@ -769,7 +742,6 @@ int CMario::GetAniIdChangeLevel()
 
 void CMario::SetState(int state)
 {
-	// DebugOut(L"STATE: %d\n", state);
 	// DIE is the end state, cannot be changed! 
 	if (this->state == MARIO_STATE_DIE) return;
 
@@ -807,7 +779,7 @@ void CMario::SetState(int state)
 		if (level != MARIO_LEVEL_RACCOON) break;
 		time_line = GetTickCount64();
 		isSlowFly = true;
-		vy = - 0.001f;
+		vy = -MARIO_SPEED_FALL;
 		break;
 	}
 	case MARIO_STATE_FLYING:
@@ -816,14 +788,14 @@ void CMario::SetState(int state)
 		if (!isFlying) time_fly = GetTickCount64();
 		isOnPlatform = false;
 		isFlying = true;
-		vy = -0.2f;
+		vy = -MARIO_SPEED_FLYING;
 		break;
 	}
 	case MARIO_STATE_RELEASE_FLYING:
 	{
 		if (vy < 0)
 		{
-			vy += 0.2f / 2;
+			vy += MARIO_SPEED_FLYING / 2;
 		}
 		break;
 	}
@@ -859,8 +831,7 @@ void CMario::SetState(int state)
 	{
 		if (isSitting) break;
 		isRunning = true;
-		//isFlying = false;
-		maxVx = MARIO_RUNNING_SPEED + power * MARIO_VMAX_X_ADJUST;;
+		maxVx = MARIO_RUNNING_SPEED + power * MARIO_VMAX_X_ADJUST;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 		break;
@@ -869,7 +840,7 @@ void CMario::SetState(int state)
 	{
 		if (isSitting) break;
 		isRunning = true;
-		maxVx = -MARIO_RUNNING_SPEED + power * MARIO_VMAX_X_ADJUST;;
+		maxVx = -MARIO_RUNNING_SPEED + power * MARIO_VMAX_X_ADJUST;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
 		break;
@@ -935,6 +906,7 @@ void CMario::SetState(int state)
 	{
 		vx = 0.0f;
 		ax = 0.0f;
+		isRunning = false;
 		break;
 	}
 	case MARIO_STATE_DIE:
@@ -991,20 +963,16 @@ void CMario::SetLevel(int l)
 }
 
 void CMario::CountDown1Second() {
-	//GetTickCount64() - x > y => x da chay y giay
-	//x=GetTickCount64() => x bat dau chây 0 giay (khoi tao)
 	if (time > 0) {
 		if (MarioOutWorld()) {
-			if (GetTickCount64() - count_1_second > TIME_ONE_SECOND) {
-				time--;
-				//THUC HIEN SAU 1 GIAY
+			if (CountDownTimer2(count_1_second, 0)) {
+				time -= MARIO_TIME_DECREASE_WHEN_OUTMAP;
 				count_1_second = GetTickCount64();
 			}
 		}
 		else {
-			if (GetTickCount64() - count_1_second > 0) {
-				time-=7;
-				//THUC HIEN SAU 1 GIAY
+			if (CountDownTimer2(count_1_second, TIME_ONE_SECOND)) {
+				time--;
 				count_1_second = GetTickCount64();
 			}
 		}
@@ -1016,7 +984,6 @@ void CMario::CountDown1Second() {
 		}
 		else {
 			canReturnWorldMap = true;
-			//dem gio return worldmap = GetTickCount(64)
 		}
 	}
 }
@@ -1052,10 +1019,10 @@ void CMario::SummonTail()
 {
 	if (isChangeLevel || isSitting) return;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CTail* tail_right = new CTail(x - 4, y);
+	CTail* tail_right = new CTail(x - MARIO_TAIL_X_ADJUST, y);
 	tail_right->SetState(TAIL_STATE_RIGHT);
 	scene->CreateObject(tail_right);
-	CTail* tail_left = new CTail(x + 4, y);
+	CTail* tail_left = new CTail(x + MARIO_TAIL_X_ADJUST, y);
 	tail_left->SetState(TAIL_STATE_LEFT);
 	scene->CreateObject(tail_left);
 
@@ -1063,16 +1030,16 @@ void CMario::SummonTail()
 
 void CMario::MarioHoldKoopaFunction()
 {
-	if (state==MARIO_STATE_RUNNING_LEFT)
+	if (state == MARIO_STATE_RUNNING_LEFT)
 	{
-		koopa_holding->SetX(x - 10);
+		koopa_holding->SetX(x - MARIO_HOLDKOOPA_X_ADJUST);
 	}
 	else if(state == MARIO_STATE_RUNNING_RIGHT)
 	{
-		koopa_holding->SetX(x + 10);
+		koopa_holding->SetX(x + MARIO_HOLDKOOPA_X_ADJUST);
 
 	}
-	koopa_holding->SetY(y - 2);
+	koopa_holding->SetY(y - MARIO_HOLDKOOPA_Y_ADJUST);
 	koopa_holding->SetAy(0);
 	koopa_holding->SetVX(vx);
 }
@@ -1139,7 +1106,7 @@ void CMario::AccelerationFunction()
 
 void CMario::CalculatePowerToFly()
 {
-	if (CountDownTimer2(time_power, 1000))
+	if (CountDownTimer2(time_power, MARIO_DECREASE_POWER_TIMEOUT))
 	{
 		isDecreasePower = false;
 		time_power = 0;
@@ -1147,7 +1114,7 @@ void CMario::CalculatePowerToFly()
 
 	if (isFlying && IsMaxPower()) 
 	{
-		if (GetTickCount64() - time_fly > 5000) 
+		if (CountDownTimer2(time_fly, MARIO_FLYING_TIMEOUT))
 		{
 			power = 0;
 			isFlying = false;
@@ -1158,22 +1125,22 @@ void CMario::CalculatePowerToFly()
 	{
 		if (isRunning && isOnPlatform && !isDecreasePower)
 		{
-			if (GetTickCount64() - time_running > 200)
+			if (CountDownTimer2(time_running, MARIO_POWER_TIMEOUT))
 			{
-				if (power < 7)
+				if (power < MARIO_MAX_POWER_UP)
 				{
-					power = power + 1;
+					power++;
 				}
 				time_running = GetTickCount64();
 			}
 		}
 		else
 		{
-			if (GetTickCount64() - time_running > 200)
+			if (CountDownTimer2(time_running, MARIO_POWER_TIMEOUT))
 			{
 				if (power > 0)
 				{
-					power = power - 1;
+					power--;
 				}
 				time_running = GetTickCount64();
 			}
@@ -1183,14 +1150,14 @@ void CMario::CalculatePowerToFly()
 
 void CMario::CalculateHeartAndCoin()
 {
-	if (coin > 99)
+	if (coin > MARIO_COIN_MAX)
 	{
 		heart++;
 		coin = 0;
 	}
 
-	if (heart > 99)
+	if (heart > MARIO_HEART_MAX)
 	{
-		heart = 99;
+		heart = MARIO_HEART_MAX;
 	}
 }

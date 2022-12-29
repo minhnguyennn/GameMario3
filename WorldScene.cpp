@@ -291,8 +291,8 @@ void CWorldScene::Render()
 	current_map->Render();
 
 	CGame* game = CGame::GetInstance();
-	float cam_x = game->GetCamX() + BLACK_BACKGROUND_ADJUST_X;
-	float cam_y = game->GetCamY() + BLACK_BACKGROUND_ADJUST_Y;
+	float cam_x = game->GetCamX() + WORLDMAP_BLACK_BACKGROUND_ADJUST_X;
+	float cam_y = game->GetCamY() + WORLDMAP_BLACK_BACKGROUND_ADJUST_Y;
 	hud_world = new CHudWorld(cam_x, cam_y);
 
 	for (unsigned int i = 0; i < objects.size(); i++)

@@ -61,7 +61,6 @@
 #define VFTRAP_STATE_UP 1
 #define VFTRAP_STATE_DOWN 2
 #define VFTRAP_STATE_DIE 3
-#define VFTRAP_STATE_SLEEP 4
 
 //TYPE OTHER
 #define VFTRAP_TYPE_FIRE_BALL 1
@@ -95,7 +94,7 @@ public:
 	bool isMarioLeftWithPlant();
 	bool isMarioAboveWithPlant();
 	void MoveFunctionPlant(float disUp, float disDown);
-	bool CountDownTimer(int time);
+	bool CountDownTimer(ULONGLONG time);
 };
 
 

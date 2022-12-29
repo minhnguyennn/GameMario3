@@ -174,12 +174,24 @@
 #define MARIO_ACCEL_RUN_X			0.0003f
 
 #define MARIO_JUMP_SPEED_Y			0.25f
-//#define MARIO_JUMP_SPEED_Y			0.5f
 #define MARIO_JUMP_RUN_SPEED_Y		0.26f
 
 #define MARIO_GRAVITY				0.00042f
 #define MARIO_JUMP_DEFLECT_SPEED	0.15f
 #define MARIO_MAX_POWER_UP			7
+#define MARIO_SPEED_FALL			0.001f
+#define MARIO_SPEED_FLYING			0.2f
+#define MARIO_COIN_MAX				99
+#define MARIO_HEART_MAX				99
+#define MARIO_HOLDKOOPA_X_ADJUST	10
+#define MARIO_HOLDKOOPA_Y_ADJUST	2
+#define MARIO_TAIL_X_ADJUST			4
+#define MARIO_POSITION_OUTMAP		2900
+#define MARIO_GHOSTBOX_Y			1
+#define MARIO_RACCON_GHOSTBOX_X_ADJUST	4
+#define MARIO_RACCON_GHOSTBOX_Y_ADJUST	1
+#define MARIO_ON_PLATFORM_Y_ADJUST	4
+#define MARIO_SMALL_ON_PLATFORM_Y_ADJUST	6
 
 //STATE
 #define MARIO_STATE_DIE					-10
@@ -245,12 +257,16 @@
 #define	MARIO_ATTACK_TIMEOUT 500
 #define TIME_ONE_SECOND 1000
 #define MARIO_CHANGE_LEVEL_TIMEOUT 1000
-#define MARIO_CALCULATE_POWER_TIMEOUT 200
+#define MARIO_POWER_TIMEOUT 200
+#define MARIO_FLYING_TIMEOUT 5000
+#define MARIO_DECREASE_POWER_TIMEOUT 1000
+#define MARIO_TIME_DECREASE_WHEN_OUTMAP 7
 
 class CMario : public CGameObject
 {
 	CKoopa* koopa_holding;
 	float maxVx;
+	float maxRunVx;
 	float minVx;
 	float maxVy;
 	float ax;				// acceleration on x 
@@ -328,6 +344,7 @@ public:
 		maxVx = 0.0f;
 		minVx = 0.0f;
 		maxVy = 0.0f;
+		maxRunVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
 		level = MARIO_LEVEL_SMALL;
@@ -399,6 +416,5 @@ public:
 	void CalculatePowerToFly();
 	void CalculateHeartAndCoin();
 	bool CountDownTimer2(ULONGLONG time_calculate, int time_out);
-	bool MarioOutWorld() { return (x < 2900); }
-
+	bool MarioOutWorld() { return (x > MARIO_POSITION_OUTMAP); }
 };
