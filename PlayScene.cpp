@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include "AssetIDs.h"
-
 #include "PlayScene.h"
 #include "Utils.h"
 #include "Textures.h"
@@ -16,9 +15,6 @@
 #include "Goomba.h"
 #include "HUD.h"
 #include "FlowerBox.h"
-
-
-
 #include "SampleKeyEventHandler.h"
 
 using namespace std;

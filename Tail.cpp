@@ -6,8 +6,6 @@
 #include "Goomba.h"
 #include "QuestionBrick.h"
 #include "Brick.h"
-#include "Debris.h"
-
 
 CTail::CTail(float x, float y) :CGameObject(x, y)
 {
@@ -63,7 +61,23 @@ void CTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 	if (e->nx != 0)
-		brick->SetState(BRICK_STATE_DELETE);
+	{
+		if (brick->GetTypeBrick() == BRICK_TYPE_NO_BLOCK)
+		{
+			if (!brick->GetIsNoBrick())
+			{
+				brick->SummonQuestionBrick();
+				brick->SummonDebris();
+			}
+			brick->SetIsNoBrick(true);
+			
+		}
+		else
+		{
+			brick->SummonDebris();
+			brick->SetState(BRICK_STATE_DELETE);
+		}
+	}	
 }
 
 void CTail::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)

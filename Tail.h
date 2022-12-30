@@ -7,7 +7,7 @@
 
 //BBOX
 #define TAIL_BBOX_WIDTH		20
-#define TAIL_BBOX_HEIGHT	10
+#define TAIL_BBOX_HEIGHT	5
 
 //STATE
 #define TAIL_STATE_RIGHT	1

@@ -1,16 +1,12 @@
 #pragma once
 
-
 #include "GameObject.h"
 #include "Animation.h"
-#include "QuestionBrick.h"
 #include "Animations.h"
-#include "Debris.h"
-#include "PlayScene.h"
-#include "Game.h"
 
 //ANIMATION
 #define ID_ANI_BRICK 10000
+#define ID_ANI_NO_BRICK 10002	
 
 //BBOX
 #define BRICK_BBOX_WIDTH 16
@@ -27,16 +23,23 @@ class CBrick : public CGameObject
 {
 	int type;
 	int time_break;
+	bool isNoBrick;
 public:
 	CBrick(float x, float y, int type) : CGameObject(x, y) 
 	{
 		this->type = type;
 		time_break = 0;
+		isNoBrick = false;
 	}
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	int GetTypeBrick() { return type; }
+	void SetIsNoBrick(bool isNoBrick) { this->isNoBrick = isNoBrick; }
+	bool GetIsNoBrick() { return isNoBrick; }
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsCollidable() { return 0; };
 	int IsBlocking() { return 1; }
 	void SetState(int state);
+	void SummonDebris();
+	void SummonQuestionBrick();
 };

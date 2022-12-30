@@ -1,9 +1,7 @@
 #include <algorithm>
 #include "debug.h"
-
 #include "Mario.h"
 #include "Game.h"
-
 #include "Goomba.h"
 #include "Coin.h"
 #include "Portal.h"
@@ -21,6 +19,7 @@
 #include "Tail.h"
 #include "VenusFireTrap.h"
 #include "FlowerBox.h"
+#include "Button.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
@@ -117,7 +116,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		isDecreasePower = true;
 	}
 
-
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
@@ -144,6 +142,21 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithVenusFireTrap(e);
 	else if (dynamic_cast<CFlowerBox*>(e->obj))
 		OnCollisionWithFlowerBox(e);
+	else if (dynamic_cast<CButton*>(e->obj))
+		OnCollisionWithButton(e);
+}
+
+void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
+{
+	CButton* button = dynamic_cast<CButton*>(e->obj);
+	if (e->ny < 0)
+	{
+		if (!button->GetIsPressed())
+		{
+			DebugOut(L"OOOKE \n");
+		}
+		button->SetIsPressed(true);
+	}
 }
 
 void CMario::OnCollisionWithFlowerBox(LPCOLLISIONEVENT e)

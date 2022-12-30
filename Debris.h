@@ -7,9 +7,9 @@
 #define ID_ANI_DEBRIS 10001
 
 //PROPERTY
-#define DEBRIS_VX 0.04f
-#define DEBRIS_VY 0.02f
-#define DEBRIS_AY 0.0004f
+#define DEBRIS_VX 0.08f
+#define DEBRIS_VY 0.25f
+#define DEBRIS_AY 0.0005f
 #define DEBRIS_Y_ADJUST 14
 #define DEBRIS_X_ADJUST 6
 

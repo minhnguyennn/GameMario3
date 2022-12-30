@@ -5,6 +5,7 @@
 #include "MushRoom.h"
 #include "Coin.h"
 #include "Leaf.h"
+#include "Button.h"
 
 void CQuestionBrick::Render()
 {
@@ -12,7 +13,7 @@ void CQuestionBrick::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	if (!unbox) animations->Get(ID_ANI_QUESTIONBRICK)->Render(x, y);
 	else animations->Get(ID_ANI_QUESTIONBRICK_UNBOX)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CQuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -97,6 +98,16 @@ void CQuestionBrick::SummonItemsFromBrickQuestion()
 			CCoin* coin = new CCoin(x, y - COIN_Y_ADJUST);
 			scene->CreateObject(coin);
 			coin->SetState(COIN_STATE_MOVE_UP);
+			break;
+		}
+		case QUESTION_TYPE_BUTTON:
+		{
+			if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
+			{
+				CButton* button = new CButton(x, y);
+				scene->CreateObject(button);
+				button->SetState(BUTTON_STATE_MOVE_UP);
+			}
 			break;
 		}
 		default:
