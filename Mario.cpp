@@ -25,7 +25,7 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
-	DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
+	//DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
 	ChangeLevelMario(dt);

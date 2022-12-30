@@ -4,6 +4,7 @@
 #include "Koopa.h"
 #include "PlayScene.h"
 #include "Platform.h"
+#include "Mario.h"
 
 CGoomba::CGoomba(float x, float y, int level, int type) :CGameObject(x, y)
 {
@@ -52,7 +53,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		if (level == GOOMBA_LEVEL_BIG) 
 		{
-			if (count_number_jumps == 3)
+			if (count_number_jumps == GOOMBA_COUNT_JUMP)
 			{
 				SetState(GOOMBA_STATE_FLY_MAX);
 			}
@@ -60,7 +61,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 			{
 				SetState(GOOMBA_STATE_CLOSE_WING);
 			}
-			else if (GetTickCount64() - time_close > 1000)
+			else if (GetTickCount64() - time_close > GOOMBA_CLOSE_WING_TIMEOUT)
 			{
 				SetState(GOOMBA_STATE_FLY);
 			}
@@ -159,7 +160,7 @@ void CGoomba::Render()
 
 	if (level == GOOMBA_LEVEL_BIG)
 	{
-		CAnimations::GetInstance()->Get(aniId)->Render(x, y - 3);
+		CAnimations::GetInstance()->Get(aniId)->Render(x, y - GOOMBA_BIG_Y_ADJUST);
 	}
 	else
 	{
@@ -172,14 +173,13 @@ void CGoomba::Render()
 void CGoomba::SetState(int state)
 {
 	CGameObject::SetState(state);
-	//DebugOut(L"state: ay: %d %f\n", state, ay);
 	switch (state)
 	{
 	case GOOMBA_STATE_DIE_TURN_OVER:
 	{
 		isTurnOver = true;
-		vx = -0.05f;
-		vy = -0.05f;
+		vx = -GOOMBA_DIE_VX;
+		vy = -GOOMBA_DIE_VY;
 		break;
 	}
 	case GOOMBA_STATE_DIE:

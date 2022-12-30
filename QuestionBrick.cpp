@@ -12,7 +12,6 @@ void CQuestionBrick::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	if (!unbox) animations->Get(ID_ANI_QUESTIONBRICK)->Render(x, y);
 	else animations->Get(ID_ANI_QUESTIONBRICK_UNBOX)->Render(x, y);
-	//DebugOut(L"Unbox: %d, state: %d \n", unbox, state);
 	RenderBoundingBox();
 }
 
@@ -75,9 +74,7 @@ void CQuestionBrick::SummonItemsFromBrickQuestion()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-
 	SetState(QUESTION_STATE_UNBOX);
-
 	switch (type)
 	{
 		case QUESTION_TYPE_ITEM:
@@ -97,7 +94,7 @@ void CQuestionBrick::SummonItemsFromBrickQuestion()
 		}
 		case QUESTION_TYPE_COIN: 
 		{
-			CCoin* coin = new CCoin(x, y - 20);
+			CCoin* coin = new CCoin(x, y - COIN_Y_ADJUST);
 			scene->CreateObject(coin);
 			coin->SetState(COIN_STATE_MOVE_UP);
 			break;

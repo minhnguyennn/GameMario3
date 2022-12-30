@@ -1,18 +1,14 @@
 #include "MushRoom.h"
 #include"debug.h"
 
-
-
 CMushRoom::CMushRoom(float x, float y, int type_mushroom) :CGameObject(x, y)
 {
 	start_y = y;
-	//this->ax = 0;
-	this->ay = MUSHROOM_GRAVITY;
-	this->type_mushroom = type_mushroom;
+	ay = MUSHROOM_GRAVITY;
+	type_mushroom = type_mushroom;
 	die_start = -1;
 	check = false;
 	countDebug = 0;
-	//SetState(MUSHROOM_STATE_UP);
 }
 
 void CMushRoom::SetState(int state)
@@ -50,7 +46,6 @@ void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (!checkObjectInCamera()) return;
 	if(state != MUSHROOM_STATE_UP) vy += ay * dt;
-
 	if ((start_y - y) > DISTANCE_MAX_MUSHROOM) 
 	{
 		if (!check) {
@@ -98,8 +93,5 @@ void CMushRoom::OnCollisionWith(LPCOLLISIONEVENT e)
 }
 
 void CMushRoom::ChangeStateWalking() {
-	if ((GetTickCount64() - count_time_change > TIME_HALF_SECOND)) {
-		SetState(MUSHROOM_STATE_WALKING);
-	}
-
+	if ((GetTickCount64() - count_time_change > TIME_HALF_SECOND)) SetState(MUSHROOM_STATE_WALKING);
 }

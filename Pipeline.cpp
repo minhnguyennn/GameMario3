@@ -37,8 +37,6 @@ void CPipeline::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CPipeline::SummonVenusFireTrap()
 {
-
-	//if (!checkObjectInCamera()) return;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	if (type_summon_plant == PIPELINE_TYPE_GREEN) {
 		CVenusFireTrap* vft_green = new CVenusFireTrap(x, y, VFTRAP_TYPE_GREEN);
@@ -56,6 +54,3 @@ void CPipeline::SummonVenusFireTrap()
 		scene->CreateObject(piranha);
 	}
 }
-
-
-

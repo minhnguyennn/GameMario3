@@ -56,7 +56,7 @@ void CFlowerBox::SetState(int state)
 		isUp = false;
 		isDeleted = true;
 		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-		CAutomation* automation = new CAutomation(2682,270);
+		CAutomation* automation = new CAutomation(COURSE_CLEAR_POSITION_X, COURSE_CLEAR_POSITION_Y);
 		scene->CreateObject(automation);
 		break;
 	}
@@ -78,9 +78,4 @@ bool CFlowerBox::CountDownTimer(int time)
 		return true;
 	}
 	return false;
-}
-
-void CFlowerBox::AutomationFunction()
-{
-	
 }

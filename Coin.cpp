@@ -17,13 +17,7 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if ((vy > 0) && (y > (start_y - COIN_DISTANCE_DOWN)))
 	{
 		SetState(COIN_STATE_DELETE);
-		check_delete_coin = 1;
 	}
-
-	/*if (check_delete_coin = 1) {
-
-
-	}*/
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

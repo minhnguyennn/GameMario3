@@ -20,15 +20,12 @@ void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
-	
-	
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CBrick::SetState(int state)
 {
-
 	switch (state)
 	{
 	case BRICK_STATE_DELETE:

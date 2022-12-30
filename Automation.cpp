@@ -14,7 +14,7 @@ void CAutomation::Render()
 	animations->Get(ID_ANI_COURSE_CLEAR)->Render(x, y);
 	if (CountDownTimer(COURSE_CLEAR_TIMEOUT))
 	{
-		animations->Get(ID_ANI_YOU_GOT_A_CARD)->Render(x, y + 26);
+		animations->Get(ID_ANI_YOU_GOT_A_CARD)->Render(x, y + COURSE_CLEAR_Y_ADJUST);
 	}
 }
 

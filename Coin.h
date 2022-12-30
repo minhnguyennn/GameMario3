@@ -4,30 +4,32 @@
 #include "Animation.h"
 #include "Animations.h"
 
+//ANIMATION
 #define ID_ANI_COIN 11000
 
-#define	COIN_WIDTH 10
+//BBOX
 #define COIN_BBOX_WIDTH 10
 #define COIN_BBOX_HEIGHT 16
 
+//STATE
 #define COIN_STATE_IDLE 0
 #define COIN_STATE_MOVE_UP 1
 #define COIN_STATE_DELETE 2
 #define COIN_STATE_MOVE_DOWN 3
 
+//DISTANCE
 #define COIN_DISTANCE_UP 40
 #define COIN_DISTANCE_DOWN 20
 
-
+//PROPERTY
 #define MAX_VY 0.07f
+#define COIN_Y_ADJUST 20
 
 class CCoin : public CGameObject 
 {
 	float start_y;
-	int c;
 	float coppy_x;
 	float coppy_y;
-	bool check_delete_coin = 0;
 public:
 	CCoin(float x, float y) : CGameObject(x, y) 
 	{

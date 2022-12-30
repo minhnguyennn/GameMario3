@@ -4,6 +4,7 @@
 #include "PlayScene.h"
 #include "FireBalls.h"
 #include "Point.h"
+#include "Mario.h"
 
 CVenusFireTrap::CVenusFireTrap(float x, float y, int type) :CGameObject(x, y)
 {

@@ -29,7 +29,6 @@
 class CMushRoom : public CGameObject
 {
 protected:
-	float ax;
 	float ay;
 	int countDebug;
 	float start_y;

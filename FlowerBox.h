@@ -2,18 +2,23 @@
 
 #include "GameObject.h"
 
-//animation
+//ANIMATION
 #define ID_ANI_FLOWER_BOX 11200
 #define ID_ANI_FLOWER_BOX_UP 11201
-//bbox
+
+//BBOX
 #define FLOWER_BOX_BBOX_WIDTH 16
 #define FLOWER_BOX_BBOX_HEIGHT 16
-//state
+
+//STATE
 #define FLOWER_BOX_STATE_UP	1
 #define FLOWER_BOX_SUMMON_AUTOMATION 2
-//property
+
+//PROPERTY
 #define	FLOWER_BOX_SPEED_Y	0.1f
-//time
+#define	FLOWER_BOX_POSITION	0.1f
+
+//TIME
 #define FLOWER_BOX_UP_TIMEOUT	1000
 
 class CFlowerBox : public CGameObject 
@@ -34,5 +39,4 @@ public:
 	int IsBlocking() { return 0; }
 	int IsCollidable() { return 0; };
 	bool CountDownTimer(int time);
-	void AutomationFunction();
 };

@@ -15,15 +15,6 @@ CFireBallOfMario::CFireBallOfMario(float x, float y) :CGameObject(x, y)
 
 void CFireBallOfMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	vy += ay * dt;
-	//if (vy < 0 && abs(x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
-	//	//DebugOut(L"[OK1] \n");
-	//	SetState(FIREBALLS_STATE_DOWN);
-	//}
-
-	//if (vy > 0 && abs(x - start_x) > FIREBALLS_DISTANCE_MAX_DOWN) {
-	//	//DebugOut(L"[OK2] \n");
-	//	SetState(FIREBALLS_STATE_UP);
-	//}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -56,7 +47,6 @@ void CFireBallOfMario::OnCollisionWith(LPCOLLISIONEVENT e){
 	else if (e->nx != 0 && e->obj->IsBlocking()) {
 		vx = -vx;
 	} 
-
 	if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
@@ -98,10 +88,6 @@ void CFireBallOfMario::SetState(int state)
 	case FIREBALLS_STATE_LEFT:
 		vx = -FIREBALLS_MARIO_SPEED_X;
 		break;
-	/*case FIREBALLS_STATE_DOWN:
-		vy = FIREBALLS_SPEED_Y;
-		start_x = x;
-		break;*/
 	case FIREBALLS_STATE_DELETE:
 	{
 		Delete();

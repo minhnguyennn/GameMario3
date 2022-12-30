@@ -81,7 +81,7 @@ void CLeaf::SetState(int state)
 	{
 		isFlyLow = true;
 		isChange = false;
-		ay = -LEAF_GRAVITY * 3.5;
+		ay = -LEAF_GRAVITY * LEAF_AY_FALL_SLOW;
 		break;
 	}
 	default:

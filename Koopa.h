@@ -8,6 +8,9 @@
 #define KOOPA_WALKING_ATTACKING_SPEED (KOOPA_WALKING_SPEED * 3)
 #define KOOPA_FLY_SPEED 0.1f
 #define KOOPA_JUMP_DEFLECT_SPEED 0.02f
+#define KOOPA_TURN_UP_JUMP_VX 0.05f
+#define KOOPA_TURN_UP_JUMP_VY 0.05f
+#define KOOPA_Y_ADJUST 1
 
 //TIME
 #define KOOPA_CLOSE_SHELL_TIMEOUT 30000
@@ -82,7 +85,8 @@ protected:
 	bool isAttacking;
 	bool isDie;
 	bool isSummon;
-	bool isHeld;
+	bool isHeld; 
+	bool isGhostBox;
 
 	ULONGLONG die_start;
 	ULONGLONG time_line;
@@ -108,6 +112,7 @@ public:
 		isAttacking = false;
 		isSummon = false;
 		isHeld = false;
+		isGhostBox = false;
 		SetState(KOOPA_STATE_WALKING);
 	};
 
@@ -138,7 +143,6 @@ public:
 		}
 	};
 	void LowerLevel();
-
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -147,8 +151,5 @@ public:
 	int isLeftWithMario();
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
-
-	void ChangePositionFollowMario();
-
 	bool CountDownTimer(int time);
 };

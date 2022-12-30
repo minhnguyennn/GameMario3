@@ -1,7 +1,6 @@
 #include "Point.h"
 #include "debug.h"
 
-
 void CPoint::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
 	if (!checkObjectInCamera()) return;
@@ -58,7 +57,4 @@ void CPoint::SetState(int state)
 void CPoint::AdditionPoint() 
 {
 	number_point = number_point + 100;
-	//DebugOutTitle(L"Point: %d", number_point);
 }
-
-

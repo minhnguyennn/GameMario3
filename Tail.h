@@ -13,6 +13,11 @@
 #define TAIL_STATE_RIGHT	1
 #define TAIL_STATE_LEFT		2
 
+//TIME
+#define TAIL_TIMEOUT	100
+
+//PROPRERTY
+#define TAIL_SPEED_X	0.1f
 
 class CTail : public CGameObject {
 	ULONGLONG time_line;

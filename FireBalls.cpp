@@ -6,30 +6,10 @@
 
 CFireBalls::CFireBalls(float x, float y) :CGameObject(x, y)
 {
-	//this->ay = FIREBALLS_GRAVITY;
-	//this->start_x = x;
-	//SetState(FIREBALLS_STATE_MOVE_RIGHT);
+	
 }
 
 void CFireBalls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	//vy += ay * dt;
-	// 
-	//DebugOut(L"[TEST] start_x: %d\n", x);
-	//if (vy < 0) {
-	//	if ((x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
-	//		//DebugOut(L"[OK1] \n");
-	//		start_x = 0;
-	//		SetState(FIREBALLS_STATE_DOWN);
-	//	}
-	//}
-
-	//if (vy > 0) {
-	//	if ((x - start_x) > FIREBALLS_DISTANCE_MAX_UP) {
-	//		//DebugOut(L"[OK1] \n");
-	//		start_x = 0;
-	//		SetState(FIREBALLS_STATE_UP);
-	//	}
-	//}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -67,25 +47,25 @@ void CFireBalls::SetState(int state)
 	case FIREBALLS_STATE_RIGHT_BOTTOM:
 	{
 		vx = FIREBALLS_SPEED_X;
-		vy = 0.03f;
+		vy = FIREBALLS_SPEED_Y;
 		break;
 	}
 	case FIREBALLS_STATE_LEFT_BOTTOM:
 	{
 		vx = -FIREBALLS_SPEED_X;
-		vy = 0.03f;
+		vy = FIREBALLS_SPEED_Y;
 		break;
 	}
 	case FIREBALLS_STATE_MOVE_RIGHT:
 	{
 		vx = FIREBALLS_SPEED_X;
-		vy = 0.01f;
+		vy = FIREBALLS_SPEED_Y_RIGHT_AND_LEFT;
 		break;
 	}
 	case FIREBALLS_STATE_MOVE_LEFT:
 	{
 		vx = -FIREBALLS_SPEED_X;
-		vy = 0.01f;
+		vy = FIREBALLS_SPEED_Y_RIGHT_AND_LEFT;
 		break;
 	}
 	case FIREBALLS_STATE_MOVE_RIGHT_TOP:

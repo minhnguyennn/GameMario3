@@ -6,6 +6,7 @@
 #define LEAF_GRAVITY 0.00005f
 #define LEAF_SPEED_Y 0.05f
 #define LEAF_SPEED_X 0.05f
+#define LEAF_AY_FALL_SLOW 3.5f
 
 //STATE
 #define LEAF_STATE_FLY_LOW 100
