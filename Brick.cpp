@@ -7,7 +7,7 @@ void CBrick::Render()
 	if (!checkObjectInCamera()) return;
 	int aniId = ID_ANI_BRICK;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -47,7 +47,6 @@ void CBrick::SetState(int state)
 		CDebris* right_down = new CDebris(x + DEBRIS_X_ADJUST, y - DEBRIS_Y_ADJUST);
 		scene->CreateObject(right_down);
 		right_down->SetState(DEBRIS_RIGHT);
-
 		isDeleted = true;
 		break;
 	}

@@ -8,7 +8,6 @@
 #include"Tail.h"
 #include"Mario.h"
 
-
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (isDie) return;
@@ -95,11 +94,9 @@ void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	float left, top, right, bottom;
 	e->obj->GetBoundingBox(left, top, right, bottom);
-	
-	if (vx > 0 && x > right || vx < 0 && x < left)
-	{
-		vx = -vx;
-	}
+	if (e->ny < 0) {
+		if ((vx > 0 && x > right || vx < 0 && x < left) && !isAttacking) vx = -vx;
+	}	
 }
 
 void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
