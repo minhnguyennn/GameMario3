@@ -21,7 +21,7 @@
 
 //PROPERTY
 #define BUTTON_MAX_VY 0.07f
-#define BUTTON_PRESSED_Y_ADJUST 4
+#define BUTTON_PRESSED_Y_ADJUST 6
 
 class CButton : public CGameObject
 {

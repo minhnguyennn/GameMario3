@@ -5,7 +5,8 @@
 #include "Animations.h"
 
 //ANIMATION
-#define ID_ANI_COIN 11000
+#define ID_ANI_COIN_AROUND 11000
+#define ID_ANI_COIN_BRICK 11001
 
 //BBOX
 #define COIN_BBOX_WIDTH 10
@@ -25,16 +26,22 @@
 #define MAX_VY 0.07f
 #define COIN_Y_ADJUST 20
 
+//TYPE
+#define COIN_TYPE_IN_BRICK 1
+#define COIN_TYPE_TURN_AROUND 2
+
 class CCoin : public CGameObject 
 {
 	float start_y;
 	float coppy_x;
 	float coppy_y;
+	int type;
 public:
-	CCoin(float x, float y) : CGameObject(x, y) 
+	CCoin(float x, float y, int type) : CGameObject(x, y) 
 	{
 		SetState(COIN_STATE_IDLE);
 		start_y = y;
+		this->type = type;
 	}
 	void OnNoCollision(DWORD dt);
 	void SetState(int state);

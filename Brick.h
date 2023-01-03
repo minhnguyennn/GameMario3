@@ -42,4 +42,5 @@ public:
 	void SetState(int state);
 	void SummonDebris();
 	void SummonQuestionBrick();
+	void SummonCoin();
 };

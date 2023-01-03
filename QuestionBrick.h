@@ -35,6 +35,8 @@ public:
 		SetState(QUESTION_STATE_IDLE);
 		start_y = y;
 		this->type = type;
+		if (type == QUESTION_TYPE_BUTTON)
+			this->SummonItemsFromBrickQuestion();
 	}
 	void SetState(int state);
 	void OnNoCollision(DWORD dt);

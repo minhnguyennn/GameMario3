@@ -95,7 +95,7 @@ void CQuestionBrick::SummonItemsFromBrickQuestion()
 		}
 		case QUESTION_TYPE_COIN: 
 		{
-			CCoin* coin = new CCoin(x, y - COIN_Y_ADJUST);
+			CCoin* coin = new CCoin(x, y - COIN_Y_ADJUST, COIN_TYPE_TURN_AROUND);
 			scene->CreateObject(coin);
 			coin->SetState(COIN_STATE_MOVE_UP);
 			break;

@@ -4,16 +4,12 @@
 #include "Debris.h"
 #include "PlayScene.h"
 #include "Game.h"
+#include "Coin.h"
 
 void CBrick::Render()
 {
 	if (!checkObjectInCamera()) return;
-	int aniId = 0;
-	if (isNoBrick)
-		aniId = ID_ANI_NO_BRICK;
-	else
-		aniId = ID_ANI_BRICK;
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	CAnimations::GetInstance()->Get(ID_ANI_BRICK)->Render(x, y);
 	//RenderBoundingBox();
 }
 
@@ -72,4 +68,11 @@ void CBrick::SummonQuestionBrick()
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CQuestionBrick* question_brick = new CQuestionBrick(x, y, QUESTION_TYPE_BUTTON);
 	scene->CreateObject(question_brick);
+}
+
+void CBrick::SummonCoin()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CCoin* coin = new CCoin(x, y, COIN_TYPE_IN_BRICK);
+	scene->CreateObject(coin);
 }

@@ -135,7 +135,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_COIN: 
 	{
-		obj = new CCoin(x, y); 
+		int type_coin = (int)atof(tokens[3].c_str());
+		obj = new CCoin(x, y, type_coin);
 		break; 
 	}
 	case OBJECT_TYPE_KOOPA: 
