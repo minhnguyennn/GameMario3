@@ -1,15 +1,21 @@
 #include "Brick.h"
 #include "debug.h"
 #include "QuestionBrick.h"
-#include "Debris.h"
 #include "PlayScene.h"
 #include "Game.h"
+#include "Debris.h"
 #include "Coin.h"
+#include "Data.h"
 
 void CBrick::Render()
 {
 	if (!checkObjectInCamera()) return;
-	CAnimations::GetInstance()->Get(ID_ANI_BRICK)->Render(x, y);
+	int AniId = 0;
+	if (isCoin)
+		AniId = ID_ANI_BRICK_COIN;
+	else
+		AniId = ID_ANI_BRICK;
+	CAnimations::GetInstance()->Get(AniId)->Render(x, y);
 	//RenderBoundingBox();
 }
 
@@ -23,6 +29,11 @@ void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
+	
+	CountDownConvertCoin();
+	bool isConvert = CData::GetInstance()->GetIsConvertBrick();
+	if (isConvert) isCoin = true;
+	else isCoin = false;
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -68,6 +79,25 @@ void CBrick::SummonQuestionBrick()
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CQuestionBrick* question_brick = new CQuestionBrick(x, y, QUESTION_TYPE_BUTTON);
 	scene->CreateObject(question_brick);
+}
+
+void CBrick::CountDownConvertCoin()
+{
+	if (CData::GetInstance()->GetIsConvertBrick())
+	{
+		if (time_convert > 0)
+		{
+			if (GetTickCount64() - time_count_down > BRICK_TIME_COUTDOWN)
+			{
+				time_convert --;
+				time_count_down = GetTickCount64();
+			}
+		}
+		else
+		{
+			CData::GetInstance()->SetIsConvertBrick(false);
+		}
+	}
 }
 
 void CBrick::SummonCoin()

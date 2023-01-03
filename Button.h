@@ -9,8 +9,11 @@
 #define ID_ANI_BUTTON_PRESSED 11401
 
 //BBOX
-#define BUTTON_BBOX_WIDTH 10
-#define BUTTON_BBOX_HEIGHT 16
+#define BUTTON_BBOX_PRESSED_WIDTH 16
+#define BUTTON_BBOX_PRESSED_HEIGHT 1
+
+#define BUTTON_BBOX_WIDTH 16
+#define BUTTON_BBOX_HEIGHT 12
 
 //STATE
 #define BUTTON_STATE_IDLE 0
@@ -40,6 +43,6 @@ public:
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	int IsBlocking() { return 0; }
+	int IsBlocking() { return 1; }
 	int IsCollidable() { return 1; }
 };

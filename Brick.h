@@ -7,6 +7,7 @@
 //ANIMATION
 #define ID_ANI_BRICK 10000
 #define ID_ANI_NO_BRICK 10002	
+#define ID_ANI_BRICK_COIN 10003
 
 //BBOX
 #define BRICK_BBOX_WIDTH 16
@@ -14,33 +15,59 @@
 
 //STATE
 #define BRICK_STATE_DELETE 1
+#define BRICK_STATE_COIN	2
+#define BRICK_STATE_BRICK	3
 
 //TYPE
-#define BRICK_TYPE_BLOCK 1
-#define BRICK_TYPE_NO_BLOCK 2
+#define BRICK_TYPE_BLOCK 2
+#define BRICK_TYPE_NO_BLOCK 1
+
+
+//TIME
+#define BRICK_TIME_COUTDOWN 1000
+#define BRICK_CONVERT_TIMEOUT 7
 
 class CBrick : public CGameObject 
 {
 	int type;
-	int time_break;
-	bool isNoBrick;
+	ULONGLONG time_convert;
+	int time_count_down;
+	bool isBlockBrick;
+	bool isCoin;
 public:
 	CBrick(float x, float y, int type) : CGameObject(x, y) 
 	{
 		this->type = type;
-		time_break = 0;
-		isNoBrick = false;
+		isCoin = false;
+		time_convert = BRICK_CONVERT_TIMEOUT;
+		time_count_down = 0;
+		isBlockBrick = false;
+		
 	}
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	bool GetIsCoin() { return isCoin; }
 	int GetTypeBrick() { return type; }
-	void SetIsNoBrick(bool isNoBrick) { this->isNoBrick = isNoBrick; }
-	bool GetIsNoBrick() { return isNoBrick; }
+	void SetIsBlockBrick(bool isNoBrick) { this->isBlockBrick = isBlockBrick; }
+	bool GetIsBlockBrick() { return isBlockBrick; }
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	int IsCollidable() { return 0; };
-	int IsBlocking() { return 1; }
+	int IsCollidable() 
+	{ 
+		if (isCoin)
+			return 1;
+		else
+			return 0; 
+	};
+	int IsBlocking() 
+	{ 
+		if (isCoin)
+			return 0;
+		else
+			return 1;
+	}
 	void SetState(int state);
 	void SummonDebris();
 	void SummonQuestionBrick();
+	void CountDownConvertCoin();
 	void SummonCoin();
 };

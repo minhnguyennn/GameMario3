@@ -60,22 +60,22 @@ void CTail::OnCollisionWith(LPCOLLISIONEVENT e)
 void CTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+	if(brick->GetIsCoin()) return;
 	if (e->nx != 0)
 	{
-		if (brick->GetTypeBrick() == BRICK_TYPE_NO_BLOCK)
+		brick->SummonDebris();
+		if (brick->GetTypeBrick() == BRICK_TYPE_BLOCK)
 		{
-			if (!brick->GetIsNoBrick())
+			if (!brick->GetIsBlockBrick())
 			{
 				brick->SetState(BRICK_STATE_DELETE);
 				brick->SummonQuestionBrick();
-				brick->SummonDebris();
 			}
-			brick->SetIsNoBrick(true);
+			brick->SetIsBlockBrick(true);
 			
 		}
 		else
 		{
-			brick->SummonDebris();
 			brick->SummonCoin();
 			brick->SetState(BRICK_STATE_DELETE);
 		}

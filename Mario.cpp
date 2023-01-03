@@ -20,6 +20,8 @@
 #include "VenusFireTrap.h"
 #include "FlowerBox.h"
 #include "Button.h"
+#include "GameObject.h"
+#include "Data.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
@@ -151,10 +153,7 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 	CButton* button = dynamic_cast<CButton*>(e->obj);
 	if (e->ny < 0)
 	{
-		if (!button->GetIsPressed())
-		{
-			DebugOut(L"OOOKE \n");
-		}
+		if (!button->GetIsPressed()) CData::GetInstance()->SetIsConvertBrick(true);
 		button->SetIsPressed(true);
 	}
 }
@@ -182,6 +181,11 @@ void CMario::OnCollisionWithFireBalls(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) 
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+	if (brick->GetIsCoin())
+	{
+		brick->SetState(BRICK_STATE_DELETE);
+		coin++;
+	}
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)

@@ -301,6 +301,7 @@ class CMario : public CGameObject
 	BOOLEAN isDecreasePower;
 	BOOLEAN disableKey;
 	BOOLEAN canReturnWorldMap;
+
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushRoom(LPCOLLISIONEVENT e);
@@ -358,6 +359,7 @@ public:
 		score = 0;
 		power = 0;
 	}
+
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
 	bool GetIsAttack() {return isAttack;  }
 
