@@ -1153,7 +1153,7 @@ void CMario::CalculatePowerToFly()
 		isDecreasePower = false;
 		time_power = 0;
 	}
-
+	
 	if (isFlying && IsMaxPower()) 
 	{
 		if (CountDownTimer2(time_fly, MARIO_FLYING_TIMEOUT))
@@ -1165,7 +1165,7 @@ void CMario::CalculatePowerToFly()
 	}
 	else 
 	{
-		if (isRunning && isOnPlatform && !isDecreasePower)
+		if (isRunning && isOnPlatform && !isDecreasePower && !IsChangeDirection())
 		{
 			if (CountDownTimer2(time_running, MARIO_POWER_TIMEOUT))
 			{

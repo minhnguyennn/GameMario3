@@ -433,4 +433,5 @@ public:
 	void CalculateHeartAndCoin();
 	bool CountDownTimer2(ULONGLONG time_calculate, int time_out);
 	bool MarioOutWorld() { return (x > MARIO_POSITION_OUTMAP); }
+	bool IsChangeDirection() { return (vx > 0 && ax < 0) || (vx < 0 && ax > 0); }
 };
