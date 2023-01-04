@@ -84,7 +84,7 @@ void CKoopa::OnCollisionWitTail(LPCOLLISIONEVENT e)
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) 
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	if (isAttacking)
+	if (isAttacking || isHeld)
 	{
 		goomba->SetState(GOOMBA_STATE_DIE_TURN_OVER);
 	}
@@ -146,7 +146,7 @@ void CKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	CQuestionBrick* question_brick = dynamic_cast<CQuestionBrick*>(e->obj);
 	if (e->nx != 0) 
 	{
-		if (question_brick->GetState() == QUESTION_STATE_IDLE && isAttacking)
+		if (question_brick->GetState() == QUESTION_STATE_IDLE && (isAttacking || isHeld))
 		{
 			question_brick->SummonItemsFromBrickQuestion();
 		}
@@ -159,7 +159,7 @@ void CKoopa::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 	CVenusFireTrap* vf_trap = dynamic_cast<CVenusFireTrap*>(e->obj);
 	if ((e->nx != 0) || (e->nx < 0)) 
 	{
-		if (isAttacking) 
+		if (isAttacking || isHeld)
 		{
 			vf_trap->SetSummonItems(VFTRAP_TYPE_POINT);
 			vf_trap->SetState(VFTRAP_STATE_DIE);
@@ -171,7 +171,7 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 {
 	//Different Koopa will turned over and died.
 	CKoopa* df_koopa = dynamic_cast<CKoopa*>(e->obj);
-	if (isAttacking) 
+	if (isAttacking || isHeld)
 	{
 		df_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
 	}
@@ -179,17 +179,16 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	DebugOut(L"STATE: %d\n", state);
 	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetIsChangeLevel()) return;
-
-	if ( isDefense && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
+	if ((isTurnOver || isDefense) && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		SetState(KOOPA_STATE_WAITING);
 	}
-
 	if (isWaiting && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		SetState(KOOPA_STATE_WALKING);
@@ -213,25 +212,22 @@ void CKoopa::Render()
 		}
 		else if (level == KOOPA_LEVEL_BIG)
 		{
-			if (vx > 0)
-				aniId = ID_ANI_KOOPA_RED_BIG_WALKING_RIGHT;
-			else if (vx < 0)
-				aniId = ID_ANI_KOOPA_RED_BIG_WALKING_LEFT;
+			if (vx > 0) aniId = ID_ANI_KOOPA_RED_BIG_WALKING_RIGHT;
+			else if (vx < 0) aniId = ID_ANI_KOOPA_RED_BIG_WALKING_LEFT;
 		}
 
 		if (state == KOOPA_STATE_WAITING)
-			aniId = ID_ANI_KOOPA_RED_WAITING;
-		else if (state == KOOPA_STATE_CLOSE_SHELL)
-			aniId = ID_ANI_KOOPA_RED_CLOSE_SHELL;
-		else if (state == KOOPA_STATE_ATTACKING)
 		{
-			if (isTurnOver)
-				aniId = ID_ANI_KOOPA_RED_TURN_OVER_ATTACKING;
-			else
-				aniId = ID_ANI_KOOPA_RED_ATTACKING;
+			if (!isTurnOver) aniId = ID_ANI_KOOPA_RED_TURN_OVER_WAITING;
+			else aniId = ID_ANI_KOOPA_RED_WAITING;
 		}
-		else if (state == KOOPA_STATE_TURN_OVER)
-			aniId = ID_ANI_KOOPA_RED_TURN_OVER;
+		else if (state == KOOPA_STATE_CLOSE_SHELL) aniId = ID_ANI_KOOPA_RED_CLOSE_SHELL;
+		else if (isAttacking)
+		{
+			if (isTurnOver) aniId = ID_ANI_KOOPA_RED_TURN_OVER_ATTACKING;
+			else aniId = ID_ANI_KOOPA_RED_ATTACKING;
+		}
+		else if (state == KOOPA_STATE_TURN_OVER) aniId = ID_ANI_KOOPA_RED_TURN_OVER;
 	}
 	else if (type == KOOPA_TYPE_PARATROOPA)
 	{
@@ -263,6 +259,8 @@ void CKoopa::Render()
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	else
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y + KOOPA_Y_ADJUST);
+
+	DebugOutTitle(L"AniId: %d", aniId);
 	RenderBoundingBox();
 }
 
@@ -288,6 +286,7 @@ void CKoopa::SetState(int state)
 		isTurnOver = true;
 		isDie = false;
 		isAttacking = false;
+		isWalking = false;
 		time_line = GetTickCount64();
 		vx = KOOPA_TURN_UP_JUMP_VX * isLeftWithMario();
 		vy = -KOOPA_TURN_UP_JUMP_VY;
@@ -314,6 +313,7 @@ void CKoopa::SetState(int state)
 		vx = 0;
 		isWaiting = true;
 		isDefense = false;
+		isTurnOver = false;
 		time_line = GetTickCount64();
 		break;
 	}
@@ -324,6 +324,7 @@ void CKoopa::SetState(int state)
 		time_line = GetTickCount64();
 		isDefense = true;
 		isAttacking = false;
+		isWalking = false;
 		break;
 	}
 	case KOOPA_STATE_WALKING:
@@ -335,6 +336,8 @@ void CKoopa::SetState(int state)
 		ay = KOOPA_GRAVITY;
 		vx = KOOPA_WALKING_SPEED;
 		isWaiting = false;
+		isHeld = false;
+		isWalking = true;
 		break;
 	}
 	default:

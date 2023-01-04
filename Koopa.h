@@ -50,6 +50,7 @@
 #define ID_ANI_KOOPA_RED_ATTACKING 6016
 #define ID_ANI_KOOPA_RED_TURN_OVER 6017
 #define	ID_ANI_KOOPA_RED_TURN_OVER_ATTACKING 6018
+#define	ID_ANI_KOOPA_RED_TURN_OVER_WAITING 6019
 
 //////////////////////// GREEN //////////////////////
 #define ID_ANI_KOOPA_GREEN_SMALL_WALKING_LEFT 6050
@@ -84,7 +85,7 @@ protected:
 	bool isWaiting;
 	bool isAttacking;
 	bool isDie;
-	bool isSummon;
+	bool isWalking;
 	bool isHeld; 
 	bool isGhostBox;
 
@@ -110,9 +111,9 @@ public:
 		isTurnOver = false;
 		isWaiting = false;
 		isAttacking = false;
-		isSummon = false;
 		isHeld = false;
 		isGhostBox = false;
+		isWalking = false;
 		SetState(KOOPA_STATE_WALKING);
 	};
 
@@ -120,9 +121,10 @@ public:
 	void SetAx(float ax) { this->ax = ax; };
 
 	void SetState(int state);
-	void SetIsSummon(bool isSummon) { this->isSummon = isSummon; };
 
-	bool GetIsDefense() { return isDefense; };
+	bool GetIsDefense() { return isDefense; }
+
+	bool GetIsWalking() { return isWalking; }
 
 	void SetIsAttacking(bool isAttacking) { this->isAttacking = isAttacking; };
 
