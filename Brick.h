@@ -30,8 +30,8 @@
 class CBrick : public CGameObject 
 {
 	int type;
-	ULONGLONG time_convert;
-	int time_count_down;
+	int time_convert;
+	ULONGLONG time_count_down;
 	bool isBlockBrick;
 	bool isCoin;
 public:
