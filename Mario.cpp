@@ -22,11 +22,11 @@
 #include "Button.h"
 #include "GameObject.h"
 #include "Data.h"
+#include "Effect.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
-	
 	//DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
@@ -35,6 +35,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CalculatePowerToFly();
 	CalculateHeartAndCoin();
 	CountDown1Second();
+
 	
 	if (canReturnWorldMap) {
 		//sau 2s
@@ -47,10 +48,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		else
 		{
-			vx = 0;
+			SetState(MARIO_STATE_IDLE);
+			/*vx = 0;
 			vy = 0;
 			ax = 0;
-			ay = 0;
+			ay = 0;*/
 		}
 	}
 	
@@ -339,30 +341,12 @@ void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
-	if (isChangeLevel)
-	{
-		aniId = GetAniIdChangeLevel();
-	}
-	else if (state == MARIO_STATE_DIE)
-	{
-		aniId = ID_ANI_MARIO_DIE;
-	}
-	else if (level == MARIO_LEVEL_BIG)
-	{
-		aniId = GetAniIdBig();
-	}
-	else if (level == MARIO_LEVEL_SMALL)
-	{
-		aniId = GetAniIdSmall();
-	}
-	else if (level == MARIO_LEVEL_FIRE)
-	{
-		aniId = GetAniIdFire();
-	}
-	else if (level == MARIO_LEVEL_RACCOON)
-	{
-		aniId = GetAniIdRaccoon();
-	}
+	if (isChangeLevel || isSummonEffect) aniId = GetAniIdChangeLevel();
+	else if (state == MARIO_STATE_DIE) aniId = ID_ANI_MARIO_DIE;
+	else if (level == MARIO_LEVEL_BIG) aniId = GetAniIdBig();
+	else if (level == MARIO_LEVEL_SMALL) aniId = GetAniIdSmall();
+	else if (level == MARIO_LEVEL_FIRE) aniId = GetAniIdFire();
+	else if (level == MARIO_LEVEL_RACCOON) aniId = GetAniIdRaccoon();
 
 	if (level != MARIO_LEVEL_RACCOON)
 	{
@@ -759,12 +743,13 @@ int CMario::GetAniIdRaccoon()
 int CMario::GetAniIdChangeLevel()
 {
 	int aniId = -1;
-	if (level == MARIO_LEVEL_SMALL)
+	if (isSummonEffect) aniId = ID_ANI_MARIO_INVISIBLE;
+	else if (level == MARIO_LEVEL_SMALL)
 	{
 		if (nx > 0) aniId = ID_ANI_SMALL_TO_SMALL_RIGHT;
 		else aniId = ID_ANI_SMALL_TO_SMALL_LEFT;
 	}
-	if (level == MARIO_LEVEL_BIG)
+	else if (level == MARIO_LEVEL_BIG)
 	{
 		if (nx > 0) aniId = ID_ANI_SMALL_TO_BIG_RIGHT;
 		else aniId = ID_ANI_SMALL_TO_BIG_LEFT;
@@ -776,8 +761,8 @@ int CMario::GetAniIdChangeLevel()
 	}
 	else if (level == MARIO_LEVEL_RACCOON)
 	{
-		if (nx > 0) aniId = ID_ANI_BIG_TO_RACCOON_RIGHT;
-		else aniId = ID_ANI_BIG_TO_RACCOON_LEFT;
+		if (nx > 0) aniId = ID_ANI_INVISIBLE_TO_BIG_RIGHT;
+		else aniId = ID_ANI_INVISIBLE_TO_BIG_LEFT;
 	}
 	return aniId;
 }
@@ -800,7 +785,6 @@ void CMario::SetState(int state)
 	{
 		if (isSitting) break;
 		isHolding = true;
-		//koopa_holding->SetIsAttacking(true);
 		koopa_holding->SetIsHeld(true);
 		break;
 	}
@@ -996,13 +980,39 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CMario::SetLevel(int l)
 {
 	if (isSitting) return;
-	if(isOnPlatform)
-	{
-		y -= MARIO_CHANGE_LEVEL_HEIGHT;
-	}
-	isChangeLevel = true;
+	if(isOnPlatform) y -= MARIO_CHANGE_LEVEL_HEIGHT;
+	SummonTypeEffect(EFFECT_TYPE_SMOKE);
 	time_line = GetTickCount64();
 	level = l;
+}
+
+void CMario::ChangeLevelMario(DWORD dt)
+{
+	if (isSummonEffect)
+	{
+		vx = 0;
+		vy = 0;
+		disableKey = true;
+	}
+	else
+	{
+		vy += ay * dt;
+		vx += ax * dt;
+	}
+
+	if (isSummonEffect && CountDownTimer(MARIO_EFFECT_SMOKE_TIMEOUT))
+	{
+		time_line = 0;
+		time_line = GetTickCount64();
+		isSummonEffect = false;
+		isChangeLevel = true;
+	}
+	else if (isChangeLevel && CountDownTimer(MARIO_CHANGE_LEVEL_TIMEOUT))
+	{
+		time_line = 0;
+		isChangeLevel = false;
+		disableKey = false;
+	}
 }
 
 void CMario::CountDown1Second() {
@@ -1034,9 +1044,14 @@ void CMario::CountDown1Second() {
 void CMario::LowerLevel() {
 	if (untouchable == 0)
 	{
-		if (level > MARIO_LEVEL_SMALL)
+		if (level == MARIO_LEVEL_RACCOON)
 		{
-			level = MARIO_LEVEL_SMALL;
+			SetLevel(MARIO_LEVEL_BIG);
+			StartUntouchable();
+		}
+		else if (level == MARIO_LEVEL_BIG)
+		{
+			SetLevel(MARIO_LEVEL_SMALL);
 			StartUntouchable();
 		}
 		else
@@ -1114,25 +1129,6 @@ bool CMario::CountDownTimer2(ULONGLONG time_calculate, int time_out)
 	return false;
 }
 
-void CMario::ChangeLevelMario(DWORD dt)
-{
-	if (isChangeLevel)
-	{
-		vx = 0;
-		vy = 0;
-	}
-	else
-	{
-		vy += ay * dt;
-		vx += ax * dt;
-	}
-
-	if (CountDownTimer(MARIO_CHANGE_LEVEL_TIMEOUT))
-	{
-		isChangeLevel = false;
-	}
-}
-
 void CMario::AccelerationFunction()
 {
 	if (abs(vx) > abs(maxVx))
@@ -1202,4 +1198,12 @@ void CMario::CalculateHeartAndCoin()
 	{
 		heart = MARIO_HEART_MAX;
 	}
+}
+
+void CMario::SummonTypeEffect(int type_effects)
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CEffect* effects = new CEffect(x, y, type_effects);
+	scene->CreateObject(effects);
+	isSummonEffect = true;
 }

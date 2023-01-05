@@ -237,6 +237,9 @@
     <ClCompile Include="Data.cpp">
       <Filter>Header Files\Scenes\PlayScene\Data</Filter>
     </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Header Files\Scenes\PlayScene\Object\Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -385,6 +388,9 @@
     </ClInclude>
     <ClInclude Include="Data.h">
       <Filter>Header Files\Scenes\PlayScene\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Header Files\Scenes\PlayScene\Object\Effects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

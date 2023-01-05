@@ -89,7 +89,7 @@ void CBrick::CountDownConvertCoin()
 		{
 			if (GetTickCount64() - time_count_down > BRICK_TIME_COUTDOWN)
 			{
-				time_convert --;
+				time_convert--;
 				time_count_down = GetTickCount64();
 			}
 		}

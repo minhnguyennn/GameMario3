@@ -179,7 +179,6 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"STATE: %d\n", state);
 	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
@@ -259,9 +258,7 @@ void CKoopa::Render()
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	else
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y + KOOPA_Y_ADJUST);
-
-	DebugOutTitle(L"AniId: %d", aniId);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CKoopa::SetState(int state)

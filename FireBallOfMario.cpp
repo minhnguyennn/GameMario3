@@ -88,7 +88,7 @@ void CFireBallOfMario::SetState(int state)
 	case FIREBALLS_STATE_LEFT:
 		vx = -FIREBALLS_MARIO_SPEED_X;
 		break;
-	case FIREBALLS_STATE_DELETE:
+	case FIREBALL_MARIO_STATE_DELETE:
 	{
 		Delete();
 		break;

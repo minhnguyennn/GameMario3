@@ -173,8 +173,11 @@
 #define ID_ANI_BIG_TO_FIRE_RIGHT		4806
 #define ID_ANI_BIG_TO_FIRE_LEFT			4807
 
-#define ID_ANI_BIG_TO_RACCOON_RIGHT		4808
-#define ID_ANI_BIG_TO_RACCOON_LEFT		4809
+#define ID_ANI_INVISIBLE_TO_BIG_RIGHT	4808
+#define ID_ANI_INVISIBLE_TO_BIG_LEFT	4809
+
+#define ID_ANI_MARIO_EFFECTS			4810
+#define ID_ANI_MARIO_INVISIBLE			4811
 
 //PROPERTY
 #define MARIO_VMAX_X_ADJUST			0.005f
@@ -256,7 +259,7 @@
 
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
-#define MARIO_CHANGE_LEVEL_HEIGHT 6
+#define MARIO_CHANGE_LEVEL_HEIGHT 5
 
 #define MARIO_DISTANCE_WITH_GHOST_BOX 20
 
@@ -273,6 +276,7 @@
 #define MARIO_FLYING_TIMEOUT 5000
 #define MARIO_DECREASE_POWER_TIMEOUT 1000
 #define MARIO_TIME_DECREASE_WHEN_OUTMAP 7
+#define MARIO_EFFECT_SMOKE_TIMEOUT 500
 
 class CMario : public CGameObject
 {
@@ -313,6 +317,7 @@ class CMario : public CGameObject
 	BOOLEAN isDecreasePower;
 	BOOLEAN disableKey;
 	BOOLEAN canReturnWorldMap;
+	BOOLEAN isSummonEffect;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -355,6 +360,7 @@ public:
 		isDecreasePower = false;
 		koopa_holding = NULL;
 		disableKey = false;
+		isSummonEffect = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;
@@ -434,4 +440,5 @@ public:
 	bool CountDownTimer2(ULONGLONG time_calculate, int time_out);
 	bool MarioOutWorld() { return (x > MARIO_POSITION_OUTMAP); }
 	bool IsChangeDirection() { return (vx > 0 && ax < 0) || (vx < 0 && ax > 0); }
+	void SummonTypeEffect(int type_effects);
 };
