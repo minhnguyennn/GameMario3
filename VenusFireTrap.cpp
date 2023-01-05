@@ -8,6 +8,7 @@
 
 CVenusFireTrap::CVenusFireTrap(float x, float y, int type) :CGameObject(x, y)
 {
+	isIdle = false;
 	this->type = type;
 	this->start_y = y;
 	SetState(VFTRAP_STATE_UP);
@@ -63,18 +64,12 @@ void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetIsChangeLevel()) return;
-	if (type == VFTRAP_TYPE_PIRANHA)
-	{
+	if (type == VFTRAP_TYPE_PIRANHA) 
 		MoveFunctionPlant(VFTRAP_DIST_UP_PIRA, VFTRAP_DIST_DOWN_PIRA);
-	}
-	else if (type == VFTRAP_TYPE_GREEN) 
-	{
+	else if (type == VFTRAP_TYPE_GREEN)
 		MoveFunctionPlant(VFTRAP_DIS_UP_GREEN, VFTRAP_DIS_DOWN_GREEN);
-	}
-	else
-	{
+	else 
 		MoveFunctionPlant(VFTRAP_DIS_UP_RED, VFTRAP_DIS_DOWN_RED);
-	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -119,22 +114,26 @@ void CVenusFireTrap::Render()
 		{
 			if (isMarioAboveWithPlant())
 			{
-				aniId = ID_ANI_VFTRAP_RED_TOP_RIGHT;
+				if (isIdle) aniId = ID_ANI_VFTRAP_RED_TOP_RIGHT_ATTACK;
+				else aniId = ID_ANI_VFTRAP_RED_TOP_RIGHT;
 			}
-			else 
+			else
 			{
-				aniId = ID_ANI_VFTRAP_RED_BOTTOM_RIGHT;
+				if (isIdle) aniId = ID_ANI_VFTRAP_RED_BOTTOM_RIGHT_ATTACK;
+				else aniId = ID_ANI_VFTRAP_RED_BOTTOM_RIGHT;
 			}
 		}
 		else if (isMarioLeftWithPlant())
 		{
 			if (isMarioAboveWithPlant())
 			{
-				aniId = ID_ANI_VFTRAP_RED_TOP_LEFT;
+				if (isIdle) aniId = ID_ANI_VFTRAP_RED_TOP_LEFT_ATTACK;
+				else aniId = ID_ANI_VFTRAP_RED_TOP_LEFT;
 			}
 			else
 			{
-				aniId = ID_ANI_VFTRAP_RED_BOTTOM_LEFT;
+				if (isIdle) aniId = ID_ANI_VFTRAP_RED_BOTTOM_LEFT_ATTACK;
+				else aniId = ID_ANI_VFTRAP_RED_BOTTOM_LEFT;
 			}
 		}
 		else if (state == VFTRAP_STATE_DIE)
@@ -158,15 +157,18 @@ void CVenusFireTrap::SetState(int state)
 	case VFTRAP_STATE_UP:
 	{
 		vy = -VFTRAP_MOVING_SPEED;
+		isIdle = false;
 		break;
 	}
 	case VFTRAP_STATE_DOWN:
 	{
 		vy = VFTRAP_MOVING_SPEED;
+		isIdle = false;
 		break;
 	}
 	case VFTRAP_STATE_IDLE:
 	{
+		isIdle = true;
 		vy = 0;
 		time_line = GetTickCount64();
 		break;
@@ -189,6 +191,7 @@ void CVenusFireTrap::ChangeStateMotionDown(ULONGLONG time_type)
 		if (type == VFTRAP_TYPE_RED) 
 		{
 			SetSummonItems(VFTRAP_TYPE_FIRE_BALL);
+			
 		}
 		SetState(VFTRAP_STATE_DOWN);
 	}
@@ -241,7 +244,6 @@ void CVenusFireTrap::SetSummonItems(int type)
 	default:
 		break;
 	}
-	
 }
 
 bool CVenusFireTrap::isMarioLeftWithPlant()
@@ -290,4 +292,12 @@ bool CVenusFireTrap::CountDownTimer(ULONGLONG time)
 		return true;
 	}
 	return false;
+}
+
+void CVenusFireTrap::SummonScore()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CPoint* point = new CPoint(x, y, POINT_TYPE_100);
+	scene->CreateObject(point);
+	point->SetState(POINT_STATE_MOVE_UP);
 }

@@ -299,8 +299,9 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
-	CMushRoom* p = (CMushRoom*)e->obj;
-	p->Delete();
+	CMushRoom* mush_room = (CMushRoom*)e->obj;
+	mush_room->SummonScore();
+	mush_room->Delete();
 	if (level == MARIO_LEVEL_SMALL) 
 	{
 		SetLevel(MARIO_LEVEL_BIG);
@@ -314,6 +315,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
 	CLeaf* leaf = (CLeaf*)e->obj;
+	leaf->SummonScore();
 	leaf->Delete();
 	if (level == MARIO_LEVEL_SMALL) 
 	{
@@ -980,15 +982,24 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CMario::SetLevel(int l)
 {
 	if (isSitting) return;
-	if(isOnPlatform) y -= MARIO_CHANGE_LEVEL_HEIGHT;
-	SummonTypeEffect(EFFECT_TYPE_SMOKE);
-	time_line = GetTickCount64();
+	if (level == MARIO_LEVEL_SMALL) y -= MARIO_SMALL_SET_LEVEL_Y_ADJUST;
+	else y -= MARIO_BIG_SET_LEVEL_Y_ADJUST;
+	if (l == MARIO_LEVEL_RACCOON)
+	{
+		SummonTypeEffect(EFFECT_TYPE_SMOKE);
+		time_summon_smoke = GetTickCount64();
+	}
+	else
+	{
+		isChangeLevel = true;
+		time_change_level = GetTickCount64();
+	}
 	level = l;
 }
 
 void CMario::ChangeLevelMario(DWORD dt)
 {
-	if (isSummonEffect)
+	if (isSummonEffect || isChangeLevel)
 	{
 		vx = 0;
 		vy = 0;
@@ -1000,18 +1011,30 @@ void CMario::ChangeLevelMario(DWORD dt)
 		vx += ax * dt;
 	}
 
-	if (isSummonEffect && CountDownTimer(MARIO_EFFECT_SMOKE_TIMEOUT))
+	if (level == MARIO_LEVEL_RACCOON)
 	{
-		time_line = 0;
-		time_line = GetTickCount64();
-		isSummonEffect = false;
-		isChangeLevel = true;
+		if (isSummonEffect && CountDownTimer2(time_summon_smoke, MARIO_EFFECT_SMOKE_TIMEOUT))
+		{
+			time_summon_smoke = 0;
+			time_change_level = GetTickCount64();
+			isSummonEffect = false;
+			isChangeLevel = true;
+		}
+		else if (isChangeLevel && CountDownTimer2(time_change_level, MARIO_CHANGE_LEVEL_TIMEOUT))
+		{
+			time_change_level = 0;
+			isChangeLevel = false;
+			disableKey = false;
+		}
 	}
-	else if (isChangeLevel && CountDownTimer(MARIO_CHANGE_LEVEL_TIMEOUT))
+	else
 	{
-		time_line = 0;
-		isChangeLevel = false;
-		disableKey = false;
+		if (isChangeLevel && CountDownTimer2(time_change_level, MARIO_CHANGE_LEVEL_TIMEOUT))
+		{
+			time_change_level = 0;
+			isChangeLevel = false;
+			disableKey = false;
+		}
 	}
 }
 

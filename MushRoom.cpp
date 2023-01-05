@@ -1,14 +1,15 @@
 #include "MushRoom.h"
+#include "Point.h"
+#include "PlayScene.h"
 #include"debug.h"
 
 CMushRoom::CMushRoom(float x, float y, int type_mushroom) :CGameObject(x, y)
 {
 	start_y = y;
 	ay = MUSHROOM_GRAVITY;
-	type_mushroom = type_mushroom;
+	this->type_mushroom = type_mushroom;
 	die_start = -1;
 	check = false;
-	countDebug = 0;
 }
 
 void CMushRoom::SetState(int state)
@@ -64,11 +65,10 @@ void CMushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CMushRoom::Render()
 {
 	if (!checkObjectInCamera()) return;
-	int aniId = ID_ANI_MUSHROOM_GREEN;
-	if (type_mushroom == MUSHROOM_TYPE_RED) {
-		aniId = ID_ANI_MUSHROOM_RED;
-	}
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	int aniId = 0;
+	if (type_mushroom == MUSHROOM_TYPE_RED) aniId = ID_ANI_MUSHROOM_RED;
+	else aniId = ID_ANI_MUSHROOM_GREEN;
+	CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_RED)->Render(x, y);
 	//RenderBoundingBox();
 }
 
@@ -94,4 +94,12 @@ void CMushRoom::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CMushRoom::ChangeStateWalking() {
 	if ((GetTickCount64() - count_time_change > TIME_HALF_SECOND)) SetState(MUSHROOM_STATE_WALKING);
+}
+
+void CMushRoom::SummonScore()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CPoint* point = new CPoint(x, y, POINT_TYPE_1000);
+	scene->CreateObject(point);
+	point->SetState(POINT_STATE_MOVE_UP);
 }

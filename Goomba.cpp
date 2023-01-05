@@ -5,6 +5,7 @@
 #include "PlayScene.h"
 #include "Platform.h"
 #include "Mario.h"
+#include "Point.h"
 
 CGoomba::CGoomba(float x, float y, int level, int type) :CGameObject(x, y)
 {
@@ -183,6 +184,7 @@ void CGoomba::SetState(int state)
 		break;
 	}
 	case GOOMBA_STATE_DIE:
+		SummonScore();
 		time_line = GetTickCount64();
 		isDie = true;
 		vx = 0;
@@ -226,3 +228,10 @@ void CGoomba::LowerLevel()
 	}
 }
 
+void CGoomba::SummonScore()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CPoint* point = new CPoint(x, y, POINT_TYPE_100);
+	scene->CreateObject(point);
+	point->SetState(POINT_STATE_MOVE_UP);
+}

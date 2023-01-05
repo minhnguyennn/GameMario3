@@ -20,7 +20,7 @@
 
 //DISTANCE
 #define COIN_DISTANCE_UP 40
-#define COIN_DISTANCE_DOWN 20
+#define COIN_DISTANCE_DOWN 5
 
 //PROPERTY
 #define MAX_VY 0.07f
@@ -30,18 +30,26 @@
 #define COIN_TYPE_IN_BRICK 1
 #define COIN_TYPE_TURN_AROUND 2
 
+//TIME
+#define COIN_UP_TIMEOUT 400
+#define COIN_DOWN_TIMEOUT 200
+
+
 class CCoin : public CGameObject 
 {
 	float start_y;
-	float coppy_x;
-	float coppy_y;
 	int type;
+	ULONGLONG time_coin_up;
+	ULONGLONG time_coin_down;
+	bool isSummonScore;
 public:
 	CCoin(float x, float y, int type) : CGameObject(x, y) 
 	{
-		SetState(COIN_STATE_IDLE);
+		time_coin_up = 0;
+		time_coin_down = 0;
 		start_y = y;
 		this->type = type;
+		isSummonScore = false;
 	}
 	void OnNoCollision(DWORD dt);
 	void SetState(int state);
@@ -49,6 +57,5 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
-	void SummonAndMovePoint();
-	void SetCoppyPosition(float coppy_x, float coppy_y) { this->coppy_x = coppy_x, this->coppy_y = coppy_y; }
+	void SummonScore();
 };

@@ -1,4 +1,6 @@
 #include "Leaf.h"
+#include "Point.h"
+#include "PlayScene.h"
 
 #define MAX_VY 0.02f
 
@@ -120,4 +122,12 @@ bool CLeaf::CountDownTimer(int time)
 		return true;
 	}
 	return false;
+}
+
+void CLeaf::SummonScore()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CPoint* point = new CPoint(x, y, POINT_TYPE_1000);
+	scene->CreateObject(point);
+	point->SetState(POINT_STATE_MOVE_UP);
 }

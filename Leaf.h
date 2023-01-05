@@ -45,5 +45,6 @@ public:
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	bool CountDownTimer(int time);
+	void SummonScore();
 };
 

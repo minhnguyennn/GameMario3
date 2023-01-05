@@ -3,22 +3,21 @@
 #include "debug.h"
 #include "PlayScene.h"
 
-
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
 	if (!checkObjectInCamera()) return;
-	if ((start_y - y) > COIN_DISTANCE_UP)
+	if (state == COIN_STATE_MOVE_UP && GetTickCount64() - time_coin_up > COIN_UP_TIMEOUT)
 	{
+		time_coin_up = 0;
 		SetState(COIN_STATE_MOVE_DOWN);
-		SetCoppyPosition(x, y);
-		SummonAndMovePoint();
 	}
-
-	if ((vy > 0) && (y > (start_y - COIN_DISTANCE_DOWN)))
+	else if (!isSummonScore && state == COIN_STATE_MOVE_DOWN && GetTickCount64() - time_coin_down > COIN_DOWN_TIMEOUT)
 	{
-		SetState(COIN_STATE_DELETE);
+		time_coin_down = 0;
+		SummonScore();
+		isDeleted = true;
+		return;
 	}
-
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -54,29 +53,28 @@ void CCoin::SetState(int state)
 	switch (state)
 	{
 	case COIN_STATE_MOVE_DOWN:
-		vy = MAX_VY;
-		break;
-	case COIN_STATE_DELETE:
 	{
-		Delete();
+		time_coin_down = GetTickCount64();
+		vy = MAX_VY;
 		break;
 	}
 	case COIN_STATE_MOVE_UP:
+	{
 		vy = -MAX_VY;
+		time_coin_up = GetTickCount64();
 		break;
-	case COIN_STATE_IDLE:
-		vy = 0;
-		break;
+	}
 	default:
 		break;
 	}
 	CGameObject::SetState(state);
 }
 
-void CCoin::SummonAndMovePoint() 
+void CCoin::SummonScore()
 {
+	isSummonScore = true;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CPoint* point = new CPoint(coppy_x, coppy_y, POINT_TYPE_100);
+	CPoint* point = new CPoint(x, y, POINT_TYPE_100);
 	scene->CreateObject(point);
-	point->SetState(POINT_STATE_ADD_100);
+	point->SetState(POINT_STATE_MOVE_UP);
 }

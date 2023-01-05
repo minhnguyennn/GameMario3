@@ -14,12 +14,14 @@
 //ANIMATION
 
 //red
+#define ID_ANI_VFTRAP_RED_TOP_LEFT_ATTACK 5031
+#define ID_ANI_VFTRAP_RED_BOTTOM_LEFT_ATTACK 5032
+#define ID_ANI_VFTRAP_RED_TOP_RIGHT_ATTACK 5033
+#define ID_ANI_VFTRAP_RED_BOTTOM_RIGHT_ATTACK 5034
 #define ID_ANI_VFTRAP_RED_TOP_LEFT 5020
 #define ID_ANI_VFTRAP_RED_BOTTOM_LEFT 5021
-
 #define ID_ANI_VFTRAP_RED_TOP_RIGHT 5022
 #define ID_ANI_VFTRAP_RED_BOTTOM_RIGHT 5027
-
 #define ID_ANI_VFTRAP_RED_DIE 5029
 
 //green
@@ -78,6 +80,7 @@ protected:
 	float start_y;
 	int type;
 	ULONGLONG time_line;
+	bool isIdle;
 public:
 	CVenusFireTrap(float x, float y, int type);
 	void SetState(int state);
@@ -96,5 +99,3 @@ public:
 	void MoveFunctionPlant(float disUp, float disDown);
 	bool CountDownTimer(ULONGLONG time);
 };
-
-

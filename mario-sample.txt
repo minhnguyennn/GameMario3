@@ -39,11 +39,12 @@ height	240
 192	textures\marioWorldMap.png
 193	textures\NES - Super Mario Bros 3 - Enemies.png
 194	textures\masks.png
-195	textures\enemies - 1.png
-196	textures\enemies - 1 - Copy.png
-197	textures\enemies - 1 - Copy (2).png
+195	textures\enemies - left.png
+196	textures\enemies - turnover.png
+197	textures\enemies - right.png
 198	textures\worldmapObj.png
 199	textures\items.png
+181	textures\effects.png
 
 200	Resource\Tilemaps\world1-1_bank.png
 205	Resource\Tilemaps\world_map.png

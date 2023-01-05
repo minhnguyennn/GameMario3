@@ -259,7 +259,8 @@
 
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
-#define MARIO_CHANGE_LEVEL_HEIGHT 5
+#define MARIO_BIG_SET_LEVEL_Y_ADJUST 5
+#define MARIO_SMALL_SET_LEVEL_Y_ADJUST 10
 
 #define MARIO_DISTANCE_WITH_GHOST_BOX 20
 
@@ -288,7 +289,7 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 	int level; 
-	int untouchable; 
+	int untouchable;
 
 	int time;
 	int heart;
@@ -296,12 +297,14 @@ class CMario : public CGameObject
 	int score;
 	int power;
 	
-	ULONGLONG untouchable_start = 0;
-	ULONGLONG count_1_second = 0;
+	ULONGLONG untouchable_start;
+	ULONGLONG count_1_second;
 	ULONGLONG time_fly;
-	ULONGLONG time_line = 0;
+	ULONGLONG time_line;
 	ULONGLONG time_power;
-	ULONGLONG time_running = 0;
+	ULONGLONG time_running;
+	ULONGLONG time_summon_smoke;
+	ULONGLONG time_change_level;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -345,7 +348,12 @@ public:
 		time_fly = 0;
 		time_line = 0;
 		time_power = 0;
-		
+		time_summon_smoke = 0;
+		time_running = 0;
+		count_1_second = 0;
+		untouchable_start = 0;
+		time_change_level = 0;
+
 		canReturnWorldMap = false;
 		isSlowFly = false;
 		isAttack = false;
