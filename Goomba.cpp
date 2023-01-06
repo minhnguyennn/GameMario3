@@ -54,18 +54,9 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		if (level == GOOMBA_LEVEL_BIG) 
 		{
-			if (count_number_jumps == GOOMBA_COUNT_JUMP)
-			{
-				SetState(GOOMBA_STATE_FLY_MAX);
-			}
-			else if (isWalk)
-			{
-				SetState(GOOMBA_STATE_CLOSE_WING);
-			}
-			else if (GetTickCount64() - time_close > GOOMBA_CLOSE_WING_TIMEOUT)
-			{
-				SetState(GOOMBA_STATE_FLY);
-			}
+			if (!isTurnOver && count_number_jumps == GOOMBA_COUNT_JUMP) SetState(GOOMBA_STATE_FLY_MAX);
+			else if (isWalk) SetState(GOOMBA_STATE_CLOSE_WING);
+			else if (GetTickCount64() - time_close > GOOMBA_CLOSE_WING_TIMEOUT) SetState(GOOMBA_STATE_FLY);
 		}
 		else
 		{
@@ -178,6 +169,7 @@ void CGoomba::SetState(int state)
 	{
 	case GOOMBA_STATE_DIE_TURN_OVER:
 	{
+		SummonScore();
 		isTurnOver = true;
 		vx = -GOOMBA_DIE_VX;
 		vy = -GOOMBA_DIE_VY;
@@ -210,6 +202,12 @@ void CGoomba::SetState(int state)
 		vy = -GOOMBA_MAX_FLY_SPEED;
 		count_number_jumps = 0;
 		break;
+	case GOOMBA_STATE_IDLE:
+	{
+		vy = 0;
+		vx = 0;
+		break;
+	}
 	default:
 		break;
 	}
@@ -217,6 +215,7 @@ void CGoomba::SetState(int state)
 
 void CGoomba::LowerLevel()
 {
+	SummonScore();
 	if (level == GOOMBA_LEVEL_BIG )
 	{
 		level = GOOMBA_LEVEL_SMALL;

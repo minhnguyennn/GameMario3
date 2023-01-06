@@ -22,7 +22,7 @@ Resource/Tilemaps/world1-1-1.txt
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 ########## Mario #########
-0	300	359
+0	700	359
 
 ########## Automation #######
 #22	2694	284
@@ -54,8 +54,8 @@ Resource/Tilemaps/world1-1-1.txt
 ######### Goomba ###########
 2	224	401	1	1
 2	528	401	1	1
-2	832	385	1	1
-2	879	385	1	1
+#2	832	385	1	1
+#2	879	385	1	1
 2	944	380	2	2
 
 ######### Koopa #################

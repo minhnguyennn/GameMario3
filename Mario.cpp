@@ -27,7 +27,7 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
-	DebugOutTitle(L"number_koopa_touch: %d and time_koopa_touch: %d ", number_koopa_touch, time_koopa_touch);
+	//DebugOutTitle(L"number_koopa_touch: %d and time_koopa_touch: %d ", number_koopa_touch, time_koopa_touch);
 	//DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
