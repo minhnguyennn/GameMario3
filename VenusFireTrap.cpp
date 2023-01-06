@@ -175,6 +175,7 @@ void CVenusFireTrap::SetState(int state)
 	}
 	case VFTRAP_STATE_DIE:
 	{
+		SummonScore();
 		isDeleted = true;
 		break;
 	}

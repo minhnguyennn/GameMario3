@@ -27,6 +27,7 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
+	DebugOutTitle(L"number_koopa_touch: %d and time_koopa_touch: %d ", number_koopa_touch, time_koopa_touch);
 	//DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
@@ -35,7 +36,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CalculatePowerToFly();
 	CalculateHeartAndCoin();
 	CountDown1Second();
-
+	CountDownKoopaTouch();
 	
 	if (canReturnWorldMap) {
 		//sau 2s
@@ -240,11 +241,12 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 	if (e->ny < 0)
 	{
+		time_koopa_touch = MARIO_TIME_KOOPA_TOUCH_MAX;
+		if (number_koopa_touch < MARIO_NUMBER_KOOPA_TOUCH_MAX) number_koopa_touch++;
+		else number_koopa_touch = MARIO_NUMBER_START_KOOPA_TOUCH;
+		koopa->SummonScore();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
-		if (koopa->GetLevel() == KOOPA_LEVEL_BIG)
-		{
-			koopa->SetLevel(KOOPA_LEVEL_SMALL);
-		}
+		if (koopa->GetLevel() == KOOPA_LEVEL_BIG) koopa->SetLevel(KOOPA_LEVEL_SMALL);
 		else 
 		{
 			if (koopa->GetIsAttacking() || koopa->GetState() == KOOPA_STATE_WALKING) 
@@ -252,10 +254,10 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
 				koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 			}
-			else if (koopa->GetIsDefense() || koopa->GetIsWaiting())
+			/*else if (koopa->GetIsDefense() || koopa->GetIsWaiting())
 			{
 				koopa->SetState(KOOPA_STATE_ATTACKING);
-			}
+			}*/
 		}
 	}
 	else if (e->nx != 0) 
@@ -1061,6 +1063,23 @@ void CMario::CountDown1Second() {
 		else {
 			canReturnWorldMap = true;
 		}
+	}
+}
+
+void CMario::CountDownKoopaTouch()
+{
+	if (time_koopa_touch > 0)
+	{
+		if (GetTickCount64() - time_coutdown_koopa_touch > TIME_ONE_SECOND)
+		{
+			time_koopa_touch--;
+			time_coutdown_koopa_touch = GetTickCount64();
+		}
+	}
+	else
+	{
+		time_koopa_touch = 0;
+		number_koopa_touch = 0;
 	}
 }
 

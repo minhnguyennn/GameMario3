@@ -98,4 +98,5 @@ public:
 	bool isMarioAboveWithPlant();
 	void MoveFunctionPlant(float disUp, float disDown);
 	bool CountDownTimer(ULONGLONG time);
+	void SummonScore();
 };

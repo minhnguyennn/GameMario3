@@ -7,6 +7,7 @@
 #include"Brick.h"
 #include"Tail.h"
 #include"Mario.h"
+#include"Point.h"
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -184,14 +185,14 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetIsChangeLevel()) return;
-	if ((isTurnOver || isDefense) && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
+	/*if ((isTurnOver || isDefense) && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		SetState(KOOPA_STATE_WAITING);
 	}
 	if (isWaiting && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		SetState(KOOPA_STATE_WALKING);
-	}
+	}*/
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -371,4 +372,58 @@ bool CKoopa::CountDownTimer(int time)
 		return true;
 	}
 	return false;
+}
+
+void CKoopa::SummonScore()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (mario->GetNumberKoopaTouch() == KOOPA_TOUCHED_NUMBER_1)
+	{
+		CPoint* point_100 = new CPoint(x, y, POINT_TYPE_100);
+		scene->CreateObject(point_100);
+		point_100->SetState(POINT_STATE_MOVE_UP);
+	}
+	else if (mario->GetNumberKoopaTouch() == KOOPA_TOUCHED_NUMBER_2)
+	{
+		CPoint* point_200 = new CPoint(x, y, POINT_TYPE_200);
+		scene->CreateObject(point_200);
+		point_200->SetState(POINT_STATE_MOVE_UP);
+	}
+	else if (mario->GetNumberKoopaTouch() == KOOPA_TOUCHED_NUMBER_3)
+	{
+		CPoint* point_400 = new CPoint(x, y, POINT_TYPE_400);
+		scene->CreateObject(point_400);
+		point_400->SetState(POINT_STATE_MOVE_UP);
+	}
+	else if (mario->GetNumberKoopaTouch() == KOOPA_TOUCHED_NUMBER_4)
+	{
+		CPoint* point_800 = new CPoint(x, y, POINT_TYPE_800);
+		scene->CreateObject(point_800);
+		point_800->SetState(POINT_STATE_MOVE_UP);
+	}
+	else if (mario->GetNumberKoopaTouch() == KOOPA_TOUCHED_NUMBER_5)
+	{
+		CPoint* point_1000 = new CPoint(x, y, POINT_TYPE_1000);
+		scene->CreateObject(point_1000);
+		point_1000->SetState(POINT_STATE_MOVE_UP);
+	}
+	else if (mario->GetNumberKoopaTouch() == KOOPA_TOUCHED_NUMBER_6)
+	{
+		CPoint* point_2000 = new CPoint(x, y, POINT_TYPE_2000);
+		scene->CreateObject(point_2000);
+		point_2000->SetState(POINT_STATE_MOVE_UP);
+	}
+	else if (mario->GetNumberKoopaTouch() == KOOPA_TOUCHED_NUMBER_7)
+	{
+		CPoint* point_4000 = new CPoint(x, y, POINT_TYPE_4000);
+		scene->CreateObject(point_4000);
+		point_4000->SetState(POINT_STATE_MOVE_UP);
+	}
+	else if (mario->GetNumberKoopaTouch() == KOOPA_TOUCHED_NUMBER_8)
+	{
+		CPoint* point_8000= new CPoint(x, y, POINT_TYPE_8000);
+		scene->CreateObject(point_8000);
+		point_8000->SetState(POINT_STATE_MOVE_UP);
+	}
 }

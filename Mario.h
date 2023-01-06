@@ -205,8 +205,13 @@
 #define MARIO_GHOSTBOX_Y			1
 #define MARIO_RACCON_GHOSTBOX_X_ADJUST	4
 #define MARIO_RACCON_GHOSTBOX_Y_ADJUST	1
-#define MARIO_ON_PLATFORM_Y_ADJUST	4
+#define MARIO_ON_PLATFORM_Y_ADJUST		4
 #define MARIO_SMALL_ON_PLATFORM_Y_ADJUST	6
+#define MARIO_NUMBER_START_KOOPA_TOUCH		1
+#define MARIO_NUMBER_KOOPA_TOUCH_MAX		8
+#define MARIO_TIME_KOOPA_TOUCH_MAX	3
+#define MARIO_NUMBER_START_HEART	4
+#define MARIO_NUMBER_START_UNTOUCHABLE	1
 
 //STATE
 #define MARIO_STATE_DIE					-10
@@ -264,10 +269,8 @@
 
 #define MARIO_DISTANCE_WITH_GHOST_BOX 20
 
-
-#define MARIO_UNTOUCHABLE_TIME 2500
-
 //TIME
+#define MARIO_UNTOUCHABLE_TIME 2500
 #define	MARIO_FALL_SLOWLY_TIMEOUT 300
 #define	MARIO_KICK_TIMEOUT 100
 #define	MARIO_ATTACK_TIMEOUT 500
@@ -278,10 +281,13 @@
 #define MARIO_DECREASE_POWER_TIMEOUT 1000
 #define MARIO_TIME_DECREASE_WHEN_OUTMAP 7
 #define MARIO_EFFECT_SMOKE_TIMEOUT 500
+#define MARIO_PLAY_GAME_TIMEOUT 300
 
 class CMario : public CGameObject
 {
 	CKoopa* koopa_holding;
+
+	int number_koopa_touch;
 
 	float maxVx;
 	float minVx;
@@ -305,6 +311,8 @@ class CMario : public CGameObject
 	ULONGLONG time_running;
 	ULONGLONG time_summon_smoke;
 	ULONGLONG time_change_level;
+	ULONGLONG time_koopa_touch;
+	ULONGLONG time_coutdown_koopa_touch;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -321,6 +329,7 @@ class CMario : public CGameObject
 	BOOLEAN disableKey;
 	BOOLEAN canReturnWorldMap;
 	BOOLEAN isSummonEffect;
+	BOOLEAN isKoopaTouch;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -353,6 +362,9 @@ public:
 		count_1_second = 0;
 		untouchable_start = 0;
 		time_change_level = 0;
+		time_koopa_touch = 0;
+		time_coutdown_koopa_touch = 0;
+
 
 		canReturnWorldMap = false;
 		isSlowFly = false;
@@ -369,6 +381,7 @@ public:
 		koopa_holding = NULL;
 		disableKey = false;
 		isSummonEffect = false;
+		isKoopaTouch = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;
@@ -378,14 +391,17 @@ public:
 		ay = MARIO_GRAVITY; 
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
-		untouchable_start = -1;
+		untouchable_start = -MARIO_NUMBER_START_UNTOUCHABLE;
 		isOnPlatform = false;
 		coin = 0;
-		heart = 4;
-		time = 300;
+		heart = MARIO_NUMBER_START_HEART;
+		time = MARIO_PLAY_GAME_TIMEOUT;
 		score = 0;
 		power = 0;
+		number_koopa_touch = 0;
 	}
+
+	int GetNumberKoopaTouch() { return number_koopa_touch; }
 
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
 	bool GetIsAttack() {return isAttack;  }
@@ -449,4 +465,5 @@ public:
 	bool MarioOutWorld() { return (x > MARIO_POSITION_OUTMAP); }
 	bool IsChangeDirection() { return (vx > 0 && ax < 0) || (vx < 0 && ax > 0); }
 	void SummonTypeEffect(int type_effects);
+	void CountDownKoopaTouch();
 };
