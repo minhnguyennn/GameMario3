@@ -27,7 +27,7 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
-	//DebugOutTitle(L"number_koopa_touch: %d and time_koopa_touch: %d ", number_koopa_touch, time_koopa_touch);
+	DebugOutTitle(L"isDrawAnimation: %d ", isDrawAnimation);
 	//DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
@@ -77,11 +77,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
-		if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
-		{
-			untouchable_start = 0;
-			untouchable = 0;
-		}
 	}
 
 	isOnPlatform = false;
@@ -165,11 +160,9 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithFlowerBox(LPCOLLISIONEVENT e)
 {
 	CFlowerBox* flower_box = dynamic_cast<CFlowerBox*>(e->obj);
-
-		disableKey = true;
-		SetState(MARIO_STATE_IDLE);
-		flower_box->SetState(FLOWER_BOX_STATE_UP);
-	
+	disableKey = true;
+	SetState(MARIO_STATE_IDLE);
+	flower_box->SetState(FLOWER_BOX_STATE_UP);
 }
 
 void CMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e) 
@@ -345,38 +338,46 @@ void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
-	if (isChangeLevel || isSummonEffect) aniId = GetAniIdChangeLevel();
-	else if (state == MARIO_STATE_DIE) aniId = ID_ANI_MARIO_DIE;
-	else if (level == MARIO_LEVEL_BIG) aniId = GetAniIdBig();
-	else if (level == MARIO_LEVEL_SMALL) aniId = GetAniIdSmall();
-	else if (level == MARIO_LEVEL_FIRE) aniId = GetAniIdFire();
-	else if (level == MARIO_LEVEL_RACCOON) aniId = GetAniIdRaccoon();
-
-	if (level != MARIO_LEVEL_RACCOON)
+	/*if (isChangeLevel || isSummonEffect) aniId = GetAniIdChangeLevel();
+	else */
+	if (isDrawAnimation)
 	{
-		if (isGhostBox)
-			animations->Get(aniId)->Render(x, y - MARIO_GHOSTBOX_Y);
+		if (state == MARIO_STATE_DIE) aniId = ID_ANI_MARIO_DIE;
+		else if (level == MARIO_LEVEL_BIG) aniId = GetAniIdBig();
+		else if (level == MARIO_LEVEL_SMALL) aniId = GetAniIdSmall();
+		else if (level == MARIO_LEVEL_FIRE) aniId = GetAniIdFire();
+		else if (level == MARIO_LEVEL_RACCOON) aniId = GetAniIdRaccoon();
+
+		if (level != MARIO_LEVEL_RACCOON)
+		{
+			if (isGhostBox)
+				animations->Get(aniId)->Render(x, y - MARIO_GHOSTBOX_Y);
+			else
+				animations->Get(aniId)->Render(x, y);
+		}
 		else
-			animations->Get(aniId)->Render(x, y);
+		{
+			if (nx > 0)
+			{
+				if (isGhostBox)
+					animations->Get(aniId)->Render(x - MARIO_RACCON_GHOSTBOX_X_ADJUST, y - MARIO_RACCON_GHOSTBOX_Y_ADJUST);
+				else
+					animations->Get(aniId)->Render(x - MARIO_RACCON_GHOSTBOX_X_ADJUST, y);
+			}
+			else
+			{
+				if (isGhostBox)
+					animations->Get(aniId)->Render(x + MARIO_RACCON_GHOSTBOX_X_ADJUST, y - MARIO_RACCON_GHOSTBOX_Y_ADJUST);
+				else
+					animations->Get(aniId)->Render(x + MARIO_RACCON_GHOSTBOX_X_ADJUST, y);
+			}
+		}
 	}
 	else
 	{
-		if (nx > 0)
-		{
-			if (isGhostBox)
-				animations->Get(aniId)->Render(x - MARIO_RACCON_GHOSTBOX_X_ADJUST, y - MARIO_RACCON_GHOSTBOX_Y_ADJUST);
-			else
-				animations->Get(aniId)->Render(x - MARIO_RACCON_GHOSTBOX_X_ADJUST, y);
-		}
-		else
-		{
-			if (isGhostBox)
-				animations->Get(aniId)->Render(x + MARIO_RACCON_GHOSTBOX_X_ADJUST, y - MARIO_RACCON_GHOSTBOX_Y_ADJUST);
-			else
-				animations->Get(aniId)->Render(x + MARIO_RACCON_GHOSTBOX_X_ADJUST, y);
-		}
+		aniId = ID_ANI_MARIO_INVISIBLE;
+		animations->Get(aniId)->Render(x, y);
 	}
-
 	RenderBoundingBox();
 }
 
@@ -981,12 +982,34 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	}
 }
 
+void CMario::LowerLevel() 
+{
+	if (untouchable == 0)
+	{
+		if (level == MARIO_LEVEL_RACCOON)
+		{
+			SetLevel(MARIO_LEVEL_BIG);
+			StartUntouchable();
+		}
+		else if (level == MARIO_LEVEL_BIG)
+		{
+			SetLevel(MARIO_LEVEL_SMALL);
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
+	}
+}
+
 void CMario::SetLevel(int l)
 {
 	if (isSitting) return;
 	if (level == MARIO_LEVEL_SMALL) y -= MARIO_SMALL_SET_LEVEL_Y_ADJUST;
 	else y -= MARIO_BIG_SET_LEVEL_Y_ADJUST;
-	if (l == MARIO_LEVEL_RACCOON)
+	if (l == MARIO_LEVEL_RACCOON || l == MARIO_LEVEL_BIG)
 	{
 		SummonEffect();
 		time_summon_smoke = GetTickCount64();
@@ -999,34 +1022,47 @@ void CMario::SetLevel(int l)
 	level = l;
 }
 
+void CMario::SetupFlicker()
+{
+	int j = rand() % 2;
+	if (j % 2 == 0)
+		isDrawAnimation = true;
+	else
+		isDrawAnimation = false;
+}
+
 void CMario::ChangeLevelMario(DWORD dt)
 {
-	if (isSummonEffect || isChangeLevel)
+	/*if (isSummonEffect || isChangeLevel)
 	{
 		vx = 0;
 		vy = 0;
-		disableKey = true;
 	}
 	else
 	{
 		vy += ay * dt;
 		vx += ax * dt;
-	}
+	}*/
 
-	if (level == MARIO_LEVEL_RACCOON)
+	vy += ay * dt;
+	vx += ax * dt;
+
+	if (isChangeLevel) SetupFlicker();
+
+	if (level == MARIO_LEVEL_RACCOON || level == MARIO_LEVEL_BIG)
 	{
 		if (isSummonEffect && CountDownTimer2(time_summon_smoke, MARIO_EFFECT_SMOKE_TIMEOUT))
 		{
 			time_summon_smoke = 0;
 			time_change_level = GetTickCount64();
-			isSummonEffect = false;
 			isChangeLevel = true;
+			isSummonEffect = false;
 		}
 		else if (isChangeLevel && CountDownTimer2(time_change_level, MARIO_CHANGE_LEVEL_TIMEOUT))
 		{
 			time_change_level = 0;
+			isDrawAnimation = true;
 			isChangeLevel = false;
-			disableKey = false;
 		}
 	}
 	else
@@ -1035,7 +1071,6 @@ void CMario::ChangeLevelMario(DWORD dt)
 		{
 			time_change_level = 0;
 			isChangeLevel = false;
-			disableKey = false;
 		}
 	}
 }
@@ -1080,27 +1115,6 @@ void CMario::CountDownKoopaTouch()
 	{
 		time_koopa_touch = 0;
 		number_koopa_touch = 0;
-	}
-}
-
-void CMario::LowerLevel() {
-	if (untouchable == 0)
-	{
-		if (level == MARIO_LEVEL_RACCOON)
-		{
-			SetLevel(MARIO_LEVEL_BIG);
-			StartUntouchable();
-		}
-		else if (level == MARIO_LEVEL_BIG)
-		{
-			SetLevel(MARIO_LEVEL_SMALL);
-			StartUntouchable();
-		}
-		else
-		{
-			DebugOut(L">>> Mario DIE >>> \n");
-			SetState(MARIO_STATE_DIE);
-		}
 	}
 }
 

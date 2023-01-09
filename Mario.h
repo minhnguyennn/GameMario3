@@ -275,7 +275,7 @@
 #define	MARIO_KICK_TIMEOUT 100
 #define	MARIO_ATTACK_TIMEOUT 500
 #define TIME_ONE_SECOND 1000
-#define MARIO_CHANGE_LEVEL_TIMEOUT 1000
+#define MARIO_CHANGE_LEVEL_TIMEOUT 2500
 #define MARIO_POWER_TIMEOUT 200
 #define MARIO_FLYING_TIMEOUT 5000
 #define MARIO_DECREASE_POWER_TIMEOUT 1000
@@ -330,6 +330,7 @@ class CMario : public CGameObject
 	BOOLEAN canReturnWorldMap;
 	BOOLEAN isSummonEffect;
 	BOOLEAN isKoopaTouch;
+	BOOLEAN isDrawAnimation;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -365,7 +366,6 @@ public:
 		time_koopa_touch = 0;
 		time_coutdown_koopa_touch = 0;
 
-
 		canReturnWorldMap = false;
 		isSlowFly = false;
 		isAttack = false;
@@ -378,14 +378,13 @@ public:
 		isKick = false;
 		isChangeLevel = false;
 		isDecreasePower = false;
-		koopa_holding = NULL;
 		disableKey = false;
 		isSummonEffect = false;
 		isKoopaTouch = false;
+		isDrawAnimation = true;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;
-
 
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
@@ -396,6 +395,7 @@ public:
 		coin = 0;
 		heart = MARIO_NUMBER_START_HEART;
 		time = MARIO_PLAY_GAME_TIMEOUT;
+		koopa_holding = NULL;
 		score = 0;
 		power = 0;
 		number_koopa_touch = 0;
@@ -437,7 +437,7 @@ public:
 		return (state != MARIO_STATE_DIE); 
 	}
 
-	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable==0); }
+	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
 
 	int GetLevel() { return level; }
 
@@ -445,7 +445,11 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void SetLevel(int l);
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void StartUntouchable() 
+	{
+		untouchable = 1; 
+		untouchable_start = GetTickCount64(); 
+	}
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
@@ -466,4 +470,5 @@ public:
 	bool IsChangeDirection() { return (vx > 0 && ax < 0) || (vx < 0 && ax > 0); }
 	void SummonEffect();
 	void CountDownKoopaTouch();
+	void SetupFlicker();
 };

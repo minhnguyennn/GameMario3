@@ -286,8 +286,8 @@ void CKoopa::SetState(int state)
 		isAttacking = false;
 		isWalking = false;
 		time_line = GetTickCount64();
-		vx = KOOPA_TURN_UP_JUMP_VX * isLeftWithMario();
-		vy = -KOOPA_TURN_UP_JUMP_VY;
+		vx = 0.04f * isLeftWithMario();
+		vy = -0.2f;
 		break;
 	}
 	case KOOPA_STATE_DIE:
