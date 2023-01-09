@@ -6,6 +6,7 @@
 #include "Goomba.h"
 #include "QuestionBrick.h"
 #include "Brick.h"
+#include "Effect.h"
 
 CTail::CTail(float x, float y) :CGameObject(x, y)
 {
@@ -59,6 +60,7 @@ void CTail::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
+	SummonEffect();
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 	if(brick->GetIsCoin()) return;
 	if (e->nx != 0)
@@ -85,6 +87,7 @@ void CTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 void CTail::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
 	CQuestionBrick* question_brick = dynamic_cast<CQuestionBrick*>(e->obj);
+	SummonEffect();
 	if (question_brick->GetState() == QUESTION_STATE_IDLE)
 		question_brick->SummonItemsFromBrickQuestion();
 }
@@ -92,18 +95,21 @@ void CTail::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 void CTail::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+	SummonEffect();
 	koopa->SetState(KOOPA_STATE_TURN_OVER);
 }
 
 void CTail::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 {
 	CVenusFireTrap* vnf_trap = dynamic_cast<CVenusFireTrap*>(e->obj);
+	SummonEffect();
 	vnf_trap->SetState(VFTRAP_STATE_DIE);
 }
 
 void CTail::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+	SummonEffect();
 	goomba->SetState(GOOMBA_STATE_DIE_TURN_OVER);
 }
 
@@ -126,4 +132,20 @@ void CTail::SetState(int state)
 		break;
 	}
 	CGameObject::SetState(state);
+}
+
+void CTail::SummonEffect()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (mario->GetNx() > 0)
+	{
+		CEffect* effect_right = new CEffect(x + TAIL_SUMMON_EFFECT_X_ADJUST, y, EFFECT_TYPE_STAR);
+		scene->CreateObject(effect_right);
+	}
+	else
+	{
+		CEffect* effect_left = new CEffect(x - TAIL_SUMMON_EFFECT_X_ADJUST, y, EFFECT_TYPE_STAR);
+		scene->CreateObject(effect_left);
+	}
 }

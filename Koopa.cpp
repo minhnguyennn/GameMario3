@@ -185,14 +185,14 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetIsChangeLevel()) return;
-	/*if ((isTurnOver || isDefense) && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
+	if ((isTurnOver || isDefense) && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		SetState(KOOPA_STATE_WAITING);
 	}
 	if (isWaiting && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		SetState(KOOPA_STATE_WALKING);
-	}*/
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -332,7 +332,7 @@ void CKoopa::SetState(int state)
 			y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 		}
 		ay = KOOPA_GRAVITY;
-		vx = KOOPA_WALKING_SPEED;
+		vx = -KOOPA_WALKING_SPEED * isLeftWithMario();
 		isWaiting = false;
 		isHeld = false;
 		isWalking = true;
@@ -354,6 +354,7 @@ int CKoopa::isLeftWithMario()
 
 void CKoopa::LowerLevel()
 {
+	SummonScore();
 	if (level == KOOPA_LEVEL_BIG)
 	{
 		level = MARIO_LEVEL_SMALL;
@@ -425,5 +426,11 @@ void CKoopa::SummonScore()
 		CPoint* point_8000= new CPoint(x, y, POINT_TYPE_8000);
 		scene->CreateObject(point_8000);
 		point_8000->SetState(POINT_STATE_MOVE_UP);
+	}
+	else
+	{
+		CPoint* point_100 = new CPoint(x, y, POINT_TYPE_100);
+		scene->CreateObject(point_100);
+		point_100->SetState(POINT_STATE_MOVE_UP);
 	}
 }

@@ -17,7 +17,7 @@
 #define TAIL_TIMEOUT	100
 
 //PROPRERTY
-#define TAIL_SPEED_X	0.1f
+#define TAIL_SUMMON_EFFECT_X_ADJUST	10
 
 class CTail : public CGameObject {
 	ULONGLONG time_line;
@@ -37,5 +37,6 @@ public:
 	int IsBlocking() { return 0; }
 	int IsCollidable() { return 1; };
 	void SetState(int state);
+	void SummonEffect();
 };
 

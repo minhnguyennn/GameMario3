@@ -71,6 +71,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
 	if (!checkObjectInCamera()) return;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
@@ -171,8 +172,8 @@ void CGoomba::SetState(int state)
 	{
 		SummonScore();
 		isTurnOver = true;
-		vx = -GOOMBA_DIE_VX;
-		vy = -GOOMBA_DIE_VY;
+		vx = GOOMBA_DIE_VX * isLeftWithMario();
+		vy = -GOOMBA_DIE_VY ;
 		break;
 	}
 	case GOOMBA_STATE_DIE:
@@ -233,4 +234,12 @@ void CGoomba::SummonScore()
 	CPoint* point = new CPoint(x, y, POINT_TYPE_100);
 	scene->CreateObject(point);
 	point->SetState(POINT_STATE_MOVE_UP);
+}
+
+int CGoomba::isLeftWithMario()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (x < mario->GetX()) return -1;
+	else return 1;
 }

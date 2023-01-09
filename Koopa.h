@@ -122,7 +122,7 @@ public:
 		isHeld = false;
 		isGhostBox = false;
 		isWalking = false;
-		SetState(KOOPA_STATE_CLOSE_SHELL);
+		SetState(KOOPA_STATE_WALKING);
 	};
 
 	void SetAy(float ay) { this->ay = ay; };

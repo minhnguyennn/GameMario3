@@ -988,7 +988,7 @@ void CMario::SetLevel(int l)
 	else y -= MARIO_BIG_SET_LEVEL_Y_ADJUST;
 	if (l == MARIO_LEVEL_RACCOON)
 	{
-		SummonTypeEffect(EFFECT_TYPE_SMOKE);
+		SummonEffect();
 		time_summon_smoke = GetTickCount64();
 	}
 	else
@@ -1242,10 +1242,10 @@ void CMario::CalculateHeartAndCoin()
 	}
 }
 
-void CMario::SummonTypeEffect(int type_effects)
+void CMario::SummonEffect()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CEffect* effects = new CEffect(x, y, type_effects);
+	CEffect* effects = new CEffect(x, y, EFFECT_TYPE_SMOKE);
 	scene->CreateObject(effects);
 	isSummonEffect = true;
 }

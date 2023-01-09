@@ -3,12 +3,15 @@
 
 //ANIMATION
 #define ID_ANI_EFFECT_SMOKE 14001
+#define ID_ANI_EFFECT_STAR 14002
 
 //TIME
 #define EFFECT_SMOKE_TIMEOUT 500
+#define EFFECT_STAR_TIMEOUT 200
 
 //TYPE EFFECTS
 #define EFFECT_TYPE_SMOKE 1
+#define EFFECT_TYPE_STAR 2
 
 class CEffect : public CGameObject 
 {
