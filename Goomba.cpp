@@ -75,7 +75,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (!checkObjectInCamera()) return;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-	if (mario->GetIsChangeLevel()) return;
+	if (mario->GetIsChangLevel()) return;
 	vy += ay * dt;
 	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - time_line > GOOMBA_DIE_TIMEOUT))
 	{
@@ -89,9 +89,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CGoomba::Render()
 {
 	if (!checkObjectInCamera()) return;
-
 	int aniId = 0;
-
 	if (isTurnOver)
 	{
 		if (type == GOOMBA_TYPE_BROWN)

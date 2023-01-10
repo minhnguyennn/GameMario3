@@ -63,7 +63,7 @@ void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (!checkObjectInCamera()) return;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-	if (mario->GetIsChangeLevel()) return;
+	if (mario->GetIsChangLevel()) return;
 	if (type == VFTRAP_TYPE_PIRANHA) 
 		MoveFunctionPlant(VFTRAP_DIST_UP_PIRA, VFTRAP_DIST_DOWN_PIRA);
 	else if (type == VFTRAP_TYPE_GREEN)

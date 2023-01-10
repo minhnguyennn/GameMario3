@@ -173,10 +173,7 @@
 #define ID_ANI_BIG_TO_FIRE_RIGHT		4806
 #define ID_ANI_BIG_TO_FIRE_LEFT			4807
 
-#define ID_ANI_INVISIBLE_TO_BIG_RIGHT	4808
-#define ID_ANI_INVISIBLE_TO_BIG_LEFT	4809
-
-#define ID_ANI_MARIO_EFFECTS			4810
+#define ID_ANI_MARIO_EFFECTS_SMOKE		4810
 #define ID_ANI_MARIO_INVISIBLE			4811
 
 //PROPERTY
@@ -324,13 +321,13 @@ class CMario : public CGameObject
 	BOOLEAN isAttack;
 	BOOLEAN isKick;
 	BOOLEAN isSlowFly;
-	BOOLEAN isChangeLevel;
 	BOOLEAN isDecreasePower;
 	BOOLEAN disableKey;
 	BOOLEAN canReturnWorldMap;
-	BOOLEAN isSummonEffect;
+	BOOLEAN isChangLevel;
 	BOOLEAN isKoopaTouch;
 	BOOLEAN isDrawAnimation;
+	BOOLEAN isUnTouchable;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -376,12 +373,12 @@ public:
 		isDeceleration = false;
 		isGhostBox = false;
 		isKick = false;
-		isChangeLevel = false;
 		isDecreasePower = false;
 		disableKey = false;
-		isSummonEffect = false;
+		isChangLevel = false;
 		isKoopaTouch = false;
 		isDrawAnimation = true;
+		isUnTouchable = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;
@@ -425,17 +422,16 @@ public:
 	int GetPower() { return power; }
 
 	bool IsMaxPower() { return power == MARIO_MAX_POWER_UP; }
-	bool GetIsChangeLevel() { return isChangeLevel; }
+
+	bool GetIsChangLevel() { return isChangLevel; }
+
 	bool GetDisableKey() { return disableKey; }
 
 
 	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }
 	bool GetIsRunning() {return isRunning; }
 
-	int IsCollidable()
-	{ 
-		return (state != MARIO_STATE_DIE); 
-	}
+	int IsCollidable() { return (state != MARIO_STATE_DIE); }
 
 	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
 
@@ -468,7 +464,6 @@ public:
 	bool CountDownTimer2(ULONGLONG time_calculate, int time_out);
 	bool MarioOutWorld() { return (x > MARIO_POSITION_OUTMAP); }
 	bool IsChangeDirection() { return (vx > 0 && ax < 0) || (vx < 0 && ax > 0); }
-	void SummonEffect();
 	void CountDownKoopaTouch();
 	void SetupFlicker();
 };
