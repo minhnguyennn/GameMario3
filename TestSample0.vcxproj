@@ -154,7 +154,7 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="FireBallOfMario.cpp" />
     <ClCompile Include="FireBalls.cpp" />
-    <ClCompile Include="FlowerBox.cpp" />
+    <ClCompile Include="CardBox.cpp" />
     <ClCompile Include="GoshBox.cpp" />
     <ClCompile Include="Grass.cpp" />
     <ClCompile Include="Help.cpp" />
@@ -204,7 +204,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="FireBallOfMario.h" />
     <ClInclude Include="FireBalls.h" />
-    <ClInclude Include="FlowerBox.h" />
+    <ClInclude Include="CardBox.h" />
     <ClInclude Include="GoshBox.h" />
     <ClInclude Include="Grass.h" />
     <ClInclude Include="Help.h" />

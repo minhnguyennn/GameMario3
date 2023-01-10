@@ -14,7 +14,7 @@
 #include "Pipeline.h"
 #include "Goomba.h"
 #include "HUD.h"
-#include "FlowerBox.h"
+#include "CardBox.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -169,7 +169,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_FLOWER_BOX:
 	{
-		obj = new CFlowerBox(x, y);
+		obj = new CCardBox(x, y);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:

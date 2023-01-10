@@ -211,6 +211,7 @@
 #define MARIO_NUMBER_START_UNTOUCHABLE	1
 #define MARIO_TOUCH_ONE_NUMBER	1
 #define MARIO_TOUCH_TOW_NUMBER	2
+#define MARIO_RANDOM_NUMBER_ADJUST	2
 
 //STATE
 #define MARIO_STATE_DIE					-10
@@ -301,6 +302,7 @@ class CMario : public CGameObject
 	int coin;
 	int score;
 	int power;
+	int catch_card;
 	
 	ULONGLONG untouchable_start;
 	ULONGLONG count_1_second;
@@ -342,7 +344,7 @@ class CMario : public CGameObject
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireBalls(LPCOLLISIONEVENT e);
 	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
-	void OnCollisionWithFlowerBox(LPCOLLISIONEVENT e);
+	void OnCollisionWithCardBox(LPCOLLISIONEVENT e);
 	void OnCollisionWithButton(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
@@ -364,6 +366,7 @@ public:
 		time_change_level = 0;
 		time_touch = 0;
 		time_coutdown_touch = 0;
+		catch_card = 0;
 
 		canReturnWorldMap = false;
 		isSlowFly = false;
@@ -402,6 +405,8 @@ public:
 
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
 	bool GetIsAttack() {return isAttack;  }
+
+	int GetCatchCard() { return catch_card; }
 
 	bool GetIsOnPlatform() { return isOnPlatform; }
 

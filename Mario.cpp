@@ -18,7 +18,7 @@
 #include "Goomba.h"
 #include "Tail.h"
 #include "VenusFireTrap.h"
-#include "FlowerBox.h"
+#include "CardBox.h"
 #include "Button.h"
 #include "GameObject.h"
 #include "Data.h"
@@ -27,7 +27,7 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
-	DebugOutTitle(L"isDrawAnimation: %d ", isDrawAnimation);
+	//DebugOutTitle(L"isDrawAnimation: %d ", isDrawAnimation);
 	//DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
@@ -42,18 +42,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//sau 2s
 		//doi canh world map
 	}
-	if (disableKey && isOnPlatform) {
-		if (MarioOutWorld())
+	if (disableKey && isOnPlatform) 
+	{
+		if (!MarioOutWorld())
 		{
 			SetState(MARIO_STATE_WALKING_RIGHT);
 		}
 		else
 		{
 			SetState(MARIO_STATE_IDLE);
-			/*vx = 0;
-			vy = 0;
-			ax = 0;
-			ay = 0;*/
 		}
 	}
 	
@@ -140,8 +137,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFireBalls(e);
 	else if (dynamic_cast<CVenusFireTrap*>(e->obj))
 		OnCollisionWithVenusFireTrap(e);
-	else if (dynamic_cast<CFlowerBox*>(e->obj))
-		OnCollisionWithFlowerBox(e);
+	else if (dynamic_cast<CCardBox*>(e->obj))
+		OnCollisionWithCardBox(e);
 	else if (dynamic_cast<CButton*>(e->obj))
 		OnCollisionWithButton(e);
 }
@@ -156,12 +153,13 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 	}
 }
 
-void CMario::OnCollisionWithFlowerBox(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithCardBox(LPCOLLISIONEVENT e)
 {
-	CFlowerBox* flower_box = dynamic_cast<CFlowerBox*>(e->obj);
+	CCardBox* card_box = dynamic_cast<CCardBox*>(e->obj);
 	disableKey = true;
 	SetState(MARIO_STATE_IDLE);
-	flower_box->SetState(FLOWER_BOX_STATE_UP);
+	CData::GetInstance()->SetCardBox(card_box->SetupRandomCardBox());
+	card_box->SetState(CARD_BOX_STATE_UP);
 }
 
 void CMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e) 
@@ -1012,10 +1010,8 @@ void CMario::SetLevel(int l)
 
 void CMario::SetupFlicker()
 {
-	if ((rand() % 2) % 2 == 0)
-		isDrawAnimation = true;
-	else
-		isDrawAnimation = false;
+	if ((rand() % MARIO_RANDOM_NUMBER_ADJUST) % MARIO_RANDOM_NUMBER_ADJUST == 0) isDrawAnimation = true;
+	else isDrawAnimation = false;
 }
 
 void CMario::ChangeLevelMario(DWORD dt)

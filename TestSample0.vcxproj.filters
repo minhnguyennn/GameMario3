@@ -198,7 +198,7 @@
     <ClCompile Include="GoshBox.cpp">
       <Filter>Header Files\Scenes\WorldMap\Decoration</Filter>
     </ClCompile>
-    <ClCompile Include="FlowerBox.cpp">
+    <ClCompile Include="CardBox.cpp">
       <Filter>Header Files\Scenes\PlayScene\Object\Items</Filter>
     </ClCompile>
     <ClCompile Include="SampleKeyEventHandler.cpp">
@@ -341,7 +341,7 @@
     <ClInclude Include="GoshBox.h">
       <Filter>Header Files\Scenes\WorldMap\Decoration</Filter>
     </ClInclude>
-    <ClInclude Include="FlowerBox.h">
+    <ClInclude Include="CardBox.h">
       <Filter>Header Files\Scenes\PlayScene\Object\Items</Filter>
     </ClInclude>
     <ClInclude Include="SampleKeyEventHandler.h">

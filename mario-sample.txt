@@ -31,7 +31,6 @@ height	240
 130	textures\Font.png
 140	textures\hud_source.png
 150	textures\worldmapObj.png
-160	textures\card.png
 170	textures\reward_x3.png
 180	textures\gameover.png
 190	textures\dialogs.png
@@ -47,6 +46,8 @@ height	240
 181	textures\effects.png
 182	textures\effects - 2.png
 184	textures\tileset.png
+160	textures\card.png
+161	textures\end_scene_text.png
 
 200	Resource\Tilemaps\world1-1_bank.png
 205	Resource\Tilemaps\world_map.png
