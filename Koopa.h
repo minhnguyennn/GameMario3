@@ -11,14 +11,6 @@
 #define KOOPA_TURN_UP_JUMP_VX 0.04f
 #define KOOPA_TURN_UP_JUMP_VY 0.2f
 #define KOOPA_Y_ADJUST 1
-#define KOOPA_TOUCHED_NUMBER_1	1
-#define KOOPA_TOUCHED_NUMBER_2	2
-#define KOOPA_TOUCHED_NUMBER_3	3
-#define KOOPA_TOUCHED_NUMBER_4	4
-#define KOOPA_TOUCHED_NUMBER_5	5
-#define KOOPA_TOUCHED_NUMBER_6	6
-#define KOOPA_TOUCHED_NUMBER_7	7
-#define KOOPA_TOUCHED_NUMBER_8	8
 
 //TIME
 #define KOOPA_CLOSE_SHELL_TIMEOUT 3000
@@ -162,5 +154,4 @@ public:
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	bool CountDownTimer(int time);
-	void SummonScore();
 };

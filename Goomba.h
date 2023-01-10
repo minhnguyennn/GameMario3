@@ -77,7 +77,6 @@ public:
 	void Render();
 	void SetState(int state);
 	void LowerLevel();
-	void SummonScore();
 	int isLeftWithMario();
 };
 

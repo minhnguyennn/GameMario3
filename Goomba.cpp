@@ -226,14 +226,6 @@ void CGoomba::LowerLevel()
 	}
 }
 
-void CGoomba::SummonScore()
-{
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CPoint* point = new CPoint(x, y, POINT_TYPE_100);
-	scene->CreateObject(point);
-	point->SetState(POINT_STATE_MOVE_UP);
-}
-
 int CGoomba::isLeftWithMario()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();

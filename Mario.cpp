@@ -57,7 +57,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 	
-
 	if (isAttack && CountDownTimer(MARIO_ATTACK_TIMEOUT))
 	{
 		isAttack = false;
@@ -191,6 +190,8 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	if (e->ny < 0) 
 	{
 		goomba->LowerLevel();
+		SetupTouchTime();
+		SummonScore();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
 	else 
@@ -234,10 +235,8 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 	if (e->ny < 0)
 	{
-		time_koopa_touch = MARIO_TIME_KOOPA_TOUCH_MAX;
-		if (number_koopa_touch < MARIO_NUMBER_KOOPA_TOUCH_MAX) number_koopa_touch++;
-		else number_koopa_touch = MARIO_NUMBER_START_KOOPA_TOUCH;
-		koopa->SummonScore();
+		SetupTouchTime();
+		SummonScore();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		if (koopa->GetLevel() == KOOPA_LEVEL_BIG) koopa->SetLevel(KOOPA_LEVEL_SMALL);
 		else 
@@ -247,10 +246,10 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
 				koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 			}
-			/*else if (koopa->GetIsDefense() || koopa->GetIsWaiting())
+			else if (koopa->GetIsDefense() || koopa->GetIsWaiting())
 			{
 				koopa->SetState(KOOPA_STATE_ATTACKING);
-			}*/
+			}
 		}
 	}
 	else if (e->nx != 0) 
@@ -1076,18 +1075,18 @@ void CMario::CountDown1Second() {
 
 void CMario::CountDownKoopaTouch()
 {
-	if (time_koopa_touch > 0)
+	if (time_touch > 0)
 	{
-		if (GetTickCount64() - time_coutdown_koopa_touch > TIME_ONE_SECOND)
+		if (GetTickCount64() - time_coutdown_touch > TIME_ONE_SECOND)
 		{
-			time_koopa_touch--;
-			time_coutdown_koopa_touch = GetTickCount64();
+			time_touch--;
+			time_coutdown_touch = GetTickCount64();
 		}
 	}
 	else
 	{
-		time_koopa_touch = 0;
-		number_koopa_touch = 0;
+		time_touch = 0;
+		number_touch = 0;
 	}
 }
 
@@ -1226,5 +1225,29 @@ void CMario::CalculateHeartAndCoin()
 	if (heart > MARIO_HEART_MAX)
 	{
 		heart = MARIO_HEART_MAX;
+	}
+}
+
+void CMario::SetupTouchTime()
+{
+	time_touch = MARIO_TIME_TOUCH_MAX;
+	if (number_touch < MARIO_NUMBER_TOUCH_MAX) number_touch++;
+	else number_touch = MARIO_NUMBER_START_TOUCH;
+}
+
+void CMario::SummonScore()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	if (number_touch == MARIO_TOUCH_ONE_NUMBER)
+	{
+		CPoint* point_100 = new CPoint(x, y, POINT_TYPE_100);
+		scene->CreateObject(point_100);
+		point_100->SetState(POINT_STATE_MOVE_UP);
+	}
+	else if (number_touch == MARIO_TOUCH_TOW_NUMBER)
+	{
+		CPoint* point_200 = new CPoint(x, y, POINT_TYPE_200);
+		scene->CreateObject(point_200);
+		point_200->SetState(POINT_STATE_MOVE_UP);
 	}
 }

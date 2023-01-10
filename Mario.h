@@ -204,11 +204,13 @@
 #define MARIO_RACCON_GHOSTBOX_Y_ADJUST	1
 #define MARIO_ON_PLATFORM_Y_ADJUST		4
 #define MARIO_SMALL_ON_PLATFORM_Y_ADJUST	6
-#define MARIO_NUMBER_START_KOOPA_TOUCH		1
-#define MARIO_NUMBER_KOOPA_TOUCH_MAX		8
-#define MARIO_TIME_KOOPA_TOUCH_MAX	3
+#define MARIO_NUMBER_START_TOUCH		1
+#define MARIO_NUMBER_TOUCH_MAX		2
+#define MARIO_TIME_TOUCH_MAX	3
 #define MARIO_NUMBER_START_HEART	4
 #define MARIO_NUMBER_START_UNTOUCHABLE	1
+#define MARIO_TOUCH_ONE_NUMBER	1
+#define MARIO_TOUCH_TOW_NUMBER	2
 
 //STATE
 #define MARIO_STATE_DIE					-10
@@ -284,7 +286,7 @@ class CMario : public CGameObject
 {
 	CKoopa* koopa_holding;
 
-	int number_koopa_touch;
+	int number_touch;
 
 	float maxVx;
 	float minVx;
@@ -308,8 +310,8 @@ class CMario : public CGameObject
 	ULONGLONG time_running;
 	ULONGLONG time_summon_smoke;
 	ULONGLONG time_change_level;
-	ULONGLONG time_koopa_touch;
-	ULONGLONG time_coutdown_koopa_touch;
+	ULONGLONG time_touch;
+	ULONGLONG time_coutdown_touch;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -360,8 +362,8 @@ public:
 		count_1_second = 0;
 		untouchable_start = 0;
 		time_change_level = 0;
-		time_koopa_touch = 0;
-		time_coutdown_koopa_touch = 0;
+		time_touch = 0;
+		time_coutdown_touch = 0;
 
 		canReturnWorldMap = false;
 		isSlowFly = false;
@@ -395,10 +397,8 @@ public:
 		koopa_holding = NULL;
 		score = 0;
 		power = 0;
-		number_koopa_touch = 0;
+		number_touch = 0;
 	}
-
-	int GetNumberKoopaTouch() { return number_koopa_touch; }
 
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
 	bool GetIsAttack() {return isAttack;  }
@@ -466,4 +466,6 @@ public:
 	bool IsChangeDirection() { return (vx > 0 && ax < 0) || (vx < 0 && ax > 0); }
 	void CountDownKoopaTouch();
 	void SetupFlicker();
+	void SummonScore();
+	void SetupTouchTime();
 };
