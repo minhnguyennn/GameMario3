@@ -27,10 +27,9 @@ void CCoin::Render()
 	if (!checkObjectInCamera()) return;
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = 0;
-	if (type == COIN_TYPE_TURN_AROUND)
-		aniId = ID_ANI_COIN_AROUND;
-	else
-		aniId = ID_ANI_COIN_BRICK;
+	if (type == COIN_TYPE_TURN_AROUND) aniId = ID_ANI_COIN_AROUND;
+	else if (type == COIN_TYPE_TURN_AROUND_BIG) aniId = ID_ANI_COIN_AROUND_BIG;
+	else aniId = ID_ANI_COIN_BRICK;
 	animations->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }

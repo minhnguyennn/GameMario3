@@ -78,7 +78,6 @@ void CTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 		}
 		else
 		{
-			brick->SummonCoin();
 			brick->SetState(BRICK_STATE_DELETE);
 		}
 	}	

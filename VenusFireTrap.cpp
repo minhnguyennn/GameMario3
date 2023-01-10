@@ -1,4 +1,5 @@
 #include "VenusFireTrap.h"
+#include "Pipeline.h"
 #include"debug.h"
 #include "Time.h"
 #include "PlayScene.h"
@@ -51,10 +52,6 @@ void CVenusFireTrap::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
-	}
-	else if (e->nx != 0)
-	{
-		vx = -vx;
 	}
 }
 
@@ -189,10 +186,9 @@ void CVenusFireTrap::ChangeStateMotionDown(ULONGLONG time_type)
 {
 	if (CountDownTimer(time_type))
 	{
-		if (type == VFTRAP_TYPE_RED) 
+		if (type == VFTRAP_TYPE_RED || type == VFTRAP_TYPE_GREEN)
 		{
 			SetSummonItems(VFTRAP_TYPE_FIRE_BALL);
-			
 		}
 		SetState(VFTRAP_STATE_DOWN);
 	}

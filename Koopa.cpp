@@ -354,7 +354,6 @@ int CKoopa::isLeftWithMario()
 
 void CKoopa::LowerLevel()
 {
-	SummonScore();
 	if (level == KOOPA_LEVEL_BIG)
 	{
 		level = MARIO_LEVEL_SMALL;

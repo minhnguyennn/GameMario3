@@ -168,14 +168,12 @@ void CGoomba::SetState(int state)
 	{
 	case GOOMBA_STATE_DIE_TURN_OVER:
 	{
-		SummonScore();
 		isTurnOver = true;
 		vx = GOOMBA_DIE_VX * isLeftWithMario();
 		vy = -GOOMBA_DIE_VY ;
 		break;
 	}
 	case GOOMBA_STATE_DIE:
-		SummonScore();
 		time_line = GetTickCount64();
 		isDie = true;
 		vx = 0;
@@ -214,7 +212,6 @@ void CGoomba::SetState(int state)
 
 void CGoomba::LowerLevel()
 {
-	SummonScore();
 	if (level == GOOMBA_LEVEL_BIG )
 	{
 		level = GOOMBA_LEVEL_SMALL;
