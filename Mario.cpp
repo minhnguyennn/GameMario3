@@ -34,9 +34,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	ChangeLevelMario(dt);
 	AccelerationFunction();
 	CalculatePowerToFly();
-	CalculateHeartAndCoin();
 	CountDown1Second();
 	CountDownKoopaTouch();
+	CoinMax();
+	HeartMax();
 	
 	if (canReturnWorldMap) {
 		//sau 2s
@@ -178,7 +179,8 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 	if (brick->GetIsCoin())
 	{
 		brick->SetState(BRICK_STATE_DELETE);
-		coin++;
+		CData::GetInstance()->IncreaseCoin();
+		CData::GetInstance()->IncreaseScore();
 	}
 }
 
@@ -279,7 +281,8 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();
-	coin++;
+	CData::GetInstance()->IncreaseCoin();
+	CData::GetInstance()->IncreaseScore();
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -298,10 +301,6 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 	{
 		SetLevel(MARIO_LEVEL_BIG);
 	}
-	else 
-	{
-		coin++;
-	}
 }
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
@@ -316,10 +315,6 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 	else if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_FIRE)
 	{
 		SetLevel(MARIO_LEVEL_RACCOON);
-	}
-	else 
-	{
-		coin++;
 	}
 }
 
@@ -1210,17 +1205,22 @@ void CMario::CalculatePowerToFly()
 	}
 }
 
-void CMario::CalculateHeartAndCoin()
+void CMario::CoinMax()
 {
-	if (coin > MARIO_COIN_MAX)
+	CData* data_game = CData::GetInstance();
+	if (data_game->GetMarioCoin() > MARIO_COIN_MAX)
 	{
-		heart++;
-		coin = 0;
+		data_game->IncreaseHeart();
+		data_game->SetMarioCoin(0);
 	}
+}
 
-	if (heart > MARIO_HEART_MAX)
+void CMario::HeartMax()
+{
+	CData* data_game = CData::GetInstance();
+	if (data_game->GetMarioHeart() > MARIO_HEART_MAX)
 	{
-		heart = MARIO_HEART_MAX;
+		data_game->SetMarioHeart(MARIO_HEART_MAX);
 	}
 }
 

@@ -3,17 +3,19 @@
 #include"Sprites.h"
 #include"Mario.h"
 #include"PlayScene.h"
+#include"Data.h"
 
 void CHUD::Render()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 
-	int coin_mario = mario->GetCoin();
-	int heart_mario = mario->GetHeart();
 	int time_mario = mario->GetTime();
-	int score_mario = mario->GetScore();
 	int power_mario = mario->GetPower();
+
+	int data_score = CData::GetInstance()->GetMarioScore();
+	int data_coin = CData::GetInstance()->GetMarioCoin();
+	int data_heart = CData::GetInstance()->GetMarioHeart();
 
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_BA_BLACK)->Render(x, y);
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_TABLE_HUD)->Render(x + 30, y - 7);
@@ -22,12 +24,12 @@ void CHUD::Render()
 	DrawNumber(1, x - 45, y - 11);
 
 	//Draw coin
-	DrawNumber(coin_mario / 10, x + 50, y - 11);
-	DrawNumber(coin_mario % 10, x + 58, y - 11);
+	DrawNumber(data_coin / 10, x + 50, y - 11);
+	DrawNumber(data_coin % 10, x + 58, y - 11);
 
 	//Draw heart
-	DrawNumber(heart_mario / 10, x - 53, y - 2);
-	DrawNumber(heart_mario % 10, x - 45, y - 2);
+	DrawNumber(data_heart / 10, x - 53, y - 2);
+	DrawNumber(data_heart % 10, x - 45, y - 2);
 
 	//Draw time
 	DrawNumber(time_mario / 100, x + 42, y - 2);
@@ -35,21 +37,16 @@ void CHUD::Render()
 	DrawNumber(time_mario % 10, x + 58, y - 2);
 
 	//Draw score
-	DrawNumber(score_mario / 1000000, x - 30, y - 2);
-	DrawNumber(score_mario / 100000 % 10, x - 22, y - 2);
-	DrawNumber(score_mario / 10000 % 10, x - 14, y - 2);
-	DrawNumber(score_mario / 1000 % 10, x - 6, y - 2);
-	DrawNumber(score_mario / 100 % 10, x + 2, y - 2);
-	DrawNumber(score_mario / 10 % 10, x + 10, y - 2);
-	DrawNumber(score_mario / 1 % 10, x + 18, y - 2);
+	DrawNumber(data_score / 1000000, x - 30, y - 2);
+	DrawNumber(data_score / 100000 % 10, x - 22, y - 2);
+	DrawNumber(data_score / 10000 % 10, x - 14, y - 2);
+	DrawNumber(data_score / 1000 % 10, x - 6, y - 2);
+	DrawNumber(data_score / 100 % 10, x + 2, y - 2);
+	DrawNumber(data_score / 10 % 10, x + 10, y - 2);
+	DrawNumber(data_score / 1 % 10, x + 18, y - 2);
 
 	//Draw power
 	DrawPower(power_mario, x - 29, y - 10);
-
-	
-
-	//DrawNumber(power_mario, x - 30, y - 8);
-
 }
 
 void CHUD::DrawNumber(int number, float position_x, float position_y)

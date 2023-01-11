@@ -35,6 +35,16 @@
 #define POINT_TYPE_4000 4000
 #define POINT_TYPE_8000 8000
 
+//NUMBER
+#define POINT_NUMBER_100	100
+#define POINT_NUMBER_200	200
+#define POINT_NUMBER_400	400
+#define POINT_NUMBER_800	800
+#define POINT_NUMBER_1000	1000
+#define POINT_NUMBER_2000	2000
+#define POINT_NUMBER_4000	4000
+#define POINT_NUMBER_8000	8000
+
 //PROPERTY
 #define POINT_MOVE_SPEED 0.07f
 
@@ -42,13 +52,11 @@
 #define POINT_FLY_TIMEOUT 500
 
 class CPoint : public CGameObject {
-	float start_y;
 	int type_point;
 	ULONGLONG time_score_fly;
 public:
 	CPoint(float x, float y, int type_point) : CGameObject(x, y) {
 		time_score_fly = 0;
-		start_y = y;
 		this->type_point = type_point;
 	}
 	void OnNoCollision(DWORD dt);
@@ -58,4 +66,5 @@ public:
 	void GetBoundingBox(float& l, float& t, float& r, float& b) {};
 	int IsBlocking() { return 0; }
 	int IsCollidable() { return 0; }
+	void StorageScore();
 };

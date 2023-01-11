@@ -15,10 +15,10 @@ void CHudWorld::Render()
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 
-	int coin_mario = mario->GetCoin();
-	int heart_mario = mario->GetHeart();
+	//int coin_mario = mario->GetCoin();
+	//int heart_mario = mario->GetHeart();
 	int time_mario = mario->GetTime();
-	int score_mario = mario->GetScore();
+	//int score_mario = mario->GetScore();
 	int power_mario = mario->GetPower();
 
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_BA_BLACK)->Render(x, y);
@@ -28,12 +28,12 @@ void CHudWorld::Render()
 	DrawNumber(1, x - 45, y - 11);
 
 	//Draw coin
-	DrawNumber(coin_mario / 10, x + 50, y - 11);
-	DrawNumber(coin_mario % 10, x + 58, y - 11);
+	//DrawNumber(coin_mario / 10, x + 50, y - 11);
+	//DrawNumber(coin_mario % 10, x + 58, y - 11);
 
-	//Draw heart
-	DrawNumber(heart_mario / 10, x - 53, y - 2);
-	DrawNumber(heart_mario % 10, x - 45, y - 2);
+	////Draw heart
+	//DrawNumber(heart_mario / 10, x - 53, y - 2);
+	//DrawNumber(heart_mario % 10, x - 45, y - 2);
 
 	//Draw time
 	DrawNumber(time_mario / 100, x + 42, y - 2);
@@ -41,13 +41,13 @@ void CHudWorld::Render()
 	DrawNumber(time_mario % 10, x + 58, y - 2);
 
 	//Draw score
-	DrawNumber(score_mario / 1000000, x - 30, y - 2);
+	/*DrawNumber(score_mario / 1000000, x - 30, y - 2);
 	DrawNumber(score_mario / 100000 % 10, x - 22, y - 2);
 	DrawNumber(score_mario / 10000 % 10, x - 14, y - 2);
 	DrawNumber(score_mario / 1000 % 10, x - 6, y - 2);
 	DrawNumber(score_mario / 100 % 10, x + 2, y - 2);
 	DrawNumber(score_mario / 10 % 10, x + 10, y - 2);
-	DrawNumber(score_mario / 1 % 10, x + 18, y - 2);
+	DrawNumber(score_mario / 1 % 10, x + 18, y - 2);*/
 
 	//Draw power
 	DrawPower(power_mario, x - 29, y - 10);

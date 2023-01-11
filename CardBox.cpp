@@ -94,4 +94,5 @@ int CCardBox::SetupRandomCardBox()
 	if (random_card_box == 0) return CARD_BOX_DRAW_FLOWER;
 	else if (random_card_box == 1) return CARD_BOX_DRAW_STAR;
 	else if (random_card_box == 2) return CARD_BOX_DRAW_MUSHROOM;
+	else return 0;
 }

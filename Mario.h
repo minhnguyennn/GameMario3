@@ -298,11 +298,7 @@ class CMario : public CGameObject
 	int untouchable;
 
 	int time;
-	int heart;
-	int coin;
-	int score;
 	int power;
-	int catch_card;
 	
 	ULONGLONG untouchable_start;
 	ULONGLONG count_1_second;
@@ -366,7 +362,6 @@ public:
 		time_change_level = 0;
 		time_touch = 0;
 		time_coutdown_touch = 0;
-		catch_card = 0;
 
 		canReturnWorldMap = false;
 		isSlowFly = false;
@@ -394,19 +389,14 @@ public:
 		untouchable = 0;
 		untouchable_start = -MARIO_NUMBER_START_UNTOUCHABLE;
 		isOnPlatform = false;
-		coin = 0;
-		heart = MARIO_NUMBER_START_HEART;
 		time = MARIO_PLAY_GAME_TIMEOUT;
 		koopa_holding = NULL;
-		score = 0;
 		power = 0;
 		number_touch = 0;
 	}
 
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
 	bool GetIsAttack() {return isAttack;  }
-
-	int GetCatchCard() { return catch_card; }
 
 	bool GetIsOnPlatform() { return isOnPlatform; }
 
@@ -421,9 +411,6 @@ public:
 	bool GetIsFlying() { return isFlying; };
 
 	int GetTime() { return time; }
-	int GetCoin() { return coin; }
-	int GetHeart() { return heart; }
-	int GetScore() { return score; }
 	int GetPower() { return power; }
 
 	bool IsMaxPower() { return power == MARIO_MAX_POWER_UP; }
@@ -465,7 +452,6 @@ public:
 	void ChangeLevelMario(DWORD dt);
 	void AccelerationFunction();
 	void CalculatePowerToFly();
-	void CalculateHeartAndCoin();
 	bool CountDownTimer2(ULONGLONG time_calculate, int time_out);
 	bool MarioOutWorld() { return (x > MARIO_POSITION_OUTMAP); }
 	bool IsChangeDirection() { return (vx > 0 && ax < 0) || (vx < 0 && ax > 0); }
@@ -473,4 +459,6 @@ public:
 	void SetupFlicker();
 	void SummonScore();
 	void SetupTouchTime();
+	void HeartMax();
+	void CoinMax();
 };

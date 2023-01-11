@@ -46,8 +46,8 @@ height	240
 181	textures\effects.png
 182	textures\effects - 2.png
 184	textures\tileset.png
-160	textures\card.png
 161	textures\end_scene_text.png
+162	textures\mario-holding-shell.png
 
 200	Resource\Tilemaps\world1-1_bank.png
 205	Resource\Tilemaps\world_map.png

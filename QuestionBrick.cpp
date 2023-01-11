@@ -6,6 +6,7 @@
 #include "Coin.h"
 #include "Leaf.h"
 #include "Button.h"
+#include "Data.h"
 
 void CQuestionBrick::Render()
 {
@@ -98,6 +99,7 @@ void CQuestionBrick::SummonItemsFromBrickQuestion()
 			CCoin* coin = new CCoin(x, y - COIN_Y_ADJUST, COIN_TYPE_TURN_AROUND);
 			scene->CreateObject(coin);
 			coin->SetState(COIN_STATE_MOVE_UP);
+			CData::GetInstance()->IncreaseCoin();
 			break;
 		}
 		case QUESTION_TYPE_BUTTON:

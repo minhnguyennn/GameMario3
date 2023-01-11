@@ -1,4 +1,5 @@
 #include "Point.h"
+#include "Data.h"
 #include "debug.h"
 
 void CPoint::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
@@ -6,6 +7,7 @@ void CPoint::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (!checkObjectInCamera()) return;
 	if (GetTickCount64() - time_score_fly > POINT_FLY_TIMEOUT)
 	{
+		StorageScore();
 		isDeleted = true;
 		return;
 	}
@@ -47,4 +49,25 @@ void CPoint::SetState(int state)
 		break;
 	}
 	CGameObject::SetState(state);
+}
+
+void CPoint::StorageScore()
+{
+	CData* data_score = CData::GetInstance();
+	int data_storage = 0;
+	switch (type_point)
+	{
+	case POINT_TYPE_100:
+		data_storage = POINT_NUMBER_100;
+		break;
+	case POINT_TYPE_200:
+		data_storage = POINT_NUMBER_200;
+		break;
+	case POINT_TYPE_1000:
+		data_storage = POINT_NUMBER_1000;
+		break;
+	default:
+		break;
+	}
+	data_score->SetMarioScore(data_score->GetMarioScore() + data_storage);
 }
