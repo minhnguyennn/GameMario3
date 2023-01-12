@@ -28,6 +28,7 @@ void CPoint::Render()
 	else if (type_point == POINT_TYPE_2000) AniId = ID_ANI_2000_SCORE;
 	else if (type_point == POINT_TYPE_4000) AniId = ID_ANI_4000_SCORE;
 	else if (type_point == POINT_TYPE_8000) AniId = ID_ANI_8000_SCORE;
+	else if (type_point == POINT_TYPE_UP) AniId = ID_ANI_1_UP;
 	animations->Get(AniId)->Render(x, y);
 	//RenderBoundingBox();
 }
@@ -53,21 +54,26 @@ void CPoint::SetState(int state)
 
 void CPoint::StorageScore()
 {
-	CData* data_score = CData::GetInstance();
-	int data_storage = 0;
+	CData* data_game = CData::GetInstance();
+	int data_heart = 0;
+	int data_coin = 0;
 	switch (type_point)
 	{
+	case POINT_TYPE_UP:
+		data_heart = POINT_NUMBER_1UP;
+		break;
 	case POINT_TYPE_100:
-		data_storage = POINT_NUMBER_100;
+		data_coin = POINT_NUMBER_100;
 		break;
 	case POINT_TYPE_200:
-		data_storage = POINT_NUMBER_200;
+		data_coin = POINT_NUMBER_200;
 		break;
 	case POINT_TYPE_1000:
-		data_storage = POINT_NUMBER_1000;
+		data_coin = POINT_NUMBER_1000;
 		break;
 	default:
 		break;
 	}
-	data_score->SetMarioScore(data_score->GetMarioScore() + data_storage);
+	data_game->SetMarioScore(data_game->GetMarioScore() + data_coin);
+	data_game->SetMarioHeart(data_game->GetMarioHeart() + data_heart);
 }

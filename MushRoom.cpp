@@ -27,7 +27,7 @@ void CMushRoom::SetState(int state)
 		break;
 	case MUSHROOM_STATE_WALKING:
 		ay = MUSHROOM_GRAVITY;
-		vx = MUSHROOM_WALKING_SPEED;
+		vx = -isMarioLeft() * MUSHROOM_WALKING_SPEED;
 		break;
 	default:
 		break;
@@ -68,7 +68,7 @@ void CMushRoom::Render()
 	int aniId = 0;
 	if (type_mushroom == MUSHROOM_TYPE_RED) aniId = ID_ANI_MUSHROOM_RED;
 	else aniId = ID_ANI_MUSHROOM_GREEN;
-	CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_RED)->Render(x, y);
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }
 
@@ -99,7 +99,18 @@ void CMushRoom::ChangeStateWalking() {
 void CMushRoom::SummonScore()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CPoint* point = new CPoint(x, y, POINT_TYPE_1000);
+	int type = 0;
+	if (type_mushroom == MUSHROOM_TYPE_GREEN) type = POINT_TYPE_UP;
+	else type = POINT_TYPE_1000;
+	CPoint* point = new CPoint(x, y, type);
 	scene->CreateObject(point);
 	point->SetState(POINT_STATE_MOVE_UP);
+}
+
+int CMushRoom::isMarioLeft()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (mario->GetX() < x) return -1;
+	else return 1;
 }

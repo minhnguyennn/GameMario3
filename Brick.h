@@ -18,9 +18,9 @@
 #define BRICK_STATE_BRICK	3
 
 //TYPE
-#define BRICK_TYPE_BLOCK 2
 #define BRICK_TYPE_NO_BLOCK 1
-
+#define BRICK_TYPE_BUTTON 2
+#define BRICK_TYPE_MUSHROOM 3
 
 //TIME
 #define BRICK_TIME_COUTDOWN 1000
@@ -31,7 +31,6 @@ class CBrick : public CGameObject
 	int type;
 	int time_convert;
 	ULONGLONG time_count_down;
-	bool isBlockBrick;
 	bool isCoin;
 public:
 	CBrick(float x, float y, int type) : CGameObject(x, y) 
@@ -40,15 +39,11 @@ public:
 		isCoin = false;
 		time_convert = BRICK_CONVERT_TIMEOUT;
 		time_count_down = 0;
-		isBlockBrick = false;
-		
 	}
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	bool GetIsCoin() { return isCoin; }
 	int GetTypeBrick() { return type; }
-	void SetIsBlockBrick(bool isNoBrick) { this->isBlockBrick = isBlockBrick; }
-	bool GetIsBlockBrick() { return isBlockBrick; }
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsCollidable() 
 	{ 
@@ -66,7 +61,7 @@ public:
 	}
 	void SetState(int state);
 	void SummonDebris();
-	void SummonQuestionBrick();
+	void SummonQuestionBrick(int type_question_brick);
 	void CountDownConvertCoin();
 	void SummonCoin();
 };

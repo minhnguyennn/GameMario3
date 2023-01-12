@@ -65,20 +65,9 @@ void CTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 	if (e->nx != 0)
 	{
 		brick->SummonDebris();
-		if (brick->GetTypeBrick() == BRICK_TYPE_BLOCK)
-		{
-			if (!brick->GetIsBlockBrick())
-			{
-				brick->SetState(BRICK_STATE_DELETE);
-				brick->SummonQuestionBrick();
-			}
-			brick->SetIsBlockBrick(true);
-			
-		}
-		else
-		{
-			brick->SetState(BRICK_STATE_DELETE);
-		}
+		brick->SetState(BRICK_STATE_DELETE);
+		if (brick->GetTypeBrick() == BRICK_TYPE_BUTTON) brick->SummonQuestionBrick(QUESTION_TYPE_BUTTON);
+		else if (brick->GetTypeBrick() == BRICK_TYPE_MUSHROOM) brick->SummonQuestionBrick(QUESTION_TYPE_MUSHROOM_GREEN);
 	}	
 }
 

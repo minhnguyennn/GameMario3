@@ -11,10 +11,8 @@ void CBrick::Render()
 {
 	if (!checkObjectInCamera()) return;
 	int AniId = 0;
-	if (isCoin)
-		AniId = ID_ANI_BRICK_COIN;
-	else
-		AniId = ID_ANI_BRICK;
+	if (isCoin) AniId = ID_ANI_BRICK_COIN;
+	else AniId = ID_ANI_BRICK;
 	CAnimations::GetInstance()->Get(AniId)->Render(x, y);
 	//RenderBoundingBox();
 }
@@ -74,11 +72,12 @@ void CBrick::SummonDebris()
 	right_down->SetState(DEBRIS_RIGHT);
 }
 
-void CBrick::SummonQuestionBrick()
+void CBrick::SummonQuestionBrick(int type_question_brick)
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CQuestionBrick* question_brick = new CQuestionBrick(x, y, QUESTION_TYPE_BUTTON);
+	CQuestionBrick* question_brick = new CQuestionBrick(x, y, type_question_brick);
 	scene->CreateObject(question_brick);
+	question_brick->SummonItemsFromBrickQuestion();
 }
 
 void CBrick::CountDownConvertCoin()

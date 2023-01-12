@@ -303,10 +303,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 	CMushRoom* mush_room = (CMushRoom*)e->obj;
 	mush_room->SummonScore();
 	mush_room->Delete();
-	if (level == MARIO_LEVEL_SMALL) 
-	{
-		SetLevel(MARIO_LEVEL_BIG);
-	}
+	if (level == MARIO_LEVEL_SMALL) SetLevel(MARIO_LEVEL_BIG);
 }
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)

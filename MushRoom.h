@@ -50,5 +50,7 @@ public:
 	CMushRoom(float x, float y, int type_mushroom);
 	virtual void SetState(int state);
 	void SummonScore();
+	int GetTypeMushroom() { return type_mushroom; }
+	int isMarioLeft();
 };
 

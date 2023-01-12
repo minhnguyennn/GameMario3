@@ -79,6 +79,13 @@ void CQuestionBrick::SummonItemsFromBrickQuestion()
 	SetState(QUESTION_STATE_UNBOX);
 	switch (type)
 	{
+		case QUESTION_TYPE_MUSHROOM_GREEN:
+		{
+			CMushRoom* mush_room = new CMushRoom(x, y, MUSHROOM_TYPE_GREEN);
+			scene->CreateObject(mush_room);
+			mush_room->SetState(MUSHROOM_STATE_UP);
+			break;
+		}
 		case QUESTION_TYPE_ITEM:
 		{
 			if (mario->GetLevel() == MARIO_LEVEL_SMALL) 
