@@ -81,6 +81,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
 	if (isHolding) MarioHoldKoopaFunction();
+	
+	if (isSummonTail) 
+	{
+		isSummonTail = false;
+		SummonTail();
+	}
 }
 
 //ONCOLLISION
@@ -792,6 +798,7 @@ void CMario::SetState(int state)
 	{
 		if (isSitting || isChangLevel) break;
 		isAttack = true;
+		isSummonTail = true;
 		time_line = GetTickCount64();
 		break;
 	}
@@ -1096,10 +1103,10 @@ void CMario::SummonTail()
 {
 	if (isChangLevel || isSitting) return;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CTail* tail_right = new CTail(x - MARIO_TAIL_X_ADJUST, y);
+	CTail* tail_right = new CTail(x - MARIO_TAIL_X_ADJUST, y + MARIO_TAIL_Y_ADJUST);
 	tail_right->SetState(TAIL_STATE_RIGHT);
 	scene->CreateObject(tail_right);
-	CTail* tail_left = new CTail(x + MARIO_TAIL_X_ADJUST, y);
+	CTail* tail_left = new CTail(x + MARIO_TAIL_X_ADJUST, y + MARIO_TAIL_Y_ADJUST);
 	tail_left->SetState(TAIL_STATE_LEFT);
 	scene->CreateObject(tail_left);
 
@@ -1208,7 +1215,7 @@ void CMario::CalculatePowerToFly()
 void CMario::CoinMax()
 {
 	CData* data_game = CData::GetInstance();
-	if (data_game->GetMarioCoin() > MARIO_COIN_MAX)
+	if (data_game->GetMarioCoin() > DATA_MARIO_COIN_MAX)
 	{
 		data_game->IncreaseHeart();
 		data_game->SetMarioCoin(0);
@@ -1218,9 +1225,9 @@ void CMario::CoinMax()
 void CMario::HeartMax()
 {
 	CData* data_game = CData::GetInstance();
-	if (data_game->GetMarioHeart() > MARIO_HEART_MAX)
+	if (data_game->GetMarioHeart() > DATA_MARIO_HEART_MAX)
 	{
-		data_game->SetMarioHeart(MARIO_HEART_MAX);
+		data_game->SetMarioHeart(DATA_MARIO_HEART_MAX);
 	}
 }
 

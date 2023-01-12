@@ -47,7 +47,9 @@ height	240
 182	textures\effects - 2.png
 184	textures\tileset.png
 161	textures\end_scene_text.png
-162	textures\mario-holding-shell.png
+160	textures\button.png
+162	textures\effect_smoke_star.png
+163	textures\flower-star-mushroom.png
 
 200	Resource\Tilemaps\world1-1_bank.png
 205	Resource\Tilemaps\world_map.png

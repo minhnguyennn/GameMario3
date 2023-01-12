@@ -193,11 +193,10 @@
 #define MARIO_MAX_POWER_UP			7
 #define MARIO_SPEED_FALL			0.001f
 #define MARIO_SPEED_FLYING			0.2f
-#define MARIO_COIN_MAX				99
-#define MARIO_HEART_MAX				99
 #define MARIO_HOLDKOOPA_X_ADJUST	10
 #define MARIO_HOLDKOOPA_Y_ADJUST	2
 #define MARIO_TAIL_X_ADJUST			4
+#define MARIO_TAIL_Y_ADJUST			2
 #define MARIO_POSITION_OUTMAP		2900
 #define MARIO_GHOSTBOX_Y			1
 #define MARIO_RACCON_GHOSTBOX_X_ADJUST	4
@@ -328,6 +327,7 @@ class CMario : public CGameObject
 	BOOLEAN isKoopaTouch;
 	BOOLEAN isDrawAnimation;
 	BOOLEAN isUnTouchable;
+	BOOLEAN isSummonTail;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -378,7 +378,7 @@ public:
 		isChangLevel = false;
 		isKoopaTouch = false;
 		isDrawAnimation = true;
-		isUnTouchable = false;
+		isSummonTail = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;

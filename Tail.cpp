@@ -60,7 +60,6 @@ void CTail::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
-	SummonEffect();
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 	if(brick->GetIsCoin()) return;
 	if (e->nx != 0)
