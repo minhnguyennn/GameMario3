@@ -23,7 +23,8 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		}
 		break;
 	case DIK_DOWN:
-		mario->SetState(MARIO_STATE_SIT);
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->GetIsAbovePipeline()) mario->SetState(MARIO_STATE_GO_DOWN);
+		else mario->SetState(MARIO_STATE_SIT);
 		break;
 	case DIK_S:
 		if (mario->IsMaxPower())

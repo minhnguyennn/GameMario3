@@ -23,11 +23,12 @@
 #include "GameObject.h"
 #include "Data.h"
 #include "Effect.h"
+#include "Pipeline.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
-	//DebugOutTitle(L"isDrawAnimation: %d ", isDrawAnimation);
+	DebugOutTitle(L"position_x_out_map: %f and X: %f ", position_x_out_map, x);
 	//DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
@@ -37,7 +38,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CountDown1Second();
 	CountDownKoopaTouch();
 	CoinMax();
-	HeartMax();
+	HeartMax(); 
+	GoDownPipeline();
 	
 	if (canReturnWorldMap) {
 		//sau 2s
@@ -45,15 +47,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	if (disableKey && isOnPlatform) 
 	{
-		if (!MarioOutWorld())
-		{
-			SetState(MARIO_STATE_WALKING_RIGHT);
-		}
-		else
-		{
-			SetState(MARIO_STATE_IDLE);
-		}
+		SetState(MARIO_STATE_WALKING_RIGHT);
 	}
+
 	
 	if (isAttack && CountDownTimer(MARIO_ATTACK_TIMEOUT))
 	{
@@ -148,6 +144,13 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCardBox(e);
 	else if (dynamic_cast<CButton*>(e->obj))
 		OnCollisionWithButton(e);
+	else if (dynamic_cast<CPipeline*>(e->obj))
+		OnCollisionWithPipeline(e);
+}
+
+void CMario::OnCollisionWithPipeline(LPCOLLISIONEVENT e)
+{
+	if (e->ny < 0) isAbovePipeline = true;
 }
 
 void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
@@ -163,6 +166,7 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithCardBox(LPCOLLISIONEVENT e)
 {
 	CCardBox* card_box = dynamic_cast<CCardBox*>(e->obj);
+	position_x_out_map = x;
 	disableKey = true;
 	SetState(MARIO_STATE_IDLE);
 	CData::GetInstance()->SetCardBox(card_box->SetupRandomCardBox());
@@ -651,6 +655,10 @@ int CMario::GetAniIdRaccoon()
 			else  aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
 		}
 	}
+	else if (isGoDown)
+	{
+		aniId = ID_ANI_MARIO_RACCOON_GO_DOWN;
+	}
 	else if (isAttack)
 	{
 		aniId = ID_ANI_MARIO_RACCOON_ATTACK;
@@ -771,6 +779,15 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	case MARIO_STATE_GO_DOWN:
+	{
+		CData::GetInstance()->SetIsMarioGoDown(true);
+		time_go_down = GetTickCount64();
+		isGoDown = true;
+		vy = MARIO_GO_DOWN_Y;
+		ay = 0;
+		break;
+	}
 	case MARIO_STATE_KICK:
 	{
 		if (isSitting) break;
@@ -1043,28 +1060,34 @@ void CMario::ChangeLevelMario(DWORD dt)
 }
 
 void CMario::CountDown1Second() {
-	if (time > 0) {
-		if (MarioOutWorld()) {
-			if (CountDownTimer2(count_1_second, 0)) {
+	if (time > 0) 
+	{
+		if (MarioOutWorld()) 
+		{
+			if (CountDownTimer2(count_1_second, 0)) 
+			{
 				time -= MARIO_TIME_DECREASE_WHEN_OUTMAP;
 				count_1_second = GetTickCount64();
 			}
 		}
-		else {
-			if (CountDownTimer2(count_1_second, TIME_ONE_SECOND)) {
+		else 
+		{
+			if (CountDownTimer2(count_1_second, TIME_ONE_SECOND)) 
+			{
 				time--;
 				count_1_second = GetTickCount64();
 			}
 		}
 	}
-	else {
+	else 
+	{
 		time = 0;
-		if (!disableKey) {
-			SetState(MARIO_STATE_DIE);
-		}
+		SetState(MARIO_STATE_DIE);
+		/*if (!disableKey) SetState(MARIO_STATE_DIE);
 		else {
+			SetState(MARIO_STATE_DIE);
 			canReturnWorldMap = true;
-		}
+		}*/
 	}
 }
 
@@ -1249,5 +1272,15 @@ void CMario::SummonScore()
 		CPoint* point_200 = new CPoint(x, y, POINT_TYPE_200);
 		scene->CreateObject(point_200);
 		point_200->SetState(POINT_STATE_MOVE_UP);
+	}
+}
+
+void CMario::GoDownPipeline()
+{
+	if (isGoDown && CountDownTimer2(time_go_down, 3000))
+	{
+		isGoDown = false;
+		time_go_down = 0;
+		SetPosition(MARIO_HIDDEN_MAP_POSITION_X, MARIO_HIDDEN_MAP_POSITION_Y);
 	}
 }

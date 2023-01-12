@@ -3,16 +3,15 @@
 #include "PlayScene.h"
 #include "VenusFireTrap.h"
 #include"debug.h"
+
 void CPipeline::Render()
 {
 	if (!checkObjectInCamera()) return;
 	int aniId = 0;
-
-	if (type_pineline == PIPELINE_TYPE_SMALL) 
-		aniId = ID_ANI_SMALL_PIPELINE;
-	else 
-		aniId = ID_ANI_BIG_PIPELINE;
-
+	if (type_pineline == PIPELINE_TYPE_SMALL) aniId = ID_ANI_SMALL_PIPELINE;
+	else if (type_pineline == PIPELINE_TYPE_BIG_HIDDEN) aniId = ID_ANI_HIDDEN_PIPELINE;
+	else if (type_pineline == PIPELINE_TYPE_SMALL_HIDDEN) aniId = ID_ANI_SMALL_PIPELINE;
+	else aniId = ID_ANI_BIG_PIPELINE;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -25,6 +24,13 @@ void CPipeline::GetBoundingBox(float& l, float& t, float& r, float& b)
 		t = y - PIPELINE_BBOX_BIG_HEIGHT / 2;
 		r = l + PIPELINE_BBOX_BIG_WIDTH;
 		b = t + PIPELINE_BBOX_BIG_HEIGHT;
+	}
+	else if (type_pineline == PIPELINE_TYPE_BIG_HIDDEN)
+	{
+		l = x - PIPELINE_BBOX_HIDDEN_WIDTH / 2;
+		t = y - PIPELINE_BBOX_HIDDEN_HEIGHT / 2;
+		r = l + PIPELINE_BBOX_HIDDEN_WIDTH;
+		b = t + PIPELINE_BBOX_HIDDEN_HEIGHT;
 	}
 	else 
 	{

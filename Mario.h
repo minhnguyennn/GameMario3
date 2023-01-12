@@ -150,7 +150,9 @@
 #define ID_ANI_MARIO_RACCOON_KICK_RIGHT 4201
 #define ID_ANI_MARIO_RACCOON_KICK_LEFT 4200
 
-#define	ID_ANI_MARIO_RACCOON_ATTACK	4400
+#define	ID_ANI_MARIO_RACCOON_ATTACK		4400
+#define	ID_ANI_MARIO_RACCOON_GO_DOWN	4401
+#define	ID_ANI_MARIO_RACCOON_GO_UP		4402
 
 #define ID_ANI_MARIO_RACCOON_FALL_WALK_RIGHT 4701
 #define ID_ANI_MARIO_RACCOON_FALL_WALK_LEFT 4700
@@ -192,12 +194,13 @@
 #define MARIO_JUMP_DEFLECT_SPEED	0.15f
 #define MARIO_MAX_POWER_UP			7
 #define MARIO_SPEED_FALL			0.001f
+#define MARIO_GO_DOWN_Y				0.01f
 #define MARIO_SPEED_FLYING			0.2f
 #define MARIO_HOLDKOOPA_X_ADJUST	10
 #define MARIO_HOLDKOOPA_Y_ADJUST	2
 #define MARIO_TAIL_X_ADJUST			4
 #define MARIO_TAIL_Y_ADJUST			2
-#define MARIO_POSITION_OUTMAP		2900
+#define MARIO_POSITION_OUTMAP_ADJUST	100
 #define MARIO_GHOSTBOX_Y			1
 #define MARIO_RACCON_GHOSTBOX_X_ADJUST	4
 #define MARIO_RACCON_GHOSTBOX_Y_ADJUST	1
@@ -211,6 +214,8 @@
 #define MARIO_TOUCH_ONE_NUMBER	1
 #define MARIO_TOUCH_TOW_NUMBER	2
 #define MARIO_RANDOM_NUMBER_ADJUST	2
+#define MARIO_HIDDEN_MAP_POSITION_X		3340
+#define MARIO_HIDDEN_MAP_POSITION_Y		0
 
 //STATE
 #define MARIO_STATE_DIE					-10
@@ -241,6 +246,7 @@
 #define MARIO_STATE_SIT_RELEASE			601
 
 #define MARIO_STATE_DECELERATION		700
+#define MARIO_STATE_GO_DOWN				701
 
 //LEVEL
 #define	MARIO_LEVEL_SMALL	1
@@ -291,13 +297,14 @@ class CMario : public CGameObject
 	float maxVx;
 	float minVx;
 
-	float ax;				// acceleration on x 
-	float ay;				// acceleration on y 
+	float ax;		
+	float ay;
 	int level; 
 	int untouchable;
 
 	int time;
 	int power;
+	float position_x_out_map;
 	
 	ULONGLONG untouchable_start;
 	ULONGLONG count_1_second;
@@ -309,6 +316,7 @@ class CMario : public CGameObject
 	ULONGLONG time_change_level;
 	ULONGLONG time_touch;
 	ULONGLONG time_coutdown_touch;
+	ULONGLONG time_go_down;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -328,6 +336,8 @@ class CMario : public CGameObject
 	BOOLEAN isDrawAnimation;
 	BOOLEAN isUnTouchable;
 	BOOLEAN isSummonTail;
+	BOOLEAN isAbovePipeline;
+	BOOLEAN isGoDown;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -342,6 +352,7 @@ class CMario : public CGameObject
 	void OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e);
 	void OnCollisionWithCardBox(LPCOLLISIONEVENT e);
 	void OnCollisionWithButton(LPCOLLISIONEVENT e);
+	void OnCollisionWithPipeline(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -362,6 +373,7 @@ public:
 		time_change_level = 0;
 		time_touch = 0;
 		time_coutdown_touch = 0;
+		time_go_down = 0;
 
 		canReturnWorldMap = false;
 		isSlowFly = false;
@@ -379,6 +391,8 @@ public:
 		isKoopaTouch = false;
 		isDrawAnimation = true;
 		isSummonTail = false;
+		isAbovePipeline = false;
+		isGoDown = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;
@@ -393,7 +407,10 @@ public:
 		koopa_holding = NULL;
 		power = 0;
 		number_touch = 0;
+		position_x_out_map = 0;
 	}
+
+	bool GetIsAbovePipeline() { return isAbovePipeline; }
 
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
 	bool GetIsAttack() {return isAttack;  }
@@ -453,7 +470,7 @@ public:
 	void AccelerationFunction();
 	void CalculatePowerToFly();
 	bool CountDownTimer2(ULONGLONG time_calculate, int time_out);
-	bool MarioOutWorld() { return (x > MARIO_POSITION_OUTMAP); }
+	bool MarioOutWorld() { return disableKey && (x - position_x_out_map > MARIO_POSITION_OUTMAP_ADJUST); }
 	bool IsChangeDirection() { return (vx > 0 && ax < 0) || (vx < 0 && ax > 0); }
 	void CountDownKoopaTouch();
 	void SetupFlicker();
@@ -461,4 +478,5 @@ public:
 	void SetupTouchTime();
 	void HeartMax();
 	void CoinMax();
+	void GoDownPipeline();
 };

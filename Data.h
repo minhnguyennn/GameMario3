@@ -12,6 +12,7 @@ class CData
 	static CData* __instance;
 	bool isConvertBrick;
 	int card_box;
+	bool mario_go_down;
 	int mario_score;
 	int mario_heart;
 	int mario_coin;
@@ -20,14 +21,18 @@ public:
 	CData()
 	{
 		this->isConvertBrick = false;
+		this->mario_go_down = false;
 
 		this->card_box = 0;
 		this->mario_score = 0;
 		this->mario_coin = 0;
-
+		
 		this->mario_heart = DATA_MARIO_HEART;
 		this->mario_time = DATA_MARIO_GAME_TIMEOUT;
 	};
+
+	void SetIsMarioGoDown(bool mario_go_down) { this->mario_go_down = mario_go_down; }
+	bool GetIsMarioGoDown() { return mario_go_down; }
 
 	void SetIsConvertBrick(bool isConvertBrick) { this->isConvertBrick = isConvertBrick; }
 	bool GetIsConvertBrick() { return isConvertBrick; }

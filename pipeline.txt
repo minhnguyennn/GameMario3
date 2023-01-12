@@ -1,9 +1,15 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+#pipeline_plant
 20100	129	0	160	47	194
 20200	162	0	193	31	194
+#pipeline_hidden
+20101	2256	112	2287	305	70
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
-6000	20100	100
-6010	20200	100
+#pipeline_plant
+6200	20100	100
+6210	20200	100
+#pipeline_hidden
+6211	20101	100

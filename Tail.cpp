@@ -7,6 +7,8 @@
 #include "QuestionBrick.h"
 #include "Brick.h"
 #include "Effect.h"
+#include "Data.h"
+#include "Point.h"
 
 CTail::CTail(float x, float y) :CGameObject(x, y)
 {
@@ -61,6 +63,8 @@ void CTail::OnCollisionWith(LPCOLLISIONEVENT e)
 void CTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+	CData* data_game = CData::GetInstance();
+	data_game->SetMarioScore(data_game->GetMarioScore() + POINT_NUMBER_10);
 	if(brick->GetIsCoin()) return;
 	if (e->nx != 0)
 	{

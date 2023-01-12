@@ -56,24 +56,24 @@ void CPoint::StorageScore()
 {
 	CData* data_game = CData::GetInstance();
 	int data_heart = 0;
-	int data_coin = 0;
+	int data_score = 0;
 	switch (type_point)
 	{
 	case POINT_TYPE_UP:
 		data_heart = POINT_NUMBER_1UP;
 		break;
 	case POINT_TYPE_100:
-		data_coin = POINT_NUMBER_100;
+		data_score = POINT_NUMBER_100;
 		break;
 	case POINT_TYPE_200:
-		data_coin = POINT_NUMBER_200;
+		data_score = POINT_NUMBER_200;
 		break;
 	case POINT_TYPE_1000:
-		data_coin = POINT_NUMBER_1000;
+		data_score = POINT_NUMBER_1000;
 		break;
 	default:
 		break;
 	}
-	data_game->SetMarioScore(data_game->GetMarioScore() + data_coin);
+	data_game->SetMarioScore(data_game->GetMarioScore() + data_score);
 	data_game->SetMarioHeart(data_game->GetMarioHeart() + data_heart);
 }

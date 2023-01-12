@@ -10,7 +10,6 @@ void CCardBox::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (!checkObjectInCamera()) return;
 	if (isRandom) SetupRandomCardBox();
-	DebugOut(L"SetupRandomCardBox: %d\n", SetupRandomCardBox());
 	if (isUp && CountDownTimer(CARD_BOX_UP_TIMEOUT)) SetState(CARD_BOX_STATE_SUMMON);
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
