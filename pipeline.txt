@@ -5,6 +5,8 @@
 20200	162	0	193	31	194
 #pipeline_hidden
 20101	2256	112	2287	305	70
+#pipeline_black_go_up
+20102	2320	464	2351	495	70
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -13,3 +15,5 @@
 6210	20200	100
 #pipeline_hidden
 6211	20101	100
+#pipeline_black_go_up
+6212	20102	100

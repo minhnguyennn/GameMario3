@@ -11,6 +11,7 @@ void CPipeline::Render()
 	if (type_pineline == PIPELINE_TYPE_SMALL) aniId = ID_ANI_SMALL_PIPELINE;
 	else if (type_pineline == PIPELINE_TYPE_BIG_HIDDEN) aniId = ID_ANI_HIDDEN_PIPELINE;
 	else if (type_pineline == PIPELINE_TYPE_SMALL_HIDDEN) aniId = ID_ANI_SMALL_PIPELINE;
+	else if (type_pineline == PIPELINE_TYPE_BLACK_GO_UP) aniId = ID_ANI_BLACK_PIPELINE_GO_UP;
 	else aniId = ID_ANI_BIG_PIPELINE;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();

@@ -28,7 +28,6 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
-	DebugOutTitle(L"position_x_out_map: %f and X: %f ", position_x_out_map, x);
 	//DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
@@ -779,6 +778,15 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	case MARIO_STATE_RELEASE_GO_DOWN:
+	{
+		CData::GetInstance()->SetIsMarioGoDown(false);
+		time_go_down = 0;
+		isGoDown = false;
+		vy = 0;
+		ay = MARIO_GRAVITY;
+		break;
+	}
 	case MARIO_STATE_GO_DOWN:
 	{
 		CData::GetInstance()->SetIsMarioGoDown(true);
@@ -1277,10 +1285,9 @@ void CMario::SummonScore()
 
 void CMario::GoDownPipeline()
 {
-	if (isGoDown && CountDownTimer2(time_go_down, 3000))
+	if (isGoDown && CountDownTimer2(time_go_down, MARIO_TIME_GO_DOWN_TIMEOUT))
 	{
-		isGoDown = false;
-		time_go_down = 0;
 		SetPosition(MARIO_HIDDEN_MAP_POSITION_X, MARIO_HIDDEN_MAP_POSITION_Y);
+		SetState(MARIO_STATE_RELEASE_GO_DOWN);
 	}
 }

@@ -247,6 +247,7 @@
 
 #define MARIO_STATE_DECELERATION		700
 #define MARIO_STATE_GO_DOWN				701
+#define MARIO_STATE_RELEASE_GO_DOWN		702
 
 //LEVEL
 #define	MARIO_LEVEL_SMALL	1
@@ -287,6 +288,7 @@
 #define MARIO_TIME_DECREASE_WHEN_OUTMAP 7
 #define MARIO_EFFECT_SMOKE_TIMEOUT 500
 #define MARIO_PLAY_GAME_TIMEOUT 300
+#define MARIO_TIME_GO_DOWN_TIMEOUT 3000
 
 class CMario : public CGameObject
 {
@@ -399,7 +401,7 @@ public:
 
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
-		level = MARIO_LEVEL_SMALL;
+		level = MARIO_LEVEL_RACCOON;
 		untouchable = 0;
 		untouchable_start = -MARIO_NUMBER_START_UNTOUCHABLE;
 		isOnPlatform = false;
