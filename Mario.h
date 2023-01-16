@@ -214,8 +214,10 @@
 #define MARIO_TOUCH_ONE_NUMBER	1
 #define MARIO_TOUCH_TOW_NUMBER	2
 #define MARIO_RANDOM_NUMBER_ADJUST	2
-#define MARIO_HIDDEN_MAP_POSITION_X		3340
+#define MARIO_HIDDEN_MAP_POSITION_X		3336
 #define MARIO_HIDDEN_MAP_POSITION_Y		0
+#define MARIO_RELEASE_HIDDEN_MAP_POSITION_X		2332
+#define MARIO_RELEASE_HIDDEN_MAP_POSITION_Y		400
 
 //STATE
 #define MARIO_STATE_DIE					-10
@@ -245,9 +247,11 @@
 #define MARIO_STATE_SIT					600
 #define MARIO_STATE_SIT_RELEASE			601
 
-#define MARIO_STATE_DECELERATION		700
-#define MARIO_STATE_GO_DOWN				701
-#define MARIO_STATE_RELEASE_GO_DOWN		702
+#define MARIO_STATE_DECELERATION			700
+#define MARIO_STATE_GO_DOWN					701
+#define MARIO_STATE_RELEASE_GO_PIPELINE		702
+#define MARIO_STATE_GO_UP					703
+#define MARIO_STATE_RELEASE_UP_PIPELINE		704
 
 //LEVEL
 #define	MARIO_LEVEL_SMALL	1
@@ -289,6 +293,8 @@
 #define MARIO_EFFECT_SMOKE_TIMEOUT 500
 #define MARIO_PLAY_GAME_TIMEOUT 300
 #define MARIO_TIME_GO_DOWN_TIMEOUT 3000
+#define MARIO_GO_UP_TIMEOUT 410
+#define MARIO_GO_UP_HIDDEN_TIMEOUT 1000
 
 class CMario : public CGameObject
 {
@@ -318,7 +324,8 @@ class CMario : public CGameObject
 	ULONGLONG time_change_level;
 	ULONGLONG time_touch;
 	ULONGLONG time_coutdown_touch;
-	ULONGLONG time_go_down;
+	ULONGLONG time_go_pipeline;
+	ULONGLONG time_go_out_pipeline;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -338,8 +345,10 @@ class CMario : public CGameObject
 	BOOLEAN isDrawAnimation;
 	BOOLEAN isUnTouchable;
 	BOOLEAN isSummonTail;
-	BOOLEAN isAbovePipeline;
+	BOOLEAN isCollisionPipeline;
 	BOOLEAN isGoDown;
+	BOOLEAN isGoUp;
+	BOOLEAN isGoOutUp;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -375,7 +384,8 @@ public:
 		time_change_level = 0;
 		time_touch = 0;
 		time_coutdown_touch = 0;
-		time_go_down = 0;
+		time_go_pipeline = 0;
+		time_go_out_pipeline = 0;
 
 		canReturnWorldMap = false;
 		isSlowFly = false;
@@ -393,8 +403,10 @@ public:
 		isKoopaTouch = false;
 		isDrawAnimation = true;
 		isSummonTail = false;
-		isAbovePipeline = false;
+		isCollisionPipeline = false;
 		isGoDown = false;
+		isGoUp = false;
+		isGoOutUp = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;
@@ -412,7 +424,10 @@ public:
 		position_x_out_map = 0;
 	}
 
-	bool GetIsAbovePipeline() { return isAbovePipeline; }
+	void SetIsGoDown(bool isGoDown) { this->isGoDown = isGoDown; }
+	bool GetIsGoDown() { return isGoDown; }
+
+	bool GetIsCollisionPipeline() { return isCollisionPipeline; }
 
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
 	bool GetIsAttack() {return isAttack;  }

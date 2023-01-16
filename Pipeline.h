@@ -1,12 +1,12 @@
 #pragma once
 
 //BBOX
-#define PIPELINE_BBOX_HIDDEN_WIDTH		31
-#define PIPELINE_BBOX_HIDDEN_HEIGHT		192
-#define PIPELINE_BBOX_BIG_WIDTH			31
-#define PIPELINE_BBOX_BIG_HEIGHT		47
-#define PIPELINE_BBOX_SMALL_WIDTH		31
-#define PIPELINE_BBOX_SMALL_HEIGHT		31
+#define PIPELINE_BBOX_HIDDEN_WIDTH		32
+#define PIPELINE_BBOX_HIDDEN_HEIGHT		194
+#define PIPELINE_BBOX_BIG_WIDTH			32
+#define PIPELINE_BBOX_BIG_HEIGHT		48
+#define PIPELINE_BBOX_SMALL_WIDTH		32
+#define PIPELINE_BBOX_SMALL_HEIGHT		32
 
 //DISTANCE
 #define PIPELINE_DISTANCE_GREEN	3
@@ -48,7 +48,7 @@ public:
 	int IsCollidable() { return 0; }
 	int IsBlocking() 
 	{ 
-		if (CData::GetInstance()->GetIsMarioGoDown()) return 0;
+		if (CData::GetInstance()->GetIsMarioGoPipeline()) return 0;
 		else return 1; 
 	}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);

@@ -10,7 +10,13 @@
 #include "Goomba.h"
 //#include "Koopas.h"
 
+#define PLSCENE_MAP_MAX_X	3200
+
+#define PLSCENE_HIDDEN_MAP_MAX_Y_CAM	16
+#define PLSCENE_HIDDEN_MAP_MIN_Y_CAM	-8
+
 #define PLSCENE_MIN_X_CAM	0
+
 #define PLSCENE_MAX_X_CAM	2554
 #define PLSCENE_MAX_Y_CAM	256
 #define PLSCENE_MIN_Y_CAM	0

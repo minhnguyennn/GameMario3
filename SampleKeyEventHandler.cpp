@@ -24,16 +24,18 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_DOWN:
 	{
-		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->GetIsAbovePipeline()) mario->SetState(MARIO_STATE_GO_DOWN);
-		else mario->SetState(MARIO_STATE_SIT);
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->GetIsCollisionPipeline()) 
+			mario->SetState(MARIO_STATE_GO_DOWN);
+		else 
+			mario->SetState(MARIO_STATE_SIT);
 		break;
 	}
-	case DIK_UP:
+	/*case DIK_UP:
 	{
-		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->GetIsAbovePipeline()) mario->SetState(MARIO_STATE_GO_DOWN);
-		else mario->SetState(MARIO_STATE_SIT);
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->GetIsCollisionPipeline())
+			mario->SetState(MARIO_STATE_GO_DOWN);
 		break;
-	}
+	}*/
 	case DIK_S:
 	{
 		if (mario->IsMaxPower() && mario->GetLevel() == MARIO_LEVEL_RACCOON) mario->SetState(MARIO_STATE_FLYING);
@@ -63,7 +65,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetPosition(700, 380);
 		break;
 	case DIK_9:
-		mario->SetPosition(3340, 0); // To Hidden Map
+		mario->SetPosition(3336, 0); // To Hidden Map
 		break;
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
@@ -118,6 +120,10 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	{
 		if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_RUNNING_LEFT);
 		else mario->SetState(MARIO_STATE_WALKING_LEFT);
+	}
+	else if (game->IsKeyDown(DIK_UP))
+	{
+		if (game->IsKeyDown(DIK_S) && mario->GetIsCollisionPipeline()) mario->SetState(MARIO_STATE_GO_UP);
 	}
 	else 
 	{

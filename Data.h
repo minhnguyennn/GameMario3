@@ -13,6 +13,8 @@ class CData
 	bool isConvertBrick;
 	int card_box;
 	bool mario_go_down;
+	bool mario_go_pipeline;
+	bool mario_go_up;
 	int mario_score;
 	int mario_heart;
 	int mario_coin;
@@ -22,6 +24,8 @@ public:
 	{
 		this->isConvertBrick = false;
 		this->mario_go_down = false;
+		this->mario_go_up = false;
+		this->mario_go_pipeline = false;
 
 		this->card_box = 0;
 		this->mario_score = 0;
@@ -30,6 +34,12 @@ public:
 		this->mario_heart = DATA_MARIO_HEART;
 		this->mario_time = DATA_MARIO_GAME_TIMEOUT;
 	};
+
+	void SetIsMarioGoPipeline(bool mario_go_pipeline) { this->mario_go_pipeline = mario_go_pipeline; }
+	bool GetIsMarioGoPipeline() { return mario_go_pipeline; }
+
+	void SetIsMarioGoUp(bool mario_go_up) { this->mario_go_up = mario_go_up; }
+	bool GetIsMarioGoUp() { return mario_go_up; }
 
 	void SetIsMarioGoDown(bool mario_go_down) { this->mario_go_down = mario_go_down; }
 	bool GetIsMarioGoDown() { return mario_go_down; }

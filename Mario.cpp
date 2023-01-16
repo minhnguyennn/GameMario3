@@ -28,7 +28,7 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
-	//DebugOutTitle(L"power: %d and isRunning: %d", power, isRunning);
+	DebugOutTitle(L"ay: %f", ay);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
 	ChangeLevelMario(dt);
@@ -72,6 +72,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	isOnPlatform = false;
+	isCollisionPipeline = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
@@ -150,8 +151,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPipeline(LPCOLLISIONEVENT e)
 {
 	CPipeline* pipeline = dynamic_cast<CPipeline*>(e->obj);
-	if (e->ny > 0 && pipeline->GetType() == PIPELINE_TYPE_BIG_HIDDEN) isAbovePipeline = true;
-	else if (e->ny < 0 && pipeline->GetType() == PIPELINE_TYPE_BLACK_GO_UP) isAbovePipeline = true;
+	if (e->ny < 0 && pipeline->GetType() == PIPELINE_TYPE_BIG_HIDDEN) isCollisionPipeline = true;
+	else if (e->ny > 0 && pipeline->GetType() == PIPELINE_TYPE_BLACK_GO_UP) isCollisionPipeline = true;
 }
 
 void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
@@ -656,7 +657,7 @@ int CMario::GetAniIdRaccoon()
 			else  aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
 		}
 	}
-	else if (isGoDown)
+	else if (isGoDown || isGoUp || isGoOutUp)
 	{
 		aniId = ID_ANI_MARIO_RACCOON_GO_DOWN;
 	}
@@ -780,20 +781,37 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
-	case MARIO_STATE_RELEASE_GO_DOWN:
+	case MARIO_STATE_RELEASE_UP_PIPELINE:
 	{
-		CData::GetInstance()->SetIsMarioGoDown(false);
-		time_go_down = 0;
+		isGoUp = false;
+		isGoOutUp = true;
+		time_go_out_pipeline = GetTickCount64();
+		break;
+	}
+	case MARIO_STATE_RELEASE_GO_PIPELINE:
+	{
+		CData::GetInstance()->SetIsMarioGoPipeline(false);
+		time_go_pipeline = 0;
 		isGoDown = false;
+		isGoOutUp = false;
 		vy = 0;
 		ay = MARIO_GRAVITY;
 		break;
 	}
+	case MARIO_STATE_GO_UP:
+	{
+		CData::GetInstance()->SetIsMarioGoPipeline(true);
+		isGoUp = true;
+		time_go_pipeline = GetTickCount64();
+		//vy = -MARIO_GO_DOWN_Y;
+		ay = -0.0001f;
+		break;
+	}
 	case MARIO_STATE_GO_DOWN:
 	{
-		CData::GetInstance()->SetIsMarioGoDown(true);
-		time_go_down = GetTickCount64();
+		CData::GetInstance()->SetIsMarioGoPipeline(true);
 		isGoDown = true;
+		time_go_pipeline = GetTickCount64();
 		vy = MARIO_GO_DOWN_Y;
 		ay = 0;
 		break;
@@ -1287,9 +1305,18 @@ void CMario::SummonScore()
 
 void CMario::GoDownPipeline()
 {
-	if (isGoDown && CountDownTimer2(time_go_down, MARIO_TIME_GO_DOWN_TIMEOUT))
+	if (isGoDown && CountDownTimer2(time_go_pipeline, MARIO_TIME_GO_DOWN_TIMEOUT))
 	{
 		SetPosition(MARIO_HIDDEN_MAP_POSITION_X, MARIO_HIDDEN_MAP_POSITION_Y);
-		SetState(MARIO_STATE_RELEASE_GO_DOWN);
+		SetState(MARIO_STATE_RELEASE_GO_PIPELINE);
+	}
+	else if (isGoUp && CountDownTimer2(time_go_pipeline, MARIO_GO_UP_HIDDEN_TIMEOUT))
+	{
+		SetPosition(MARIO_RELEASE_HIDDEN_MAP_POSITION_X, MARIO_RELEASE_HIDDEN_MAP_POSITION_Y);
+		SetState(MARIO_STATE_RELEASE_UP_PIPELINE);
+	}
+	else if (isGoOutUp && CountDownTimer2(time_go_out_pipeline, MARIO_GO_UP_TIMEOUT))
+	{
+		SetState(MARIO_STATE_RELEASE_GO_PIPELINE);
 	}
 }

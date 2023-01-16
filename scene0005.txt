@@ -78,6 +78,7 @@ Resource/Tilemaps/world1-1-1.txt
 12	2327	392	4	4
 #black_go_up
 12	3560	8	4	5
+12	3336	8	4	5
 
 ######### Venus fire trap ###########
 #11	330	378	4
