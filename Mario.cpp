@@ -149,7 +149,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPipeline(LPCOLLISIONEVENT e)
 {
-	if (e->ny < 0) isAbovePipeline = true;
+	CPipeline* pipeline = dynamic_cast<CPipeline*>(e->obj);
+	if (e->ny > 0 && pipeline->GetType() == PIPELINE_TYPE_BIG_HIDDEN) isAbovePipeline = true;
+	else if (e->ny < 0 && pipeline->GetType() == PIPELINE_TYPE_BLACK_GO_UP) isAbovePipeline = true;
 }
 
 void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)

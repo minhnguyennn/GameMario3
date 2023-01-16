@@ -23,23 +23,24 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		}
 		break;
 	case DIK_DOWN:
+	{
 		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->GetIsAbovePipeline()) mario->SetState(MARIO_STATE_GO_DOWN);
 		else mario->SetState(MARIO_STATE_SIT);
 		break;
-	case DIK_S:
-		if (mario->IsMaxPower())
-		{
-			mario->SetState(MARIO_STATE_FLYING);
-		}
-		else if (mario->GetVY() > 0)
-		{
-			mario->SetState(MARIO_STATE_FALL_SLOWLY);
-		}
-		else
-		{
-			mario->SetState(MARIO_STATE_JUMP);
-		}
+	}
+	case DIK_UP:
+	{
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->GetIsAbovePipeline()) mario->SetState(MARIO_STATE_GO_DOWN);
+		else mario->SetState(MARIO_STATE_SIT);
 		break;
+	}
+	case DIK_S:
+	{
+		if (mario->IsMaxPower() && mario->GetLevel() == MARIO_LEVEL_RACCOON) mario->SetState(MARIO_STATE_FLYING);
+		else if (mario->GetVY() > 0) mario->SetState(MARIO_STATE_FALL_SLOWLY);
+		else mario->SetState(MARIO_STATE_JUMP);
+		break;
+	}
 	case DIK_1:
 		mario->SetLevel(MARIO_LEVEL_SMALL);
 		break;
