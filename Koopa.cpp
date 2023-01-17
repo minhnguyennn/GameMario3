@@ -182,17 +182,18 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"STATE: %d \n", state);
+	DebugOut(L"isTurnOver: %d and isWaiting: %d \n", isTurnOver, isWaiting);
 	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetIsChangLevel()) return;
-	if ((isTurnOver || isDefense) && !isAttacking && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
+	
+	if ((isDefense && GetTickCount64() - time_defense > 3000) || (isTurnOver && GetTickCount64() - time_turn_over > 3000))
 	{
 		SetState(KOOPA_STATE_WAITING);
 	}
-	if (isWaiting && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
+	if (isWaiting && GetTickCount64() - time_waiting > 3000)
 	{
 		SetState(KOOPA_STATE_WALKING);
 	}
@@ -220,8 +221,10 @@ void CKoopa::Render()
 		}
 		if (isWaiting)
 		{
-			if (!isTurnOver) aniId = ID_ANI_KOOPA_RED_TURN_OVER_WAITING;
-			else aniId = ID_ANI_KOOPA_RED_WAITING;
+			if (isDrawTurnOver)
+				aniId = ID_ANI_KOOPA_RED_TURN_OVER_WAITING;
+			else 
+				aniId = ID_ANI_KOOPA_RED_WAITING;
 		}
 		else if (isDefense) aniId = ID_ANI_KOOPA_RED_CLOSE_SHELL;
 		else if (isAttacking)
@@ -287,7 +290,8 @@ void CKoopa::SetState(int state)
 		isDie = false;
 		isAttacking = false;
 		isWalking = false;
-		time_line = GetTickCount64();
+		isWaiting = false;
+		time_turn_over = GetTickCount64();
 		vx = KOOPA_TURN_UP_JUMP_VX * isLeftWithMario();
 		vy = -KOOPA_TURN_UP_JUMP_VY;
 		break;
@@ -314,14 +318,15 @@ void CKoopa::SetState(int state)
 		isWaiting = true;
 		isDefense = false;
 		isTurnOver = false;
-		time_line = GetTickCount64();
+		isDrawTurnOver = true;
+		time_waiting = GetTickCount64();
 		break;
 	}
 	case KOOPA_STATE_CLOSE_SHELL:
 	{
 		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 		vx = 0;
-		time_line = GetTickCount64();
+		time_defense = GetTickCount64();
 		isDefense = true;
 		isAttacking = false;
 		isWalking = false;
@@ -338,6 +343,7 @@ void CKoopa::SetState(int state)
 		isWaiting = false;
 		isHeld = false;
 		isWalking = true;
+		isDrawTurnOver = false;
 		break;
 	}
 	default:

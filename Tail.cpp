@@ -15,11 +15,13 @@ CTail::CTail(float x, float y) :CGameObject(x, y)
 	//ChangePositionFollowMario();
 	this->time_line = GetTickCount64();
 	collision_one_number = false;
+	isTail = false;
 }
 
 void CTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (GetTickCount64() - time_line > TAIL_TIMEOUT)
 	{
+		isTail = true;
 		isDeleted = true;
 		return;
 	}
@@ -86,21 +88,21 @@ void CTail::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 void CTail::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-	SummonEffect();
+	SummonEffect(koopa->GetX());
 	koopa->SetState(KOOPA_STATE_TURN_OVER);
 }
 
 void CTail::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 {
 	CVenusFireTrap* vnf_trap = dynamic_cast<CVenusFireTrap*>(e->obj);
-	SummonEffect();
+	SummonEffect(vnf_trap->GetX());
 	vnf_trap->SetState(VFTRAP_STATE_DIE);
 }
 
 void CTail::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	SummonEffect();
+	SummonEffect(goomba->GetX());
 	goomba->SetState(GOOMBA_STATE_DIE_TURN_OVER);
 }
 
@@ -125,11 +127,11 @@ void CTail::SetState(int state)
 	CGameObject::SetState(state);
 }
 
-void CTail::SummonEffect()
+void CTail::SummonEffect(float object_x)
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
-	if (mario->GetNx() > 0)
+	if (mario->GetX() < object_x)
 	{
 		CEffect* effect_right = new CEffect(x + TAIL_SUMMON_EFFECT_X_ADJUST, y, EFFECT_TYPE_STAR);
 		scene->CreateObject(effect_right);

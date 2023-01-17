@@ -1157,7 +1157,6 @@ void CMario::SummonTail()
 	CTail* tail_left = new CTail(x + MARIO_TAIL_X_ADJUST, y + MARIO_TAIL_Y_ADJUST);
 	tail_left->SetState(TAIL_STATE_LEFT);
 	scene->CreateObject(tail_left);
-
 }
 
 void CMario::MarioHoldKoopaFunction()

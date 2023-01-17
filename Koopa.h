@@ -82,6 +82,7 @@ protected:
 
 	bool isDefense;
 	bool isTurnOver;
+	bool isDrawTurnOver;
 	bool isWaiting;
 	bool isAttacking;
 	bool isDie;
@@ -91,6 +92,9 @@ protected:
 
 	ULONGLONG die_start;
 	ULONGLONG time_line;
+	ULONGLONG time_waiting;
+	ULONGLONG time_turn_over;
+	ULONGLONG time_defense;
 
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
@@ -113,7 +117,12 @@ public:
 		isHeld = false;
 		isGhostBox = false;
 		isWalking = false;
+		isDrawTurnOver = false;
 		SetState(KOOPA_STATE_WALKING);
+		time_waiting = 0;
+		time_turn_over = 0;
+		time_defense = 0;
+
 	};
 
 	void SetAy(float ay) { this->ay = ay; };

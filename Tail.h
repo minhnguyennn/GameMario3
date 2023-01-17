@@ -23,6 +23,7 @@ class CTail : public CGameObject
 {
 	ULONGLONG time_line;
 	bool collision_one_number;
+	bool isTail;
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
@@ -39,6 +40,7 @@ public:
 	int IsBlocking() { return 0; }
 	int IsCollidable() { return 1; };
 	void SetState(int state);
-	void SummonEffect();
+	void SummonEffect(float object_x);
+	bool GetIsTail() { return isTail; }
 };
 
