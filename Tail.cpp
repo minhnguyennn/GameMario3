@@ -14,6 +14,7 @@ CTail::CTail(float x, float y) :CGameObject(x, y)
 {
 	//ChangePositionFollowMario();
 	this->time_line = GetTickCount64();
+	collision_one_number = false;
 }
 
 void CTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
@@ -78,9 +79,8 @@ void CTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 void CTail::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
 	CQuestionBrick* question_brick = dynamic_cast<CQuestionBrick*>(e->obj);
-	SummonEffect();
 	if (question_brick->GetState() == QUESTION_STATE_IDLE)
-		question_brick->SummonItemsFromBrickQuestion();
+	question_brick->SummonItemsFromBrickQuestion();
 }
 
 void CTail::OnCollisionWithKoopa(LPCOLLISIONEVENT e)

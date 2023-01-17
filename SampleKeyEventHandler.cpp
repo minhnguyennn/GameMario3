@@ -17,7 +17,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		{
 			mario->SummonFireBalls();
 		}
-		else if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
+		else if (mario->GetLevel() == MARIO_LEVEL_RACCOON && !mario->GetIsAttack())
 		{
 			mario->SetState(MARIO_STATE_ATTACK);
 		}
@@ -30,12 +30,6 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetState(MARIO_STATE_SIT);
 		break;
 	}
-	/*case DIK_UP:
-	{
-		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->GetIsCollisionPipeline())
-			mario->SetState(MARIO_STATE_GO_DOWN);
-		break;
-	}*/
 	case DIK_S:
 	{
 		if (mario->IsMaxPower() && mario->GetLevel() == MARIO_LEVEL_RACCOON) mario->SetState(MARIO_STATE_FLYING);

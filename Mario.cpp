@@ -28,7 +28,7 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
-	DebugOutTitle(L"ay: %f", ay);
+	//DebugOutTitle(L"ay: %f", ay);
 	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
 	//DebugOut(L"--STATE-- %d\n", state);
 	ChangeLevelMario(dt);
@@ -258,9 +258,9 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
 				koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 			}
-			else if (koopa->GetIsDefense() || koopa->GetIsWaiting())
+			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting()))
 			{
-				koopa->SetState(KOOPA_STATE_ATTACKING);
+				//koopa->SetState(KOOPA_STATE_ATTACKING);
 			}
 		}
 	}
@@ -277,10 +277,10 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				koopa_holding = koopa;
 				SetState(MARIO_STATE_HOLDING);
 			}
-			else if (koopa->GetIsDefense() || koopa->GetIsWaiting() || koopa->GetIsTurnOver()) 
+			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting() || koopa->GetIsTurnOver()))
 			{
-				SetState(MARIO_STATE_KICK);
-				koopa->SetState(KOOPA_STATE_ATTACKING);
+ 				SetState(MARIO_STATE_KICK);
+				// koopa->SetState(KOOPA_STATE_ATTACKING);
 			}
 		}
 		else 
@@ -1180,7 +1180,7 @@ void CMario::MarioThrowKoopaFunction()
 {
 	if (!isHolding && koopa_holding != NULL)
 	{
-		koopa_holding->SetState(KOOPA_STATE_ATTACKING);
+		//koopa_holding->SetState(KOOPA_STATE_ATTACKING);
 		koopa_holding = NULL;
 	}
 }

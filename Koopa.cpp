@@ -8,6 +8,7 @@
 #include"Tail.h"
 #include"Mario.h"
 #include"Point.h"
+#include"Data.h"
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -39,7 +40,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->ny < 0)
 	{
-		if (level == KOOPA_LEVEL_BIG) 
+		if (level == KOOPA_LEVEL_BIG)
 		{
 			SetState(KOOPA_STATE_FLY);
 		}
@@ -55,8 +56,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 			}
 		}
 	}
-	
-	if (e->nx != 0 && e->obj->IsBlocking()) 
+
+	if (e->nx != 0 && e->obj->IsBlocking())
 	{
 		vx = -vx;
 	}
@@ -73,13 +74,6 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-	else if (dynamic_cast<CTail*>(e->obj))
-		OnCollisionWitTail(e);
-}
-
-void CKoopa::OnCollisionWitTail(LPCOLLISIONEVENT e)
-{
-	SetState(KOOPA_STATE_TURN_OVER);
 }
 
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) 
@@ -93,11 +87,19 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e) 
 {
+	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 	float left, top, right, bottom;
 	e->obj->GetBoundingBox(left, top, right, bottom);
 	if (e->ny < 0) {
 		if ((vx > 0 && x > right || vx < 0 && x < left) && !isAttacking) vx = -vx;
 	}	
+	else if (e->nx != 0 && isAttacking)
+	{
+		CData* data_game = CData::GetInstance();
+		data_game->SetMarioScore(data_game->GetMarioScore() + POINT_NUMBER_10);
+		brick->SummonDebris();
+		brick->SetState(BRICK_STATE_DELETE);
+	}
 }
 
 void CKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
@@ -180,12 +182,13 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	DebugOut(L"STATE: %d \n", state);
 	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetIsChangLevel()) return;
-	if ((isTurnOver || isDefense) && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
+	if ((isTurnOver || isDefense) && !isAttacking && CountDownTimer(KOOPA_CLOSE_SHELL_TIMEOUT))
 	{
 		SetState(KOOPA_STATE_WAITING);
 	}
@@ -215,13 +218,12 @@ void CKoopa::Render()
 			if (vx > 0) aniId = ID_ANI_KOOPA_RED_BIG_WALKING_RIGHT;
 			else if (vx < 0) aniId = ID_ANI_KOOPA_RED_BIG_WALKING_LEFT;
 		}
-
-		if (state == KOOPA_STATE_WAITING)
+		if (isWaiting)
 		{
 			if (!isTurnOver) aniId = ID_ANI_KOOPA_RED_TURN_OVER_WAITING;
 			else aniId = ID_ANI_KOOPA_RED_WAITING;
 		}
-		else if (state == KOOPA_STATE_CLOSE_SHELL) aniId = ID_ANI_KOOPA_RED_CLOSE_SHELL;
+		else if (isDefense) aniId = ID_ANI_KOOPA_RED_CLOSE_SHELL;
 		else if (isAttacking)
 		{
 			if (isTurnOver) aniId = ID_ANI_KOOPA_RED_TURN_OVER_ATTACKING;
@@ -246,20 +248,20 @@ void CKoopa::Render()
 				aniId = ID_ANI_KOOPA_GREEN_BIG_WALKING_LEFT;
 		}
 
-		if (state == KOOPA_STATE_WAITING)
+		if (isWaiting)
 			aniId = ID_ANI_KOOPA_GREEN_WAITING;
-		else if (state == KOOPA_STATE_CLOSE_SHELL)
+		else if (isDefense)
 			aniId = ID_ANI_KOOPA_GREEN_CLOSE_SHELL;
-		else if (state == KOOPA_STATE_ATTACKING)
+		else if (isAttacking)
 			aniId = ID_ANI_KOOPA_GREEN_ATTACKING;
-		else if (state == KOOPA_STATE_TURN_OVER)
+		else if (isTurnOver)
 			aniId = ID_ANI_KOOPA_GREEN_TURN_OVER;
 	}
 	if(isGhostBox)
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	else
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y + KOOPA_Y_ADJUST);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CKoopa::SetState(int state)
@@ -286,8 +288,8 @@ void CKoopa::SetState(int state)
 		isAttacking = false;
 		isWalking = false;
 		time_line = GetTickCount64();
-		vx = 0.04f * isLeftWithMario();
-		vy = -0.2f;
+		vx = KOOPA_TURN_UP_JUMP_VX * isLeftWithMario();
+		vy = -KOOPA_TURN_UP_JUMP_VY;
 		break;
 	}
 	case KOOPA_STATE_DIE:

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Data.h"
 
 //ANIMATION
 #define ID_ANI_EFFECT_SMOKE 14001

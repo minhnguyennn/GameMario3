@@ -19,8 +19,10 @@
 //PROPRERTY
 #define TAIL_SUMMON_EFFECT_X_ADJUST	10
 
-class CTail : public CGameObject {
+class CTail : public CGameObject 
+{
 	ULONGLONG time_line;
+	bool collision_one_number;
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);

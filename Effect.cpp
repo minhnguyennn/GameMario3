@@ -5,14 +5,14 @@ void CEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (type == EFFECT_TYPE_SMOKE && GetTickCount64() - time_line > EFFECT_SMOKE_TIMEOUT)
 	{
-		isDeleted = true;
 		time_line = 0;
+		isDeleted = true;
 		return;
 	}
 	else if (type == EFFECT_TYPE_STAR && GetTickCount64() - time_line > EFFECT_STAR_TIMEOUT)
 	{
-		isDeleted = true;
 		time_line = 0;
+		isDeleted = true;
 		return;
 	}
 	CGameObject::Update(dt, coObjects);
