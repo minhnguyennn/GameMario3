@@ -89,6 +89,7 @@ protected:
 	bool isWalking;
 	bool isHeld; 
 	bool isGhostBox;
+	bool isTurnOverDie;
 
 	ULONGLONG die_start;
 	ULONGLONG time_line;
@@ -118,6 +119,7 @@ public:
 		isGhostBox = false;
 		isWalking = false;
 		isDrawTurnOver = false;
+		isTurnOverDie = false;
 		SetState(KOOPA_STATE_WALKING);
 		time_waiting = 0;
 		time_turn_over = 0;

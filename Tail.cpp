@@ -15,13 +15,11 @@ CTail::CTail(float x, float y) :CGameObject(x, y)
 	//ChangePositionFollowMario();
 	this->time_line = GetTickCount64();
 	collision_one_number = false;
-	isTail = false;
 }
 
 void CTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (GetTickCount64() - time_line > TAIL_TIMEOUT)
 	{
-		isTail = true;
 		isDeleted = true;
 		return;
 	}
@@ -88,8 +86,11 @@ void CTail::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 void CTail::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-	SummonEffect(koopa->GetX());
-	koopa->SetState(KOOPA_STATE_TURN_OVER);
+	if (e->nx != 0)
+	{
+		SummonEffect(koopa->GetX());
+		koopa->SetState(KOOPA_STATE_TURN_OVER);
+	}
 }
 
 void CTail::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)

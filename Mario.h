@@ -350,6 +350,7 @@ class CMario : public CGameObject
 	BOOLEAN isGoDown;
 	BOOLEAN isGoUp;
 	BOOLEAN isGoOutUp;
+	BOOLEAN isCollisionKoopa;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -408,6 +409,7 @@ public:
 		isGoDown = false;
 		isGoUp = false;
 		isGoOutUp = false;
+		isCollisionKoopa = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;
@@ -424,6 +426,8 @@ public:
 		number_touch = 0;
 		position_x_out_map = 0;
 	}
+	void SetIsCollisionKoopa(bool isCollisionKoopa) { this->isCollisionKoopa = isCollisionKoopa; }
+	bool GetIsCollisionKoopa() { return isCollisionKoopa; }
 
 	void SetIsGoDown(bool isGoDown) { this->isGoDown = isGoDown; }
 	bool GetIsGoDown() { return isGoDown; }

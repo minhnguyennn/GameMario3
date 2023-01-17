@@ -77,8 +77,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
 	if (isHolding) MarioHoldKoopaFunction();
-	
-	if (isSummonTail) 
+	if (isSummonTail)
 	{
 		isSummonTail = false;
 		SummonTail();
@@ -260,7 +259,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			}
 			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting()))
 			{
-				//koopa->SetState(KOOPA_STATE_ATTACKING);
+				koopa->SetState(KOOPA_STATE_ATTACKING);
 			}
 		}
 	}
@@ -280,7 +279,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting() || koopa->GetIsTurnOver()))
 			{
  				SetState(MARIO_STATE_KICK);
-				// koopa->SetState(KOOPA_STATE_ATTACKING);
+				koopa->SetState(KOOPA_STATE_ATTACKING);
 			}
 		}
 		else 
@@ -803,7 +802,6 @@ void CMario::SetState(int state)
 		CData::GetInstance()->SetIsMarioGoPipeline(true);
 		isGoUp = true;
 		time_go_pipeline = GetTickCount64();
-		//vy = -MARIO_GO_DOWN_Y;
 		ay = -0.0001f;
 		break;
 	}
@@ -1179,7 +1177,7 @@ void CMario::MarioThrowKoopaFunction()
 {
 	if (!isHolding && koopa_holding != NULL)
 	{
-		//koopa_holding->SetState(KOOPA_STATE_ATTACKING);
+		koopa_holding->SetState(KOOPA_STATE_ATTACKING);
 		koopa_holding = NULL;
 	}
 }

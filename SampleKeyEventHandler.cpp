@@ -17,7 +17,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		{
 			mario->SummonFireBalls();
 		}
-		else if (mario->GetLevel() == MARIO_LEVEL_RACCOON && !mario->GetIsAttack())
+		else if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
 		{
 			mario->SetState(MARIO_STATE_ATTACK);
 		}

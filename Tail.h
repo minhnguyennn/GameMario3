@@ -6,7 +6,7 @@
 #define ID_ANI_TAIL			14000
 
 //BBOX
-#define TAIL_BBOX_WIDTH		20
+#define TAIL_BBOX_WIDTH		30
 #define TAIL_BBOX_HEIGHT	5
 
 //STATE
@@ -23,7 +23,6 @@ class CTail : public CGameObject
 {
 	ULONGLONG time_line;
 	bool collision_one_number;
-	bool isTail;
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
@@ -41,6 +40,5 @@ public:
 	int IsCollidable() { return 1; };
 	void SetState(int state);
 	void SummonEffect(float object_x);
-	bool GetIsTail() { return isTail; }
 };
 

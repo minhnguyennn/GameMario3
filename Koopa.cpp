@@ -46,14 +46,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		}
 		else
 		{
-			if (isTurnOver && !isAttacking)
-			{
-				vx = 0;
-			}
-			else
-			{
-				vy = 0;
-			}
+			if (isTurnOver && !isAttacking && !isTurnOverDie) vx = 0;
+			else vy = 0;
 		}
 	}
 
@@ -174,7 +168,7 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 {
 	//Different Koopa will turned over and died.
 	CKoopa* df_koopa = dynamic_cast<CKoopa*>(e->obj);
-	if (isAttacking || isHeld)
+	if (nx != 0 && (isAttacking || isHeld))
 	{
 		df_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
 	}
@@ -182,7 +176,7 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"isTurnOver: %d and isWaiting: %d \n", isTurnOver, isWaiting);
+	
 	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
@@ -219,6 +213,7 @@ void CKoopa::Render()
 			if (vx > 0) aniId = ID_ANI_KOOPA_RED_BIG_WALKING_RIGHT;
 			else if (vx < 0) aniId = ID_ANI_KOOPA_RED_BIG_WALKING_LEFT;
 		}
+
 		if (isWaiting)
 		{
 			if (isDrawTurnOver)
@@ -226,13 +221,13 @@ void CKoopa::Render()
 			else 
 				aniId = ID_ANI_KOOPA_RED_WAITING;
 		}
-		else if (isDefense) aniId = ID_ANI_KOOPA_RED_CLOSE_SHELL;
+		else if (isDefense ) aniId = ID_ANI_KOOPA_RED_CLOSE_SHELL;
 		else if (isAttacking)
 		{
 			if (isTurnOver) aniId = ID_ANI_KOOPA_RED_TURN_OVER_ATTACKING;
 			else aniId = ID_ANI_KOOPA_RED_ATTACKING;
 		}
-		else if (state == KOOPA_STATE_TURN_OVER) aniId = ID_ANI_KOOPA_RED_TURN_OVER;
+		else if (isTurnOver || isTurnOverDie) aniId = ID_ANI_KOOPA_RED_TURN_OVER;
 	}
 	else if (type == KOOPA_TYPE_PARATROOPA)
 	{
@@ -278,9 +273,9 @@ void CKoopa::SetState(int state)
 	}
 	case KOOPA_STATE_DIE_TURN_OVER:
 	{
-		isTurnOver = true;
+		isTurnOverDie = true;
 		isDie = true;
-		vx = -KOOPA_TURN_UP_JUMP_VX;
+		vx = KOOPA_TURN_UP_JUMP_VX * isLeftWithMario();
 		vy = -KOOPA_TURN_UP_JUMP_VY;
 		break;
 	}
