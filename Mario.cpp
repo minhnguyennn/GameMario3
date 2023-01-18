@@ -257,7 +257,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
 				koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 			}
-			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting()))
+			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting()) && !koopa->GetIsCollisionTail())
 			{
 				koopa->SetState(KOOPA_STATE_ATTACKING);
 			}
@@ -276,7 +276,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				koopa_holding = koopa;
 				SetState(MARIO_STATE_HOLDING);
 			}
-			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting() || koopa->GetIsTurnOver()))
+			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting() || koopa->GetIsTurnOver()) && !koopa->GetIsCollisionTail())
 			{
  				SetState(MARIO_STATE_KICK);
 				koopa->SetState(KOOPA_STATE_ATTACKING);
@@ -1164,10 +1164,8 @@ void CMario::MarioHoldKoopaFunction()
 		isHolding = false;
 		return;
 	}
-	if (state == MARIO_STATE_RUNNING_LEFT) 
-		koopa_holding->SetX(x - MARIO_HOLDKOOPA_X_ADJUST);
-	else if(state == MARIO_STATE_RUNNING_RIGHT) 
-		koopa_holding->SetX(x + MARIO_HOLDKOOPA_X_ADJUST);
+	if (state == MARIO_STATE_RUNNING_LEFT) koopa_holding->SetX(x - MARIO_HOLDKOOPA_X_ADJUST);
+	else if(state == MARIO_STATE_RUNNING_RIGHT) koopa_holding->SetX(x + MARIO_HOLDKOOPA_X_ADJUST);
 	koopa_holding->SetY(y - MARIO_HOLDKOOPA_Y_ADJUST);
 	koopa_holding->SetAy(0);
 	koopa_holding->SetVX(vx);

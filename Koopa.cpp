@@ -14,7 +14,7 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 {
 	if (isDie) return;
 
-	if (state == KOOPA_STATE_WALKING || state == KOOPA_STATE_FLY) 
+	if ((state == KOOPA_STATE_WALKING || state == KOOPA_STATE_FLY) && !isAttacking) 
 	{
 		left = x - KOOPA_BBOX_WIDTH / 2;
 		top = y - KOOPA_BBOX_HEIGHT / 2;
@@ -46,7 +46,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		}
 		else
 		{
-			if (isTurnOver && !isAttacking && !isTurnOverDie) vx = 0;
+			if (isTurnOver && !isAttacking && !isDie) vx = 0;
 			else vy = 0;
 		}
 	}
@@ -176,20 +176,23 @@ void CKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	
 	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
 	if (mario->GetIsChangLevel()) return;
-	
-	if ((isDefense && GetTickCount64() - time_defense > 3000) || (isTurnOver && GetTickCount64() - time_turn_over > 3000))
+	if ((isDefense && GetTickCount64() - time_defense > KOOPA_TIME_TIMEOUT) || (state == KOOPA_STATE_TURN_OVER && GetTickCount64() - time_turn_over > KOOPA_TIME_TIMEOUT))
 	{
 		SetState(KOOPA_STATE_WAITING);
 	}
-	if (isWaiting && GetTickCount64() - time_waiting > 3000)
+	if (isWaiting && GetTickCount64() - time_waiting > KOOPA_TIME_TIMEOUT)
 	{
 		SetState(KOOPA_STATE_WALKING);
+	}
+
+	if (isCollisionTail && GetTickCount64() - time_collision_tail > KOOPA_TIME_TAIL_TIMEOUT)
+	{
+		isCollisionTail = false;
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -203,10 +206,8 @@ void CKoopa::Render()
 	{
 		if (level == KOOPA_LEVEL_SMALL)
 		{
-			if (vx > 0)
-				aniId = ID_ANI_KOOPA_RED_SMALL_WALKING_RIGHT;
-			else if (vx < 0)
-				aniId = ID_ANI_KOOPA_RED_SMALL_WALKING_LEFT;
+			if (vx > 0) aniId = ID_ANI_KOOPA_RED_SMALL_WALKING_RIGHT;
+			else if (vx < 0) aniId = ID_ANI_KOOPA_RED_SMALL_WALKING_LEFT;
 		}
 		else if (level == KOOPA_LEVEL_BIG)
 		{
@@ -214,20 +215,18 @@ void CKoopa::Render()
 			else if (vx < 0) aniId = ID_ANI_KOOPA_RED_BIG_WALKING_LEFT;
 		}
 
-		if (isWaiting)
+		if (isTurnOver)
 		{
-			if (isDrawTurnOver)
-				aniId = ID_ANI_KOOPA_RED_TURN_OVER_WAITING;
-			else 
-				aniId = ID_ANI_KOOPA_RED_WAITING;
+			if (isWaiting) aniId = ID_ANI_KOOPA_RED_TURN_OVER_WAITING;
+			else if (isAttacking) aniId = ID_ANI_KOOPA_RED_TURN_OVER_ATTACKING;
+			else aniId = ID_ANI_KOOPA_RED_TURN_OVER;
 		}
-		else if (isDefense ) aniId = ID_ANI_KOOPA_RED_CLOSE_SHELL;
-		else if (isAttacking)
+		else
 		{
-			if (isTurnOver) aniId = ID_ANI_KOOPA_RED_TURN_OVER_ATTACKING;
-			else aniId = ID_ANI_KOOPA_RED_ATTACKING;
+			if (isWaiting) aniId = ID_ANI_KOOPA_RED_WAITING;
+			else if (isDefense) aniId = ID_ANI_KOOPA_RED_CLOSE_SHELL;
+			else if (isAttacking) aniId = ID_ANI_KOOPA_RED_ATTACKING;
 		}
-		else if (isTurnOver || isTurnOverDie) aniId = ID_ANI_KOOPA_RED_TURN_OVER;
 	}
 	else if (type == KOOPA_TYPE_PARATROOPA)
 	{
@@ -246,14 +245,18 @@ void CKoopa::Render()
 				aniId = ID_ANI_KOOPA_GREEN_BIG_WALKING_LEFT;
 		}
 
-		if (isWaiting)
-			aniId = ID_ANI_KOOPA_GREEN_WAITING;
-		else if (isDefense)
-			aniId = ID_ANI_KOOPA_GREEN_CLOSE_SHELL;
-		else if (isAttacking)
-			aniId = ID_ANI_KOOPA_GREEN_ATTACKING;
-		else if (isTurnOver)
-			aniId = ID_ANI_KOOPA_GREEN_TURN_OVER;
+		if (isTurnOver)
+		{
+			if (isWaiting) aniId = ID_ANI_KOOPA_GREEN_TURN_OVER_WAITING;
+			else if (isAttacking) aniId = ID_ANI_KOOPA_GREEN_TURN_OVER_ATTACKING;
+			else aniId = ID_ANI_KOOPA_GREEN_TURN_OVER;
+		}
+		else
+		{
+			if (isWaiting) aniId = ID_ANI_KOOPA_GREEN_WAITING;
+			else if (isDefense) aniId = ID_ANI_KOOPA_GREEN_CLOSE_SHELL;
+			else if (isAttacking) aniId = ID_ANI_KOOPA_GREEN_ATTACKING;
+		}
 	}
 	if(isGhostBox)
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -273,7 +276,7 @@ void CKoopa::SetState(int state)
 	}
 	case KOOPA_STATE_DIE_TURN_OVER:
 	{
-		isTurnOverDie = true;
+		isTurnOver = true;
 		isDie = true;
 		vx = KOOPA_TURN_UP_JUMP_VX * isLeftWithMario();
 		vy = -KOOPA_TURN_UP_JUMP_VY;
@@ -282,7 +285,6 @@ void CKoopa::SetState(int state)
 	case KOOPA_STATE_TURN_OVER:
 	{
 		isTurnOver = true;
-		isDie = false;
 		isAttacking = false;
 		isWalking = false;
 		isWaiting = false;
@@ -312,8 +314,8 @@ void CKoopa::SetState(int state)
 		vx = 0;
 		isWaiting = true;
 		isDefense = false;
-		isTurnOver = false;
-		isDrawTurnOver = true;
+		time_defense = 0;
+		time_turn_over = 0;
 		time_waiting = GetTickCount64();
 		break;
 	}
@@ -329,16 +331,14 @@ void CKoopa::SetState(int state)
 	}
 	case KOOPA_STATE_WALKING:
 	{
-		if (isWaiting)
-		{
-			y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
-		}
+		if (isWaiting) y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_WAITING) / 2;
 		ay = KOOPA_GRAVITY;
 		vx = -KOOPA_WALKING_SPEED * isLeftWithMario();
 		isWaiting = false;
 		isHeld = false;
 		isWalking = true;
-		isDrawTurnOver = false;
+		isTurnOver = false;
+		time_waiting = 0;
 		break;
 	}
 	default:

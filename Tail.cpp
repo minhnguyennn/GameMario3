@@ -88,8 +88,10 @@ void CTail::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 	if (e->nx != 0)
 	{
+		koopa->SetIsCollisionTail(true);
 		SummonEffect(koopa->GetX());
 		koopa->SetState(KOOPA_STATE_TURN_OVER);
+		if (koopa->GetLevel() == KOOPA_LEVEL_BIG) koopa->LowerLevel(); 
 	}
 }
 

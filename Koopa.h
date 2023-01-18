@@ -13,7 +13,8 @@
 #define KOOPA_Y_ADJUST 1
 
 //TIME
-#define KOOPA_CLOSE_SHELL_TIMEOUT 3000
+#define KOOPA_TIME_TIMEOUT 3000
+#define KOOPA_TIME_TAIL_TIMEOUT 3000
 
 //BBOX
 #define KOOPA_BBOX_WIDTH 17
@@ -62,6 +63,7 @@
 #define ID_ANI_KOOPA_GREEN_ATTACKING 6056
 #define ID_ANI_KOOPA_GREEN_TURN_OVER 6057
 #define	ID_ANI_KOOPA_GREEN_TURN_OVER_ATTACKING 6058
+#define	ID_ANI_KOOPA_GREEN_TURN_OVER_WAITING 6059
 
 //LEVEL
 #define KOOPA_LEVEL_SMALL 1
@@ -82,20 +84,20 @@ protected:
 
 	bool isDefense;
 	bool isTurnOver;
-	bool isDrawTurnOver;
 	bool isWaiting;
 	bool isAttacking;
 	bool isDie;
 	bool isWalking;
 	bool isHeld; 
 	bool isGhostBox;
-	bool isTurnOverDie;
+	bool isCollisionTail;
 
 	ULONGLONG die_start;
 	ULONGLONG time_line;
 	ULONGLONG time_waiting;
 	ULONGLONG time_turn_over;
 	ULONGLONG time_defense;
+	ULONGLONG time_collision_tail;
 
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
@@ -110,6 +112,7 @@ public:
 		this->level = level;
 		ay = KOOPA_GRAVITY;
 		start_x = x;
+
 		isDie = false;
 		isDefense = false;
 		isTurnOver = false;
@@ -118,14 +121,21 @@ public:
 		isHeld = false;
 		isGhostBox = false;
 		isWalking = false;
-		isDrawTurnOver = false;
-		isTurnOverDie = false;
+		isCollisionTail = false;
+
 		SetState(KOOPA_STATE_WALKING);
 		time_waiting = 0;
 		time_turn_over = 0;
 		time_defense = 0;
-
+		time_collision_tail = 0;
 	};
+
+	void SetIsCollisionTail(bool isCollisionTail) 
+	{ 
+		this->isCollisionTail = isCollisionTail;
+		time_collision_tail = GetTickCount64();
+	};
+	bool GetIsCollisionTail() { return isCollisionTail; };
 
 	void SetAy(float ay) { this->ay = ay; };
 	void SetAx(float ax) { this->ax = ax; };
