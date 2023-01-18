@@ -4,6 +4,7 @@
 #include"Mario.h"
 #include"PlayScene.h"
 #include"Data.h"
+#include"Automation.h"
 
 void CHUD::Render()
 {
@@ -16,11 +17,34 @@ void CHUD::Render()
 	int data_score = CData::GetInstance()->GetMarioScore();
 	int data_coin = CData::GetInstance()->GetMarioCoin();
 	int data_heart = CData::GetInstance()->GetMarioHeart();
+	int data_card_box = CData::GetInstance()->GetCardBox();
 
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_BA_BLACK)->Render(x, y);
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_TABLE_HUD)->Render(x + 30, y - 7);
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_POWER_M)->Render(x - 74, y - 3);
 
+	//Draw card box
+	if (mario->GetNumberTouchCardBox() == 1) 
+		DrawCardBox(data_card_box, x + 86, y - 7);
+	else if (mario->GetNumberTouchCardBox() == 2)
+	{
+		DrawCardBox(mario->GetCardStore1(), x + 86, y - 7);
+		DrawCardBox(data_card_box, x + 110, y - 7);
+	}
+	else if (mario->GetNumberTouchCardBox() == 3)
+	{
+		DrawCardBox(mario->GetCardStore1(), x + 86, y - 7);
+		DrawCardBox(mario->GetCardStore2(), x + 110, y - 7);
+		DrawCardBox(data_card_box, x + 134, y - 7);
+	}
+	else if (mario->GetNumberTouchCardBox() == 4)
+	{
+		DrawCardBox(mario->GetCardStore1(), x + 86, y - 7);
+		DrawCardBox(mario->GetCardStore2(), x + 110, y - 7);
+		DrawCardBox(mario->GetCardStore3(), x + 134, y - 7);
+	}
+	
+	//Number map
 	DrawNumber(1, x - 45, y - 11);
 
 	//Draw coin
@@ -47,6 +71,30 @@ void CHUD::Render()
 
 	//Draw power
 	DrawPower(power_mario, x - 29, y - 10);
+}
+
+void CHUD::DrawCardBox(int card_box, float position_x, float position_y)
+{
+	switch (card_box)
+	{
+	case 1:
+	{
+		CAnimations::GetInstance()->Get(ID_ANI_FLLOWER_IN_CARD)->Render(position_x, position_y);
+		break;
+	}
+	case 2:
+	{
+		CAnimations::GetInstance()->Get(ID_ANI_STAR_IN_CARD)->Render(position_x, position_y);
+		break;
+	}
+	case 3:
+	{
+		CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_IN_CARD)->Render(position_x, position_y);
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 void CHUD::DrawNumber(int number, float position_x, float position_y)
@@ -121,7 +169,6 @@ void CHUD::DrawPower(int power, float position_x, float position_y)
 	{
 		CAnimations::GetInstance()->Get(ID_ANI_HUD_ARROW_POWER)->Render(position_x, position_y);
 		CAnimations::GetInstance()->Get(ID_ANI_HUD_ARROW_POWER)->Render(position_x + 8, position_y);
-
 		break;
 	}
 	case 3:

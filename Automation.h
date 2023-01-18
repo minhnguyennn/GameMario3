@@ -4,18 +4,24 @@
 //ANIMATION
 #define ID_ANI_COURSE_CLEAR 11300
 #define ID_ANI_YOU_GOT_A_CARD 11301
+#define ID_ANI_FLLOWER_IN_CARD 11302
+#define ID_ANI_MUSHROOM_IN_CARD 11303
+#define ID_ANI_STAR_IN_CARD 11304
 
 //TIME
 #define COURSE_CLEAR_TIMEOUT 500
+#define COURSE_CARD_BOX_TIMEOUT 1000
 
 //POSITION
 #define COURSE_CLEAR_POSITION_X 2682
 #define COURSE_CLEAR_POSITION_Y 270
-#define COURSE_CLEAR_Y_ADJUST 26
+#define AUTOMATION_Y_ADJUST 26
+#define AUTOMATION_X_ADJUST 62
 
 class CAutomation : public CGameObject
 {
 	ULONGLONG time_line;
+	
 public:
 	CAutomation(float x, float y) : CGameObject(x, y) 
 	{

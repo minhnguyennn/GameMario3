@@ -35,5 +35,6 @@ public:
 	CHUD(float x, float y);
 	void DrawNumber(int number, float position_x, float position_y);
 	void DrawPower(int power, float position_x, float position_y);
+	void DrawCardBox(int card_box, float position_x, float position_y);
 	void Render();
 };

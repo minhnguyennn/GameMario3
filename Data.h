@@ -6,6 +6,9 @@
 #define DATA_MARIO_SCORE_ADJUST 50
 #define DATA_MARIO_COIN_MAX 99
 #define DATA_MARIO_HEART_MAX 99
+#define DATA_FLOWER_CARD_BOX 1
+#define DATA_STAR_CARD_BOX 2
+#define DATA_MUSHROOM_CARD_BOX 3
 
 class CData
 {
@@ -15,6 +18,8 @@ class CData
 	bool mario_go_down;
 	bool mario_go_pipeline;
 	bool mario_go_up;
+	bool isDrawCardBox;
+
 	int mario_score;
 	int mario_heart;
 	int mario_coin;
@@ -26,6 +31,8 @@ public:
 		this->mario_go_down = false;
 		this->mario_go_up = false;
 		this->mario_go_pipeline = false;
+		this->isDrawCardBox = false;
+		
 
 		this->card_box = 0;
 		this->mario_score = 0;
@@ -34,6 +41,9 @@ public:
 		this->mario_heart = DATA_MARIO_HEART;
 		this->mario_time = DATA_MARIO_GAME_TIMEOUT;
 	};
+
+	void SetIsDrawCardBox(bool isDrawCardBox) { this->isDrawCardBox = isDrawCardBox; }
+	bool GetIsDrawCardBox() { return isDrawCardBox; }
 
 	void SetIsMarioGoPipeline(bool mario_go_pipeline) { this->mario_go_pipeline = mario_go_pipeline; }
 	bool GetIsMarioGoPipeline() { return mario_go_pipeline; }
@@ -64,6 +74,7 @@ public:
 
 	void IncreaseCoin() { mario_coin++; }
 	void IncreaseHeart() { mario_heart++; }
+	void IncreaseCardBox() { card_box++; }
 	void IncreaseScore() { mario_score += DATA_MARIO_SCORE_ADJUST; }
 
 	static CData* GetInstance();

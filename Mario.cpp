@@ -29,7 +29,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
 	//DebugOutTitle(L"ay: %f", ay);
-	//DebugOutTitle(L"isIncreasePower: %d and time_power: %d", isDecreasePower, time_power);
+	DebugOutTitle(L"number_touch_card_box: %d", number_touch_card_box);
 	//DebugOut(L"--STATE-- %d\n", state);
 	ChangeLevelMario(dt);
 	AccelerationFunction();
@@ -167,11 +167,20 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithCardBox(LPCOLLISIONEVENT e)
 {
 	CCardBox* card_box = dynamic_cast<CCardBox*>(e->obj);
+	int type_card = card_box->SetupRandomCardBox();
+	if (number_touch_card_box == MARIO_TOUCH_ZERO_NUMBER) card_store_1 = type_card;
+	else if (number_touch_card_box == MARIO_TOUCH_ONE_NUMBER) card_store_2 = type_card;
+	else if (number_touch_card_box == MARIO_TOUCH_TOW_NUMBER)
+	{
+		SummonScore();
+		card_store_3 = type_card;
+	}
+	if (number_touch_card_box < MARIO_TOUCH_CARD_BOX_MAX) number_touch_card_box++;
 	position_x_out_map = x;
-	disableKey = true;
+	//disableKey = true;
 	SetState(MARIO_STATE_IDLE);
-	CData::GetInstance()->SetCardBox(card_box->SetupRandomCardBox());
-	card_box->SetState(CARD_BOX_STATE_UP);
+	CData::GetInstance()->SetCardBox(type_card);
+	//card_box->SetState(CARD_BOX_STATE_UP);
 }
 
 void CMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e) 
@@ -1130,7 +1139,7 @@ void CMario::CountDownKoopaTouch()
 	else
 	{
 		time_touch = 0;
-		number_touch = 0;
+		number_touch_koopa = 0;
 	}
 }
 
@@ -1277,24 +1286,30 @@ void CMario::HeartMax()
 void CMario::SetupTouchTime()
 {
 	time_touch = MARIO_TIME_TOUCH_MAX;
-	if (number_touch < MARIO_NUMBER_TOUCH_MAX) number_touch++;
-	else number_touch = MARIO_NUMBER_START_TOUCH;
+	if (number_touch_koopa < MARIO_NUMBER_TOUCH_MAX) number_touch_koopa++;
+	else number_touch_koopa = MARIO_NUMBER_START_TOUCH;
 }
 
 void CMario::SummonScore()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	if (number_touch == MARIO_TOUCH_ONE_NUMBER)
+	if (number_touch_koopa == MARIO_TOUCH_ONE_NUMBER)
 	{
 		CPoint* point_100 = new CPoint(x, y, POINT_TYPE_100);
 		scene->CreateObject(point_100);
 		point_100->SetState(POINT_STATE_MOVE_UP);
 	}
-	else if (number_touch == MARIO_TOUCH_TOW_NUMBER)
+	else if (number_touch_koopa == MARIO_TOUCH_TOW_NUMBER)
 	{
 		CPoint* point_200 = new CPoint(x, y, POINT_TYPE_200);
 		scene->CreateObject(point_200);
 		point_200->SetState(POINT_STATE_MOVE_UP);
+	}
+	else
+	{
+		CPoint* point_1_up = new CPoint(x, y, POINT_TYPE_UP);
+		scene->CreateObject(point_1_up);
+		point_1_up->SetState(POINT_STATE_MOVE_UP);
 	}
 }
 

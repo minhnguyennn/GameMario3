@@ -15,7 +15,10 @@
 //STATE
 #define CARD_BOX_STATE_UP	1
 #define CARD_BOX_STATE_SUMMON 2
-#define CARD_BOX_STATE_RANDOM 3
+#define CARD_BOX_NUMBER_RANDOM_0 0
+#define CARD_BOX_NUMBER_RANDOM_1 1
+#define CARD_BOX_NUMBER_RANDOM_2 2
+#define CARD_BOX_NUMBER_RANDOM_3 3
 
 //PROPERTY
 #define	CARD_BOX_SPEED_Y	0.1f
@@ -31,6 +34,7 @@
 class CCardBox : public CGameObject 
 {
 	int random_card_box;
+	int number_collision;
 	bool isUp;
 	bool isRandom;
 	bool isFlower;
@@ -47,6 +51,7 @@ public:
 		isStar = false;
 		isMushRoom = false;
 		random_card_box = 0;
+		number_collision = 0;
 	}
 	void OnNoCollision(DWORD dt);
 	void SetState(int state);

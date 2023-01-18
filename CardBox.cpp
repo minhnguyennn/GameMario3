@@ -46,14 +46,13 @@ void CCardBox::SetState(int state)
 {
 	switch (state)
 	{
-	case CARD_BOX_STATE_RANDOM:
-	{
-		isRandom = true;
-		break;
-	}
 	case CARD_BOX_STATE_SUMMON:
 	{
 		isUp = false;
+		isFlower = false;
+		isStar = false;
+		isMushRoom = false;
+		time_line = 0;
 		isDeleted = true;
 		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 		CAutomation* automation = new CAutomation(COURSE_CLEAR_POSITION_X, COURSE_CLEAR_POSITION_Y);
@@ -89,9 +88,9 @@ bool CCardBox::CountDownTimer(int time)
 
 int CCardBox::SetupRandomCardBox()
 {
-	random_card_box = rand() % 3;
-	if (random_card_box == 0) return CARD_BOX_DRAW_FLOWER;
-	else if (random_card_box == 1) return CARD_BOX_DRAW_STAR;
-	else if (random_card_box == 2) return CARD_BOX_DRAW_MUSHROOM;
+	random_card_box = rand() % CARD_BOX_NUMBER_RANDOM_3;
+	if (random_card_box == CARD_BOX_NUMBER_RANDOM_0) return CARD_BOX_DRAW_FLOWER;
+	else if (random_card_box == CARD_BOX_NUMBER_RANDOM_1) return CARD_BOX_DRAW_STAR;
+	else if (random_card_box == CARD_BOX_NUMBER_RANDOM_2) return CARD_BOX_DRAW_MUSHROOM;
 	else return 0;
 }

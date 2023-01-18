@@ -211,8 +211,10 @@
 #define MARIO_TIME_TOUCH_MAX	3
 #define MARIO_NUMBER_START_HEART	4
 #define MARIO_NUMBER_START_UNTOUCHABLE	1
+#define MARIO_TOUCH_ZERO_NUMBER	0
 #define MARIO_TOUCH_ONE_NUMBER	1
 #define MARIO_TOUCH_TOW_NUMBER	2
+#define MARIO_TOUCH_CARD_BOX_MAX	4
 #define MARIO_RANDOM_NUMBER_ADJUST	2
 #define MARIO_HIDDEN_MAP_POSITION_X		3336
 #define MARIO_HIDDEN_MAP_POSITION_Y		0
@@ -301,7 +303,8 @@ class CMario : public CGameObject
 {
 	CKoopa* koopa_holding;
 
-	int number_touch;
+	int number_touch_koopa;
+	int number_touch_card_box;
 
 	float maxVx;
 	float minVx;
@@ -314,6 +317,9 @@ class CMario : public CGameObject
 	int time;
 	int power;
 	float position_x_out_map;
+	int card_store_1;
+	int card_store_2;
+	int card_store_3;
 	
 	ULONGLONG untouchable_start;
 	ULONGLONG count_1_second;
@@ -388,6 +394,9 @@ public:
 		time_coutdown_touch = 0;
 		time_go_pipeline = 0;
 		time_go_out_pipeline = 0;
+		card_store_1 = 0;
+		card_store_2 = 0;
+		card_store_3 = 0;
 
 		canReturnWorldMap = false;
 		isSlowFly = false;
@@ -423,9 +432,15 @@ public:
 		time = MARIO_PLAY_GAME_TIMEOUT;
 		koopa_holding = NULL;
 		power = 0;
-		number_touch = 0;
+		number_touch_koopa = 0;
 		position_x_out_map = 0;
 	}
+
+	int GetNumberTouchCardBox() { return number_touch_card_box; }
+	int GetCardStore1() { return card_store_1; }
+	int GetCardStore2() { return card_store_2; }
+	int GetCardStore3() { return card_store_3; }
+
 	void SetIsCollisionKoopa(bool isCollisionKoopa) { this->isCollisionKoopa = isCollisionKoopa; }
 	bool GetIsCollisionKoopa() { return isCollisionKoopa; }
 
