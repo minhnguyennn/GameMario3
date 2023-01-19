@@ -1,7 +1,6 @@
 #pragma once
 
 #define DATA_MARIO_HEART 4
-#define DATA_MARIO_GAME_TIMEOUT 300
 #define DATA_MARIO_TIME_OUTMAP 7
 #define DATA_MARIO_SCORE_ADJUST 50
 #define DATA_MARIO_COIN_MAX 99
@@ -9,6 +8,16 @@
 #define DATA_FLOWER_CARD_BOX 1
 #define DATA_STAR_CARD_BOX 2
 #define DATA_MUSHROOM_CARD_BOX 3
+#define DATA_SCORE_FOR_ONE_TIME 50
+#define DATA_SUM_THREE_SIMILAR_FLOWER 3
+#define DATA_SUM_THREE_SIMILAR_STAR 6
+#define DATA_SUM_THREE_SIMILAR_MUSHROOM 9
+#define DATA_SUM_THREE_DIFFERENT_CARD 6
+#define DATA_SUM_TWO_SIMILAR_CARD 2
+#define DATA_NUMBER_INCREASE_HEART_1 1
+#define DATA_NUMBER_INCREASE_HEART_5 5
+#define DATA_NUMBER_INCREASE_HEART_3 3
+
 
 #include"debug.h"
 
@@ -54,7 +63,7 @@ public:
 		this->card_store_3 = 0;
 		
 		this->mario_heart = DATA_MARIO_HEART;
-		this->mario_time = DATA_MARIO_GAME_TIMEOUT;
+		this->mario_time = 0;
 	};
 
 	int GetNumberTouchCard() { return number_touch_card_box; }
@@ -107,20 +116,23 @@ public:
 		int sum_card_box = card_store_1 + card_store_2 + card_store_3;
 		int sum_2_card = card_store_1 + card_store_2;
 		//DebugOutTitle(L"sum_card_box: %d and card_store_1: %d and card_store_2: %d and card_store_3: %d", sum_card_box, card_store_1, card_store_2, card_store_3);
-		if ((sum_2_card % 2 == 0) && (sum_card_box == 3 || sum_card_box == 6 || sum_card_box == 9))
+		if ((sum_2_card % DATA_SUM_TWO_SIMILAR_CARD == 0) && (sum_card_box == DATA_SUM_THREE_SIMILAR_FLOWER || sum_card_box == DATA_SUM_THREE_SIMILAR_STAR || sum_card_box == DATA_SUM_THREE_SIMILAR_MUSHROOM))
 		{
-			mario_heart += 5;
+			mario_heart += DATA_NUMBER_INCREASE_HEART_5;
 		}
-		else if (sum_card_box == 6)
+		else if (sum_card_box == DATA_SUM_THREE_DIFFERENT_CARD)
 		{
-			mario_heart += 1;
+			mario_heart += DATA_NUMBER_INCREASE_HEART_1;
 		}
 		else
 		{
-			mario_heart += 3;
+			mario_heart += DATA_NUMBER_INCREASE_HEART_3;
 		}
 	}
-
+	void CaculationScoreTimeout(int time) 
+	{ 
+		mario_score += time * DATA_SCORE_FOR_ONE_TIME;
+	}
 	static CData* GetInstance();
 	~CData() {};
 };

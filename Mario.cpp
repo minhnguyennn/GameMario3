@@ -168,6 +168,7 @@ void CMario::OnCollisionWithCardBox(LPCOLLISIONEVENT e)
 {
 	CCardBox* card_box = dynamic_cast<CCardBox*>(e->obj);
 	CData* data_game = CData::GetInstance();
+	CData::GetInstance()->CaculationScoreTimeout(time);
 	int type_card = card_box->SetupRandomCardBox();
 	//int type_card = 3;
 	if (data_game->GetNumberTouchCard() == MARIO_TOUCH_ZERO_NUMBER) data_game->SetCardStore1(type_card);
@@ -180,10 +181,10 @@ void CMario::OnCollisionWithCardBox(LPCOLLISIONEVENT e)
 	}
 	if (data_game->GetNumberTouchCard() < MARIO_TOUCH_CARD_BOX_MAX) data_game->IncreaseNumberTouchCard();
 	position_x_out_map = x;
-	//disableKey = true;
+	disableKey = true;
 	SetState(MARIO_STATE_IDLE);
 	CData::GetInstance()->SetCardBox(type_card);
-	//card_box->SetState(CARD_BOX_STATE_UP);
+	card_box->SetState(CARD_BOX_STATE_UP);
 }
 
 void CMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e) 
