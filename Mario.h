@@ -304,7 +304,6 @@ class CMario : public CGameObject
 	CKoopa* koopa_holding;
 
 	int number_touch_koopa;
-	int number_touch_card_box;
 
 	float maxVx;
 	float minVx;
@@ -317,10 +316,7 @@ class CMario : public CGameObject
 	int time;
 	int power;
 	float position_x_out_map;
-	int card_store_1;
-	int card_store_2;
-	int card_store_3;
-	
+
 	ULONGLONG untouchable_start;
 	ULONGLONG count_1_second;
 	ULONGLONG time_fly;
@@ -394,9 +390,6 @@ public:
 		time_coutdown_touch = 0;
 		time_go_pipeline = 0;
 		time_go_out_pipeline = 0;
-		card_store_1 = 0;
-		card_store_2 = 0;
-		card_store_3 = 0;
 
 		canReturnWorldMap = false;
 		isSlowFly = false;
@@ -435,11 +428,6 @@ public:
 		number_touch_koopa = 0;
 		position_x_out_map = 0;
 	}
-
-	int GetNumberTouchCardBox() { return number_touch_card_box; }
-	int GetCardStore1() { return card_store_1; }
-	int GetCardStore2() { return card_store_2; }
-	int GetCardStore3() { return card_store_3; }
 
 	void SetIsCollisionKoopa(bool isCollisionKoopa) { this->isCollisionKoopa = isCollisionKoopa; }
 	bool GetIsCollisionKoopa() { return isCollisionKoopa; }

@@ -29,7 +29,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
 	//if (power > 0) isRunning = false;
 	//DebugOutTitle(L"ay: %f", ay);
-	DebugOutTitle(L"number_touch_card_box: %d", number_touch_card_box);
+	//DebugOutTitle(L"number_touch_card_box: %d", number_touch_card_box);
 	//DebugOut(L"--STATE-- %d\n", state);
 	ChangeLevelMario(dt);
 	AccelerationFunction();
@@ -167,15 +167,18 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithCardBox(LPCOLLISIONEVENT e)
 {
 	CCardBox* card_box = dynamic_cast<CCardBox*>(e->obj);
+	CData* data_game = CData::GetInstance();
 	int type_card = card_box->SetupRandomCardBox();
-	if (number_touch_card_box == MARIO_TOUCH_ZERO_NUMBER) card_store_1 = type_card;
-	else if (number_touch_card_box == MARIO_TOUCH_ONE_NUMBER) card_store_2 = type_card;
-	else if (number_touch_card_box == MARIO_TOUCH_TOW_NUMBER)
+	//int type_card = 3;
+	if (data_game->GetNumberTouchCard() == MARIO_TOUCH_ZERO_NUMBER) data_game->SetCardStore1(type_card);
+	else if (data_game->GetNumberTouchCard() == MARIO_TOUCH_ONE_NUMBER) data_game->SetCardStore2(type_card);
+	else if (data_game->GetNumberTouchCard() == MARIO_TOUCH_TOW_NUMBER)
 	{
 		SummonScore();
-		card_store_3 = type_card;
+		data_game->SetCardStore3(type_card);
+		data_game->SumCardBox();
 	}
-	if (number_touch_card_box < MARIO_TOUCH_CARD_BOX_MAX) number_touch_card_box++;
+	if (data_game->GetNumberTouchCard() < MARIO_TOUCH_CARD_BOX_MAX) data_game->IncreaseNumberTouchCard();
 	position_x_out_map = x;
 	//disableKey = true;
 	SetState(MARIO_STATE_IDLE);
@@ -1307,9 +1310,9 @@ void CMario::SummonScore()
 	}
 	else
 	{
-		CPoint* point_1_up = new CPoint(x, y, POINT_TYPE_UP);
-		scene->CreateObject(point_1_up);
-		point_1_up->SetState(POINT_STATE_MOVE_UP);
+		CPoint* point_big_up = new CPoint(x, y, POINT_TYPE_BIG_UP);
+		scene->CreateObject(point_big_up);
+		point_big_up->SetState(POINT_STATE_MOVE_UP);
 	}
 }
 

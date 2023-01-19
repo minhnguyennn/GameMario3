@@ -10,6 +10,7 @@ void CHUD::Render()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
+	CData* data_game = CData::GetInstance();
 
 	int time_mario = mario->GetTime();
 	int power_mario = mario->GetPower();
@@ -24,24 +25,23 @@ void CHUD::Render()
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_POWER_M)->Render(x - 74, y - 3);
 
 	//Draw card box
-	if (mario->GetNumberTouchCardBox() == 1) 
-		DrawCardBox(data_card_box, x + 86, y - 7);
-	else if (mario->GetNumberTouchCardBox() == 2)
+	if (data_game->GetNumberTouchCard() == 1) DrawCardBox(data_card_box, x + 86, y - 7);
+	else if (data_game->GetNumberTouchCard() == 2)
 	{
-		DrawCardBox(mario->GetCardStore1(), x + 86, y - 7);
+		DrawCardBox(data_game->GetCardStore1(), x + 86, y - 7);
 		DrawCardBox(data_card_box, x + 110, y - 7);
 	}
-	else if (mario->GetNumberTouchCardBox() == 3)
+	else if (data_game->GetNumberTouchCard() == 3)
 	{
-		DrawCardBox(mario->GetCardStore1(), x + 86, y - 7);
-		DrawCardBox(mario->GetCardStore2(), x + 110, y - 7);
+		DrawCardBox(data_game->GetCardStore1(), x + 86, y - 7);
+		DrawCardBox(data_game->GetCardStore2(), x + 110, y - 7);
 		DrawCardBox(data_card_box, x + 134, y - 7);
 	}
-	else if (mario->GetNumberTouchCardBox() == 4)
+	else if (data_game->GetNumberTouchCard() == 4)
 	{
-		DrawCardBox(mario->GetCardStore1(), x + 86, y - 7);
-		DrawCardBox(mario->GetCardStore2(), x + 110, y - 7);
-		DrawCardBox(mario->GetCardStore3(), x + 134, y - 7);
+		DrawCardBox(data_game->GetCardStore1(), x + 86, y - 7);
+		DrawCardBox(data_game->GetCardStore2(), x + 110, y - 7);
+		DrawCardBox(data_game->GetCardStore3(), x + 134, y - 7);
 	}
 	
 	//Number map

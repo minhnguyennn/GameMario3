@@ -18,7 +18,7 @@ height	240
 0	textures\mario.png
 10	textures\enemies.png
 15	textures\enemies_2.png
-20	textures\score.png
+20	textures\gosh-box.png
 25	textures\mario-left.png
 30	textures\mario-right.png
 40	textures\enemies_3.png
@@ -44,7 +44,7 @@ height	240
 198	textures\worldmapObj.png
 199	textures\coin_mushroom_cardbox.png
 181	textures\effects.png
-182	textures\effects - 2.png
+182	textures\score.png
 184	textures\tileset.png
 161	textures\end_scene_text.png
 160	textures\button.png

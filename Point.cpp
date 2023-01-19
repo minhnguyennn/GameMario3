@@ -29,6 +29,8 @@ void CPoint::Render()
 	else if (type_point == POINT_TYPE_4000) AniId = ID_ANI_4000_SCORE;
 	else if (type_point == POINT_TYPE_8000) AniId = ID_ANI_8000_SCORE;
 	else if (type_point == POINT_TYPE_UP) AniId = ID_ANI_1_UP;
+	else if (type_point == POINT_TYPE_BIG_UP) 
+		AniId = ID_ANI_BIG_UP;
 	animations->Get(AniId)->Render(x, y);
 	//RenderBoundingBox();
 }

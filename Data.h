@@ -10,15 +10,25 @@
 #define DATA_STAR_CARD_BOX 2
 #define DATA_MUSHROOM_CARD_BOX 3
 
+#include"debug.h"
+
+
 class CData
 {
 	static CData* __instance;
 	bool isConvertBrick;
 	int card_box;
+
+	int number_touch_card_box;
+	int card_store_1;
+	int card_store_2;
+	int card_store_3;
+
 	bool mario_go_down;
 	bool mario_go_pipeline;
 	bool mario_go_up;
 	bool isDrawCardBox;
+
 
 	int mario_score;
 	int mario_heart;
@@ -37,10 +47,26 @@ public:
 		this->card_box = 0;
 		this->mario_score = 0;
 		this->mario_coin = 0;
+
+		this->number_touch_card_box = 0;
+		this->card_store_1 = 0;
+		this->card_store_2 = 0;
+		this->card_store_3 = 0;
 		
 		this->mario_heart = DATA_MARIO_HEART;
 		this->mario_time = DATA_MARIO_GAME_TIMEOUT;
 	};
+
+	int GetNumberTouchCard() { return number_touch_card_box; }
+
+	void SetCardStore1(int card_store_1) { this->card_store_1 = card_store_1; }
+	int GetCardStore1() { return card_store_1; }
+
+	void SetCardStore2(int card_store_2) { this->card_store_2 = card_store_2; }
+	int GetCardStore2() { return card_store_2; }
+
+	void SetCardStore3(int card_store_3) { this->card_store_3 = card_store_3; }
+	int GetCardStore3() { return card_store_3; }
 
 	void SetIsDrawCardBox(bool isDrawCardBox) { this->isDrawCardBox = isDrawCardBox; }
 	bool GetIsDrawCardBox() { return isDrawCardBox; }
@@ -74,8 +100,26 @@ public:
 
 	void IncreaseCoin() { mario_coin++; }
 	void IncreaseHeart() { mario_heart++; }
-	void IncreaseCardBox() { card_box++; }
+	void IncreaseNumberTouchCard() { number_touch_card_box++; }
 	void IncreaseScore() { mario_score += DATA_MARIO_SCORE_ADJUST; }
+	void SumCardBox() 
+	{ 
+		int sum_card_box = card_store_1 + card_store_2 + card_store_3;
+		int sum_2_card = card_store_1 + card_store_2;
+		//DebugOutTitle(L"sum_card_box: %d and card_store_1: %d and card_store_2: %d and card_store_3: %d", sum_card_box, card_store_1, card_store_2, card_store_3);
+		if ((sum_2_card % 2 == 0) && (sum_card_box == 3 || sum_card_box == 6 || sum_card_box == 9))
+		{
+			mario_heart += 5;
+		}
+		else if (sum_card_box == 6)
+		{
+			mario_heart += 1;
+		}
+		else
+		{
+			mario_heart += 3;
+		}
+	}
 
 	static CData* GetInstance();
 	~CData() {};
