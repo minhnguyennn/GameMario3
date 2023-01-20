@@ -1,4 +1,5 @@
 #pragma once
+#include"debug.h"
 
 #define DATA_MARIO_HEART 4
 #define DATA_MARIO_TIME_OUTMAP 7
@@ -18,10 +19,6 @@
 #define DATA_NUMBER_INCREASE_HEART_5 5
 #define DATA_NUMBER_INCREASE_HEART_3 3
 #define DATA_ID_PLAY_SCENE	 5
-
-
-#include"debug.h"
-
 
 class CData
 {

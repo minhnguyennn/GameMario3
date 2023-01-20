@@ -4,10 +4,10 @@
 
 void CDoor::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-		l = x - DOOR_BBOX_WIDTH / 2;
-		t = y - DOOR_BBOX_HEIGHT / 2;
-		r = l + DOOR_BBOX_WIDTH;
-		b = t + DOOR_BBOX_HEIGHT;
+	l = x - DOOR_BBOX_WIDTH / 2;
+	t = y - DOOR_BBOX_HEIGHT / 2;
+	r = l + DOOR_BBOX_WIDTH;
+	b = t + DOOR_BBOX_HEIGHT;
 }
 
 void CDoor::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

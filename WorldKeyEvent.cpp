@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "MarioWorld.h"
 #include "PlayScene.h"
+#include "debug.h"
 
 void CWorldKeyEvent::OnKeyDown(int KeyCode)
 {
@@ -10,6 +11,13 @@ void CWorldKeyEvent::OnKeyDown(int KeyCode)
 	CMarioWorld* mario_world = (CMarioWorld*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
+	case DIK_S:
+		DebugOut(L"GetIsCollisionDoor: %d \n", mario_world->GetIsCollisionDoor());
+		if (mario_world->GetIsCollisionDoor())
+		{
+			mario_world->SetState(MARIO_WORLD_STATE_GO_PLAYSCENE);
+		}
+		break;
 	case DIK_UP:
 		if (!mario_world->GetIsGoTop()) break;
 		mario_world->SetState(MARIO_WORLD_STATE_UP);

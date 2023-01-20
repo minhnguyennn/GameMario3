@@ -16,6 +16,7 @@
 #define	MARIO_WORLD_STATE_LEFT		3
 #define	MARIO_WORLD_STATE_RIGHT		4
 #define	MARIO_WORLD_STATE_IDLE		5
+#define MARIO_WORLD_STATE_GO_PLAYSCENE 6
 
 //BBOX
 #define MARIO_WORLD_SMALL_BBOX_WIDTH  10
@@ -23,6 +24,7 @@
 
 //PROPERTY
 #define MARIO_WORLD_SPEED 0.1f
+#define MARIO_WORLD_ID_PLAY_SCENE 5
 
 
 class CMarioWorld : public CGameObject
@@ -31,6 +33,7 @@ class CMarioWorld : public CGameObject
 	bool isGoRight;
 	bool isGoTop;
 	bool isGoBottom;
+	bool isCollisionDoor;
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
@@ -51,4 +54,7 @@ public:
 	bool GetIsGoRight() { return isGoRight; }
 	bool GetIsGoBottom() { return isGoBottom; }
 	void CheckTypeDoor(int type_door);
+
+	void SetIsCollisionDoor(bool isCollisionDoor) { this->isCollisionDoor = isCollisionDoor; }
+	bool GetIsCollisionDoor() { return isCollisionDoor; }
 };

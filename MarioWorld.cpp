@@ -7,12 +7,11 @@ CMarioWorld::CMarioWorld(float x, float y) :CGameObject(x, y)
 	isGoLeft = false;
 	isGoBottom = false;
 	isGoRight = true;
+	isCollisionDoor = false;
 }
 
 void CMarioWorld::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
-	//DebugOut(L"state : %d\n", state);
-	//DebugOut(L"vx : %f\n", vx);
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -58,6 +57,10 @@ void CMarioWorld::SetState(int state)
 {
 	switch (state)
 	{
+	case MARIO_WORLD_STATE_GO_PLAYSCENE:
+		CGame::GetInstance()->InitiateSwitchScene(MARIO_WORLD_ID_PLAY_SCENE);
+		isCollisionDoor = false;
+		break;
 	case MARIO_WORLD_STATE_UP:
 		vy = -MARIO_WORLD_SPEED;
 		vx = 0;
@@ -90,6 +93,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	{
 	case DOOR_TYPE_START:
 	{
+		isCollisionDoor = true;
 		isGoTop = false;
 		isGoLeft = false;
 		isGoBottom = false;
@@ -122,6 +126,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_YELLOW_MUSHROOM_1:
 	{
+		isCollisionDoor = true;
 		isGoTop = true;
 		isGoLeft = true;
 		isGoBottom = false;
@@ -138,6 +143,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_SPECIAL:
 	{
+		isCollisionDoor = true;
 		isGoTop = true;
 		isGoLeft = true;
 		isGoBottom = false;
@@ -146,6 +152,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_YELLOW_CASTLE:
 	{
+		isCollisionDoor = true;
 		isGoTop = false;
 		isGoLeft = true;
 		isGoBottom = false;
@@ -186,6 +193,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_YELLOW_MUSHROOM_2:
 	{
+		isCollisionDoor = true;
 		isGoTop = false;
 		isGoLeft = false;
 		isGoBottom = false;
@@ -202,6 +210,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_BIG_CASTLE:
 	{
+		isCollisionDoor = true;
 		isGoTop = false;
 		isGoLeft = true;
 		isGoBottom = false;
@@ -210,6 +219,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_1:
 	{
+		isCollisionDoor = true;
 		isGoTop = false;
 		isGoLeft = false;
 		isGoBottom = true;
@@ -218,6 +228,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_2:
 	{
+		isCollisionDoor = true;
 		isGoTop = false;
 		isGoLeft = true;
 		isGoBottom = true;
@@ -226,6 +237,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_3:
 	{
+		isCollisionDoor = true;
 		isGoTop = false;
 		isGoLeft = true;
 		isGoBottom = false;
@@ -234,6 +246,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_4:
 	{
+		isCollisionDoor = true;
 		isGoTop = false;
 		isGoLeft = true;
 		isGoBottom = false;
@@ -242,6 +255,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_5:
 	{
+		isCollisionDoor = true;
 		isGoTop = true;
 		isGoLeft = false;
 		isGoBottom = false;
@@ -250,6 +264,7 @@ void CMarioWorld::CheckTypeDoor(int type_door)
 	}
 	case DOOR_TYPE_6:
 	{
+		isCollisionDoor = true;
 		isGoTop = true;
 		isGoLeft = true;
 		isGoBottom = false;
