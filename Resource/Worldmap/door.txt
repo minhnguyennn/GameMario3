@@ -16,6 +16,8 @@
 50010	104	34	117	47	198
 #DOOR 6
 50011	121	34	134	47	198
+#gosh_door
+50014	36	52	49	63	198
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -35,3 +37,5 @@
 15006	50010	100
 #DOOR 6
 15007	50011	100
+#yellow_node
+15011	50014	100

@@ -11,15 +11,19 @@ void CWorldKeyEvent::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_UP:
+		if (!mario_world->GetIsGoTop()) break;
 		mario_world->SetState(MARIO_WORLD_STATE_UP);
 		break;
 	case DIK_DOWN:
+		if (!mario_world->GetIsGoBottom()) break;
 		mario_world->SetState(MARIO_WORLD_STATE_DOWN);
 		break;
 	case DIK_LEFT:
+		if (!mario_world->GetIsGoLeft()) break;
 		mario_world->SetState(MARIO_WORLD_STATE_LEFT);
 		break;
 	case DIK_RIGHT:
+		if (!mario_world->GetIsGoRight()) break;
 		mario_world->SetState(MARIO_WORLD_STATE_RIGHT);
 		break;
 	}

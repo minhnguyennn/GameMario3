@@ -2,7 +2,7 @@
 
 CKoopaWorld::CKoopaWorld(float x, float y) : CGameObject(x, y)
 {
-	vx = 0.03f;
+	vx = KOOPA_WORLD_SPEED;
 	time_line = GetTickCount64();
 }
 
@@ -33,32 +33,7 @@ void CKoopaWorld::Render()
 	RenderBoundingBox();
 }
 
-void CKoopaWorld::GetBoundingBox(float& l, float& t, float& r, float& b)
-{
-	l = x - MARIO_WORLD_SMALL_BBOX_WIDTH / 2;
-	t = y - MARIO_WORLD_SMALL_BBOX_HEIGHT / 2;
-	r = l + MARIO_WORLD_SMALL_BBOX_WIDTH;
-	b = t + MARIO_WORLD_SMALL_BBOX_HEIGHT;
-}
-
 void CKoopaWorld::OnNoCollision(DWORD dt) {
 	x += vx * dt;
 	y += vy * dt;
-}
-
-void CKoopaWorld::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-
-}
-
-void CKoopaWorld::SetState(int state)
-{
-
-	/*switch (state)
-	{
-
-	default:
-		break;
-	}*/
-	CGameObject::SetState(state);
 }
