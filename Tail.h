@@ -6,7 +6,7 @@
 #define ID_ANI_TAIL			14000
 
 //BBOX
-#define TAIL_BBOX_WIDTH		30
+#define TAIL_BBOX_WIDTH		25
 #define TAIL_BBOX_HEIGHT	5
 
 //STATE

@@ -11,6 +11,11 @@
 #define ID_ANI_HUD_WORLD_8	81
 #define ID_ANI_HUD_WORLD_9	91
 
+//card box
+#define ID_ANI_HUD_WORLD_FLLOWER_IN_CARD 11335
+#define ID_ANI_HUD_WORLD_MUSHROOM_IN_CARD 11336
+#define ID_ANI_HUD_WORLD_STAR_IN_CARD 11337
+
 //background black
 #define ID_ANI_HUD_WORLD_BA_BLACK		102
 
@@ -35,6 +40,7 @@ public:
 	CHudWorld(float x, float y);
 	void DrawNumber(int number, float position_x, float position_y);
 	void DrawPower(int power, float position_x, float position_y);
+	void DrawCardBox(int card_box, float position_x, float position_y);
 	void Render();
 };
 

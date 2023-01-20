@@ -3,6 +3,8 @@
 #include"Sprites.h"
 #include"Mario.h"
 #include"PlayScene.h"
+#include"Data.h"
+#include"Automation.h"
 
 CHudWorld::CHudWorld(float x, float y)
 {
@@ -14,18 +16,48 @@ void CHudWorld::Render()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
+	CData* data_game = CData::GetInstance();
 
-	//int coin_mario = mario->GetCoin();
-	//int heart_mario = mario->GetHeart();
-	int time_mario = mario->GetTime();
-	//int score_mario = mario->GetScore();
-	int power_mario = mario->GetPower();
+	int data_score = CData::GetInstance()->GetMarioScore();
+	int data_coin = CData::GetInstance()->GetMarioCoin();
+	int data_heart = CData::GetInstance()->GetMarioHeart();
+	int data_card_box = CData::GetInstance()->GetCardBox();
+	int data_time = CData::GetInstance()->GetMarioTime();
 
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_BA_BLACK)->Render(x, y);
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_TABLE_HUD)->Render(x + 30, y - 7);
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_POWER_M)->Render(x - 74, y - 3);
 
+	//Number map
 	DrawNumber(1, x - 45, y - 11);
+
+	//Draw coin
+	DrawNumber(data_coin / 10, x + 50, y - 11);
+	DrawNumber(data_coin % 10, x + 58, y - 11);
+
+	//Draw heart
+	DrawNumber(data_heart / 10, x - 53, y - 2);
+	DrawNumber(data_heart % 10, x - 45, y - 2);
+
+	//Draw score
+	DrawNumber(data_score / 1000000, x - 30, y - 2);
+	DrawNumber(data_score / 100000 % 10, x - 22, y - 2);
+	DrawNumber(data_score / 10000 % 10, x - 14, y - 2);
+	DrawNumber(data_score / 1000 % 10, x - 6, y - 2);
+	DrawNumber(data_score / 100 % 10, x + 2, y - 2);
+	DrawNumber(data_score / 10 % 10, x + 10, y - 2);
+	DrawNumber(data_score / 1 % 10, x + 18, y - 2);
+
+	//Draw time
+	DrawNumber(data_time / 100, x + 42, y - 2);
+	DrawNumber((data_time / 10) % 10, x + 50, y - 2);
+	DrawNumber(data_time % 10, x + 58, y - 2);
+
+	//Draw card box
+	DrawCardBox(data_game->GetCardStore1(), x + 86, y - 7);
+	DrawCardBox(data_game->GetCardStore2(), x + 110, y - 7);
+	DrawCardBox(data_game->GetCardStore3(), x + 134, y - 7);
+	
 
 	//Draw coin
 	//DrawNumber(coin_mario / 10, x + 50, y - 11);
@@ -36,9 +68,9 @@ void CHudWorld::Render()
 	//DrawNumber(heart_mario % 10, x - 45, y - 2);
 
 	//Draw time
-	DrawNumber(time_mario / 100, x + 42, y - 2);
+	/*DrawNumber(time_mario / 100, x + 42, y - 2);
 	DrawNumber((time_mario / 10) % 10, x + 50, y - 2);
-	DrawNumber(time_mario % 10, x + 58, y - 2);
+	DrawNumber(time_mario % 10, x + 58, y - 2);*/
 
 	//Draw score
 	/*DrawNumber(score_mario / 1000000, x - 30, y - 2);
@@ -50,12 +82,36 @@ void CHudWorld::Render()
 	DrawNumber(score_mario / 1 % 10, x + 18, y - 2);*/
 
 	//Draw power
-	DrawPower(power_mario, x - 29, y - 10);
+	/*DrawPower(power_mario, x - 29, y - 10);*/
 
 
 
 	//DrawNumber(power_mario, x - 30, y - 8);
 
+}
+
+void CHudWorld::DrawCardBox(int card_box, float position_x, float position_y)
+{
+	switch (card_box)
+	{
+	case 1:
+	{
+		CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_FLLOWER_IN_CARD)->Render(position_x, position_y);
+		break;
+	}
+	case 2:
+	{
+		CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_STAR_IN_CARD)->Render(position_x, position_y);
+		break;
+	}
+	case 3:
+	{
+		CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_MUSHROOM_IN_CARD)->Render(position_x, position_y);
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 void CHudWorld::DrawNumber(int number, float position_x, float position_y)
@@ -187,4 +243,3 @@ void CHudWorld::DrawPower(int power, float position_x, float position_y)
 		break;
 	}
 }
-
