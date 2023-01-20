@@ -27,7 +27,6 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	//if (power > 0) isRunning = false;
 	//DebugOutTitle(L"ay: %f", ay);
 	//DebugOutTitle(L"number_touch_card_box: %d", number_touch_card_box);
 	//DebugOut(L"--STATE-- %d\n", state);
@@ -39,44 +38,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CoinMax();
 	HeartMax(); 
 	GoDownPipeline();
-	
-	if (canReturnWorldMap) {
-		//sau 2s
-		//doi canh world map
-	}
-	if (disableKey && isOnPlatform) 
-	{
-		SetState(MARIO_STATE_WALKING_RIGHT);
-	}
-
-	
-	if (isAttack && CountDownTimer(MARIO_ATTACK_TIMEOUT))
-	{
-		isAttack = false;
-	}
-
-	if (isSlowFly && CountDownTimer(MARIO_FALL_SLOWLY_TIMEOUT))
-	{
-		isSlowFly = false;
-	}
-
-	if (isKick && CountDownTimer(MARIO_KICK_TIMEOUT))
-	{
-		isKick = false;
-	}
-	
-	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
-	{
-		untouchable_start = 0;
-		untouchable = 0;
-	}
+	MarioMoveAutomationWhenGameTimeout();
+	MarioNotAttackWhenTimeout();
+	MarioNotFlySlowlyWhenTimeout();
+	MarioNotKickWhenTimeout();
+	MarioUntouchableTimeout();
 
 	isOnPlatform = false;
 	isCollisionPipeline = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
-	if (isHolding) MarioHoldKoopaFunction();
+	MarioHoldKoopaFunction();
+
 	if (isSummonTail)
 	{
 		isSummonTail = false;
@@ -1122,6 +1096,7 @@ void CMario::CountDown1Second() {
 	{
 		time = 0;
 		SetState(MARIO_STATE_DIE);
+		CGame::GetInstance()->InitiateSwitchScene(10);
 		/*if (!disableKey) SetState(MARIO_STATE_DIE);
 		else {
 			SetState(MARIO_STATE_DIE);
@@ -1172,16 +1147,19 @@ void CMario::SummonTail()
 
 void CMario::MarioHoldKoopaFunction()
 {
-	if (koopa_holding->GetIsWalking())
+	if (isHolding)
 	{
-		isHolding = false;
-		return;
+		if (koopa_holding->GetIsWalking()) 
+		{
+			isHolding = false;
+			return;
+		}
+		if (state == MARIO_STATE_RUNNING_LEFT) koopa_holding->SetX(x - MARIO_HOLDKOOPA_X_ADJUST);
+		else if (state == MARIO_STATE_RUNNING_RIGHT) koopa_holding->SetX(x + MARIO_HOLDKOOPA_X_ADJUST);
+		koopa_holding->SetY(y - MARIO_HOLDKOOPA_Y_ADJUST);
+		koopa_holding->SetAy(0);
+		koopa_holding->SetVX(vx);
 	}
-	if (state == MARIO_STATE_RUNNING_LEFT) koopa_holding->SetX(x - MARIO_HOLDKOOPA_X_ADJUST);
-	else if(state == MARIO_STATE_RUNNING_RIGHT) koopa_holding->SetX(x + MARIO_HOLDKOOPA_X_ADJUST);
-	koopa_holding->SetY(y - MARIO_HOLDKOOPA_Y_ADJUST);
-	koopa_holding->SetAy(0);
-	koopa_holding->SetVX(vx);
 }
 
 void CMario::MarioThrowKoopaFunction()
@@ -1332,5 +1310,46 @@ void CMario::GoDownPipeline()
 	else if (isGoOutUp && CountDownTimer2(time_go_out_pipeline, MARIO_GO_UP_TIMEOUT))
 	{
 		SetState(MARIO_STATE_RELEASE_GO_PIPELINE);
+	}
+}
+
+void CMario::MarioMoveAutomationWhenGameTimeout()
+{
+	if (disableKey && isOnPlatform)
+	{
+		SetState(MARIO_STATE_WALKING_RIGHT);
+	}
+}
+
+void CMario::MarioNotAttackWhenTimeout()
+{
+	if (isAttack && CountDownTimer(MARIO_ATTACK_TIMEOUT))
+	{
+		isAttack = false;
+	}
+}
+
+void CMario::MarioNotFlySlowlyWhenTimeout()
+{
+	if (isSlowFly && CountDownTimer(MARIO_FALL_SLOWLY_TIMEOUT))
+	{
+		isSlowFly = false;
+	}
+}
+
+void CMario::MarioNotKickWhenTimeout()
+{
+	if (isKick && CountDownTimer(MARIO_KICK_TIMEOUT))
+	{
+		isKick = false;
+	}
+}
+
+void CMario::MarioUntouchableTimeout()
+{
+	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	{
+		untouchable_start = 0;
+		untouchable = 0;
 	}
 }

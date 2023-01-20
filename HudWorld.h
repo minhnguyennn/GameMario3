@@ -4,9 +4,9 @@
 #define ID_ANI_HUD_WORLD_1	11
 #define ID_ANI_HUD_WORLD_2	21
 #define ID_ANI_HUD_WORLD_3	31
-#define ID_ANI_HUD_WORLD_4	41
-#define ID_ANI_HUD_WORLD_5	51
-#define ID_ANI_HUD_WORLD_6	61
+#define ID_ANI_HUD_WORLD_4	42
+#define ID_ANI_HUD_WORLD_5	52
+#define ID_ANI_HUD_WORLD_6	62
 #define ID_ANI_HUD_WORLD_7	71
 #define ID_ANI_HUD_WORLD_8	81
 #define ID_ANI_HUD_WORLD_9	91
@@ -18,13 +18,13 @@
 #define ID_ANI_HUD_WORLD_TABLE_HUD	107
 
 //arrow_power
-#define ID_ANI_HUD_WORLD_ARROW_POWER	51
+#define ID_ANI_HUD_WORLD_ARROW_POWER	53
 
 //power_M
-#define ID_ANI_HUD_WORLD_POWER_M		41
+#define ID_ANI_HUD_WORLD_POWER_M		43
 
 //power_P
-#define ID_ANI_HUD_WORLD_POWER_P		61
+#define ID_ANI_HUD_WORLD_POWER_P		63
 
 class CHudWorld
 {

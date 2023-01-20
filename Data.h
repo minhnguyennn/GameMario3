@@ -17,6 +17,7 @@
 #define DATA_NUMBER_INCREASE_HEART_1 1
 #define DATA_NUMBER_INCREASE_HEART_5 5
 #define DATA_NUMBER_INCREASE_HEART_3 3
+#define DATA_ID_PLAY_SCENE	 5
 
 
 #include"debug.h"
@@ -37,6 +38,7 @@ class CData
 	bool mario_go_pipeline;
 	bool mario_go_up;
 	bool isDrawCardBox;
+	bool isGoBackWorldMap;
 
 
 	int mario_score;
@@ -51,6 +53,7 @@ public:
 		this->mario_go_up = false;
 		this->mario_go_pipeline = false;
 		this->isDrawCardBox = false;
+		this->isGoBackWorldMap = false;
 		
 
 		this->card_box = 0;
@@ -65,6 +68,9 @@ public:
 		this->mario_heart = DATA_MARIO_HEART;
 		this->mario_time = 0;
 	};
+
+	void SetIsGoBackWorldMap(bool isGoBackWorldMap) { this->isGoBackWorldMap = isGoBackWorldMap; }
+	bool GetIsGoBackWorldMap() { return isGoBackWorldMap; }
 
 	int GetNumberTouchCard() { return number_touch_card_box; }
 

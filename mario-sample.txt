@@ -1,7 +1,5 @@
 [SETTINGS]
-start	5
-width	320
-height	240
+start	10
 
 #id	type	file
 # type: 0: intro, 1: play scene 
@@ -19,8 +17,6 @@ height	240
 10	textures\enemies.png
 15	textures\enemies_2.png
 20	textures\gosh-box.png
-25	textures\mario-left.png
-30	textures\mario-right.png
 40	textures\enemies_3.png
 50	textures\enemies_4.png
 70	textures\Demo.png

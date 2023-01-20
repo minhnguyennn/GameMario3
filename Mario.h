@@ -254,6 +254,7 @@
 #define MARIO_STATE_RELEASE_GO_PIPELINE		702
 #define MARIO_STATE_GO_UP					703
 #define MARIO_STATE_RELEASE_UP_PIPELINE		704
+#define MARIO_STATE_GO_BACK_WORLD_MAP		705
 
 
 //LEVEL
@@ -342,7 +343,6 @@ class CMario : public CGameObject
 	BOOLEAN isSlowFly;
 	BOOLEAN isDecreasePower;
 	BOOLEAN disableKey;
-	BOOLEAN canReturnWorldMap;
 	BOOLEAN isChangLevel;
 	BOOLEAN isKoopaTouch;
 	BOOLEAN isDrawAnimation;
@@ -391,7 +391,6 @@ public:
 		time_go_pipeline = 0;
 		time_go_out_pipeline = 0;
 
-		canReturnWorldMap = false;
 		isSlowFly = false;
 		isAttack = false;
 		isFlying = false;
@@ -504,4 +503,9 @@ public:
 	void HeartMax();
 	void CoinMax();
 	void GoDownPipeline();
+	void MarioMoveAutomationWhenGameTimeout();
+	void MarioNotAttackWhenTimeout();
+	void MarioNotFlySlowlyWhenTimeout();
+	void MarioNotKickWhenTimeout();
+	void MarioUntouchableTimeout();
 };

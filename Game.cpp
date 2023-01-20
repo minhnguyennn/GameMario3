@@ -8,6 +8,7 @@
 #include "Animations.h"
 #include "PlayScene.h"
 #include "WorldScene.h"
+#include "Data.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -434,21 +435,16 @@ void CGame::ProcessKeyboard()
 }
 
 #define MAX_GAME_LINE 1024
-
-
 #define GAME_FILE_SECTION_UNKNOWN -1
 #define GAME_FILE_SECTION_SETTINGS 1
 #define GAME_FILE_SECTION_SCENES 2
 #define GAME_FILE_SECTION_TEXTURES 3
 
-
 void CGame::_ParseSection_SETTINGS(string line)
 {
 	vector<string> tokens = split(line);
-
 	if (tokens.size() < 2) return;
-	if (tokens[0] == "start")
-		next_scene = atoi(tokens[1].c_str());
+	if (tokens[0] == "start") next_scene = atoi(tokens[1].c_str());
 	else
 		DebugOut(L"[ERROR] Unknown game setting: %s\n", ToWSTR(tokens[0]).c_str());
 }
@@ -456,13 +452,19 @@ void CGame::_ParseSection_SETTINGS(string line)
 void CGame::_ParseSection_SCENES(string line)
 {
 	vector<string> tokens = split(line);
-
 	if (tokens.size() < 2) return;
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
-
-	LPSCENE scene = new CPlayScene(id, path);
-	scenes[id] = scene;
+	if (id == DATA_ID_PLAY_SCENE)
+	{
+		LPSCENE play_scene = new CPlayScene(id, path);
+		scenes[id] = play_scene;
+	}
+	else
+	{
+		LPSCENE world_scene = new CWorldScene(id, path);
+		scenes[id] = world_scene;
+	}
 }
 
 /*
@@ -517,6 +519,7 @@ void CGame::SwitchScene()
 	if (next_scene < 0 || next_scene == current_scene) return; 
 
 	DebugOut(L"[INFO] Switching to scene %d\n", next_scene);
+	
 
 	scenes[current_scene]->Unload();
 
@@ -534,7 +537,6 @@ void CGame::InitiateSwitchScene(int scene_id)
 	next_scene = scene_id;
 }
 
-
 void CGame::_ParseSection_TEXTURES(string line)
 {
 	vector<string> tokens = split(line);
@@ -546,7 +548,6 @@ void CGame::_ParseSection_TEXTURES(string line)
 
 	CTextures::GetInstance()->Add(texID, path.c_str());
 }
-
 
 CGame::~CGame()
 {
@@ -562,4 +563,3 @@ CGame* CGame::GetInstance()
 	if (__instance == NULL) __instance = new CGame();
 	return __instance;
 }
-
