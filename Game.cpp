@@ -463,6 +463,7 @@ void CGame::_ParseSection_SCENES(string line)
 	}
 	else if (id == DATA_ID_INTRO_SCENE)
 	{
+		
 		LPSCENE intro_map = new CIntroScene(id, path);
 		scenes[id] = intro_map;
 	}

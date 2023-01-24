@@ -2,21 +2,17 @@
 #include "debug.h"
 #include "Game.h"
 #include "MarioWorld.h"
-#include "PlayScene.h"
+#include "WorldScene.h"
 #include "debug.h"
 
 void CWorldKeyEvent::OnKeyDown(int KeyCode)
 {
 	////DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	CMarioWorld* mario_world = (CMarioWorld*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	CMarioWorld* mario_world = (CMarioWorld*)((LPWORLDSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
 	case DIK_S:
-		DebugOut(L"GetIsCollisionDoor: %d \n", mario_world->GetIsCollisionDoor());
-		if (mario_world->GetIsCollisionDoor())
-		{
-			mario_world->SetState(MARIO_WORLD_STATE_GO_PLAYSCENE);
-		}
+		if (mario_world->GetIsCollisionDoor()) mario_world->SetState(MARIO_WORLD_STATE_GO_PLAYSCENE);
 		break;
 	case DIK_UP:
 		if (!mario_world->GetIsGoTop()) break;

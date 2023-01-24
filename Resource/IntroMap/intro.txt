@@ -1,6 +1,6 @@
 [ASSETS]
-
+Resource\IntroMap\intro_background.txt
 
 [OBJECTS]
 #BACKGROUND
-23	120	86
+23	120	85

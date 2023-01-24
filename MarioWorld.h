@@ -4,6 +4,8 @@
 #include "Animations.h"
 #include "debug.h"
 
+#define DATA_ID_WORLD_SCENE			10
+
 //ANIMATION
 #define ID_ANI_SMALL_MARIO_WORLD	7000
 #define ID_ANI_BIG_MARIO_WORLD		7100

@@ -12,6 +12,7 @@
 #include "debug.h"
 #include "Data.h"
 #include "IntroBackground.h"
+#include "IntroKey.h"
 
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
@@ -25,7 +26,7 @@ using namespace std;
 CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
 	player = NULL;
-	//key_handler = new CWorldKeyEvent(this);
+	key_handler = new CIntroKey(this);
 }
 
 void CIntroScene::_ParseSection_SPRITES(string line) {
@@ -95,7 +96,19 @@ void CIntroScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_BACKGROUND_INTRO: obj = new CIntroBackGround(x, y); break;
+	case OBJECT_TYPE_BACKGROUND_INTRO: 
+	{
+		if (player != NULL)
+		{
+			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			return;
+		}
+		obj = new CIntroBackGround(x, y);
+		player = (CIntroBackGround*)obj;
+
+		DebugOut(L"[INFO] Player object has been created!\n");
+		break;
+	}
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;

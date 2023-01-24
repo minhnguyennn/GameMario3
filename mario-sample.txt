@@ -54,3 +54,4 @@ start	15
 300	textures\marioWorldMap.png
 
 310	textures\title.png
+311	textures\title-transparent.png
