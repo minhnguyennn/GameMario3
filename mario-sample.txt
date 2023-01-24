@@ -1,5 +1,5 @@
 [SETTINGS]
-start	10
+start	15
 
 #id	type	file
 # type: 0: intro, 1: play scene 
@@ -9,6 +9,7 @@ start	10
 2	scene02.txt
 5	scene0005.txt
 10	Resource\Worldmap\Worldmap.txt
+15	Resource\IntroMap\intro.txt
 
 # id	file 
 [TEXTURES]
