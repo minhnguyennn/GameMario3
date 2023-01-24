@@ -11,6 +11,7 @@
 #include "Scene.h"
 #include "debug.h"
 #include "Data.h"
+#include "IntroBackground.h"
 
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
@@ -94,6 +95,7 @@ void CIntroScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
+	case OBJECT_TYPE_BACKGROUND_INTRO: obj = new CIntroBackGround(x, y); break;
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;

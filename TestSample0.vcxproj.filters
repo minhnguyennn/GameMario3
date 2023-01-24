@@ -246,6 +246,12 @@
     <ClCompile Include="IntroScene.cpp">
       <Filter>Header Files\Scenes\IntroMap</Filter>
     </ClCompile>
+    <ClCompile Include="IntroBackground.cpp">
+      <Filter>Header Files\Scenes\IntroMap</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroKey.cpp">
+      <Filter>Header Files\Scenes\IntroMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -399,6 +405,12 @@
       <Filter>Header Files\Scenes\WorldMap\Scene</Filter>
     </ClInclude>
     <ClInclude Include="IntroScene.h">
+      <Filter>Header Files\Scenes\IntroMap</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroBackground.h">
+      <Filter>Header Files\Scenes\IntroMap</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroKey.h">
       <Filter>Header Files\Scenes\IntroMap</Filter>
     </ClInclude>
   </ItemGroup>

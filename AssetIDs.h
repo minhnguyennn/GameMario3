@@ -27,3 +27,6 @@
 #define OBJECT_TYPE_KOOPA_WORLD		18
 #define OBJECT_TYPE_HELP_WORLD		19
 #define OBJECT_TYPE_DOOR_WORLD		20
+
+//////////////// OBJECT INTRO MAP ////////////////
+#define OBJECT_TYPE_BACKGROUND_INTRO	23
