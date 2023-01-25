@@ -11,13 +11,14 @@ void CIntroBackGround::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ID_ANI_INTRO_BACKGROUND)->Render(x, y);
+	animations->Get(ID_ANI_INTRO_BACKGROUND_NUMBER_THREE)->Render(x + 4, y + 6);
 	if (!isKeyUp)
 	{
-		animations->Get(ID_ANI_INTRO_BACKGROUND_ARROW)->Render(x - 55, y + 55);
+		animations->Get(ID_ANI_INTRO_BACKGROUND_ARROW)->Render(x - 55, y + 36);
 	}
 	else
 	{
-		animations->Get(ID_ANI_INTRO_BACKGROUND_ARROW)->Render(x - 55, y + 71);
+		animations->Get(ID_ANI_INTRO_BACKGROUND_ARROW)->Render(x - 55, y + 52);
 	}
 }
 

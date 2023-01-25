@@ -3,4 +3,4 @@ Resource\IntroMap\intro_background.txt
 
 [OBJECTS]
 #BACKGROUND
-23	120	85
+23	120	104
