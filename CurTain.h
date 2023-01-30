@@ -3,9 +3,10 @@
 
 //animation
 #define ID_ANI_CURTAIN		100105
+#define ID_ANI_LOGO			100106
 
 //state
-#define CURTAIN_STATE_UP	1
+#define LOGO_STATE_DOWN	1
 
 //property
 #define CURTAIN_VY			0.1f
@@ -14,6 +15,7 @@
 
 class CCurTain : public CGameObject
 {
+	bool isLogo;
 	ULONGLONG time_curtain_up;
 public:
 	CCurTain(float x, float y);

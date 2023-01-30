@@ -18,12 +18,16 @@
 #define INTRO_BACKGROUND_STATE_ARROW_DOWN		2
 
 //time
-#define TIME_BACKGROUND_CHANGE_SCENE			3000
+#define TIME_BACKGROUND_CHANGE_SCENE_1			3000
+#define TIME_BACKGROUND_CHANGE_SCENE_2			4000
 
 class CIntroBackGround : public CGameObject
 {
 	bool isKeyUp;
-	bool isChangeScene1;
+	bool isScene1;
+	bool isScene2;
+	bool isScene3;
+
 	ULONGLONG time_change_scene;
 private:
 public:
@@ -31,7 +35,9 @@ public:
 	{
 		this->isKeyUp = false;
 		this->time_change_scene = GetTickCount64();
-		this->isChangeScene1 = true;
+		this->isScene1 = true;
+		this->isScene2 = false;
+		this->isScene3 = false;
 	}
 
 	void SetIsKeyUp(bool isKeyUp) { this->isKeyUp = isKeyUp; }

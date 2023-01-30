@@ -6,28 +6,35 @@
 
 void CIntroBackGround::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
-	if (isChangeScene1 && GetTickCount64() - time_change_scene > 3000)
+	if (isScene1 && GetTickCount64() - time_change_scene > TIME_BACKGROUND_CHANGE_SCENE_1)
 	{
-		isChangeScene1 = false;
+		isScene1 = false;
+		isScene2 = true;
+		time_change_scene = GetTickCount64();
 		SummonCurtain();
+	}
+
+	if (isScene2 && GetTickCount64() - time_change_scene > TIME_BACKGROUND_CHANGE_SCENE_2)
+	{
+		isScene2 = false;
+		time_change_scene = 0;
 	}
 }
 
 void CIntroBackGround::Render() 
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	if (isChangeScene1)
+	if (isScene1)
 	{
 		animations->Get(ID_ANI_INTRO_BACKGROUND_SCENE_ONE)->Render(x, y);
 	}
-	else
+	else if (isScene2)
 	{
+		
 		animations->Get(ID_ANI_INTRO_BACKGROUND_SCENE_TWO)->Render(x, y);
 	}
-	
-
-	
-		/*time_change_scene = 0;
+	else
+	{
 		animations->Get(ID_ANI_INTRO_BACKGROUND)->Render(x, y);
 		animations->Get(ID_ANI_INTRO_BACKGROUND_NUMBER_THREE)->Render(x + 4, y + 6);
 		if (!isKeyUp)
@@ -37,8 +44,8 @@ void CIntroBackGround::Render()
 		else
 		{
 			animations->Get(ID_ANI_INTRO_BACKGROUND_ARROW)->Render(x - 55, y + 52);
-		}*/
-	
+		}
+	}
 }
 
 void CIntroBackGround::SetState(int state) {

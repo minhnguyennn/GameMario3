@@ -14,8 +14,8 @@
 #background_scene_2
 100018	258	0	513	233	310
 
-#background_scene_3
-100018	258	0	513	233	310
+#background_logo
+100020	517	25	756	136	310
 
 #background_curtain
 100019	0	0	255	181	310
@@ -47,3 +47,6 @@
 
 #background_curtain
 100105	100019	100
+
+#background_logo
+100106	100020	100
