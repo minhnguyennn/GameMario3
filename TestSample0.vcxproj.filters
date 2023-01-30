@@ -252,6 +252,9 @@
     <ClCompile Include="IntroKey.cpp">
       <Filter>Header Files\Scenes\IntroMap</Filter>
     </ClCompile>
+    <ClCompile Include="CurTain.cpp">
+      <Filter>Header Files\Scenes\IntroMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -411,6 +414,9 @@
       <Filter>Header Files\Scenes\IntroMap</Filter>
     </ClInclude>
     <ClInclude Include="IntroKey.h">
+      <Filter>Header Files\Scenes\IntroMap</Filter>
+    </ClInclude>
+    <ClInclude Include="CurTain.h">
       <Filter>Header Files\Scenes\IntroMap</Filter>
     </ClInclude>
   </ItemGroup>

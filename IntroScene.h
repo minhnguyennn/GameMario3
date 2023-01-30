@@ -23,12 +23,12 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-	/*virtual void CreateObject(LPGAMEOBJECT gameobject)
+	virtual void CreateObject(LPGAMEOBJECT gameobject)
 	{
 		objects.insert(objects.begin() + 1, gameobject);
-	}*/
+	}
 	LPGAMEOBJECT GetPlayer() { return player; }
-	//vector<LPGAMEOBJECT> GetListObject() { return objects; }
+	vector<LPGAMEOBJECT> GetListObject() { return objects; }
 	void Clear();
 	void PurgeDeletedObjects();
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);

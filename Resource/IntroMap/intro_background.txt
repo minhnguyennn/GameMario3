@@ -8,6 +8,18 @@
 #background
 100012	516	226	773	449	310
 
+#background_scene_1
+100017	0	0	255	233	310
+
+#background_scene_2
+100018	258	0	513	233	310
+
+#background_scene_3
+100018	258	0	513	233	310
+
+#background_curtain
+100019	0	0	255	181	310
+
 #number_three
 100013	194	363	235	404	311
 100014	240	363	281	404	311
@@ -26,3 +38,12 @@
 
 #number_three
 100103	100013	100	100014	100	100015	100	100016	100
+
+#background_scene_1
+100104	100017	100
+
+#background_scene_2
+100107	100018	100
+
+#background_curtain
+100105	100019	100
