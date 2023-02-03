@@ -16,27 +16,27 @@
 
 void CIntroBackGround::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
-	if (isSummon && GetTickCount64() - time_change_summon > 500)
+	if (isSummon && GetTickCount64() - time_change_summon > TIME_BACKGROUND_500)
 	{
 		LPINTROSCENE scene = (LPINTROSCENE)CGame::GetInstance()->GetCurrentScene();
 
-		CIntroKoopa* koopa = new CIntroKoopa(x, y - 100, 1, 2);
+		CIntroKoopa* koopa = new CIntroKoopa(x, y - INTRO_BACKGROUND_Y_100, 1, 2);
 		scene->CreateObject(koopa);
 		koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 
-		CIntroKoopa* koopa_2 = new CIntroKoopa(x + 40, y - 100, 1, 2);
+		CIntroKoopa* koopa_2 = new CIntroKoopa(x + INTRO_BACKGROUND_X_40, y - INTRO_BACKGROUND_Y_100, 1, 2);
 		scene->CreateObject(koopa_2);
 		koopa_2->SetState(KOOPA_STATE_CLOSE_SHELL);
 
-		CIntroGoomba* goomba = new CIntroGoomba(x - 86, y - 100, 1, 1);
+		CIntroGoomba* goomba = new CIntroGoomba(x - INTRO_BACKGROUND_X_86, y - INTRO_BACKGROUND_Y_100, 1, 1);
 		scene->CreateObject(goomba);
 
-		CIntroLeaf* leaf = new CIntroLeaf(x , y - 50);
+		CIntroLeaf* leaf = new CIntroLeaf(x , y - INTRO_BACKGROUND_Y_50);
 		scene->CreateObject(leaf);
 
 		isSummon = false;
 	}
-	if (isScene1 && GetTickCount64() - time_change_scene > 1000)
+	if (isScene1 && GetTickCount64() - time_change_scene > TIME_BACKGROUND_CHANGE_SCENE_1)
 	{
 		isScene1 = false;
 		isScene2 = true;

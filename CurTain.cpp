@@ -1,25 +1,57 @@
 #include "CurTain.h"
+#include "debug.h"
 
 CCurTain::CCurTain(float x, float y) : CGameObject(x, y)
 {
 	isLogo = false;
+	isCurTain = true;
+	isStop = false;
 	vy = -CURTAIN_VY;
 	time_curtain_up = GetTickCount64();
-	
+	time_logo_down = 0;
+	this->isVibrate = false;
+	this->random = 0;
+	this->time_vibrate = 0;
 }
 
 void CCurTain::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (!isLogo && GetTickCount64() - time_curtain_up > TIME_CURTAIN_UP)
+	if (isCurTain && GetTickCount64() - time_curtain_up > TIME_CURTAIN_UP)
 	{
-		SetState(LOGO_STATE_DOWN);
+		isCurTain = false;
+		isLogo = true;
+		time_logo_down = GetTickCount64();
+		vy = CURTAIN_VY;
 	}
-	else if (isLogo && GetTickCount64() - time_curtain_up > TIME_CURTAIN_UP)
+	
+	if (isLogo && GetTickCount64() - time_logo_down > CURTAIN_TIME_1800)
 	{
 		isLogo = false;
+		isVibrate = true;
+		time_vibrate = GetTickCount64();
+		vy = 0.0f;
+	}
+
+	if (isVibrate)
+	{
+		random = rand() % 2;
+	}
+
+	if (isVibrate && GetTickCount64() - time_vibrate > CURTAIN_TIME_1000)
+	{
+		isVibrate = false;
+		isStop = true;
+		time_vibrate = GetTickCount64();
+	}
+
+	if (isStop && GetTickCount64() - time_vibrate > CURTAIN_TIME_1000)
+	{
+		isStop = false;
 		isDeleted = true;
 		return;
 	}
+
+	
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -27,10 +59,20 @@ void CCurTain::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CCurTain::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	int aniID = 0;
-	if (isLogo) aniID = ID_ANI_LOGO;
-	else aniID = ID_ANI_CURTAIN;
-	animations->Get(aniID)->Render(x, y);
+	
+	if (isLogo || isStop)
+	{
+		animations->Get(ID_ANI_LOGO)->Render(x, y);		
+	}
+	else if (isVibrate)
+	{
+		if (random == CURTAIN_NUMBER_RANDOM_0)
+			animations->Get(ID_ANI_LOGO)->Render(x, y + CURTAIN_ADJUST_Y);
+		else if (random == CURTAIN_NUMBER_RANDOM_1)
+			animations->Get(ID_ANI_LOGO)->Render(x, y - CURTAIN_ADJUST_Y);
+	}
+	else animations->Get(ID_ANI_CURTAIN)->Render(x, y);
+	
 	RenderBoundingBox();
 }
 
