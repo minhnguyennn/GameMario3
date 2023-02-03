@@ -267,9 +267,6 @@
     <ClCompile Include="IntroLeaf.cpp">
       <Filter>Header Files\Scenes\IntroMap</Filter>
     </ClCompile>
-    <ClCompile Include="InforBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -445,9 +442,6 @@
     </ClInclude>
     <ClInclude Include="IntroLeaf.h">
       <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClInclude>
-    <ClInclude Include="InforBoard.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

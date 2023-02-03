@@ -28,7 +28,7 @@ start	10
 150	textures\worldmapObj.png
 170	textures\reward_x3.png
 180	textures\gameover.png
-190	textures\dialogs.png
+190	textures\infor_board.png
 191	textures\misc2.png
 192	textures\marioWorldMap.png
 193	textures\NES - Super Mario Bros 3 - Enemies.png

@@ -4,8 +4,6 @@
 #include "Animations.h"
 #include "debug.h"
 
-
-
 //ANIMATION
 #define ID_ANI_SMALL_MARIO_WORLD	7000
 #define ID_ANI_BIG_MARIO_WORLD		7100
@@ -25,8 +23,9 @@
 #define MARIO_WORLD_SMALL_BBOX_HEIGHT 10
 
 //PROPERTY
-#define MARIO_WORLD_SPEED 0.1f
-#define MARIO_WORLD_ID_PLAY_SCENE 5
+#define MARIO_WORLD_SPEED			0.1f
+#define MARIO_WORLD_ID_PLAY_SCENE	5
+#define MARIO_WORLD_TIME_DELAY		3000
 
 
 class CMarioWorld : public CGameObject
@@ -36,6 +35,9 @@ class CMarioWorld : public CGameObject
 	bool isGoTop;
 	bool isGoBottom;
 	bool isCollisionDoor;
+	bool isDelay;
+
+	ULONGLONG time_delay;
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
@@ -59,4 +61,7 @@ public:
 
 	void SetIsCollisionDoor(bool isCollisionDoor) { this->isCollisionDoor = isCollisionDoor; }
 	bool GetIsCollisionDoor() { return isCollisionDoor; }
+
+	void SetIsDelay(bool isDelay) { this->isDelay = isDelay; }
+	bool GetIsDelay() { return isDelay; }
 };

@@ -9,6 +9,7 @@ void CWorldKeyEvent::OnKeyDown(int KeyCode)
 {
 	////DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CMarioWorld* mario_world = (CMarioWorld*)((LPWORLDSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (!mario_world->GetIsDelay()) return;
 	switch (KeyCode)
 	{
 	case DIK_S:

@@ -8,10 +8,16 @@ CMarioWorld::CMarioWorld(float x, float y) :CGameObject(x, y)
 	isGoBottom = false;
 	isGoRight = true;
 	isCollisionDoor = false;
+	isDelay = false;
+	time_delay = GetTickCount64();
 }
 
 void CMarioWorld::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
+	if (GetTickCount64() - time_delay > MARIO_WORLD_TIME_DELAY)
+	{
+		isDelay = true;
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

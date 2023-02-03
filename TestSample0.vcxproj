@@ -161,7 +161,6 @@
     <ClCompile Include="Help.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="HudWorld.cpp" />
-    <ClCompile Include="InforBoard.cpp" />
     <ClCompile Include="IntroBackground.cpp" />
     <ClCompile Include="IntroGoomba.cpp" />
     <ClCompile Include="IntroKey.cpp" />
@@ -220,7 +219,6 @@
     <ClInclude Include="Help.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="HudWorld.h" />
-    <ClInclude Include="InforBoard.h" />
     <ClInclude Include="IntroBackground.h" />
     <ClInclude Include="IntroGoomba.h" />
     <ClInclude Include="IntroKey.h" />

@@ -2,9 +2,11 @@
 #include"Game.h"
 #include"Sprites.h"
 #include"Mario.h"
+#include"MarioWorld.h"
 #include"PlayScene.h"
 #include"Data.h"
 #include"Automation.h"
+#include"WorldScene.h"
 
 CHudWorld::CHudWorld(float x, float y)
 {
@@ -16,6 +18,10 @@ void CHudWorld::Render()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
+
+	LPWORLDSCENE world_scene = (LPWORLDSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMarioWorld* mario_world = (CMarioWorld*)world_scene->GetPlayer();
+
 	CData* data_game = CData::GetInstance();
 
 	int data_score = CData::GetInstance()->GetMarioScore();
@@ -27,6 +33,14 @@ void CHudWorld::Render()
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_BA_BLACK)->Render(x, y);
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_TABLE_HUD)->Render(x + 30, y - 7);
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_POWER_M)->Render(x - 74, y - 3);
+
+	if (!mario_world->GetIsDelay())
+	{
+		CAnimations::GetInstance()->Get(ID_ANI_INFOR_BOARD)->Render(x + 30, y - 110);
+		DrawNumber(data_heart % 10, x + 70, y - 100);
+		DrawNumber(1, x + 50, y - 120);
+	}
+	
 
 	//Number map
 	DrawNumber(1, x - 45, y - 11);
