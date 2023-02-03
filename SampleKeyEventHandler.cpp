@@ -50,16 +50,16 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetLevel(MARIO_LEVEL_RACCOON);
 		break;
 	case DIK_6:
-		mario->SetPosition(16, 380);
+		mario->SetPosition(POSITION_BEGIN_MAP_X, POSITION_BEGIN_MAP_Y);
 		break;
 	case DIK_7:
-		mario->SetPosition(2600, 380);
+		mario->SetPosition(POSITION_MIDDLE_MAP_X, POSITION_MIDDLE_MAP_Y);
 		break;
 	case DIK_8:
-		mario->SetPosition(700, 380);
+		mario->SetPosition(POSITION_END_MAP_X, POSITION_END_MAP_Y);
 		break;
 	case DIK_9:
-		mario->SetPosition(3336, 0); // To Hidden Map
+		mario->SetPosition(POSITION_HIDDEN_MAP_X, POSITION_HIDDEN_MAP_Y); // To Hidden Map
 		break;
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);

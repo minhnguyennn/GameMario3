@@ -12,8 +12,10 @@
 #define GOOMBA_DIE_VY 0.2f
 
 //TIME
-#define GOOMBA_DIE_TIMEOUT 500
-#define GOOMBA_CLOSE_WING_TIMEOUT 1000
+#define GOOMBA_DIE_TIMEOUT			500
+#define GOOMBA_CLOSE_WING_TIMEOUT	1000
+#define GOOMBA_TIME_COUNT_DOWN		1000
+#define GOOMBA_TIME_AUTO_WALK		7
 
 //BBOX
 #define GOOMBA_BBOX_WIDTH 15
@@ -21,14 +23,15 @@
 #define GOOMBA_BBOX_DIE 7
 
 //STATE
-#define GOOMBA_STATE_WALKING	100
-#define GOOMBA_STATE_DIE	200
-#define GOOMBA_STATE_FLY	300
-#define GOOMBA_STATE_CLOSE_WING	400
-#define GOOMBA_STATE_FLY_MAX	500
-#define GOOMBA_STATE_DIE_TURN_OVER	600
-#define GOOMBA_STATE_Fall	700
-#define GOOMBA_STATE_IDLE	800
+#define GOOMBA_STATE_WALKING			100
+#define GOOMBA_STATE_DIE				200
+#define GOOMBA_STATE_FLY				300
+#define GOOMBA_STATE_CLOSE_WING			400
+#define GOOMBA_STATE_FLY_MAX			500
+#define GOOMBA_STATE_DIE_TURN_OVER		600
+#define GOOMBA_STATE_Fall				700
+#define GOOMBA_STATE_IDLE				800
+#define GOOMBA_STATE_AUTO_WALK			801
 
 //ANIMATION
 ///////////// BROWN ///////////////////
@@ -52,7 +55,7 @@
 #define GOOMBA_TYPE_BROWN 1	
 #define GOOMBA_TYPE_RED 2
 
-class CGoomba : public CGameObject
+class CIntroGoomba : public CGameObject
 {
 protected:
 	float ay;
@@ -62,14 +65,18 @@ protected:
 	bool isTurnOver;
 	bool isDie;
 	bool isWalk;
+	bool isAutoWalk;
 	int type;
+
 	ULONGLONG time_line;
 	ULONGLONG time_close;
+	ULONGLONG time_auto_walk;
+	ULONGLONG count_1_second;
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 public:
-	CGoomba(float x, float y, int type, int level);
+	CIntroGoomba(float x, float y, int type, int level);
 	int IsCollidable() { return 1; };
 	int IsBlocking() { return 0; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -79,3 +86,4 @@ public:
 	void LowerLevel();
 	int isLeftWithMario();
 };
+

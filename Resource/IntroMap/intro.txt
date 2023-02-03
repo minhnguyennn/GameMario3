@@ -1,6 +1,14 @@
 [ASSETS]
 Resource\IntroMap\intro_background.txt
-
+items.txt
+mario.txt
+platform.txt
+automation.txt
+koopa.txt
+goomba.txt
 [OBJECTS]
 #BACKGROUND
 23	120	104
+
+#platform
+5	0	183	16	16	16	54000	54000	54000

@@ -1,4 +1,4 @@
- #pragma once
+#pragma once
 #include "GameObject.h"
 #include "Animation.h"
 #include "Animations.h"
@@ -7,6 +7,7 @@
 
 #pragma region ANIMATION_ID
 
+//RED MARIO
 #define ID_ANI_MARIO_IDLE_RIGHT 401
 #define ID_ANI_MARIO_IDLE_LEFT 400
 
@@ -44,6 +45,9 @@
 
 #define ID_ANI_MARIO_KICK_RIGHT 3901
 #define ID_ANI_MARIO_KICK_LEFT 3900
+
+#define ID_ANI_MARIO_AUTO_RAISED_HEAD		333900
+#define ID_ANI_MARIO_AUTO_RAISED_HEAD_2		333901
 
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1101
@@ -190,36 +194,38 @@
 #define MARIO_JUMP_SPEED_Y			0.25f
 #define MARIO_JUMP_RUN_SPEED_Y		0.26f
 
-#define MARIO_GRAVITY				0.00042f
-#define MARIO_JUMP_DEFLECT_SPEED	0.15f
-#define MARIO_MAX_POWER_UP			7
-#define MARIO_SPEED_FALL			0.001f
-#define MARIO_GO_DOWN_Y				0.01f
-#define MARIO_SPEED_FLYING			0.2f
-#define MARIO_HOLDKOOPA_X_ADJUST	10
-#define MARIO_HOLDKOOPA_Y_ADJUST	2
-#define MARIO_TAIL_X_ADJUST			4
-#define MARIO_TAIL_Y_ADJUST			2
-#define MARIO_POSITION_OUTMAP_ADJUST	100
-#define MARIO_GHOSTBOX_Y			1
-#define MARIO_RACCON_GHOSTBOX_X_ADJUST	4
-#define MARIO_RACCON_GHOSTBOX_Y_ADJUST	1
-#define MARIO_ON_PLATFORM_Y_ADJUST		4
-#define MARIO_SMALL_ON_PLATFORM_Y_ADJUST	6
-#define MARIO_NUMBER_START_TOUCH		1
-#define MARIO_NUMBER_TOUCH_MAX		2
-#define MARIO_TIME_TOUCH_MAX	3
-#define MARIO_NUMBER_START_HEART	4
-#define MARIO_NUMBER_START_UNTOUCHABLE	1
-#define MARIO_TOUCH_ZERO_NUMBER	0
-#define MARIO_TOUCH_ONE_NUMBER	1
-#define MARIO_TOUCH_TOW_NUMBER	2
-#define MARIO_TOUCH_CARD_BOX_MAX	4
-#define MARIO_RANDOM_NUMBER_ADJUST	2
-#define MARIO_HIDDEN_MAP_POSITION_X		3336
-#define MARIO_HIDDEN_MAP_POSITION_Y		0
+#define MARIO_GRAVITY							0.00042f
+#define MARIO_JUMP_DEFLECT_SPEED				0.15f
+#define MARIO_MAX_POWER_UP						7
+#define MARIO_SPEED_FALL						0.001f
+#define MARIO_GO_DOWN_Y							0.01f
+#define MARIO_SPEED_FLYING						0.2f
+#define MARIO_HOLDKOOPA_X_ADJUST				10
+#define MARIO_HOLDKOOPA_Y_ADJUST				2
+#define MARIO_TAIL_X_ADJUST						4
+#define MARIO_TAIL_Y_ADJUST						2
+#define MARIO_POSITION_OUTMAP_ADJUST			100
+#define MARIO_GHOSTBOX_Y						1
+#define MARIO_RACCON_GHOSTBOX_X_ADJUST			4
+#define MARIO_RACCON_GHOSTBOX_Y_ADJUST			1
+#define MARIO_ON_PLATFORM_Y_ADJUST				4
+#define MARIO_SMALL_ON_PLATFORM_Y_ADJUST		6
+#define MARIO_NUMBER_START_TOUCH				1
+#define MARIO_NUMBER_TOUCH_MAX					2
+#define MARIO_TIME_TOUCH_MAX					3
+#define MARIO_NUMBER_START_HEART				4
+#define MARIO_NUMBER_START_UNTOUCHABLE			1
+#define MARIO_TOUCH_ZERO_NUMBER					0
+#define MARIO_TOUCH_ONE_NUMBER					1
+#define MARIO_TOUCH_TOW_NUMBER					2
+#define MARIO_TOUCH_CARD_BOX_MAX				4
+#define MARIO_RANDOM_NUMBER_ADJUST				2
+#define MARIO_HIDDEN_MAP_POSITION_X				3336
+#define MARIO_HIDDEN_MAP_POSITION_Y				0
 #define MARIO_RELEASE_HIDDEN_MAP_POSITION_X		2332
 #define MARIO_RELEASE_HIDDEN_MAP_POSITION_Y		400
+#define MARIO_AUTO_HEIGHT_JUMP					0.35f
+#define MARIO_AUTO_VX							0.1f
 
 //STATE
 #define MARIO_STATE_DIE					-10
@@ -255,6 +261,13 @@
 #define MARIO_STATE_GO_UP					703
 #define MARIO_STATE_RELEASE_UP_PIPELINE		704
 #define MARIO_STATE_GO_BACK_WORLD_MAP		705
+#define MARIO_STATE_AUTO_JUMP				706
+#define MARIO_STATE_AUTO_SIT				707
+#define MARIO_STATE_AUTO_WALK_LEFT			708
+#define MARIO_STATE_AUTO_HEIGHT_JUMP		709
+#define MARIO_STATE_AUTO_IDLE				710
+#define MARIO_STATE_AUTO_RAISED_HEAD		711
+#define MARIO_STATE_AUTO_FALL				712
 
 
 //LEVEL
@@ -284,21 +297,29 @@
 #define MARIO_DISTANCE_WITH_GHOST_BOX 20
 
 //TIME
-#define MARIO_UNTOUCHABLE_TIME 2500
-#define	MARIO_FALL_SLOWLY_TIMEOUT 300
-#define	MARIO_KICK_TIMEOUT 100
-#define	MARIO_ATTACK_TIMEOUT 500
-#define TIME_ONE_SECOND 1000
-#define MARIO_CHANGE_LEVEL_TIMEOUT 2500
-#define MARIO_POWER_TIMEOUT 200
-#define MARIO_FLYING_TIMEOUT 5000
-#define MARIO_DECREASE_POWER_TIMEOUT 1000
-#define MARIO_TIME_DECREASE_WHEN_OUTMAP 7
-#define MARIO_EFFECT_SMOKE_TIMEOUT 500
-#define MARIO_PLAY_GAME_TIMEOUT 300
-#define MARIO_TIME_GO_DOWN_TIMEOUT 3000
-#define MARIO_GO_UP_TIMEOUT 410
-#define MARIO_GO_UP_HIDDEN_TIMEOUT 1000
+#define MARIO_UNTOUCHABLE_TIME					2500
+#define	MARIO_FALL_SLOWLY_TIMEOUT				300
+#define	MARIO_KICK_TIMEOUT						100
+#define	MARIO_ATTACK_TIMEOUT					500
+#define TIME_ONE_SECOND							1000
+#define MARIO_CHANGE_LEVEL_TIMEOUT				2500
+#define MARIO_POWER_TIMEOUT						200
+#define MARIO_FLYING_TIMEOUT					5000
+#define MARIO_DECREASE_POWER_TIMEOUT			1000
+#define MARIO_TIME_DECREASE_WHEN_OUTMAP			7
+#define MARIO_EFFECT_SMOKE_TIMEOUT				500
+#define MARIO_PLAY_GAME_TIMEOUT					300
+#define MARIO_TIME_GO_DOWN_TIMEOUT				3000
+#define MARIO_GO_UP_TIMEOUT						410
+#define MARIO_GO_UP_HIDDEN_TIMEOUT				1000
+#define MARIO_AUTO_JUMP_TIMEOUT					200
+#define MARIO_AUTO_WALK_LEFT_TIMEOUT			1350
+#define MARIO_AUTO_SIT_TIMEOUT					500
+#define MARIO_AUTO_RAISED_HEAD_TIMEOUT			200
+#define MARIO_AUTO_JUMP_EAT_LEAF_TIMEOUT		3500
+#define MARIO_AUTO_FAIL_SLOWLY_TIMEOUT			1500
+#define MARIO_AUTO_WALK_RIGHT_TIMEOUT			500
+#define MARIO_AUTO_STOP_TIMEOUT					2500
 
 class CMario : public CGameObject
 {
@@ -330,6 +351,10 @@ class CMario : public CGameObject
 	ULONGLONG time_coutdown_touch;
 	ULONGLONG time_go_pipeline;
 	ULONGLONG time_go_out_pipeline;
+	ULONGLONG time_auto_jump;
+	ULONGLONG time_auto_sit;
+	ULONGLONG time_auto_walk_left;
+	ULONGLONG time_auto_raised_head;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -353,6 +378,15 @@ class CMario : public CGameObject
 	BOOLEAN isGoUp;
 	BOOLEAN isGoOutUp;
 	BOOLEAN isCollisionKoopa;
+	BOOLEAN isMarioGreen;
+	BOOLEAN isAutoJump;
+	BOOLEAN isAutoSit;
+	BOOLEAN isAutoWalkLeft;
+	BOOLEAN isAutoRaisedHead;
+	BOOLEAN isAutoRaisedHead2;
+	BOOLEAN isAutoFail;
+	BOOLEAN isAutoWalkRight;
+	BOOLEAN isAutoStop;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -368,6 +402,10 @@ class CMario : public CGameObject
 	void OnCollisionWithCardBox(LPCOLLISIONEVENT e);
 	void OnCollisionWithButton(LPCOLLISIONEVENT e);
 	void OnCollisionWithPipeline(LPCOLLISIONEVENT e);
+	void OnCollisionWithDifferentMario(LPCOLLISIONEVENT e);
+	void OnCollisionWithIntroKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithIntroGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithIntroLeaf(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -378,6 +416,7 @@ class CMario : public CGameObject
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
+		time_auto_jump = 0;
 		time_fly = 0;
 		time_line = 0;
 		time_power = 0;
@@ -390,6 +429,9 @@ public:
 		time_coutdown_touch = 0;
 		time_go_pipeline = 0;
 		time_go_out_pipeline = 0;
+		time_auto_sit = 0;
+		time_auto_walk_left = 0;
+		time_auto_raised_head = 0;
 
 		isSlowFly = false;
 		isAttack = false;
@@ -411,13 +453,22 @@ public:
 		isGoUp = false;
 		isGoOutUp = false;
 		isCollisionKoopa = false;
+		isMarioGreen = false;
+		isAutoJump = false;
+		isAutoSit = false;
+		isAutoWalkLeft = false;
+		isAutoRaisedHead = false;
+		isAutoRaisedHead2 = false;
+		isAutoFail = false;
+		isAutoWalkRight = false;
+		isAutoStop = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;
 
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
-		level = MARIO_LEVEL_RACCOON;
+		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -MARIO_NUMBER_START_UNTOUCHABLE;
 		isOnPlatform = false;
@@ -427,6 +478,11 @@ public:
 		number_touch_koopa = 0;
 		position_x_out_map = 0;
 	}
+
+	void SetChangeLevel(int level) { this->level = level; }
+
+	void SetIsMarioGreen(bool isMarioGreen) { this->isMarioGreen = isMarioGreen; }
+	bool GetIsMarioGreen() { return isMarioGreen; }
 
 	void SetIsCollisionKoopa(bool isCollisionKoopa) { this->isCollisionKoopa = isCollisionKoopa; }
 	bool GetIsCollisionKoopa() { return isCollisionKoopa; }
@@ -508,4 +564,5 @@ public:
 	void MarioNotFlySlowlyWhenTimeout();
 	void MarioNotKickWhenTimeout();
 	void MarioUntouchableTimeout();
+	void SummonGreenMario();
 };

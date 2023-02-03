@@ -22,7 +22,7 @@ Resource/Tilemaps/world1-1-1.txt
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 ########## Mario #########
-0	1503	144
+0	16	380
 
 ######### Brick ###########
 1	1952	400	1
@@ -70,7 +70,7 @@ Resource/Tilemaps/world1-1-1.txt
 
 ######### Pipeline ###########
 #plant
-#12	360	384	2	2
+12	360	384	2	2
 12	1865	384	1	2
 12	1800	392	3	1
 #hidden_map
@@ -79,11 +79,6 @@ Resource/Tilemaps/world1-1-1.txt
 #black_go_up
 12	3560	8	4	5
 12	3336	8	4	5
-
-######### Venus fire trap ###########
-#11	330	378	4
-#11	340	378	4
-#11	1840	378	3
 
 ######### Coin ###########
 4	1073	320	3

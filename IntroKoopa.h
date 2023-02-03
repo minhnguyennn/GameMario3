@@ -4,6 +4,7 @@
 
 //PROPERTY
 #define KOOPA_GRAVITY 0.0003f
+#define KOOPA_AUTO_GRAVITY 0.002f
 #define KOOPA_WALKING_SPEED 0.05f
 #define KOOPA_WALKING_ATTACKING_SPEED (KOOPA_WALKING_SPEED * 3)
 #define KOOPA_FLY_SPEED 0.1f
@@ -73,7 +74,9 @@
 #define KOOPA_TYPE_TROOPA 1
 #define KOOPA_TYPE_PARATROOPA 2
 
-class CKoopa : public CGameObject
+#define KOOPA_STATE_UP_UP 1001
+
+class CIntroKoopa : public CGameObject
 {
 protected:
 	float ax;
@@ -88,7 +91,7 @@ protected:
 	bool isAttacking;
 	bool isDie;
 	bool isWalking;
-	bool isHeld; 
+	bool isHeld;
 	bool isGhostBox;
 	bool isCollisionTail;
 
@@ -106,7 +109,7 @@ protected:
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 public:
-	CKoopa(float x, float y, int level, int type) : CGameObject(x , y)
+	CIntroKoopa(float x, float y, int level, int type) : CGameObject(x, y)
 	{
 		this->type = type;
 		this->level = level;
@@ -123,15 +126,14 @@ public:
 		isWalking = false;
 		isCollisionTail = false;
 
-		SetState(KOOPA_STATE_WALKING);
 		time_waiting = 0;
 		time_turn_over = 0;
 		time_defense = 0;
 		time_collision_tail = 0;
 	};
 
-	void SetIsCollisionTail(bool isCollisionTail) 
-	{ 
+	void SetIsCollisionTail(bool isCollisionTail)
+	{
 		this->isCollisionTail = isCollisionTail;
 		time_collision_tail = GetTickCount64();
 	};
@@ -151,14 +153,14 @@ public:
 	void SetIsHeld(bool isHeld) { this->isHeld = isHeld; };
 	bool GetIsHeld() { return isHeld; };
 
-	bool GetIsTurnOver () { return isTurnOver; };
+	bool GetIsTurnOver() { return isTurnOver; };
 
 	bool GetIsWaiting() { return isWaiting; };
 
-	bool GetIsAttacking (){ return isAttacking; };
+	bool GetIsAttacking() { return isAttacking; };
 
 	int GetLevel() { return level; };
-	void SetLevel(int setLevel) { 
+	void SetLevel(int setLevel) {
 		if (setLevel == KOOPA_LEVEL_SMALL) {
 			SetState(KOOPA_STATE_WALKING);
 			this->level = setLevel;

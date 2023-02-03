@@ -1,5 +1,7 @@
 #include "Automation.h"
 #include "Data.h"
+#include "IntroScene.h"
+#include "Mario.h"
 
 void CAutomation::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -38,4 +40,3 @@ bool CAutomation::CountDownTimer(int time)
 	}
 	return false;
 }
-

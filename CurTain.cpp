@@ -5,6 +5,7 @@ CCurTain::CCurTain(float x, float y) : CGameObject(x, y)
 	isLogo = false;
 	vy = -CURTAIN_VY;
 	time_curtain_up = GetTickCount64();
+	
 }
 
 void CCurTain::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

@@ -3,7 +3,6 @@
 #include "AssetIDs.h"
 #include "IntroScene.h"
 #include "IntroBackGround.h"
-#include "MarioWorld.h"
 
 void CIntroKey::OnKeyDown(int KeyCode)
 {
@@ -15,7 +14,7 @@ void CIntroKey::OnKeyDown(int KeyCode)
 		else player_intro->SetIsKeyUp(true);
 		break;
 	case DIK_W:
-		CGame::GetInstance()->InitiateSwitchScene(DATA_ID_WORLD_SCENE);
+		player_intro->SetState(INTRO_BACKGROUND_STATE_ARROW_DOWN);
 		break;
 	default:
 		break;

@@ -1,4 +1,4 @@
-#include <algorithm>
+ #include <algorithm>
 #include "debug.h"
 #include "Mario.h"
 #include "Game.h"
@@ -24,12 +24,13 @@
 #include "Data.h"
 #include "Effect.h"
 #include "Pipeline.h"
+#include "WorldScene.h"
+#include "IntroKoopa.h"
+#include "IntroGoomba.h"
+#include "IntroLeaf.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {	
-	//DebugOutTitle(L"ay: %f", ay);
-	//DebugOutTitle(L"number_touch_card_box: %d", number_touch_card_box);
-	//DebugOut(L"--STATE-- %d\n", state);
 	ChangeLevelMario(dt);
 	AccelerationFunction();
 	CalculatePowerToFly();
@@ -43,6 +44,51 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	MarioNotFlySlowlyWhenTimeout();
 	MarioNotKickWhenTimeout();
 	MarioUntouchableTimeout();
+	SummonGreenMario();
+
+	if (isAutoRaisedHead && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_RAISED_HEAD_TIMEOUT))
+	{
+		isAutoRaisedHead = false;
+		isAutoRaisedHead2 = true;
+		time_auto_raised_head = GetTickCount64();
+	}
+
+	if (isAutoRaisedHead2 && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_JUMP_EAT_LEAF_TIMEOUT))
+	{
+		isAutoRaisedHead2 = false;
+		isAutoFail = true;
+		SetState(MARIO_STATE_JUMP);
+		time_auto_raised_head = GetTickCount64();
+	}
+
+	if (isAutoFail && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_FAIL_SLOWLY_TIMEOUT))
+	{
+		isAutoFail = false;
+		vx = 0.0f;
+		time_auto_raised_head = GetTickCount64();
+		isAutoWalkRight = true;
+	}
+
+	if (isAutoFail)
+	{
+		SetState(MARIO_STATE_AUTO_FALL);
+	}
+
+	if (isAutoWalkRight && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_WALK_RIGHT_TIMEOUT))
+	{
+		SetState(MARIO_STATE_WALKING_RIGHT);
+		isAutoStop = true;
+		if (!isAutoStop)
+		{
+			time_auto_raised_head = GetTickCount64();
+		}
+	}
+
+	if (isAutoStop && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_STOP_TIMEOUT))
+	{
+		vx = 0.0f;
+		isAutoWalkRight = false;
+	}
 
 	isOnPlatform = false;
 	isCollisionPipeline = false;
@@ -119,6 +165,51 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithButton(e);
 	else if (dynamic_cast<CPipeline*>(e->obj))
 		OnCollisionWithPipeline(e);
+	else if (dynamic_cast<CMario*>(e->obj))
+		OnCollisionWithDifferentMario(e);
+	else if (dynamic_cast<CIntroKoopa*>(e->obj))
+		OnCollisionWithIntroKoopa(e);
+	else if (dynamic_cast<CIntroGoomba*>(e->obj))
+		OnCollisionWithIntroGoomba(e);
+	else if (dynamic_cast<CIntroLeaf*>(e->obj))
+		OnCollisionWithIntroLeaf(e);
+}
+
+void CMario::OnCollisionWithIntroLeaf(LPCOLLISIONEVENT e)
+{
+	CIntroLeaf* intro_leaf = dynamic_cast<CIntroLeaf*>(e->obj);
+	SetLevel(MARIO_LEVEL_RACCOON);
+	intro_leaf->Delete();
+}
+
+void CMario::OnCollisionWithIntroGoomba(LPCOLLISIONEVENT e)
+{
+	CIntroGoomba* intro_goomba = dynamic_cast<CIntroGoomba*>(e->obj);
+	if (e->ny < 0 && intro_goomba->GetState() == GOOMBA_STATE_WALKING)
+	{
+		intro_goomba->SetState(GOOMBA_STATE_DIE);
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
+	}
+}
+
+void CMario::OnCollisionWithIntroKoopa(LPCOLLISIONEVENT e)
+{
+	CIntroKoopa* intro_koopa = dynamic_cast<CIntroKoopa*>(e->obj);
+	if (e->ny > 0)
+	{
+		intro_koopa->SetState(KOOPA_STATE_TURN_OVER);
+		SetState(MARIO_STATE_AUTO_RAISED_HEAD);
+	}
+	if (e->nx != 0)
+	{
+		SetState(MARIO_STATE_KICK);
+		intro_koopa->SetState(KOOPA_STATE_ATTACKING);
+	}
+}
+
+void CMario::OnCollisionWithDifferentMario(LPCOLLISIONEVENT e)
+{
+	SetState(MARIO_STATE_AUTO_HEIGHT_JUMP);
 }
 
 void CMario::OnCollisionWithPipeline(LPCOLLISIONEVENT e)
@@ -331,7 +422,7 @@ void CMario::Render()
 		else if (isChangLevel) aniId = GetAniIdChangeLevel();
 		else if (level == MARIO_LEVEL_BIG) aniId = GetAniIdBig();
 		else if (level == MARIO_LEVEL_SMALL) aniId = GetAniIdSmall();
-		else if (level == MARIO_LEVEL_FIRE) aniId = GetAniIdFire();
+		else if (level == MARIO_LEVEL_FIRE || isMarioGreen) aniId = GetAniIdFire();
 		else if (level == MARIO_LEVEL_RACCOON) aniId = GetAniIdRaccoon();
 
 		if (level != MARIO_LEVEL_RACCOON)
@@ -468,6 +559,14 @@ int CMario::GetAniIdBig()
 		if (nx > 0)	aniId = ID_ANI_MARIO_KICK_RIGHT;
 		else  aniId = ID_ANI_MARIO_KICK_LEFT;
 	}
+	else if (isAutoRaisedHead)
+	{
+		aniId = ID_ANI_MARIO_AUTO_RAISED_HEAD;
+	}
+	else if (isAutoRaisedHead2)
+	{
+		aniId = ID_ANI_MARIO_AUTO_RAISED_HEAD_2;
+	}
 	else if (!isOnPlatform)
 	{
 		if (vy < 0)
@@ -491,7 +590,7 @@ int CMario::GetAniIdBig()
 	}
 	else
 	{
-		if (isSitting)
+		if (isSitting || isAutoSit)
 		{
 			if (nx > 0)
 				aniId = ID_ANI_MARIO_SIT_RIGHT;
@@ -767,6 +866,62 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	case MARIO_STATE_AUTO_FALL:
+	{
+		if (level != MARIO_LEVEL_RACCOON) break;
+		isSlowFly = true;
+		vx = -MARIO_AUTO_VX;
+		nx = 1;
+		break;
+	}
+	case MARIO_STATE_AUTO_RAISED_HEAD:
+	{
+		time_auto_raised_head = GetTickCount64();
+		isAutoRaisedHead = true;
+		break;
+	}
+	case MARIO_STATE_AUTO_IDLE:
+	{
+		isAutoSit = false;
+		isAutoWalkLeft = false;
+		vx = 0.0f;
+		ax = 0.0f;
+		y -= MARIO_SIT_HEIGHT_ADJUST;
+		break;
+	}
+	case MARIO_STATE_AUTO_HEIGHT_JUMP:
+	{
+		vy = -MARIO_AUTO_HEIGHT_JUMP;
+		break;
+	}
+	case MARIO_STATE_AUTO_WALK_LEFT:
+	{
+		if (!isAutoWalkLeft)
+		{
+			SetState(MARIO_STATE_WALKING_LEFT);
+		}
+		isAutoWalkLeft = true;
+		isAutoSit = false;
+		time_auto_walk_left = GetTickCount64();
+		
+		break;
+	}
+	case MARIO_STATE_AUTO_SIT:
+	{
+		if (!isAutoSit)
+		{
+			time_auto_sit = GetTickCount64();
+		}
+		isAutoSit = true;
+		vx = 0;
+		break;
+	}
+	case MARIO_STATE_AUTO_JUMP:
+	{
+		isAutoJump = true;
+		time_auto_jump = GetTickCount64();
+		break;
+	}
 	case MARIO_STATE_RELEASE_UP_PIPELINE:
 	{
 		isGoUp = false;
@@ -902,7 +1057,7 @@ void CMario::SetState(int state)
 	}
 	case MARIO_STATE_WALKING_RIGHT:
 	{
-		if (isSitting) break;
+		if (isSitting)  break;
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
@@ -919,7 +1074,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_JUMP:
 	{
 		if (isSitting) break;
-		if (isOnPlatform)
+		if (isOnPlatform || isMarioGreen)
 		{
 			if (abs(this->vx) == MARIO_RUNNING_SPEED)
 				vy = -MARIO_JUMP_RUN_SPEED_Y;
@@ -981,7 +1136,7 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 {
 	if ((level == MARIO_LEVEL_BIG) || (level == MARIO_LEVEL_FIRE) || (level == MARIO_LEVEL_RACCOON))
 	{
-		if (isSitting)
+		if (isSitting || isAutoSit)
 		{
 			left = x - MARIO_BIG_SITTING_BBOX_WIDTH / 2;
 			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
@@ -1096,12 +1251,7 @@ void CMario::CountDown1Second() {
 	{
 		time = 0;
 		SetState(MARIO_STATE_DIE);
-		CGame::GetInstance()->InitiateSwitchScene(10);
-		/*if (!disableKey) SetState(MARIO_STATE_DIE);
-		else {
-			SetState(MARIO_STATE_DIE);
-			canReturnWorldMap = true;
-		}*/
+		CGame::GetInstance()->InitiateSwitchScene(DATA_ID_WORLD_SCENE);
 	}
 }
 
@@ -1351,5 +1501,22 @@ void CMario::MarioUntouchableTimeout()
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+	}
+}
+
+void CMario::SummonGreenMario()
+{
+	if (isAutoJump && CountDownTimer2(time_auto_jump, MARIO_AUTO_JUMP_TIMEOUT))
+	{
+		SetState(MARIO_STATE_JUMP);
+		isAutoJump = false;
+	}
+	if (isAutoWalkLeft && CountDownTimer2(time_auto_walk_left, MARIO_AUTO_WALK_LEFT_TIMEOUT))
+	{
+		SetState(MARIO_STATE_AUTO_SIT);
+	}
+	if (isAutoSit && CountDownTimer2(time_auto_sit, MARIO_AUTO_SIT_TIMEOUT))
+	{
+		SetState(MARIO_STATE_AUTO_IDLE);
 	}
 }

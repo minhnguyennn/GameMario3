@@ -17,6 +17,9 @@
 #background_logo
 100020	517	25	756	136	310
 
+#arrow_type_2
+100021	291	284	206	297	310
+
 #background_curtain
 100019	0	0	255	181	310
 
@@ -50,3 +53,6 @@
 
 #background_logo
 100106	100020	100
+
+#arrow_type_2
+100108	100010	100	100021	100
