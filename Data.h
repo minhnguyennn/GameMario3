@@ -1,24 +1,25 @@
 #pragma once
 #include"debug.h"
+#include"GameObject.h"
 
-#define DATA_MARIO_HEART 4
-#define DATA_MARIO_TIME_OUTMAP 7
-#define DATA_MARIO_SCORE_ADJUST 50
-#define DATA_MARIO_COIN_MAX 99
-#define DATA_MARIO_HEART_MAX 99
-#define DATA_FLOWER_CARD_BOX 1
-#define DATA_STAR_CARD_BOX 2
-#define DATA_MUSHROOM_CARD_BOX 3
-#define DATA_SCORE_FOR_ONE_TIME 50
-#define DATA_SUM_THREE_SIMILAR_FLOWER 3
-#define DATA_SUM_THREE_SIMILAR_STAR 6
+#define DATA_MARIO_HEART				4
+#define DATA_MARIO_TIME_OUTMAP			7
+#define DATA_MARIO_SCORE_ADJUST			50
+#define DATA_MARIO_COIN_MAX				99
+#define DATA_MARIO_HEART_MAX			99
+#define DATA_FLOWER_CARD_BOX			1
+#define DATA_STAR_CARD_BOX				2
+#define DATA_MUSHROOM_CARD_BOX			3
+#define DATA_SCORE_FOR_ONE_TIME			50
+#define DATA_SUM_THREE_SIMILAR_FLOWER	3
+#define DATA_SUM_THREE_SIMILAR_STAR		6
 #define DATA_SUM_THREE_SIMILAR_MUSHROOM 9
-#define DATA_SUM_THREE_DIFFERENT_CARD 6
-#define DATA_SUM_TWO_SIMILAR_CARD 2
-#define DATA_NUMBER_INCREASE_HEART_1 1
-#define DATA_NUMBER_INCREASE_HEART_5 5
-#define DATA_NUMBER_INCREASE_HEART_3 3
-#define DATA_ID_PLAY_SCENE	 5
+#define DATA_SUM_THREE_DIFFERENT_CARD	6
+#define DATA_SUM_TWO_SIMILAR_CARD		2
+#define DATA_NUMBER_INCREASE_HEART_1	1
+#define DATA_NUMBER_INCREASE_HEART_5	5
+#define DATA_NUMBER_INCREASE_HEART_3	3
+#define DATA_ID_PLAY_SCENE				5
 
 class CData
 {
@@ -36,7 +37,7 @@ class CData
 	bool mario_go_up;
 	bool isDrawCardBox;
 	bool isGoBackWorldMap;
-
+	bool isResetGame;
 
 	int mario_score;
 	int mario_heart;
@@ -51,8 +52,8 @@ public:
 		this->mario_go_pipeline = false;
 		this->isDrawCardBox = false;
 		this->isGoBackWorldMap = false;
+		this->isResetGame = false;
 		
-
 		this->card_box = 0;
 		this->mario_score = 0;
 		this->mario_coin = 0;
@@ -62,9 +63,12 @@ public:
 		this->card_store_2 = 0;
 		this->card_store_3 = 0;
 		
-		this->mario_heart = DATA_MARIO_HEART;
+		//this->mario_heart = DATA_MARIO_HEART;
+		this->mario_heart = 0;
 		this->mario_time = 0;
 	};
+	void SetIsResetGame(bool isResetGame) { this->isResetGame = isResetGame; }
+	bool GetIsResetGame() { return isResetGame; }
 
 	void SetIsGoBackWorldMap(bool isGoBackWorldMap) { this->isGoBackWorldMap = isGoBackWorldMap; }
 	bool GetIsGoBackWorldMap() { return isGoBackWorldMap; }
@@ -112,8 +116,10 @@ public:
 
 	void IncreaseCoin() { mario_coin++; }
 	void IncreaseHeart() { mario_heart++; }
+	void DecreaseHeart() { mario_heart--; }
 	void IncreaseNumberTouchCard() { number_touch_card_box++; }
 	void IncreaseScore() { mario_score += DATA_MARIO_SCORE_ADJUST; }
+
 	void SumCardBox() 
 	{ 
 		int sum_card_box = card_store_1 + card_store_2 + card_store_3;
@@ -132,10 +138,35 @@ public:
 			mario_heart += DATA_NUMBER_INCREASE_HEART_3;
 		}
 	}
+
 	void CaculationScoreTimeout(int time) 
 	{ 
 		mario_score += time * DATA_SCORE_FOR_ONE_TIME;
 	}
+
+	void ResetGame()
+	{
+		this->isResetGame = true;
+		this->isConvertBrick = false;
+		this->mario_go_down = false;
+		this->mario_go_up = false;
+		this->mario_go_pipeline = false;
+		this->isDrawCardBox = false;
+		this->isGoBackWorldMap = false;
+
+		this->card_box = 0;
+		this->mario_score = 0;
+		this->mario_coin = 0;
+
+		this->number_touch_card_box = 0;
+		this->card_store_1 = 0;
+		this->card_store_2 = 0;
+		this->card_store_3 = 0;
+
+		this->mario_heart = 4;
+		this->mario_time = 0;
+	}
+
 	static CData* GetInstance();
 	~CData() {};
 };

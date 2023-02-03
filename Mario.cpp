@@ -1474,10 +1474,12 @@ void CMario::SummonGreenMario()
 		SetState(MARIO_STATE_JUMP);
 		isAutoJump = false;
 	}
+
 	if (isAutoWalkLeft && CountDownTimer2(time_auto_walk_left, MARIO_AUTO_WALK_LEFT_TIMEOUT))
 	{
 		SetState(MARIO_STATE_AUTO_SIT);
 	}
+
 	if (isAutoSit && CountDownTimer2(time_auto_sit, MARIO_AUTO_SIT_TIMEOUT))
 	{
 		SetState(MARIO_STATE_AUTO_IDLE);
@@ -1486,7 +1488,7 @@ void CMario::SummonGreenMario()
 
 void CMario::MarioDie()
 {
-	if (y > MARIO_POSITION_DIE_Y)
+	if (y > MARIO_POSITION_DIE_Y && !CData::GetInstance()->GetIsResetGame())
 	{
 		SetState(MARIO_STATE_DIE);
 	}
@@ -1494,6 +1496,7 @@ void CMario::MarioDie()
 	if ((state == MARIO_STATE_DIE) && CountDownTimer2(time_die, MARIO_TIME_DIE))
 	{
 		CGame::GetInstance()->InitiateSwitchScene(DATA_ID_WORLD_SCENE);
+		CData::GetInstance()->DecreaseHeart();
 	}
 }
 

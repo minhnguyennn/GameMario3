@@ -29,14 +29,26 @@
 8	113	31	120	40	140
 9	123	31	130	40	140
 
-#infor_board
+#infor_board_begin
 60118	133	0	260	55	190
+
+#infor_board_end
+60119	0	0	127	63	190
+
+#infor_board_end
+60120	2	70	7	77	190
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 ##################### HUD IN PLAYER SCENE #######################
-#infor_board
+#infor_board_arrow
+11340	60120	100
+
+#infor_board_begin
 11338	60118	100
+
+#infor_board_end
+11339	60119	100
 
 #backgournd__black
 101	101	100

@@ -98,7 +98,7 @@ void CIntroBackGround::SetState(int state) {
 		scene->CreateObject(goomba);
 		break;
 	}
-	case INTRO_BACKGROUND_STATE_ARROW_DOWN:
+	case INTRO_BACKGROUND_STATE_GO_WORLD_MAP:
 	{
 		isWorldScene = true;
 		time_change_scene = GetTickCount64();

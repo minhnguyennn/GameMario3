@@ -3,6 +3,7 @@
 #include "AssetIDs.h"
 #include "IntroScene.h"
 #include "IntroBackGround.h"
+#include "Data.h"
 
 void CIntroKey::OnKeyDown(int KeyCode)
 {
@@ -14,7 +15,7 @@ void CIntroKey::OnKeyDown(int KeyCode)
 		else player_intro->SetIsKeyUp(true);
 		break;
 	case DIK_W:
-		player_intro->SetState(INTRO_BACKGROUND_STATE_ARROW_DOWN);
+		player_intro->SetState(INTRO_BACKGROUND_STATE_GO_WORLD_MAP);
 		break;
 	default:
 		break;

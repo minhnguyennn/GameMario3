@@ -16,8 +16,14 @@
 #define ID_ANI_HUD_WORLD_MUSHROOM_IN_CARD	11336
 #define ID_ANI_HUD_WORLD_STAR_IN_CARD		11337
 
-//infor board
-#define ID_ANI_INFOR_BOARD					11338
+//infor board arrow
+#define ID_ANI_INFOR_BOARD_ARROW			11340
+
+//infor board begin
+#define ID_ANI_INFOR_BOARD_BEGIN			11338
+
+//infor board end
+#define ID_ANI_INFOR_BOARD_END				11339
 
 //background black
 #define ID_ANI_HUD_WORLD_BA_BLACK			102

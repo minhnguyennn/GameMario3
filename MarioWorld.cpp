@@ -1,5 +1,7 @@
 #include "MarioWorld.h"
 #include "Door.h"
+#include "IntroScene.h"
+#include "Data.h"
 
 CMarioWorld::CMarioWorld(float x, float y) :CGameObject(x, y)
 {
@@ -9,7 +11,9 @@ CMarioWorld::CMarioWorld(float x, float y) :CGameObject(x, y)
 	isGoRight = true;
 	isCollisionDoor = false;
 	isDelay = false;
+	isRedArrow = false;
 	time_delay = GetTickCount64();
+	time_change_map = 0;
 }
 
 void CMarioWorld::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
@@ -17,6 +21,18 @@ void CMarioWorld::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (GetTickCount64() - time_delay > MARIO_WORLD_TIME_DELAY)
 	{
 		isDelay = true;
+	}
+	if ((state == MARIO_WORLD_STATE_GO_INTRO_SCENE) && (GetTickCount64() - time_change_map > MARIO_WORLD_TIME_CHANGE_MAP))
+	{
+		CGame::GetInstance()->InitiateSwitchScene(DATA_ID_INTRO_SCENE);
+	}
+	if ((state == MARIO_WORLD_STATE_GO_PLAYSCENE) && (GetTickCount64() - time_change_map > MARIO_WORLD_TIME_CHANGE_MAP))
+	{
+		CGame::GetInstance()->InitiateSwitchScene(MARIO_WORLD_ID_PLAY_SCENE);
+	}
+	if ((state == MARIO_WORLD_STATE_GO_PLAYSCENE_RESET) && (GetTickCount64() - time_change_map > MARIO_WORLD_TIME_CHANGE_MAP))
+	{
+		CGame::GetInstance()->InitiateSwitchScene(MARIO_WORLD_ID_PLAY_SCENE);
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -63,30 +79,52 @@ void CMarioWorld::SetState(int state)
 {
 	switch (state)
 	{
+	case MARIO_WORLD_STATE_GO_PLAYSCENE_RESET:
+	{
+		CData::GetInstance()->ResetGame();
+		time_change_map = GetTickCount64();
+		break;
+	}
+	case MARIO_WORLD_STATE_GO_INTRO_SCENE:
+	{
+		CData::GetInstance()->ResetGame();
+		time_change_map = GetTickCount64();
+		break;
+	}
 	case MARIO_WORLD_STATE_GO_PLAYSCENE:
-		CGame::GetInstance()->InitiateSwitchScene(MARIO_WORLD_ID_PLAY_SCENE);
+	{
+		time_change_map = GetTickCount64();
 		isCollisionDoor = false;
 		break;
+	}
 	case MARIO_WORLD_STATE_UP:
 		vy = -MARIO_WORLD_SPEED;
 		vx = 0;
 		break;
 	case MARIO_WORLD_STATE_DOWN:
+	{
 		vy = MARIO_WORLD_SPEED;
 		vx = 0;
 		break;
+	}
 	case MARIO_WORLD_STATE_RIGHT:
+	{
 		vy = 0;
 		vx = MARIO_WORLD_SPEED;
 		break;
+	}
 	case MARIO_WORLD_STATE_LEFT:
+	{
 		vy = 0;
 		vx = -MARIO_WORLD_SPEED;
 		break;
+	}
 	case MARIO_WORLD_STATE_IDLE:
+	{
 		vy = 0;
 		vx = 0;
 		break;
+	}
 	default:
 		break;
 	}

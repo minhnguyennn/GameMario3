@@ -10,6 +10,7 @@
 #include "WorldScene.h"
 #include "IntroScene.h"
 #include "Data.h"
+#include "MarioWorld.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -541,6 +542,10 @@ void CGame::SwitchScene()
 
 void CGame::InitiateSwitchScene(int scene_id)
 {
+	if (scene_id == MARIO_WORLD_ID_PLAY_SCENE)
+	{
+		CData::GetInstance()->SetIsResetGame(false);
+	}
 	next_scene = scene_id;
 }
 

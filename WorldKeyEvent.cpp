@@ -4,6 +4,7 @@
 #include "MarioWorld.h"
 #include "WorldScene.h"
 #include "debug.h"
+#include "Data.h"
 
 void CWorldKeyEvent::OnKeyDown(int KeyCode)
 {
@@ -12,23 +13,41 @@ void CWorldKeyEvent::OnKeyDown(int KeyCode)
 	if (!mario_world->GetIsDelay()) return;
 	switch (KeyCode)
 	{
+	case DIK_W:
+		if (!mario_world->GetIsRedArrow() && CData::GetInstance()->GetMarioHeart() < 1)
+		{
+			mario_world->SetState(MARIO_WORLD_STATE_GO_PLAYSCENE_RESET);
+		}
+		else if (CData::GetInstance()->GetMarioHeart() < 1)
+		{
+			mario_world->SetState(MARIO_WORLD_STATE_GO_INTRO_SCENE);
+		}
+		break;
 	case DIK_S:
 		if (mario_world->GetIsCollisionDoor()) mario_world->SetState(MARIO_WORLD_STATE_GO_PLAYSCENE);
 		break;
 	case DIK_UP:
-		if (!mario_world->GetIsGoTop()) break;
-		mario_world->SetState(MARIO_WORLD_STATE_UP);
+		if (CData::GetInstance()->GetMarioHeart() < 1) mario_world->SetIsRedArrow(false);
+		else
+		{
+			if (!mario_world->GetIsGoTop()) break;
+			mario_world->SetState(MARIO_WORLD_STATE_UP);
+		}
 		break;
 	case DIK_DOWN:
-		if (!mario_world->GetIsGoBottom()) break;
-		mario_world->SetState(MARIO_WORLD_STATE_DOWN);
+		if (CData::GetInstance()->GetMarioHeart() < 1) mario_world->SetIsRedArrow(true);
+		else
+		{
+			if (!mario_world->GetIsGoBottom()) break;
+			mario_world->SetState(MARIO_WORLD_STATE_DOWN);
+		}
 		break;
 	case DIK_LEFT:
-		if (!mario_world->GetIsGoLeft()) break;
+		if (!mario_world->GetIsGoLeft() || CData::GetInstance()->GetMarioHeart() < 1) break;
 		mario_world->SetState(MARIO_WORLD_STATE_LEFT);
 		break;
 	case DIK_RIGHT:
-		if (!mario_world->GetIsGoRight()) break;
+		if (!mario_world->GetIsGoRight() || CData::GetInstance()->GetMarioHeart() < 1) break;
 		mario_world->SetState(MARIO_WORLD_STATE_RIGHT);
 		break;
 	}

@@ -34,13 +34,23 @@ void CHudWorld::Render()
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_TABLE_HUD)->Render(x + 30, y - 7);
 	CAnimations::GetInstance()->Get(ID_ANI_HUD_WORLD_POWER_M)->Render(x - 74, y - 3);
 
-	if (!mario_world->GetIsDelay())
+	if (!mario_world->GetIsDelay() && data_heart > 3)
 	{
-		CAnimations::GetInstance()->Get(ID_ANI_INFOR_BOARD)->Render(x + 30, y - 110);
+		CAnimations::GetInstance()->Get(ID_ANI_INFOR_BOARD_BEGIN)->Render(x + 30, y - 110);
 		DrawNumber(data_heart % 10, x + 70, y - 100);
 		DrawNumber(1, x + 50, y - 120);
 	}
+	else
+	{
+		mario_world->SetIsDelay(true);
+	}
 	
+	if (data_heart < 1)
+	{
+		CAnimations::GetInstance()->Get(ID_ANI_INFOR_BOARD_END)->Render(x + 30, y - 110);
+		if (!mario_world->GetIsRedArrow()) CAnimations::GetInstance()->Get(ID_ANI_INFOR_BOARD_ARROW)->Render(x + 12, y - 98);
+		else CAnimations::GetInstance()->Get(ID_ANI_INFOR_BOARD_ARROW)->Render(x + 12, y - 90);
+	}
 
 	//Number map
 	DrawNumber(1, x - 45, y - 11);

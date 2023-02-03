@@ -11,21 +11,24 @@
 #define ID_ANI_RACCON_MARIO_WORLD	7300
 
 //STATE
-#define	MARIO_WORLD_STATE_UP		1
-#define	MARIO_WORLD_STATE_DOWN		2
-#define	MARIO_WORLD_STATE_LEFT		3
-#define	MARIO_WORLD_STATE_RIGHT		4
-#define	MARIO_WORLD_STATE_IDLE		5
-#define MARIO_WORLD_STATE_GO_PLAYSCENE 6
+#define	MARIO_WORLD_STATE_UP						1
+#define	MARIO_WORLD_STATE_DOWN						2
+#define	MARIO_WORLD_STATE_LEFT						3
+#define	MARIO_WORLD_STATE_RIGHT						4
+#define	MARIO_WORLD_STATE_IDLE						5
+#define MARIO_WORLD_STATE_GO_PLAYSCENE				6
+#define MARIO_WORLD_STATE_GO_PLAYSCENE_RESET		8
+#define MARIO_WORLD_STATE_GO_INTRO_SCENE			7
 
 //BBOX
 #define MARIO_WORLD_SMALL_BBOX_WIDTH  10
 #define MARIO_WORLD_SMALL_BBOX_HEIGHT 10
 
 //PROPERTY
-#define MARIO_WORLD_SPEED			0.1f
-#define MARIO_WORLD_ID_PLAY_SCENE	5
-#define MARIO_WORLD_TIME_DELAY		3000
+#define MARIO_WORLD_SPEED				0.1f
+#define MARIO_WORLD_ID_PLAY_SCENE		5
+#define MARIO_WORLD_TIME_DELAY			3000
+#define MARIO_WORLD_TIME_CHANGE_MAP		2000
 
 
 class CMarioWorld : public CGameObject
@@ -36,8 +39,10 @@ class CMarioWorld : public CGameObject
 	bool isGoBottom;
 	bool isCollisionDoor;
 	bool isDelay;
+	bool isRedArrow;
 
 	ULONGLONG time_delay;
+	ULONGLONG time_change_map;
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
@@ -64,4 +69,7 @@ public:
 
 	void SetIsDelay(bool isDelay) { this->isDelay = isDelay; }
 	bool GetIsDelay() { return isDelay; }
+
+	void SetIsRedArrow(bool isRedArrow) { this->isRedArrow = isRedArrow; }
+	bool GetIsRedArrow() { return isRedArrow; }
 };
