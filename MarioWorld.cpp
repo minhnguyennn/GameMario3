@@ -41,7 +41,21 @@ void CMarioWorld::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CMarioWorld::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	if(isDelay) animations->Get(ID_ANI_SMALL_MARIO_WORLD)->Render(x, y);
+	int data = CData::GetInstance()->GetMarioLevel();
+	if (isDelay)
+	{
+		if (data == DATA_MARIO_LEVEL_SMALL) 
+			animations->Get(ID_ANI_SMALL_MARIO_WORLD)->Render(x, y);
+		else if (data == DATA_MARIO_LEVEL_BIG)
+			animations->Get(ID_ANI_BIG_MARIO_WORLD)->Render(x, y);
+		else if (data == DATA_MARIO_LEVEL_FIRE)
+			animations->Get(ID_ANI_FIRE_MARIO_WORLD)->Render(x, y);
+		else if (data == DATA_MARIO_LEVEL_RACCOON)
+			animations->Get(ID_ANI_RACCON_MARIO_WORLD)->Render(x, y);
+		else
+			animations->Get(ID_ANI_SMALL_MARIO_WORLD)->Render(x, y);
+
+	}
 	RenderBoundingBox();
 }
 

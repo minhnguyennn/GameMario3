@@ -5,7 +5,7 @@ start	10
 # type: 0: intro, 1: play scene 
 [SCENES]
 0	intro.txt
-5	scene0005.txt
+5	Resource\PlayScene\playscene.txt
 10	Resource\Worldmap\Worldmap.txt
 15	Resource\IntroMap\intro.txt
 

@@ -4,8 +4,8 @@ Resource\Worldmap\grass.txt
 Resource\Worldmap\help.txt
 Resource\Worldmap\koopa_world.txt
 Resource\Worldmap\door.txt
-hud.txt
-platform.txt
+Resource\PlayScene\hud.txt
+Resource\PlayScene\platform.txt
 [TILEMAP]
 Resource\Tilemaps\world_map.txt
 [OBJECTS]

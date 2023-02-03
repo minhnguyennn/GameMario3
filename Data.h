@@ -21,6 +21,12 @@
 #define DATA_NUMBER_INCREASE_HEART_3	3
 #define DATA_ID_PLAY_SCENE				5
 
+//LEVEL MARIO
+#define	DATA_MARIO_LEVEL_SMALL				1
+#define	DATA_MARIO_LEVEL_BIG				2
+#define	DATA_MARIO_LEVEL_FIRE				3
+#define	DATA_MARIO_LEVEL_RACCOON			4
+
 class CData
 {
 	static CData* __instance;
@@ -43,6 +49,7 @@ class CData
 	int mario_heart;
 	int mario_coin;
 	int mario_time;
+	int mario_level;
 public:
 	CData()
 	{
@@ -63,10 +70,13 @@ public:
 		this->card_store_2 = 0;
 		this->card_store_3 = 0;
 		
-		//this->mario_heart = DATA_MARIO_HEART;
-		this->mario_heart = 0;
+		this->mario_heart = DATA_MARIO_HEART;
 		this->mario_time = 0;
+		this->mario_level = 0;
 	};
+	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; }
+	int GetMarioLevel() { return mario_level; }
+
 	void SetIsResetGame(bool isResetGame) { this->isResetGame = isResetGame; }
 	bool GetIsResetGame() { return isResetGame; }
 

@@ -1,11 +1,11 @@
 [ASSETS]
 Resource\IntroMap\intro_background.txt
-items.txt
-mario.txt
-platform.txt
-automation.txt
-koopa.txt
-goomba.txt
+Resource\PlayScene\items.txt
+Resource\PlayScene\mario.txt
+Resource\PlayScene\platform.txt
+Resource\PlayScene\automation.txt
+Resource\PlayScene\koopa.txt
+Resource\PlayScene\goomba.txt
 [OBJECTS]
 #BACKGROUND
 23	120	104

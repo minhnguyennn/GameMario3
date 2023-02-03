@@ -50,7 +50,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	SummonGreenMario();
 	HandleAutomation();
 	
-
+	CData::GetInstance()->SetMarioLevel(level);
+	DebugOut(L"DTA: %d\n", CData::GetInstance()->GetMarioLevel());
 	isOnPlatform = false;
 	isCollisionPipeline = false;
 
@@ -1214,7 +1215,7 @@ void CMario::CountDown1Second() {
 	else 
 	{
 		time = 0;
-		SetState(MARIO_STATE_DIE);
+		CGame::GetInstance()->InitiateSwitchScene(DATA_ID_WORLD_SCENE);
 	}
 }
 

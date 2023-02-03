@@ -81,36 +81,6 @@ void CHudWorld::Render()
 	DrawCardBox(data_game->GetCardStore1(), x + 86, y - 7);
 	DrawCardBox(data_game->GetCardStore2(), x + 110, y - 7);
 	DrawCardBox(data_game->GetCardStore3(), x + 134, y - 7);
-	
-
-	//Draw coin
-	//DrawNumber(coin_mario / 10, x + 50, y - 11);
-	//DrawNumber(coin_mario % 10, x + 58, y - 11);
-
-	////Draw heart
-	//DrawNumber(heart_mario / 10, x - 53, y - 2);
-	//DrawNumber(heart_mario % 10, x - 45, y - 2);
-
-	//Draw time
-	/*DrawNumber(time_mario / 100, x + 42, y - 2);
-	DrawNumber((time_mario / 10) % 10, x + 50, y - 2);
-	DrawNumber(time_mario % 10, x + 58, y - 2);*/
-
-	//Draw score
-	/*DrawNumber(score_mario / 1000000, x - 30, y - 2);
-	DrawNumber(score_mario / 100000 % 10, x - 22, y - 2);
-	DrawNumber(score_mario / 10000 % 10, x - 14, y - 2);
-	DrawNumber(score_mario / 1000 % 10, x - 6, y - 2);
-	DrawNumber(score_mario / 100 % 10, x + 2, y - 2);
-	DrawNumber(score_mario / 10 % 10, x + 10, y - 2);
-	DrawNumber(score_mario / 1 % 10, x + 18, y - 2);*/
-
-	//Draw power
-	/*DrawPower(power_mario, x - 29, y - 10);*/
-
-
-
-	//DrawNumber(power_mario, x - 30, y - 8);
 
 }
 
