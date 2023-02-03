@@ -16,6 +16,7 @@ void CIntroKey::OnKeyDown(int KeyCode)
 		break;
 	case DIK_W:
 		player_intro->SetState(INTRO_BACKGROUND_STATE_GO_WORLD_MAP);
+		CData::GetInstance()->ResetGame();
 		break;
 	default:
 		break;

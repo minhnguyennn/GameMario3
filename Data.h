@@ -175,6 +175,7 @@ public:
 
 		this->mario_heart = 4;
 		this->mario_time = 0;
+		this->mario_level = 0;
 	}
 
 	static CData* GetInstance();

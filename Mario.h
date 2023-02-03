@@ -322,6 +322,7 @@
 #define MARIO_AUTO_STOP_TIMEOUT					2500
 #define MARIO_TIME_DIE							3000
 #define MARIO_POSITION_DIE_Y					440
+#define MARIO_TIME_COLLISION_DIF_MARIO			1700
 
 class CMario : public CGameObject
 {
@@ -358,6 +359,8 @@ class CMario : public CGameObject
 	ULONGLONG time_auto_walk_left;
 	ULONGLONG time_auto_raised_head;
 	ULONGLONG time_die;
+	ULONGLONG time_collision_mario;
+	ULONGLONG time_collision_card_box;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -390,6 +393,8 @@ class CMario : public CGameObject
 	BOOLEAN isAutoFail;
 	BOOLEAN isAutoWalkRight;
 	BOOLEAN isAutoStop;
+	BOOLEAN isDifferentMario;
+	BOOLEAN isCollisionCardBox;
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -436,6 +441,8 @@ public:
 		time_auto_walk_left = 0;
 		time_auto_raised_head = 0;
 		time_die = 0;
+		time_collision_mario = 0;
+		time_collision_card_box = 0;
 
 		isSlowFly = false;
 		isAttack = false;
@@ -467,6 +474,8 @@ public:
 		isAutoWalkRight = false;
 		isAutoStop = false;
 		isUnTouchable = false;
+		isDifferentMario = false;
+		isCollisionCardBox = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;
@@ -483,6 +492,8 @@ public:
 		number_touch_koopa = 0;
 		position_x_out_map = 0;
 	}
+	void SetIsCollisionCardBox(bool isCollisionCardBox) { this->isCollisionCardBox = isCollisionCardBox; }
+	bool GetIsCollisionCardBox() { return isCollisionCardBox; }
 
 	void SetChangeLevel(int level) { this->level = level; }
 

@@ -75,21 +75,32 @@ void CHUD::Render()
 
 void CHUD::DrawCardBox(int card_box, float position_x, float position_y)
 {
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
 	switch (card_box)
 	{
 	case 1:
 	{
-		CAnimations::GetInstance()->Get(ID_ANI_FLLOWER_IN_CARD)->Render(position_x, position_y);
+		if (mario->GetIsCollisionCardBox()) 
+			CAnimations::GetInstance()->Get(ID_ANI_FLLOWER_2)->Render(position_x, position_y);
+		else 
+			CAnimations::GetInstance()->Get(ID_ANI_FLLOWER_IN_CARD)->Render(position_x, position_y);
 		break;
 	}
 	case 2:
 	{
-		CAnimations::GetInstance()->Get(ID_ANI_STAR_IN_CARD)->Render(position_x, position_y);
+		if (mario->GetIsCollisionCardBox())
+			CAnimations::GetInstance()->Get(ID_ANI_STAR_2)->Render(position_x, position_y);
+		else
+			CAnimations::GetInstance()->Get(ID_ANI_STAR_IN_CARD)->Render(position_x, position_y);
 		break;
 	}
 	case 3:
 	{
-		CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_IN_CARD)->Render(position_x, position_y);
+		if (mario->GetIsCollisionCardBox())
+			CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_2)->Render(position_x, position_y);
+		else
+			CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM_IN_CARD)->Render(position_x, position_y);
 		break;
 	}
 	default:

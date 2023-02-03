@@ -50,8 +50,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	SummonGreenMario();
 	HandleAutomation();
 	
-	CData::GetInstance()->SetMarioLevel(level);
-	DebugOut(L"DTA: %d\n", CData::GetInstance()->GetMarioLevel());
+	
 	isOnPlatform = false;
 	isCollisionPipeline = false;
 
@@ -171,6 +170,8 @@ void CMario::OnCollisionWithIntroKoopa(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithDifferentMario(LPCOLLISIONEVENT e)
 {
+	isDifferentMario = true;
+	time_collision_mario = GetTickCount64();
 	SetState(MARIO_STATE_AUTO_HEIGHT_JUMP);
 }
 
@@ -197,7 +198,6 @@ void CMario::OnCollisionWithCardBox(LPCOLLISIONEVENT e)
 	CData* data_game = CData::GetInstance();
 	CData::GetInstance()->CaculationScoreTimeout(time);
 	int type_card = card_box->SetupRandomCardBox();
-	//int type_card = 3;
 	if (data_game->GetNumberTouchCard() == MARIO_TOUCH_ZERO_NUMBER) data_game->SetCardStore1(type_card);
 	else if (data_game->GetNumberTouchCard() == MARIO_TOUCH_ONE_NUMBER) data_game->SetCardStore2(type_card);
 	else if (data_game->GetNumberTouchCard() == MARIO_TOUCH_TOW_NUMBER)
@@ -209,6 +209,8 @@ void CMario::OnCollisionWithCardBox(LPCOLLISIONEVENT e)
 	if (data_game->GetNumberTouchCard() < MARIO_TOUCH_CARD_BOX_MAX) data_game->IncreaseNumberTouchCard();
 	position_x_out_map = x;
 	disableKey = true;
+	isCollisionCardBox = true;
+	time_collision_card_box = GetTickCount64();
 	SetState(MARIO_STATE_IDLE);
 	CData::GetInstance()->SetCardBox(type_card);
 	card_box->SetState(CARD_BOX_STATE_UP);
@@ -1377,6 +1379,8 @@ void CMario::HeartMax()
 	{
 		data_game->SetMarioHeart(DATA_MARIO_HEART_MAX);
 	}
+
+	if (!CData::GetInstance()->GetIsResetGame())  CData::GetInstance()->SetMarioLevel(level);
 }
 
 void CMario::SetupTouchTime()
@@ -1470,6 +1474,11 @@ void CMario::MarioUntouchableTimeout()
 
 void CMario::SummonGreenMario()
 {
+	if (isDifferentMario && CountDownTimer2(time_collision_mario, MARIO_TIME_COLLISION_DIF_MARIO))
+	{
+		vx = 0.0f;
+	}
+
 	if (isAutoJump && CountDownTimer2(time_auto_jump, MARIO_AUTO_JUMP_TIMEOUT))
 	{
 		SetState(MARIO_STATE_JUMP);
@@ -1503,6 +1512,11 @@ void CMario::MarioDie()
 
 void CMario::HandleAutomation()
 {
+	if (isCollisionCardBox && CountDownTimer2(time_collision_card_box, 1000))
+	{
+		isCollisionCardBox = false;
+	}
+
 	if (isAutoRaisedHead && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_RAISED_HEAD_TIMEOUT))
 	{
 		isAutoRaisedHead = false;

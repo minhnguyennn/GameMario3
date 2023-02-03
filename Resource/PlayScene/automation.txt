@@ -4,6 +4,7 @@
 60000	23	7	136	16	161
 #your card
 60001	7	25	156	54	161
+
 #flower_in_card
 60002	260	394	275	409	163
 #mushroom_in_card
@@ -11,14 +12,26 @@
 #star_in_card
 60004	296	394	311	409	163
 
+#gosh_box
+60022	5	358	26	371	163
+
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 #text_end_game
 11300	60000	100
 11301	60001	100
+
 #flower_in_card
 11302	60002	100
 #mushroom_in_card
 11303	60003	100
 #star_in_card
 11304	60004	100
+
+#flower_in_2
+11322	60002	100	60022	100
+#mushroom_in_2
+11323	60003	100	60022	100
+#star_in_2
+11324	60004	100	60022	100

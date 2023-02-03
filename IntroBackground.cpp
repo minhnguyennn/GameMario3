@@ -12,6 +12,7 @@
 #include "IntroKoopa.h"
 #include "IntroGoomba.h"
 #include "IntroLeaf.h"
+#include "Data.h"
 
 void CIntroBackGround::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
