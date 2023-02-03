@@ -44,51 +44,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	MarioNotFlySlowlyWhenTimeout();
 	MarioNotKickWhenTimeout();
 	MarioUntouchableTimeout();
+	MarioDie();
+
+	//HANDLE AUTOMATION
 	SummonGreenMario();
-
-	if (isAutoRaisedHead && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_RAISED_HEAD_TIMEOUT))
-	{
-		isAutoRaisedHead = false;
-		isAutoRaisedHead2 = true;
-		time_auto_raised_head = GetTickCount64();
-	}
-
-	if (isAutoRaisedHead2 && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_JUMP_EAT_LEAF_TIMEOUT))
-	{
-		isAutoRaisedHead2 = false;
-		isAutoFail = true;
-		SetState(MARIO_STATE_JUMP);
-		time_auto_raised_head = GetTickCount64();
-	}
-
-	if (isAutoFail && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_FAIL_SLOWLY_TIMEOUT))
-	{
-		isAutoFail = false;
-		vx = 0.0f;
-		time_auto_raised_head = GetTickCount64();
-		isAutoWalkRight = true;
-	}
-
-	if (isAutoFail)
-	{
-		SetState(MARIO_STATE_AUTO_FALL);
-	}
-
-	if (isAutoWalkRight && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_WALK_RIGHT_TIMEOUT))
-	{
-		SetState(MARIO_STATE_WALKING_RIGHT);
-		isAutoStop = true;
-		if (!isAutoStop)
-		{
-			time_auto_raised_head = GetTickCount64();
-		}
-	}
-
-	if (isAutoStop && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_STOP_TIMEOUT))
-	{
-		vx = 0.0f;
-		isAutoWalkRight = false;
-	}
+	HandleAutomation();
+	
 
 	isOnPlatform = false;
 	isCollisionPipeline = false;
@@ -859,6 +820,8 @@ int CMario::GetAniIdChangeLevel()
 	return aniId;
 }
 
+
+//FUNCTION
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
@@ -1124,6 +1087,7 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
+		time_die = GetTickCount64();
 		break;
 	}
 	default:
@@ -1251,7 +1215,6 @@ void CMario::CountDown1Second() {
 	{
 		time = 0;
 		SetState(MARIO_STATE_DIE);
-		CGame::GetInstance()->InitiateSwitchScene(DATA_ID_WORLD_SCENE);
 	}
 }
 
@@ -1518,5 +1481,65 @@ void CMario::SummonGreenMario()
 	if (isAutoSit && CountDownTimer2(time_auto_sit, MARIO_AUTO_SIT_TIMEOUT))
 	{
 		SetState(MARIO_STATE_AUTO_IDLE);
+	}
+}
+
+void CMario::MarioDie()
+{
+	if (y > MARIO_POSITION_DIE_Y)
+	{
+		SetState(MARIO_STATE_DIE);
+	}
+
+	if ((state == MARIO_STATE_DIE) && CountDownTimer2(time_die, MARIO_TIME_DIE))
+	{
+		CGame::GetInstance()->InitiateSwitchScene(DATA_ID_WORLD_SCENE);
+	}
+}
+
+void CMario::HandleAutomation()
+{
+	if (isAutoRaisedHead && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_RAISED_HEAD_TIMEOUT))
+	{
+		isAutoRaisedHead = false;
+		isAutoRaisedHead2 = true;
+		time_auto_raised_head = GetTickCount64();
+	}
+
+	if (isAutoRaisedHead2 && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_JUMP_EAT_LEAF_TIMEOUT))
+	{
+		isAutoRaisedHead2 = false;
+		isAutoFail = true;
+		SetState(MARIO_STATE_JUMP);
+		time_auto_raised_head = GetTickCount64();
+	}
+
+	if (isAutoFail && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_FAIL_SLOWLY_TIMEOUT))
+	{
+		isAutoFail = false;
+		vx = 0.0f;
+		time_auto_raised_head = GetTickCount64();
+		isAutoWalkRight = true;
+	}
+
+	if (isAutoFail)
+	{
+		SetState(MARIO_STATE_AUTO_FALL);
+	}
+
+	if (isAutoWalkRight && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_WALK_RIGHT_TIMEOUT))
+	{
+		SetState(MARIO_STATE_WALKING_RIGHT);
+		isAutoStop = true;
+		if (!isAutoStop)
+		{
+			time_auto_raised_head = GetTickCount64();
+		}
+	}
+
+	if (isAutoStop && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_STOP_TIMEOUT))
+	{
+		vx = 0.0f;
+		isAutoWalkRight = false;
 	}
 }

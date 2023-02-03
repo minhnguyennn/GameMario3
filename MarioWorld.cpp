@@ -25,7 +25,7 @@ void CMarioWorld::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CMarioWorld::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(ID_ANI_SMALL_MARIO_WORLD)->Render(x, y);
+	if(isDelay) animations->Get(ID_ANI_SMALL_MARIO_WORLD)->Render(x, y);
 	RenderBoundingBox();
 }
 

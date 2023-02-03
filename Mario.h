@@ -320,6 +320,8 @@
 #define MARIO_AUTO_FAIL_SLOWLY_TIMEOUT			1500
 #define MARIO_AUTO_WALK_RIGHT_TIMEOUT			500
 #define MARIO_AUTO_STOP_TIMEOUT					2500
+#define MARIO_TIME_DIE							3000
+#define MARIO_POSITION_DIE_Y					440
 
 class CMario : public CGameObject
 {
@@ -355,6 +357,7 @@ class CMario : public CGameObject
 	ULONGLONG time_auto_sit;
 	ULONGLONG time_auto_walk_left;
 	ULONGLONG time_auto_raised_head;
+	ULONGLONG time_die;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -432,6 +435,7 @@ public:
 		time_auto_sit = 0;
 		time_auto_walk_left = 0;
 		time_auto_raised_head = 0;
+		time_die = 0;
 
 		isSlowFly = false;
 		isAttack = false;
@@ -462,6 +466,7 @@ public:
 		isAutoFail = false;
 		isAutoWalkRight = false;
 		isAutoStop = false;
+		isUnTouchable = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;
@@ -565,4 +570,6 @@ public:
 	void MarioNotKickWhenTimeout();
 	void MarioUntouchableTimeout();
 	void SummonGreenMario();
+	void MarioDie();
+	void HandleAutomation();
 };
