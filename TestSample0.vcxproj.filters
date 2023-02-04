@@ -100,6 +100,18 @@
     <Filter Include="Header Files\Scenes\WorldMap\Scene">
       <UniqueIdentifier>{8967fc04-2c92-48cc-9292-137347808da3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scenes\IntroMap\Scene">
+      <UniqueIdentifier>{8f73f22d-86b5-4228-8b37-147e0a27bf98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\IntroMap\Objects">
+      <UniqueIdentifier>{de7c4a4d-2123-44ce-94df-2fda31e1abc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\IntroMap\KeyBoard">
+      <UniqueIdentifier>{796c491f-03e4-4762-be01-d455e4b82c35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes\IntroMap\IntroMap">
+      <UniqueIdentifier>{fef201f2-4e12-4eed-9c66-00645d58df81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -243,29 +255,29 @@
     <ClCompile Include="WorldScene.cpp">
       <Filter>Header Files\Scenes\WorldMap\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="IntroScene.cpp">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClCompile>
-    <ClCompile Include="IntroBackground.cpp">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClCompile>
-    <ClCompile Include="IntroKey.cpp">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClCompile>
-    <ClCompile Include="CurTain.cpp">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClCompile>
-    <ClCompile Include="IntroSummonObject.cpp">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
+    <ClCompile Include="IntroGoomba.cpp">
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
     </ClCompile>
     <ClCompile Include="IntroKoopa.cpp">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClCompile>
-    <ClCompile Include="IntroGoomba.cpp">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
     </ClCompile>
     <ClCompile Include="IntroLeaf.cpp">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroScene.cpp">
+      <Filter>Header Files\Scenes\IntroMap\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroKey.cpp">
+      <Filter>Header Files\Scenes\IntroMap\KeyBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="CurTain.cpp">
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroSummonObject.cpp">
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroBackground.cpp">
+      <Filter>Header Files\Scenes\IntroMap\IntroMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -419,29 +431,29 @@
     <ClInclude Include="WorldScene.h">
       <Filter>Header Files\Scenes\WorldMap\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="IntroScene.h">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClInclude>
-    <ClInclude Include="IntroBackground.h">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClInclude>
-    <ClInclude Include="IntroKey.h">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClInclude>
-    <ClInclude Include="CurTain.h">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClInclude>
-    <ClInclude Include="IntroSummonObject.h">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
+    <ClInclude Include="IntroGoomba.h">
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
     </ClInclude>
     <ClInclude Include="IntroKoopa.h">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
-    </ClInclude>
-    <ClInclude Include="IntroGoomba.h">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
     </ClInclude>
     <ClInclude Include="IntroLeaf.h">
-      <Filter>Header Files\Scenes\IntroMap</Filter>
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroScene.h">
+      <Filter>Header Files\Scenes\IntroMap\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroKey.h">
+      <Filter>Header Files\Scenes\IntroMap\KeyBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="CurTain.h">
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroSummonObject.h">
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroBackground.h">
+      <Filter>Header Files\Scenes\IntroMap\IntroMap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

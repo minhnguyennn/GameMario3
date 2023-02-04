@@ -361,6 +361,7 @@ class CMario : public CGameObject
 	ULONGLONG time_die;
 	ULONGLONG time_collision_mario;
 	ULONGLONG time_collision_card_box;
+	ULONGLONG time_collision_button;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -443,6 +444,7 @@ public:
 		time_die = 0;
 		time_collision_mario = 0;
 		time_collision_card_box = 0;
+		time_collision_button = 0;
 
 		isSlowFly = false;
 		isAttack = false;
@@ -492,6 +494,9 @@ public:
 		number_touch_koopa = 0;
 		position_x_out_map = 0;
 	}
+	void SetTimeCollisionButton(ULONGLONG time_collision_button) { this->time_collision_button = time_collision_button; }
+	ULONGLONG GetTimeCollisionButton() { return time_collision_button; }
+
 	void SetIsCollisionCardBox(bool isCollisionCardBox) { this->isCollisionCardBox = isCollisionCardBox; }
 	bool GetIsCollisionCardBox() { return isCollisionCardBox; }
 

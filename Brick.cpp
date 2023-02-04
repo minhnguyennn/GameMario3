@@ -10,10 +10,15 @@
 void CBrick::Render()
 {
 	if (!checkObjectInCamera()) return;
-	int AniId = 0;
-	if (isCoin) AniId = ID_ANI_BRICK_COIN;
-	else AniId = ID_ANI_BRICK;
-	CAnimations::GetInstance()->Get(AniId)->Render(x, y);
+	if (isBrick)
+	{
+		if (random == BRICK_RANDOM_0)
+			CAnimations::GetInstance()->Get(ID_ANI_BRICK)->Render(x, y);
+		else if (random == BRICK_RANDOM_1)
+			CAnimations::GetInstance()->Get(ID_ANI_BRICK)->Render(x, y - BRICK_Y_ADJUST);
+	}
+	else if (CData::GetInstance()->GetIsCoin()) CAnimations::GetInstance()->Get(ID_ANI_BRICK_COIN)->Render(x, y);
+	else CAnimations::GetInstance()->Get(ID_ANI_BRICK)->Render(x, y);
 	//RenderBoundingBox();
 }
 
@@ -27,11 +32,12 @@ void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
-	
-	CountDownConvertCoin();
 	bool isConvert = CData::GetInstance()->GetIsConvertBrick();
-	if (isConvert) isCoin = true;
-	else isCoin = false;
+	if (isConvert) isBrick = true;
+	else isBrick = false;
+	/*if (isConvert) isCoin = true;
+	else isCoin = false;*/
+	CountDownConvertCoin();
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -82,19 +88,33 @@ void CBrick::SummonQuestionBrick(int type_question_brick)
 
 void CBrick::CountDownConvertCoin()
 {
-	if (CData::GetInstance()->GetIsConvertBrick())
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (isBrick)
+	{
+		random = rand() % BRICK_RANDOM_SUM;
+	}
+	if (CData::GetInstance()->GetIsConvertBrick() && (GetTickCount64() - mario->GetTimeCollisionButton() > BRICK_TIME_COUTDOWN))
+	{
+		mario->SetTimeCollisionButton(0);
+		CData::GetInstance()->SetIsConvertBrick(false);
+		CData::GetInstance()->SetIsCoin(true);
+	}
+	if (CData::GetInstance()->GetIsCoin())
 	{
 		if (time_convert > 0)
 		{
 			if (GetTickCount64() - time_count_down > BRICK_TIME_COUTDOWN)
 			{
+				isCoin = true;
 				time_convert--;
 				time_count_down = GetTickCount64();
 			}
 		}
 		else
 		{
-			CData::GetInstance()->SetIsConvertBrick(false);
+			isCoin = false;
+			CData::GetInstance()->SetIsCoin(false);
 		}
 	}
 }

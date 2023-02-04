@@ -6,6 +6,7 @@ CCurTain::CCurTain(float x, float y) : CGameObject(x, y)
 	isLogo = false;
 	isCurTain = true;
 	isStop = false;
+
 	vy = -CURTAIN_VY;
 	time_curtain_up = GetTickCount64();
 	time_logo_down = 0;
@@ -34,7 +35,7 @@ void CCurTain::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isVibrate)
 	{
-		random = rand() % 2;
+		random = rand() % CURTAIN_SUM_RANDOM;
 	}
 
 	if (isVibrate && GetTickCount64() - time_vibrate > CURTAIN_TIME_1000)

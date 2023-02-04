@@ -187,7 +187,11 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 	CButton* button = dynamic_cast<CButton*>(e->obj);
 	if (e->ny < 0)
 	{
-		if (!button->GetIsPressed()) CData::GetInstance()->SetIsConvertBrick(true);
+		if (!button->GetIsPressed())
+		{
+			time_collision_button = GetTickCount64();
+			CData::GetInstance()->SetIsConvertBrick(true);
+		}
 		button->SetIsPressed(true);
 	}
 }

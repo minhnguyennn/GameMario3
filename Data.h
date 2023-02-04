@@ -31,6 +31,7 @@ class CData
 {
 	static CData* __instance;
 	bool isConvertBrick;
+	bool isCoin;
 	int card_box;
 
 	int number_touch_card_box;
@@ -60,6 +61,7 @@ public:
 		this->isDrawCardBox = false;
 		this->isGoBackWorldMap = false;
 		this->isResetGame = false;
+		this->isCoin = false;
 		
 		this->card_box = 0;
 		this->mario_score = 0;
@@ -74,6 +76,9 @@ public:
 		this->mario_time = 0;
 		this->mario_level = 0;
 	};
+	void SetIsCoin(bool isCoin) { this->isCoin = isCoin; }
+	bool GetIsCoin() { return isCoin; }
+
 	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; }
 	int GetMarioLevel() { return mario_level; }
 

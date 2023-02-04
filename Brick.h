@@ -23,21 +23,37 @@
 #define BRICK_TYPE_MUSHROOM 3
 
 //TIME
-#define BRICK_TIME_COUTDOWN 1000
-#define BRICK_CONVERT_TIMEOUT 7
+#define BRICK_TIME_COUTDOWN		1000
+#define BRICK_CONVERT_TIMEOUT	7
+#define BRICK_Y_ADJUST			1
+
+//random
+#define BRICK_RANDOM_SUM	2
+#define BRICK_RANDOM_0		0
+#define BRICK_RANDOM_1		1
 
 class CBrick : public CGameObject 
 {
 	int type;
 	int time_convert;
+	int random;
+	
 	ULONGLONG time_count_down;
+	ULONGLONG time_coin;
+
 	bool isCoin;
+	bool isBrick;
 public:
 	CBrick(float x, float y, int type) : CGameObject(x, y) 
 	{
 		this->type = type;
+		random = 0;
+
 		isCoin = false;
-		time_convert = BRICK_CONVERT_TIMEOUT;
+		isBrick = false;
+
+		time_convert = 7;
+		time_coin = 0;
 		time_count_down = 0;
 	}
 	void Render();
