@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Animation.h"
 #include "Animations.h"
+#include "Data.h"
 
 //ANIMATION
 #define ID_ANI_BRICK 10000
@@ -70,7 +71,7 @@ public:
 	};
 	int IsBlocking() 
 	{ 
-		if (isCoin)
+		if (CData::GetInstance()->GetIsCoin())
 			return 0;
 		else
 			return 1;

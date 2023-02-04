@@ -17,8 +17,14 @@ void CBrick::Render()
 		else if (random == BRICK_RANDOM_1)
 			CAnimations::GetInstance()->Get(ID_ANI_BRICK)->Render(x, y - BRICK_Y_ADJUST);
 	}
-	else if (CData::GetInstance()->GetIsCoin()) CAnimations::GetInstance()->Get(ID_ANI_BRICK_COIN)->Render(x, y);
-	else CAnimations::GetInstance()->Get(ID_ANI_BRICK)->Render(x, y);
+	else if (CData::GetInstance()->GetIsCoin())
+	{
+		 CAnimations::GetInstance()->Get(ID_ANI_BRICK_COIN)->Render(x, y);
+	}
+	else
+	{
+		CAnimations::GetInstance()->Get(ID_ANI_BRICK)->Render(x, y);
+	}
 	//RenderBoundingBox();
 }
 

@@ -233,7 +233,7 @@ void CMario::OnCollisionWithFireBalls(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) 
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-	if (brick->GetIsCoin())
+	if (CData::GetInstance()->GetIsCoin())
 	{
 		brick->SetState(BRICK_STATE_DELETE);
 		CData::GetInstance()->IncreaseCoin();
