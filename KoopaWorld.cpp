@@ -30,7 +30,7 @@ void CKoopaWorld::Render()
 		aniID = ID_ANI_KOOPA_WORLD_LEFT;
 	}
 	animations->Get(aniID)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CKoopaWorld::OnNoCollision(DWORD dt) {

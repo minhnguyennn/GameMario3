@@ -179,7 +179,7 @@ void CIntroGoomba::Render()
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	}
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CIntroGoomba::SetState(int state)

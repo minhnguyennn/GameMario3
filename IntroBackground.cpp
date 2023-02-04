@@ -86,7 +86,7 @@ void CIntroBackGround::Render()
 			else animations->Get(ID_ANI_INTRO_BACKGROUND_ARROW)->Render(x - 55, y + 52);
 		}
 	}
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CIntroBackGround::SetState(int state) {

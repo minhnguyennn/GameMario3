@@ -6,7 +6,7 @@ void CDebris::Render()
 	if (!checkObjectInCamera()) return;
 	int aniId = ID_ANI_DEBRIS;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CDebris::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

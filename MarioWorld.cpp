@@ -56,7 +56,7 @@ void CMarioWorld::Render()
 			animations->Get(ID_ANI_SMALL_MARIO_WORLD)->Render(x, y);
 
 	}
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CMarioWorld::GetBoundingBox(float& l, float& t, float& r, float& b)

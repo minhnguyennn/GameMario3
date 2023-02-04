@@ -64,5 +64,5 @@ void CDoor::Render()
 		animations->Get(ID_ANI_YELLOW_NODE)->Render(x, y);
 	}
 	
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }

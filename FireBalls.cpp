@@ -85,5 +85,3 @@ void CFireBalls::SetState(int state)
 	}
 	CGameObject::SetState(state);
 }
-
-

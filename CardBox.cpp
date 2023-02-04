@@ -5,7 +5,6 @@
 #include "Automation.h"
 #include "Data.h"
 
-
 void CCardBox::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (!checkObjectInCamera()) return;

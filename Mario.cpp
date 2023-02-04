@@ -423,7 +423,7 @@ void CMario::Render()
 		aniId = ID_ANI_MARIO_INVISIBLE;
 		animations->Get(aniId)->Render(x, y);
 	}
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 int CMario::GetAniIdSmall()

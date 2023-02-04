@@ -144,7 +144,7 @@ void CVenusFireTrap::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CVenusFireTrap::SetState(int state)

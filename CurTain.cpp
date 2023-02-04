@@ -74,7 +74,7 @@ void CCurTain::Render()
 	}
 	else animations->Get(ID_ANI_CURTAIN)->Render(x, y);
 	
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CCurTain::OnNoCollision(DWORD dt) 

@@ -31,7 +31,7 @@ void CTail::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ID_ANI_TAIL)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CTail::GetBoundingBox(float& l, float& t, float& r, float& b)

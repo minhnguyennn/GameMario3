@@ -9,5 +9,5 @@ void CHelp::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ID_ANI_HELP)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }

@@ -6,8 +6,6 @@
 #include"Goomba.h"
 #include"Goomba.h"
 
-
-
 CFireBallOfMario::CFireBallOfMario(float x, float y) :CGameObject(x, y)
 {
 	SetState(FIREBALLS_STATE_SHOOT);

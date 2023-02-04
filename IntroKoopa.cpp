@@ -264,7 +264,7 @@ void CIntroKoopa::Render()
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	else
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y + KOOPA_Y_ADJUST);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CIntroKoopa::SetState(int state)
