@@ -13,6 +13,8 @@
 #include "Data.h"
 #include "IntroBackground.h"
 #include "IntroKey.h"
+#include "IntroKoopa.h"
+
 
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
@@ -83,8 +85,9 @@ void CIntroScene::_ParseSection_ASSETS(string line) {
 
 void CIntroScene::_ParseSection_OBJECTS(string line) 
 {
+	LPINTROSCENE intro_scene = (LPINTROSCENE)CGame::GetInstance()->GetCurrentScene();
+	CIntroBackGround* intro_background = (CIntroBackGround*)intro_scene->GetPlayer();
 	vector<string> tokens = split(line);
-
 	// skip invalid lines - an object set must have at least id, x, y
 	if (tokens.size() < 2) return;
 
@@ -107,6 +110,19 @@ void CIntroScene::_ParseSection_OBJECTS(string line)
 		player = (CIntroBackGround*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
+		break;
+	}
+	case OBJECT_TYPE_INTRO_KOOPA:
+	{
+		if (!intro_background->GetIsSummon())
+		{
+			return;
+		}
+			
+		int level = (int)atof(tokens[3].c_str());
+		int type = (int)atof(tokens[4].c_str());
+		obj = new CIntroKoopa(x, y, level, type);
+		
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:

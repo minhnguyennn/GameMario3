@@ -29,3 +29,4 @@
 
 //////////////// OBJECT INTRO MAP ////////////////
 #define OBJECT_TYPE_BACKGROUND_INTRO	23
+#define OBJECT_TYPE_INTRO_KOOPA			24

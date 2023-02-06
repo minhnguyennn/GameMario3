@@ -1,4 +1,4 @@
- #include <algorithm>
+#include <algorithm>
 #include "debug.h"
 #include "Mario.h"
 #include "Game.h"
@@ -29,15 +29,15 @@
 #include "IntroGoomba.h"
 #include "IntroLeaf.h"
 
-void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
-{	
+void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
 	ChangeLevelMario(dt);
 	AccelerationFunction();
 	CalculatePowerToFly();
 	CountDown1Second();
 	CountDownKoopaTouch();
 	CoinMax();
-	HeartMax(); 
+	HeartMax();
 	GoDownPipeline();
 	MarioMoveAutomationWhenGameTimeout();
 	MarioNotAttackWhenTimeout();
@@ -49,8 +49,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//HANDLE AUTOMATION
 	SummonGreenMario();
 	HandleAutomation();
-	
-	
+
+
 	isOnPlatform = false;
 	isCollisionPipeline = false;
 
@@ -74,13 +74,13 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->ny != 0 && e->obj->IsBlocking()) 
+	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
-		
-		if (e->ny < 0) 
-		{ 
-			isOnPlatform = true; 
+
+		if (e->ny < 0)
+		{
+			isOnPlatform = true;
 			isGhostBox = false;
 		}
 		else
@@ -89,10 +89,10 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 			isDecreasePower = true;
 		}
 	}
-	else if (e->nx != 0 && e->obj->IsBlocking()) 
+	else if (e->nx != 0 && e->obj->IsBlocking())
 	{
 		vx = 0;
-		if(!isDecreasePower) time_power = GetTickCount64();
+		if (!isDecreasePower) time_power = GetTickCount64();
 		isDecreasePower = true;
 	}
 
@@ -220,17 +220,17 @@ void CMario::OnCollisionWithCardBox(LPCOLLISIONEVENT e)
 	card_box->SetState(CARD_BOX_STATE_UP);
 }
 
-void CMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e) 
+void CMario::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 {
 	this->LowerLevel();
 }
 
-void CMario::OnCollisionWithFireBalls(LPCOLLISIONEVENT e) 
+void CMario::OnCollisionWithFireBalls(LPCOLLISIONEVENT e)
 {
 	this->LowerLevel();
 }
 
-void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) 
+void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 	if (CData::GetInstance()->GetIsCoin())
@@ -244,14 +244,14 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	if (e->ny < 0) 
+	if (e->ny < 0)
 	{
 		goomba->LowerLevel();
 		SetupTouchTime();
 		SummonScore();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
-	else 
+	else
 	{
 		LowerLevel();
 	}
@@ -261,25 +261,25 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 {
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	float plant_form_y = platform->GetY();
-	if (!platform->IsBlocking()) 
+	if (!platform->IsBlocking())
 	{
-		if (e->ny < 0) 
+		if (e->ny < 0)
 		{
 			vy = 0;
 			isOnPlatform = true;
 			isGhostBox = true;
-			if (level != MARIO_LEVEL_SMALL) 
+			if (level != MARIO_LEVEL_SMALL)
 			{
-				if (!isSitting) 
+				if (!isSitting)
 				{
 					y = (plant_form_y - MARIO_DISTANCE_WITH_GHOST_BOX);
 				}
-				else 
+				else
 				{
 					y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - MARIO_ON_PLATFORM_Y_ADJUST));
 				}
 			}
-			else 
+			else
 			{
 				y = (plant_form_y - (MARIO_DISTANCE_WITH_GHOST_BOX - MARIO_SMALL_ON_PLATFORM_Y_ADJUST));
 			}
@@ -296,9 +296,9 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		SummonScore();
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		if (koopa->GetLevel() == KOOPA_LEVEL_BIG) koopa->SetLevel(KOOPA_LEVEL_SMALL);
-		else 
+		else
 		{
-			if (koopa->GetIsAttacking() || koopa->GetState() == KOOPA_STATE_WALKING) 
+			if (koopa->GetIsAttacking() || koopa->GetState() == KOOPA_STATE_WALKING)
 			{
 				koopa->SetY(koopa->GetY() - KOOPA_DISTANCE_WHEN_ATTACKING);
 				koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
@@ -309,11 +309,11 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			}
 		}
 	}
-	else if (e->nx != 0) 
+	else if (e->nx != 0)
 	{
-		if (koopa->GetLevel() == KOOPA_LEVEL_SMALL) 
+		if (koopa->GetLevel() == KOOPA_LEVEL_SMALL)
 		{
-			if ((koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetIsAttacking())) 
+			if ((koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetIsAttacking()))
 			{
 				LowerLevel();
 			}
@@ -324,11 +324,11 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			}
 			else if ((koopa->GetIsDefense() || koopa->GetIsWaiting() || koopa->GetIsTurnOver()) && !koopa->GetIsCollisionTail())
 			{
- 				SetState(MARIO_STATE_KICK);
+				SetState(MARIO_STATE_KICK);
 				koopa->SetState(KOOPA_STATE_ATTACKING);
 			}
 		}
-		else 
+		else
 		{
 			LowerLevel();
 		}
@@ -346,7 +346,7 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
 	//CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
-	
+
 }
 
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
@@ -362,7 +362,7 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 	CLeaf* leaf = (CLeaf*)e->obj;
 	leaf->SummonScore();
 	leaf->Delete();
-	if (level == MARIO_LEVEL_SMALL) 
+	if (level == MARIO_LEVEL_SMALL)
 	{
 		SetLevel(MARIO_LEVEL_BIG);
 	}
@@ -375,7 +375,7 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
 	CQuestionBrick* quest_brick = dynamic_cast<CQuestionBrick*>(e->obj);
-	if (quest_brick->GetState() == QUESTION_STATE_IDLE && e->ny > 0) 
+	if (quest_brick->GetState() == QUESTION_STATE_IDLE && e->ny > 0)
 		quest_brick->SetState(QUESTION_STATE_MOVE_UP);
 }
 
@@ -601,7 +601,7 @@ int CMario::GetAniIdBig()
 	}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
-	
+
 	return aniId;
 }
 
@@ -766,8 +766,8 @@ int CMario::GetAniIdRaccoon()
 		}
 		else if (isDeceleration)
 		{
-				if (nx > 0)	aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
-				else  aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT;
+			if (nx > 0)	aniId = ID_ANI_MARIO_RACCOON_WALKING_RIGHT;
+			else  aniId = ID_ANI_MARIO_RACCOON_WALKING_LEFT;
 		}
 		else
 		{
@@ -873,7 +873,7 @@ void CMario::SetState(int state)
 		isAutoWalkLeft = true;
 		isAutoSit = false;
 		time_auto_walk_left = GetTickCount64();
-		
+
 		break;
 	}
 	case MARIO_STATE_AUTO_SIT:
@@ -1114,24 +1114,24 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 			right = left + MARIO_BIG_SITTING_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
 		}
-		else 
+		else
 		{
-			left = x - MARIO_BIG_BBOX_WIDTH/2;
-			top = y - MARIO_BIG_BBOX_HEIGHT/2;
+			left = x - MARIO_BIG_BBOX_WIDTH / 2;
+			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
 			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
 	else
 	{
-		left = x - MARIO_SMALL_BBOX_WIDTH/2;
-		top = y - MARIO_SMALL_BBOX_HEIGHT/2;
+		left = x - MARIO_SMALL_BBOX_WIDTH / 2;
+		top = y - MARIO_SMALL_BBOX_HEIGHT / 2;
 		right = left + MARIO_SMALL_BBOX_WIDTH;
 		bottom = top + MARIO_SMALL_BBOX_HEIGHT;
 	}
 }
 
-void CMario::LowerLevel() 
+void CMario::LowerLevel()
 {
 	if (untouchable == 0)
 	{
@@ -1199,26 +1199,26 @@ void CMario::ChangeLevelMario(DWORD dt)
 }
 
 void CMario::CountDown1Second() {
-	if (time > 0) 
+	if (time > 0)
 	{
-		if (MarioOutWorld()) 
+		if (MarioOutWorld())
 		{
-			if (CountDownTimer2(count_1_second, 0)) 
+			if (CountDownTimer2(count_1_second, 0))
 			{
 				time -= MARIO_TIME_DECREASE_WHEN_OUTMAP;
 				count_1_second = GetTickCount64();
 			}
 		}
-		else 
+		else
 		{
-			if (CountDownTimer2(count_1_second, TIME_ONE_SECOND)) 
+			if (CountDownTimer2(count_1_second, TIME_ONE_SECOND))
 			{
 				time--;
 				count_1_second = GetTickCount64();
 			}
 		}
 	}
-	else 
+	else
 	{
 		time = 0;
 		CGame::GetInstance()->InitiateSwitchScene(DATA_ID_WORLD_SCENE);
@@ -1248,12 +1248,13 @@ void CMario::SummonFireBalls() {
 	scene->CreateObject(frBalls);
 	if (this->nx > 0) {
 		frBalls->SetState(FIREBALLS_STATE_RIGHT);
-	} else {
+	}
+	else {
 		frBalls->SetState(FIREBALLS_STATE_LEFT);
 	}
 }
 
-void CMario::SummonTail() 
+void CMario::SummonTail()
 {
 	if (isChangLevel || isSitting) return;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
@@ -1269,7 +1270,7 @@ void CMario::MarioHoldKoopaFunction()
 {
 	if (isHolding)
 	{
-		if (koopa_holding->GetIsWalking()) 
+		if (koopa_holding->GetIsWalking())
 		{
 			isHolding = false;
 			return;
@@ -1329,8 +1330,8 @@ void CMario::CalculatePowerToFly()
 		isDecreasePower = false;
 		time_power = 0;
 	}
-	
-	if (isFlying && IsMaxPower()) 
+
+	if (isFlying && IsMaxPower())
 	{
 		if (CountDownTimer2(time_fly, MARIO_FLYING_TIMEOUT))
 		{
@@ -1339,7 +1340,7 @@ void CMario::CalculatePowerToFly()
 			time_fly = 0;
 		}
 	}
-	else 
+	else
 	{
 		if (isRunning && isOnPlatform && !isDecreasePower && !IsChangeDirection())
 		{

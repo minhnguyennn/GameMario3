@@ -76,6 +76,7 @@ public:
 		this->mario_time = 0;
 		this->mario_level = 0;
 	};
+
 	void SetIsCoin(bool isCoin) { this->isCoin = isCoin; }
 	bool GetIsCoin() { return isCoin; }
 

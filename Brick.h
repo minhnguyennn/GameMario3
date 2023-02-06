@@ -53,7 +53,7 @@ public:
 		isCoin = false;
 		isBrick = false;
 
-		time_convert = 7;
+		time_convert = 6;
 		time_coin = 0;
 		time_count_down = 0;
 	}

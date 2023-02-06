@@ -51,14 +51,20 @@ public:
 		this->time_change_summon = 0;
 	}
 
+	void SetIsSummon(bool isSummon) { this->isSummon = isSummon; }
+	bool GetIsSummon() { return isSummon; }
+
 	void SetIsKeyUp(bool isKeyUp) { this->isKeyUp = isKeyUp; }
 	bool GetIsKeyUp() { return isKeyUp; }
+
 	int IsCollidable() { return 0; }
 	int IsBlocking() { return 0; }
+
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void SetState(int state);
 	void GetBoundingBox(float& l, float& t, float& r, float& b) {};
+
 	void SummonCurtain();
 	void SummonObject();
 };

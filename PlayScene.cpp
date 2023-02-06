@@ -101,6 +101,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
+
 	vector<string> tokens = split(line);
 
 	// skip invalid lines - an object set must have at least id, x, y
@@ -260,6 +261,7 @@ void CPlayScene::_ParseSection_HIDDEN_DATA(string line)
 	hidden_map->ExtractTileFromTileSet();
 	hidden_map->SetTileMapData(HiddenTileMapData);
 }
+
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -294,8 +296,6 @@ void CPlayScene::LoadAssets(LPCWSTR assetFile)
 
 	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
-
-
 
 
 void CPlayScene::Load()

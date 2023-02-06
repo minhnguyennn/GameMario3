@@ -12,3 +12,9 @@ Resource\PlayScene\goomba.txt
 
 #platform
 5	0	183	16	16	20	54000	54000	54000
+
+#red_koopa
+24	120	104	1	1
+
+#intro_mario
+#25	120	104

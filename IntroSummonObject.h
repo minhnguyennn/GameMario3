@@ -2,6 +2,12 @@
 #include"GameObject.h"
 //STATE
 #define INTRO_SUMMON_STATE_MARIO 1
+
+//position
+#define INTRO_NUMBER_120			120
+#define INTRO_NUMBER_56			56
+#define INTRO_NUMBER_26			26
+
 class CIntroSummonObject : public CGameObject
 {
 	bool isMarioJump;

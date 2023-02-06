@@ -1,3 +1,4 @@
+#include "BlackKoopa.h"
 #include"debug.h"
 #include"Platform.h"
 #include"PlayScene.h"
@@ -8,13 +9,11 @@
 #include"Mario.h"
 #include"Point.h"
 #include"Data.h"
-#include"IntroKoopa.h"
 #include"CurTain.h"
 #include"Leaf.h"
 #include"Koopa.h"
-#include"BlackKoopa.h"
 
-void CIntroKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void CBlackKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (isDie) return;
 
@@ -34,13 +33,13 @@ void CIntroKoopa::GetBoundingBox(float& left, float& top, float& right, float& b
 	}
 }
 
-void CIntroKoopa::OnNoCollision(DWORD dt)
+void CBlackKoopa::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	y += vy * dt;
 };
 
-void CIntroKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
+void CBlackKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CLeaf*>(e->obj)) return;
 	if (e->ny < 0)
@@ -67,26 +66,15 @@ void CIntroKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBrick(e);
 	else if (dynamic_cast<CVenusFireTrap*>(e->obj))
 		OnCollisionWithVenusFireTrap(e);
-	else if (dynamic_cast<CIntroKoopa*>(e->obj))
+	else if (dynamic_cast<CBlackKoopa*>(e->obj))
 		OnCollisionWithDifferentKoopa(e);
 	else if (dynamic_cast<CBrick*>(e->obj))
 		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-	else if (dynamic_cast<CBlackKoopa*>(e->obj))
-		OnCollisionWithBlackKoopa(e);
 }
 
-void CIntroKoopa::OnCollisionWithBlackKoopa(LPCOLLISIONEVENT e)
-{
-	CBlackKoopa* black_koopa = dynamic_cast<CBlackKoopa*>(e->obj);
-	if (nx != 0)
-	{
-		black_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
-	}
-}
-
-void CIntroKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+void CBlackKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 	if (isAttacking || isHeld)
@@ -95,7 +83,7 @@ void CIntroKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	}
 }
 
-void CIntroKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+void CBlackKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 	float left, top, right, bottom;
@@ -112,7 +100,7 @@ void CIntroKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 	}
 }
 
-void CIntroKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
+void CBlackKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 {
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	float plant_form_y = platform->GetY();
@@ -153,7 +141,7 @@ void CIntroKoopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 	}
 }
 
-void CIntroKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+void CBlackKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 {
 	//Question brick will summon leaf or green mushroom follow level mario
 	CQuestionBrick* question_brick = dynamic_cast<CQuestionBrick*>(e->obj);
@@ -166,7 +154,7 @@ void CIntroKoopa::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	}
 }
 
-void CIntroKoopa::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
+void CBlackKoopa::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 {
 	//Venus fire trap will deleted
 	CVenusFireTrap* vf_trap = dynamic_cast<CVenusFireTrap*>(e->obj);
@@ -180,16 +168,16 @@ void CIntroKoopa::OnCollisionWithVenusFireTrap(LPCOLLISIONEVENT e)
 	}
 }
 
-void CIntroKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
+void CBlackKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 {
-	CIntroKoopa* df_koopa = dynamic_cast<CIntroKoopa*>(e->obj);
+	CBlackKoopa* df_koopa = dynamic_cast<CBlackKoopa*>(e->obj);
 	SetState(KOOPA_STATE_DIE_TURN_OVER);
 }
 
-void CIntroKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CBlackKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//DebugOut(L"state: %d\n", state);
-	
+
 	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
 	/*LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
@@ -212,7 +200,7 @@ void CIntroKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
-void CIntroKoopa::Render()
+void CBlackKoopa::Render()
 {
 	if (!checkObjectInCamera()) return;
 	int aniId = 0;
@@ -279,11 +267,11 @@ void CIntroKoopa::Render()
 	//RenderBoundingBox();
 }
 
-void CIntroKoopa::SetState(int state)
+void CBlackKoopa::SetState(int state)
 {
 	switch (state)
 	{
-	case KOOPA_STATE_UP_UP:
+	case BLACK_KOOPA_STATE_UP_UP:
 	{
 		vx = KOOPA_TURN_UP_JUMP_VX;
 		vy = -KOOPA_TURN_UP_JUMP_VY;
@@ -300,7 +288,7 @@ void CIntroKoopa::SetState(int state)
 		isDie = true;
 		vx = -KOOPA_TURN_UP_JUMP_VX;
 		vy = -KOOPA_TURN_UP_JUMP_VY;
-		ay = KOOPA_AUTO_GRAVITY;
+		ay = BLACK_KOOPA_AUTO_GRAVITY;
 		break;
 	}
 	case KOOPA_STATE_TURN_OVER:
@@ -368,7 +356,7 @@ void CIntroKoopa::SetState(int state)
 	CGameObject::SetState(state);
 }
 
-int CIntroKoopa::isLeftWithMario()
+int CBlackKoopa::isLeftWithMario()
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)scene->GetPlayer();
@@ -376,7 +364,7 @@ int CIntroKoopa::isLeftWithMario()
 	else return 1;
 }
 
-void CIntroKoopa::LowerLevel()
+void CBlackKoopa::LowerLevel()
 {
 	if (level == KOOPA_LEVEL_BIG)
 	{
@@ -389,7 +377,7 @@ void CIntroKoopa::LowerLevel()
 	}
 }
 
-bool CIntroKoopa::CountDownTimer(int time)
+bool CBlackKoopa::CountDownTimer(int time)
 {
 	if (GetTickCount64() - time_line > time)
 	{

@@ -333,9 +333,9 @@ class CMario : public CGameObject
 	float maxVx;
 	float minVx;
 
-	float ax;		
+	float ax;
 	float ay;
-	int level; 
+	int level;
 	int untouchable;
 
 	int time;
@@ -483,7 +483,7 @@ public:
 		minVx = 0.0f;
 
 		ax = 0.0f;
-		ay = MARIO_GRAVITY; 
+		ay = MARIO_GRAVITY;
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -MARIO_NUMBER_START_UNTOUCHABLE;
@@ -514,7 +514,7 @@ public:
 	bool GetIsCollisionPipeline() { return isCollisionPipeline; }
 
 	void SetIsAttack(bool isAttack) { this->isAttack = isAttack; }
-	bool GetIsAttack() {return isAttack;  }
+	bool GetIsAttack() { return isAttack; }
 
 	bool GetIsOnPlatform() { return isOnPlatform; }
 
@@ -539,7 +539,7 @@ public:
 
 
 	void SetIsRunning(bool isRunning) { this->isRunning = isRunning; }
-	bool GetIsRunning() {return isRunning; }
+	bool GetIsRunning() { return isRunning; }
 
 	int IsCollidable() { return (state != MARIO_STATE_DIE); }
 
@@ -551,10 +551,10 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void SetLevel(int l);
-	void StartUntouchable() 
+	void StartUntouchable()
 	{
-		untouchable = 1; 
-		untouchable_start = GetTickCount64(); 
+		untouchable = 1;
+		untouchable_start = GetTickCount64();
 	}
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);

@@ -94,9 +94,6 @@
     <Filter Include="Header Files\Scenes\PlayScene\PlayScene">
       <UniqueIdentifier>{33e29a1c-aeef-455c-af65-e7457c194a47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Scenes\PlayScene\Data">
-      <UniqueIdentifier>{158bb5ec-0914-4618-8d5e-6aeec5dbaba8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Scenes\WorldMap\Scene">
       <UniqueIdentifier>{8967fc04-2c92-48cc-9292-137347808da3}</UniqueIdentifier>
     </Filter>
@@ -111,6 +108,9 @@
     </Filter>
     <Filter Include="Header Files\Scenes\IntroMap\IntroMap">
       <UniqueIdentifier>{fef201f2-4e12-4eed-9c66-00645d58df81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Data">
+      <UniqueIdentifier>{158bb5ec-0914-4618-8d5e-6aeec5dbaba8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -247,7 +247,7 @@
       <Filter>Header Files\Scenes\PlayScene\PlayScene</Filter>
     </ClCompile>
     <ClCompile Include="Data.cpp">
-      <Filter>Header Files\Scenes\PlayScene\Data</Filter>
+      <Filter>Header Files\Data</Filter>
     </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>Header Files\Scenes\PlayScene\Object\Effects</Filter>
@@ -278,6 +278,9 @@
     </ClCompile>
     <ClCompile Include="IntroBackground.cpp">
       <Filter>Header Files\Scenes\IntroMap\IntroMap</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackKoopa.cpp">
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -423,7 +426,7 @@
       <Filter>Header Files\Scenes\PlayScene\PlayScene</Filter>
     </ClInclude>
     <ClInclude Include="Data.h">
-      <Filter>Header Files\Scenes\PlayScene\Data</Filter>
+      <Filter>Header Files\Data</Filter>
     </ClInclude>
     <ClInclude Include="Effect.h">
       <Filter>Header Files\Scenes\PlayScene\Object\Effects</Filter>
@@ -454,6 +457,9 @@
     </ClInclude>
     <ClInclude Include="IntroBackground.h">
       <Filter>Header Files\Scenes\IntroMap\IntroMap</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackKoopa.h">
+      <Filter>Header Files\Scenes\IntroMap\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

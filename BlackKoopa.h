@@ -3,10 +3,10 @@
 #include "debug.h"
 #include "Koopa.h"
 
-#define KOOPA_STATE_UP_UP 1001
-#define KOOPA_AUTO_GRAVITY 0.002f
+#define BLACK_KOOPA_STATE_UP_UP			1
+#define BLACK_KOOPA_AUTO_GRAVITY		0.002f
 
-class CIntroKoopa : public CGameObject
+class CBlackKoopa : public CGameObject
 {
 protected:
 	float ax;
@@ -38,9 +38,8 @@ protected:
 	void OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
-	void OnCollisionWithBlackKoopa(LPCOLLISIONEVENT e);
 public:
-	CIntroKoopa(float x, float y, int level, int type) : CGameObject(x, y)
+	CBlackKoopa(float x, float y, int level, int type) : CGameObject(x, y)
 	{
 		this->type = type;
 		this->level = level;
@@ -110,3 +109,4 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	bool CountDownTimer(int time);
 };
+

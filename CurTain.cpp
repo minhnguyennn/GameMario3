@@ -68,7 +68,7 @@ void CCurTain::Render()
 	else if (isVibrate)
 	{
 		if (random == CURTAIN_NUMBER_RANDOM_0)
-			animations->Get(ID_ANI_LOGO)->Render(x, y + CURTAIN_ADJUST_Y);
+			animations->Get(ID_ANI_LOGO)->Render(x, y);
 		else if (random == CURTAIN_NUMBER_RANDOM_1)
 			animations->Get(ID_ANI_LOGO)->Render(x, y - CURTAIN_ADJUST_Y);
 	}

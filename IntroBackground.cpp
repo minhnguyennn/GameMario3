@@ -13,6 +13,7 @@
 #include "IntroGoomba.h"
 #include "IntroLeaf.h"
 #include "Data.h"
+#include "BlackKoopa.h"
 
 void CIntroBackGround::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) 
 {
@@ -20,18 +21,18 @@ void CIntroBackGround::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		LPINTROSCENE scene = (LPINTROSCENE)CGame::GetInstance()->GetCurrentScene();
 
-		CIntroKoopa* koopa = new CIntroKoopa(x, y - INTRO_BACKGROUND_Y_100, 1, 2);
-		scene->CreateObject(koopa);
-		koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
+		CIntroKoopa* green_koopa = new CIntroKoopa(x, y - INTRO_BACKGROUND_Y_100, 1, 2);
+		scene->CreateObject(green_koopa);
+		green_koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 
-		CIntroKoopa* koopa_2 = new CIntroKoopa(x + INTRO_BACKGROUND_X_40, y - INTRO_BACKGROUND_Y_100, 1, 2);
-		scene->CreateObject(koopa_2);
-		koopa_2->SetState(KOOPA_STATE_CLOSE_SHELL);
+		CBlackKoopa* black_koopa = new CBlackKoopa(x + INTRO_BACKGROUND_X_40, y - INTRO_BACKGROUND_Y_100, 1, 1);
+		scene->CreateObject(black_koopa);
+		black_koopa->SetState(KOOPA_STATE_CLOSE_SHELL);
 
 		CIntroGoomba* goomba = new CIntroGoomba(x - INTRO_BACKGROUND_X_86, y - INTRO_BACKGROUND_Y_100, 1, 1);
 		scene->CreateObject(goomba);
 
-		CIntroLeaf* leaf = new CIntroLeaf(x , y - INTRO_BACKGROUND_Y_50);
+		CIntroLeaf* leaf = new CIntroLeaf(x - 10 , y - INTRO_BACKGROUND_Y_50);
 		scene->CreateObject(leaf);
 
 		isSummon = false;
@@ -114,7 +115,7 @@ void CIntroBackGround::SetState(int state) {
 void CIntroBackGround::SummonCurtain() 
 {
 	LPINTROSCENE scene = (LPINTROSCENE)CGame::GetInstance()->GetCurrentScene();
-	CCurTain* curtain = new CCurTain(x, y - 26);
+	CCurTain* curtain = new CCurTain(x, y - INTRO_NUMBER_26);
 	scene->CreateObject(curtain);
 
 	CIntroSummonObject* summon = new CIntroSummonObject(x, y);

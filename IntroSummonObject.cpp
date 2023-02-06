@@ -56,6 +56,6 @@ void CIntroSummonObject::SummonMario()
 	CMario* mario_green = new CMario(x - 120, y + 56);
 	scene->CreateObject(mario_green);
 	mario_green->SetState(MARIO_STATE_WALKING_RIGHT);
-	mario_green->SetIsMarioGreen(true);
+	//mario_green->SetIsMarioGreen(true);
 	mario_green->SetState(MARIO_STATE_AUTO_JUMP);
 }
