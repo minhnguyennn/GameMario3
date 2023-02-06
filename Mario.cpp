@@ -159,20 +159,16 @@ void CMario::OnCollisionWithIntroKoopa(LPCOLLISIONEVENT e)
 	if (e->ny > 0)
 	{
 		intro_koopa->SetState(KOOPA_STATE_TURN_OVER);
+		intro_koopa->SetIsAutoAttack(true);
 		SetState(MARIO_STATE_AUTO_RAISED_HEAD);
-	}
-	if (e->nx != 0)
-	{
-		SetState(MARIO_STATE_KICK);
-		intro_koopa->SetState(KOOPA_STATE_ATTACKING);
 	}
 }
 
 void CMario::OnCollisionWithDifferentMario(LPCOLLISIONEVENT e)
 {
-	isDifferentMario = true;
+	/*isDifferentMario = true;
 	time_collision_mario = GetTickCount64();
-	SetState(MARIO_STATE_AUTO_HEIGHT_JUMP);
+	SetState(MARIO_STATE_AUTO_HEIGHT_JUMP);*/
 }
 
 void CMario::OnCollisionWithPipeline(LPCOLLISIONEVENT e)
@@ -1488,6 +1484,21 @@ void CMario::SummonGreenMario()
 	{
 		SetState(MARIO_STATE_JUMP);
 		isAutoJump = false;
+		isAutoHeightJump = true;
+		time_auto_jump = GetTickCount64();
+	}
+
+	if (isAutoHeightJump && CountDownTimer2(time_auto_jump, 1150))
+	{
+		isAutoHeightJump = false;
+		isStopGreen = true;
+		vy = -0.3f;
+		time_auto_jump = GetTickCount64();
+	}
+
+	if (isStopGreen && CountDownTimer2(time_auto_jump, 2000))
+	{
+		vx = 0.0f;
 	}
 
 	if (isAutoWalkLeft && CountDownTimer2(time_auto_walk_left, MARIO_AUTO_WALK_LEFT_TIMEOUT))
@@ -1521,6 +1532,7 @@ void CMario::HandleAutomation()
 	{
 		isCollisionCardBox = false;
 	}
+
 
 	if (isAutoRaisedHead && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_RAISED_HEAD_TIMEOUT))
 	{
@@ -1560,9 +1572,27 @@ void CMario::HandleAutomation()
 		}
 	}
 
-	if (isAutoStop && CountDownTimer2(time_auto_raised_head, MARIO_AUTO_STOP_TIMEOUT))
+	if (isAutoStop && CountDownTimer2(time_auto_raised_head, 2000))
 	{
-		vx = 0.0f;
+		SetState(MARIO_STATE_WALKING_LEFT);
 		isAutoWalkRight = false;
+		isJumpKoopa = true;
+		time_auto_raised_head = GetTickCount64();
+		isAutoStop = false;
 	}
+
+	if (isJumpKoopa && CountDownTimer2(time_auto_raised_head, 1500))
+	{
+		SetState(MARIO_STATE_JUMP);
+		isStopJumpKoopa = true;
+		time_stop_jump = GetTickCount64();
+		isJumpKoopa = false;
+	}
+
+	if (isStopJumpKoopa && CountDownTimer2(time_stop_jump, 200))
+	{	
+		SetState(MARIO_STATE_RELEASE_JUMP);
+		vx = 0.0f;
+	}
+
 }

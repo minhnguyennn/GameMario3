@@ -24,6 +24,7 @@ protected:
 	bool isHeld;
 	bool isGhostBox;
 	bool isCollisionTail;
+	bool isAutoDie;
 
 	ULONGLONG die_start;
 	ULONGLONG time_line;
@@ -31,6 +32,7 @@ protected:
 	ULONGLONG time_turn_over;
 	ULONGLONG time_defense;
 	ULONGLONG time_collision_tail;
+	ULONGLONG time_auto_die;
 
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
@@ -55,6 +57,7 @@ public:
 		isGhostBox = false;
 		isWalking = false;
 		isCollisionTail = false;
+		isAutoDie = false;
 
 		SetState(KOOPA_STATE_CLOSE_SHELL);
 
@@ -62,6 +65,7 @@ public:
 		time_turn_over = 0;
 		time_defense = 0;
 		time_collision_tail = 0;
+		time_auto_die = GetTickCount64();
 	};
 
 	void SetIsCollisionTail(bool isCollisionTail)

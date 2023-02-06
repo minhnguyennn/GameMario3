@@ -50,7 +50,7 @@ void CBlackKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		}
 		else
 		{
-			if (isTurnOver && !isAttacking && !isDie) vx = 0;
+			if (!isAttacking && !isDie) vx = 0;
 			else vy = 0;
 		}
 	}
@@ -176,26 +176,13 @@ void CBlackKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 
 void CBlackKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	//DebugOut(L"state: %d\n", state);
-
 	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
-	/*LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
-	if (mario->GetIsChangLevel()) return;*/
-	/*if ((isDefense && GetTickCount64() - time_defense > KOOPA_TIME_TIMEOUT) || (state == KOOPA_STATE_TURN_OVER && GetTickCount64() - time_turn_over > KOOPA_TIME_TIMEOUT))
+	if (!isAutoDie && GetTickCount64() - time_auto_die > 8100)
 	{
-		SetState(KOOPA_STATE_WAITING);
+		SetState(KOOPA_STATE_DIE_TURN_OVER);
+		isAutoDie = true;
 	}
-	if (isWaiting && GetTickCount64() - time_waiting > KOOPA_TIME_TIMEOUT)
-	{
-		SetState(KOOPA_STATE_WALKING);
-	}
-
-	if (isCollisionTail && GetTickCount64() - time_collision_tail > KOOPA_TIME_TAIL_TIMEOUT)
-	{
-		isCollisionTail = false;
-	}*/
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

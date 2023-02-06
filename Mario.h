@@ -362,6 +362,7 @@ class CMario : public CGameObject
 	ULONGLONG time_collision_mario;
 	ULONGLONG time_collision_card_box;
 	ULONGLONG time_collision_button;
+	ULONGLONG time_stop_jump;
 
 	BOOLEAN isOnPlatform;
 	BOOLEAN isSitting;
@@ -396,6 +397,11 @@ class CMario : public CGameObject
 	BOOLEAN isAutoStop;
 	BOOLEAN isDifferentMario;
 	BOOLEAN isCollisionCardBox;
+	BOOLEAN isAutoHeightJump;
+	BOOLEAN isStopGreen;
+	BOOLEAN isJumpKoopa;
+	BOOLEAN isStopJumpKoopa;
+
 
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -445,6 +451,7 @@ public:
 		time_collision_mario = 0;
 		time_collision_card_box = 0;
 		time_collision_button = 0;
+		time_stop_jump = 0;
 
 		isSlowFly = false;
 		isAttack = false;
@@ -478,6 +485,10 @@ public:
 		isUnTouchable = false;
 		isDifferentMario = false;
 		isCollisionCardBox = false;
+		isAutoHeightJump = false;
+		isStopGreen = false;
+		isJumpKoopa = false;
+		isStopJumpKoopa = false;
 
 		maxVx = 0.0f;
 		minVx = 0.0f;

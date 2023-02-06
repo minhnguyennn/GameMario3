@@ -24,6 +24,8 @@ protected:
 	bool isHeld;
 	bool isGhostBox;
 	bool isCollisionTail;
+	bool isAutoAttack;
+	bool isAutoBackAttack;
 
 	ULONGLONG die_start;
 	ULONGLONG time_line;
@@ -31,6 +33,7 @@ protected:
 	ULONGLONG time_turn_over;
 	ULONGLONG time_defense;
 	ULONGLONG time_collision_tail;
+	ULONGLONG time_auto_attack;
 
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
@@ -56,6 +59,8 @@ public:
 		isGhostBox = false;
 		isWalking = false;
 		isCollisionTail = false;
+		isAutoAttack = false;
+		isAutoBackAttack = false;
 
 		SetState(KOOPA_STATE_CLOSE_SHELL);
 
@@ -63,7 +68,15 @@ public:
 		time_turn_over = 0;
 		time_defense = 0;
 		time_collision_tail = 0;
+		time_auto_attack = 0;
 	};
+
+	void SetIsAutoAttack(bool isAutoAttack)
+	{
+		this->isAutoAttack = isAutoAttack;
+		time_auto_attack = GetTickCount64();
+	};
+	bool GetIsAutoAttac() { return isAutoAttack; };
 
 	void SetIsCollisionTail(bool isCollisionTail)
 	{

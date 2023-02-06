@@ -56,12 +56,12 @@ void CIntroKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		}
 	}
 
-	if (e->nx != 0 && e->obj->IsBlocking())
+	/*if (e->nx != 0 && e->obj->IsBlocking())
 	{
 		vx = -vx;
-	}
+	}*/
 
-	if (dynamic_cast<CPlatform*>(e->obj))
+	/*if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatForm(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
@@ -74,16 +74,16 @@ void CIntroKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CBlackKoopa*>(e->obj))
-		OnCollisionWithBlackKoopa(e);
+		OnCollisionWithBlackKoopa(e);*/
 }
 
 void CIntroKoopa::OnCollisionWithBlackKoopa(LPCOLLISIONEVENT e)
 {
-	CBlackKoopa* black_koopa = dynamic_cast<CBlackKoopa*>(e->obj);
+	/*CBlackKoopa* black_koopa = dynamic_cast<CBlackKoopa*>(e->obj);
 	if (nx != 0)
 	{
 		black_koopa->SetState(KOOPA_STATE_DIE_TURN_OVER);
-	}
+	}*/
 }
 
 void CIntroKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -188,26 +188,22 @@ void CIntroKoopa::OnCollisionWithDifferentKoopa(LPCOLLISIONEVENT e)
 
 void CIntroKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	//DebugOut(L"state: %d\n", state);
-	
 	if (!checkObjectInCamera()) return;
 	vy += ay * dt;
-	/*LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	CMario* mario = (CMario*)scene->GetPlayer();
-	if (mario->GetIsChangLevel()) return;*/
-	/*if ((isDefense && GetTickCount64() - time_defense > KOOPA_TIME_TIMEOUT) || (state == KOOPA_STATE_TURN_OVER && GetTickCount64() - time_turn_over > KOOPA_TIME_TIMEOUT))
+	if (isAutoAttack && GetTickCount64() - time_auto_attack > 6500)
 	{
-		SetState(KOOPA_STATE_WAITING);
-	}
-	if (isWaiting && GetTickCount64() - time_waiting > KOOPA_TIME_TIMEOUT)
-	{
-		SetState(KOOPA_STATE_WALKING);
-	}
+		vx = KOOPA_WALKING_ATTACKING_SPEED;
+		isAttacking = true;
+		isAutoAttack = false;
 
-	if (isCollisionTail && GetTickCount64() - time_collision_tail > KOOPA_TIME_TAIL_TIMEOUT)
+		isAutoBackAttack = true;
+		time_auto_attack = GetTickCount64();
+	}
+	if (isAutoBackAttack && GetTickCount64() - time_auto_attack > 1300)
 	{
-		isCollisionTail = false;
-	}*/
+		vx = -KOOPA_WALKING_ATTACKING_SPEED;
+	}
+	
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
